@@ -6,7 +6,7 @@ import net.runelite.api.InventoryID;
 
 @RequiredArgsConstructor
 @Getter
-public enum CarryableStorageType {
+public enum CarryableStorageType implements StorageType {
     INVENTORY("Inventory", InventoryID.INVENTORY.getId(), true),
     EQUIPMENT("Equipment", InventoryID.EQUIPMENT.getId(), true),
     LOOTING_BAG("Looting Bag", 516, false),

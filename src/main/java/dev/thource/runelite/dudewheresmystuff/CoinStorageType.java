@@ -7,10 +7,10 @@ import net.runelite.api.Varbits;
 
 @RequiredArgsConstructor
 @Getter
-public enum CoinStorageType {
+public enum CoinStorageType implements StorageType {
     NMZ("Nightmare Zone", 3948, -1, true, 1000),
     LMS("Last Man Standing", 5305, -1, true, 1000),
-//    SERVANT_MONEYBAG("Servant's Moneybag", 5305, -1, 100),
+    //    SERVANT_MONEYBAG("Servant's Moneybag", 5305, -1, 100),
     BF("Blast Furnace", Varbits.BLAST_FURNACE_COFFER.getId(), -1, true),
     INVENTORY("Inventory", -1, InventoryID.INVENTORY.getId(), true),
     LOOTING_BAG("Looting Bag", -1, 516, false);

@@ -25,51 +25,9 @@
 package dev.thource.runelite.dudewheresmystuff;
 
 import net.runelite.client.game.ItemManager;
-import net.runelite.client.ui.ColorScheme;
 
-import javax.swing.*;
-import java.util.Comparator;
-
-class CoinsTabPanel extends TabContentPanel {
-    private final DudeWheresMyStuffConfig config;
-    private final CoinsManager coinsManager;
-    private final ItemManager itemManager;
-
-    CoinsTabPanel(ItemManager itemManager, DudeWheresMyStuffConfig config, DudeWheresMyStuffPanel pluginPanel, CoinsManager coinsManager) {
-        this.itemManager = itemManager;
-        this.config = config;
-        this.coinsManager = coinsManager;
-
-        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        setBackground(ColorScheme.DARK_GRAY_COLOR);
-
-        rebuildList();
-    }
-
-    private void rebuildList() {
-        removeAll();
-
-        coinsManager.storages.stream().sorted(Comparator.comparingLong(CoinStorage::getCoins)
-                .reversed()
-                .thenComparing(s -> s.getType().getName())).forEach((storage) -> {
-            ItemsBox itemsBox = new ItemsBox(itemManager, storage.getType().getName(), null, false);
-            if (storage.getCoins() > 0) {
-                itemsBox.getItems().add(new ItemStack(995, "Coins", storage.getCoins(), 1, 0, true));
-            }
-            itemsBox.rebuild();
-            add(itemsBox);
-        });
-
-        revalidate();
-    }
-
-    @Override
-    public int getUpdateInterval() {
-        return 50; // 10 seconds
-    }
-
-    @Override
-    public void update() {
-        rebuildList();
+class CoinsTabPanel extends StorageTabPanel<CoinStorageType, CoinStorage, CoinsManager> {
+    CoinsTabPanel(ItemManager itemManager, DudeWheresMyStuffConfig config, DudeWheresMyStuffPanel pluginPanel, CoinsManager storageManager) {
+        super(itemManager, config, pluginPanel, storageManager);
     }
 }

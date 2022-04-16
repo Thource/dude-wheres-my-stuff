@@ -25,51 +25,9 @@
 package dev.thource.runelite.dudewheresmystuff;
 
 import net.runelite.client.game.ItemManager;
-import net.runelite.client.ui.ColorScheme;
 
-import javax.swing.*;
-import java.util.Comparator;
-
-class CarryableTabPanel extends TabContentPanel {
-    private final DudeWheresMyStuffConfig config;
-    private final CarryableManager carryableManager;
-    private final ItemManager itemManager;
-
-    CarryableTabPanel(ItemManager itemManager, DudeWheresMyStuffConfig config, DudeWheresMyStuffPanel pluginPanel, CarryableManager carryableManager) {
-        this.itemManager = itemManager;
-        this.config = config;
-        this.carryableManager = carryableManager;
-
-        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        setBackground(ColorScheme.DARK_GRAY_COLOR);
-
-        rebuildList();
-    }
-
-    private void rebuildList() {
-        removeAll();
-
-        carryableManager.storages.stream().sorted(Comparator.comparingLong(CarryableStorage::getTotalValue)
-                .reversed()
-                .thenComparing(s->s.getType().getName())).forEach((storage) -> {
-            ItemsBox itemsBox = new ItemsBox(itemManager, storage.getType().getName(), null, false);
-            for (ItemStack itemStack : storage.getItems()) {
-                itemsBox.getItems().add(itemStack);
-            }
-            itemsBox.rebuild();
-            add(itemsBox);
-        });
-
-        revalidate();
-    }
-
-    @Override
-    public int getUpdateInterval() {
-        return 50; // 10 seconds
-    }
-
-    @Override
-    public void update() {
-        rebuildList();
+class CarryableTabPanel extends StorageTabPanel<CarryableStorageType, CarryableStorage, CarryableManager> {
+    CarryableTabPanel(ItemManager itemManager, DudeWheresMyStuffConfig config, DudeWheresMyStuffPanel pluginPanel, CarryableManager storageManager) {
+        super(itemManager, config, pluginPanel, storageManager);
     }
 }
