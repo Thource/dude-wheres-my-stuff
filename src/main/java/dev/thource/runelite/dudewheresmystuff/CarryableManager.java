@@ -21,6 +21,6 @@ public class CarryableManager extends StorageManager<CarryableStorageType, Carry
             }
         }
 
-        storages.add(new RunePouch(CarryableStorageType.RUNE_POUCH, client, itemManager));
+        storages.add(new RunePouch(client, itemManager));
     }
 }

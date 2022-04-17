@@ -3,6 +3,7 @@ package dev.thource.runelite.dudewheresmystuff;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.runelite.api.InventoryID;
+import net.runelite.api.ItemID;
 
 @RequiredArgsConstructor
 @Getter

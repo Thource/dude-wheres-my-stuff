@@ -206,9 +206,11 @@ class ItemsBox extends JPanel {
             return sb.toString();
         }
 
-        sb.append("<br>GE: ").append(QuantityFormatter.quantityToStackSize(gePrice));
-        if (quantity > 1) {
-            sb.append(" (").append(QuantityFormatter.quantityToStackSize(item.getGePrice())).append(" ea)");
+        if (gePrice > 0) {
+            sb.append("<br>GE: ").append(QuantityFormatter.quantityToStackSize(gePrice));
+            if (quantity > 1) {
+                sb.append(" (").append(QuantityFormatter.quantityToStackSize(item.getGePrice())).append(" ea)");
+            }
         }
 
         if (item.getId() == ItemID.PLATINUM_TOKEN) {
@@ -216,9 +218,11 @@ class ItemsBox extends JPanel {
             return sb.toString();
         }
 
-        sb.append("<br>HA: ").append(QuantityFormatter.quantityToStackSize(haPrice));
-        if (quantity > 1) {
-            sb.append(" (").append(QuantityFormatter.quantityToStackSize(item.getHaPrice())).append(" ea)");
+        if (haPrice > 0) {
+            sb.append("<br>HA: ").append(QuantityFormatter.quantityToStackSize(haPrice));
+            if (quantity > 1) {
+                sb.append(" (").append(QuantityFormatter.quantityToStackSize(item.getHaPrice())).append(" ea)");
+            }
         }
         sb.append("</html>");
         return sb.toString();

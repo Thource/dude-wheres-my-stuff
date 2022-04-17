@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2018, Daniel Teo <https://github.com/takuyakanbr>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,33 +24,17 @@
  */
 package dev.thource.runelite.dudewheresmystuff;
 
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
+import net.runelite.client.game.ItemManager;
 
-@AllArgsConstructor
-@Getter
-@EqualsAndHashCode
-public
-class ItemStack
-{
-	private final int id;
-	private final String name;
-	private int quantity;
-	private final int gePrice;
-	private final int haPrice;
-	private final boolean stackable;
+import java.util.Comparator;
 
-	long getTotalGePrice()
-	{
-		return (long) gePrice * quantity;
-	}
-	long getTotalHaPrice()
-	{
-		return (long) haPrice * quantity;
-	}
+class MinigamesTabPanel extends StorageTabPanel<MinigameStorageType, MinigameStorage, MinigamesManager> {
+    MinigamesTabPanel(ItemManager itemManager, DudeWheresMyStuffConfig config, DudeWheresMyStuffPanel pluginPanel, MinigamesManager storageManager) {
+        super(itemManager, config, pluginPanel, storageManager);
+    }
 
-	public void setQuantity(int quantity) {
-		this.quantity = quantity;
-	}
+    @Override
+    protected Comparator<MinigameStorage> getStorageSorter() {
+        return Comparator.comparing(s -> s.getType().getName());
+    }
 }

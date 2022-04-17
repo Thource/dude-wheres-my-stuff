@@ -58,7 +58,8 @@ class DudeWheresMyStuffPanel extends PluginPanel {
     private TabContentPanel activeTabPanel = null;
 
     @Inject
-    DudeWheresMyStuffPanel(ItemManager itemManager, DudeWheresMyStuffConfig config, ConfigManager configManager, CoinsManager coinsManager, CarryableManager carryableManager,
+    DudeWheresMyStuffPanel(ItemManager itemManager, DudeWheresMyStuffConfig config, ConfigManager configManager,
+                           CoinsManager coinsManager, CarryableManager carryableManager, MinigamesManager minigamesManager,
                            @Named("developerMode") boolean developerMode) {
         super(false);
 
@@ -80,6 +81,7 @@ class DudeWheresMyStuffPanel extends PluginPanel {
 
         addTab(Tab.COINS, new CoinsTabPanel(itemManager, config, this, coinsManager));
         addTab(Tab.CARRYABLE_STORAGE, new CarryableTabPanel(itemManager, config, this, carryableManager));
+        addTab(Tab.MINIGAMES, new MinigamesTabPanel(itemManager, config, this, minigamesManager));
 
 //        for (Tab tab : Tab.TABS) {
 //            addTab(tab, new OverviewTabPanel(itemManager, config, this, coinsManager));

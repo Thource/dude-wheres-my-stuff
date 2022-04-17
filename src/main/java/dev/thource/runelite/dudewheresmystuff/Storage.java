@@ -6,6 +6,8 @@ import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.api.events.WidgetClosed;
+import net.runelite.api.events.WidgetLoaded;
 import net.runelite.client.game.ItemManager;
 
 import java.util.ArrayList;
@@ -29,11 +31,23 @@ abstract class Storage<T extends StorageType> {
         return items.stream().mapToLong(ItemStack::getTotalGePrice).sum();
     }
 
-    boolean updateVarbits() {
+    public boolean onGameTick() {
         return false;
     }
 
-    boolean updateItemContainer(ItemContainerChanged itemContainerChanged) {
+    public boolean onWidgetLoaded(WidgetLoaded widgetLoaded) {
+        return false;
+    }
+
+    public boolean onWidgetClosed(WidgetClosed widgetClosed) {
+        return false;
+    }
+
+    public boolean onVarbitChanged() {
+        return false;
+    }
+
+    public boolean onItemContainerChanged(ItemContainerChanged itemContainerChanged) {
         if (type.getItemContainerId() == -1 || type.getItemContainerId() != itemContainerChanged.getContainerId())
             return false;
 
@@ -57,7 +71,7 @@ abstract class Storage<T extends StorageType> {
         return true;
     }
 
-    void reset() {
+    public void reset() {
         items.clear();
     }
 }

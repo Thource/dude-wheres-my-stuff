@@ -17,7 +17,7 @@ public class CoinStorage extends Storage<CoinStorageType> {
     }
 
     @Override
-    boolean updateVarbits() {
+    public boolean onVarbitChanged() {
         if (type.getVarbitId() == -1) return false;
 
         int coins = client.getVarbitValue(type.getVarbitId()) * type.getMultiplier();
@@ -28,7 +28,7 @@ public class CoinStorage extends Storage<CoinStorageType> {
     }
 
     @Override
-    boolean updateItemContainer(ItemContainerChanged itemContainerChanged) {
+    public boolean onItemContainerChanged(ItemContainerChanged itemContainerChanged) {
         if (type.getItemContainerId() == -1 || type.getItemContainerId() != itemContainerChanged.getContainerId())
             return false;
 
@@ -43,7 +43,7 @@ public class CoinStorage extends Storage<CoinStorageType> {
     }
 
     @Override
-    void reset() {
+    public void reset() {
         coinStack.setQuantity(0);
     }
 }

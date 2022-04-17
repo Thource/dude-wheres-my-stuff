@@ -2,6 +2,8 @@ package dev.thource.runelite.dudewheresmystuff;
 
 import net.runelite.api.Client;
 import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.api.events.WidgetClosed;
+import net.runelite.api.events.WidgetLoaded;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
@@ -32,21 +34,51 @@ abstract class StorageManager<ST extends StorageType, S extends Storage<ST>> {
         return storages.stream().mapToLong(Storage::getTotalValue).sum();
     }
 
-    boolean updateVarbits() {
+    boolean onGameTick() {
         boolean updated = false;
 
         for (S storage : storages) {
-            if (storage.updateVarbits()) updated = true;
+            if (storage.onGameTick()) updated = true;
         }
 
         return updated;
     }
 
-    boolean updateItemContainer(ItemContainerChanged itemContainerChanged) {
+    boolean onWidgetLoaded(WidgetLoaded widgetLoaded) {
         boolean updated = false;
 
         for (S storage : storages) {
-            if (storage.updateItemContainer(itemContainerChanged)) updated = true;
+            if (storage.onWidgetLoaded(widgetLoaded)) updated = true;
+        }
+
+        return updated;
+    }
+
+    boolean onWidgetClosed(WidgetClosed widgetClosed) {
+        boolean updated = false;
+
+        for (S storage : storages) {
+            if (storage.onWidgetClosed(widgetClosed)) updated = true;
+        }
+
+        return updated;
+    }
+
+    boolean onVarbitChanged() {
+        boolean updated = false;
+
+        for (S storage : storages) {
+            if (storage.onVarbitChanged()) updated = true;
+        }
+
+        return updated;
+    }
+
+    boolean onItemContainerChanged(ItemContainerChanged itemContainerChanged) {
+        boolean updated = false;
+
+        for (S storage : storages) {
+            if (storage.onItemContainerChanged(itemContainerChanged)) updated = true;
         }
 
         return updated;

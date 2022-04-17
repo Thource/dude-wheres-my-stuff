@@ -46,12 +46,16 @@ abstract class StorageTabPanel<ST extends StorageType, S extends Storage<ST>, SM
         rebuildList();
     }
 
-    private void rebuildList() {
+    protected Comparator<S> getStorageSorter() {
+        return Comparator.comparingLong(S::getTotalValue)
+                .reversed()
+                .thenComparing(s -> s.getType().getName());
+    }
+
+    protected void rebuildList() {
         removeAll();
 
-        storageManager.storages.stream().sorted(Comparator.comparingLong(S::getTotalValue)
-                .reversed()
-                .thenComparing(s -> s.getType().getName())).forEach((storage) -> {
+        storageManager.storages.stream().sorted(getStorageSorter()).forEach((storage) -> {
             ItemsBox itemsBox = new ItemsBox(itemManager, storage.getType().getName(), null, false);
             for (ItemStack itemStack : storage.getItems()) {
                 if (itemStack.getQuantity() > 0)

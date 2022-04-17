@@ -17,11 +17,11 @@ public class RunePouch extends CarryableStorage {
     private int rune2Quantity;
     private int rune3Quantity;
 
-    RunePouch(CarryableStorageType type, Client client, ItemManager itemManager) {
-        super(type, client, itemManager);
+    RunePouch(Client client, ItemManager itemManager) {
+        super(CarryableStorageType.RUNE_POUCH, client, itemManager);
     }
 
-    boolean updateVarbits() {
+    public boolean onVarbitChanged() {
         int newRune1Type = client.getVar(Varbits.RUNE_POUCH_RUNE1);
         int newRune2Type = client.getVar(Varbits.RUNE_POUCH_RUNE2);
         int newRune3Type = client.getVar(Varbits.RUNE_POUCH_RUNE3);

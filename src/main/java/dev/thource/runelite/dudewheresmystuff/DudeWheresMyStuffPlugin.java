@@ -3,10 +3,7 @@ package dev.thource.runelite.dudewheresmystuff;
 import com.google.inject.Provides;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.*;
-import net.runelite.api.events.ActorDeath;
-import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.ItemContainerChanged;
-import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.events.*;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
@@ -17,6 +14,9 @@ import net.runelite.client.util.ImageUtil;
 
 import javax.inject.Inject;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @Slf4j
 @PluginDescriptor(
@@ -38,6 +38,12 @@ public class DudeWheresMyStuffPlugin extends Plugin {
     @Inject
     private CarryableManager carryableManager;
 
+    @Inject
+    private MinigamesManager minigamesManager;
+
+    @SuppressWarnings("rawtypes")
+    private final List<StorageManager> storageManagers = new ArrayList<>();
+
     private DudeWheresMyStuffPanel panel;
 
     private NavigationButton navButton;
@@ -56,6 +62,10 @@ public class DudeWheresMyStuffPlugin extends Plugin {
                 .build();
 
         clientToolbar.addNavigation(navButton);
+
+        storageManagers.add(coinsManager);
+        storageManagers.add(carryableManager);
+        storageManagers.add(minigamesManager);
     }
 
     @Override
@@ -65,6 +75,8 @@ public class DudeWheresMyStuffPlugin extends Plugin {
 
     @Subscribe
     public void onActorDeath(ActorDeath actorDeath) {
+        if (client.getLocalPlayer() == null) return;
+
         if (actorDeath.getActor() == client.getLocalPlayer()) {
             log.info("OH NO, YOU HAVE DIED!");
             HashTable<ItemContainer> itemContainers = client.getItemContainers();
@@ -87,26 +99,64 @@ public class DudeWheresMyStuffPlugin extends Plugin {
     @Subscribe
     public void onGameStateChanged(GameStateChanged gameStateChanged) {
         if (gameStateChanged.getGameState() == GameState.LOGIN_SCREEN) {
-            coinsManager.reset();
-            carryableManager.reset();
+            storageManagers.forEach(StorageManager::reset);
+            panel.update();
         }
     }
 
     @Subscribe
-    public void onVarbitChanged(VarbitChanged varbitChanged) {
-        boolean isPanelDirty = coinsManager.updateVarbits();
-        if (carryableManager.updateVarbits()) isPanelDirty = true;
+    public void onGameTick(GameTick gameTick) {
+        AtomicBoolean isPanelDirty = new AtomicBoolean(false);
 
-        if (isPanelDirty) panel.update();
+        storageManagers.forEach(storageManager -> {
+            if (storageManager.onGameTick()) isPanelDirty.set(true);
+        });
+
+        if (isPanelDirty.get()) panel.update();
     }
 
     @Subscribe
-    public void onItemContainerChanged(ItemContainerChanged itemContainerChanged)
-    {
-        boolean isPanelDirty = coinsManager.updateItemContainer(itemContainerChanged);
-        if (carryableManager.updateItemContainer(itemContainerChanged)) isPanelDirty = true;
+    public void onWidgetLoaded(WidgetLoaded widgetLoaded) {
+        AtomicBoolean isPanelDirty = new AtomicBoolean(false);
 
-        if (isPanelDirty) panel.update();
+        storageManagers.forEach(storageManager -> {
+            if (storageManager.onWidgetLoaded(widgetLoaded)) isPanelDirty.set(true);
+        });
+
+        if (isPanelDirty.get()) panel.update();
+    }
+
+    @Subscribe
+    public void onWidgetClosed(WidgetClosed widgetClosed) {
+        AtomicBoolean isPanelDirty = new AtomicBoolean(false);
+
+        storageManagers.forEach(storageManager -> {
+            if (storageManager.onWidgetClosed(widgetClosed)) isPanelDirty.set(true);
+        });
+
+        if (isPanelDirty.get()) panel.update();
+    }
+
+    @Subscribe
+    public void onVarbitChanged(VarbitChanged varbitChanged) {
+        AtomicBoolean isPanelDirty = new AtomicBoolean(false);
+
+        storageManagers.forEach(storageManager -> {
+            if (storageManager.onVarbitChanged()) isPanelDirty.set(true);
+        });
+
+        if (isPanelDirty.get()) panel.update();
+    }
+
+    @Subscribe
+    public void onItemContainerChanged(ItemContainerChanged itemContainerChanged) {
+        AtomicBoolean isPanelDirty = new AtomicBoolean(false);
+
+        storageManagers.forEach(storageManager -> {
+            if (storageManager.onItemContainerChanged(itemContainerChanged)) isPanelDirty.set(true);
+        });
+
+        if (isPanelDirty.get()) panel.update();
     }
 
     @Provides
