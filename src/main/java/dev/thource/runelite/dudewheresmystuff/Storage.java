@@ -10,6 +10,7 @@ import net.runelite.api.events.WidgetClosed;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.client.game.ItemManager;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +21,8 @@ abstract class Storage<T extends StorageType> {
 
     protected T type;
     protected List<ItemStack> items = new ArrayList<>();
+
+    protected Instant lastUpdated = null;
 
     Storage(T type, Client client, ItemManager itemManager) {
         this.type = type;
@@ -67,6 +70,8 @@ abstract class Storage<T extends StorageType> {
             ItemComposition itemComposition = itemManager.getItemComposition(item.getId());
             items.add(new ItemStack(item.getId(), itemComposition.getName(), item.getQuantity(), itemManager.getItemPrice(item.getId()), itemComposition.getHaPrice(), itemComposition.isStackable()));
         }
+
+        lastUpdated = Instant.now();
 
         return true;
     }

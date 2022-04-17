@@ -28,6 +28,7 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.ColorScheme;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.Comparator;
 
 abstract class StorageTabPanel<ST extends StorageType, S extends Storage<ST>, SM extends StorageManager<ST, S>> extends TabContentPanel {
@@ -56,7 +57,7 @@ abstract class StorageTabPanel<ST extends StorageType, S extends Storage<ST>, SM
         removeAll();
 
         storageManager.storages.stream().sorted(getStorageSorter()).forEach((storage) -> {
-            ItemsBox itemsBox = new ItemsBox(itemManager, storage.getType().getName(), null, false);
+            ItemsBox itemsBox = new ItemsBox(itemManager, storage, null, false);
             for (ItemStack itemStack : storage.getItems()) {
                 if (itemStack.getQuantity() > 0)
                     itemsBox.getItems().add(itemStack);
@@ -69,12 +70,13 @@ abstract class StorageTabPanel<ST extends StorageType, S extends Storage<ST>, SM
     }
 
     @Override
-    public int getUpdateInterval() {
-        return 50; // 10 seconds
-    }
-
-    @Override
     public void update() {
         rebuildList();
+    }
+
+    public void softUpdate() {
+        for (Component component : getComponents()) {
+            if (component instanceof ItemsBox) ((ItemsBox) component).updateLastUpdateLabel();
+        }
     }
 }

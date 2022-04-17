@@ -27,87 +27,8 @@ package dev.thource.runelite.dudewheresmystuff;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
-import java.time.DateTimeException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.TextStyle;
-import java.time.temporal.ChronoUnit;
-import java.util.Locale;
 
 @Slf4j
-public abstract class TabContentPanel extends JPanel
-{
-	private static final DateTimeFormatter DATETIME_FORMATTER_24H = DateTimeFormatter.ofPattern("HH:mm");
-	private static final DateTimeFormatter DATETIME_FORMATTER_12H = DateTimeFormatter.ofPattern("h:mm a");
-
-	/**
-	 * Gets the update interval of this panel, in units of 200 milliseconds
-	 * (the plugin panel checks if its contents should be updated every 200 ms;
-	 * this can be considered its "tick rate").
-	 */
-	public abstract int getUpdateInterval();
-
-	public abstract void update();
-
-	public static String getFormattedEstimate(long remainingSeconds, TimeFormatMode mode)
-	{
-		DateTimeFormatter formatter = getDateTimeFormatter(mode);
-
-		if (formatter == null)
-		{
-			StringBuilder sb = new StringBuilder("in ");
-			long duration = (remainingSeconds + 59) / 60;
-			long minutes = duration % 60;
-			long hours = (duration / 60) % 24;
-			long days = duration / (60 * 24);
-			if (days > 0)
-			{
-				sb.append(days).append("d ");
-			}
-			if (hours > 0)
-			{
-				sb.append(hours).append("h ");
-			}
-			if (minutes > 0)
-			{
-				sb.append(minutes).append("m ");
-			}
-			return sb.toString();
-		}
-		else
-		{
-			try
-			{
-				StringBuilder sb = new StringBuilder();
-				LocalDateTime endTime = LocalDateTime.now().plus(remainingSeconds, ChronoUnit.SECONDS);
-				LocalDateTime currentTime = LocalDateTime.now();
-				if (endTime.getDayOfWeek() != currentTime.getDayOfWeek())
-				{
-					sb.append(endTime.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.getDefault())).append(" ");
-				}
-				sb.append("at ");
-				sb.append(formatter.format(endTime));
-
-				return sb.toString();
-			}
-			catch (DateTimeException e)
-			{
-				log.warn("error formatting absolute time: now + {}", remainingSeconds, e);
-				return "Invalid";
-			}
-		}
-	}
-
-	private static DateTimeFormatter getDateTimeFormatter(TimeFormatMode mode)
-	{
-		switch (mode)
-		{
-			case ABSOLUTE_12H:
-				return DATETIME_FORMATTER_12H;
-			case ABSOLUTE_24H:
-				return DATETIME_FORMATTER_24H;
-			default:
-				return null;
-		}
-	}
+public abstract class TabContentPanel extends JPanel {
+    public abstract void update();
 }

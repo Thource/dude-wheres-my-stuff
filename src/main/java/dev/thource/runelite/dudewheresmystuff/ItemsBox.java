@@ -40,6 +40,7 @@ import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -53,6 +54,8 @@ class ItemsBox extends JPanel {
     private final JLabel priceLabel = new JLabel();
     private final JLabel subTitleLabel = new JLabel();
     private final JPanel logTitle = new JPanel();
+    private JPanel lastUpdatedPanel = null;
+    private JLabel lastUpdatedLabel = null;
     private final ItemManager itemManager;
     @Getter(AccessLevel.PACKAGE)
     private final String id;
@@ -62,16 +65,19 @@ class ItemsBox extends JPanel {
     @Getter
     private final List<ItemStack> items = new ArrayList<>();
 
+    private final Storage<?> storage;
+
     private long totalPrice;
 
     ItemsBox(
             final ItemManager itemManager,
-            final String id,
+            final Storage<?> storage,
             @Nullable final String subtitle,
             final boolean showAlchPrices) {
-        this.id = id;
+        this.id = storage.getType().getName();
         this.itemManager = itemManager;
         this.showAlchPrices = showAlchPrices;
+        this.storage = storage;
 
         setLayout(new BorderLayout(0, 1));
         setBorder(new EmptyBorder(5, 0, 0, 0));
@@ -106,6 +112,24 @@ class ItemsBox extends JPanel {
 
         add(logTitle, BorderLayout.NORTH);
         add(itemContainer, BorderLayout.CENTER);
+
+        if (!storage.getType().isAutomatic()) {
+            lastUpdatedPanel = new JPanel();
+            lastUpdatedPanel.setLayout(new BoxLayout(lastUpdatedPanel, BoxLayout.X_AXIS));
+            lastUpdatedPanel.setBorder(new EmptyBorder(7, 7, 7, 7));
+            lastUpdatedPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+
+            lastUpdatedLabel = new JLabel();
+            lastUpdatedLabel.setText("Unknown");
+            lastUpdatedLabel.setToolTipText("Open the relevant container or shop to update.");
+            lastUpdatedLabel.setFont(FontManager.getRunescapeSmallFont());
+            lastUpdatedLabel.setForeground(Color.WHITE);
+            // Set a size to make BoxLayout truncate the name
+            lastUpdatedLabel.setMinimumSize(new Dimension(1, lastUpdatedLabel.getPreferredSize().height));
+            lastUpdatedPanel.add(lastUpdatedLabel);
+
+            add(lastUpdatedPanel, BorderLayout.SOUTH);
+        }
     }
 
     void rebuild() {
@@ -114,7 +138,15 @@ class ItemsBox extends JPanel {
         priceLabel.setText(QuantityFormatter.quantityToStackSize(totalPrice) + " gp");
         priceLabel.setToolTipText(QuantityFormatter.formatNumber(totalPrice) + " gp");
 
+        updateLastUpdateLabel();
+
         revalidate();
+    }
+
+    void updateLastUpdateLabel() {
+        if (lastUpdatedLabel == null || storage.lastUpdated == null) return;
+
+        lastUpdatedLabel.setText("Last updated " + TimeAgo.toDuration(Instant.now().toEpochMilli() - storage.getLastUpdated().toEpochMilli()));
     }
 
     void collapse() {

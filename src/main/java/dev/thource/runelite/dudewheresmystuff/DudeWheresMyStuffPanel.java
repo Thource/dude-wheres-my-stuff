@@ -135,13 +135,6 @@ class DudeWheresMyStuffPanel extends PluginPanel {
     }
 
     /**
-     * Gets the update interval of the active tab panel, in units of 200 milliseconds.
-     */
-    int getUpdateInterval() {
-        return activeTabPanel == null ? Integer.MAX_VALUE : activeTabPanel.getUpdateInterval();
-    }
-
-    /**
      * Updates the active tab panel, if this plugin panel is displayed.
      */
     void update() {
@@ -161,5 +154,11 @@ class DudeWheresMyStuffPanel extends PluginPanel {
     @Override
     public void onDeactivate() {
         active = false;
+    }
+
+    public void softUpdate() {
+        if (activeTabPanel == null || !(activeTabPanel instanceof StorageTabPanel)) return;
+
+        ((StorageTabPanel<?, ?, ?>) activeTabPanel).softUpdate();
     }
 }

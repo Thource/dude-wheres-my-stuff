@@ -62,11 +62,6 @@ class OverviewTabPanel extends TabContentPanel {
     }
 
     @Override
-    public int getUpdateInterval() {
-        return 50; // 10 seconds
-    }
-
-    @Override
     public void update() {
         overviews.get(Tab.COINS).updateStatus(String.format("%,d gp", coinsManager.getTotalValue()), Color.LIGHT_GRAY);
         overviews.get(Tab.CARRYABLE_STORAGE).updateStatus(String.format("%,d gp", carryableManager.getTotalValue()), Color.LIGHT_GRAY);

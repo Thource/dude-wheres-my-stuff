@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 public enum MinigameStorageType implements StorageType {
     MAGE_TRAINING_ARENA("Mage Training Arena", -1, false),
     TITHE_FARM("Tithe Farm", -1, true),
-    LAST_MAN_STANDING("Last Man Standing", -1, true),
+    LAST_MAN_STANDING("Last Man Standing", -1, false),
     NIGHTMARE_ZONE("Nightmare Zone", -1, true),
     PEST_CONTROL("Pest Control", -1, true),
     BARBARIAN_ASSAULT("Barbarian Assault", -1, true),

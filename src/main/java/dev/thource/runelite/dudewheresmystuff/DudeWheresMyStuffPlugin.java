@@ -41,12 +41,12 @@ public class DudeWheresMyStuffPlugin extends Plugin {
     @Inject
     private MinigamesManager minigamesManager;
 
-    @SuppressWarnings("rawtypes")
-    private final List<StorageManager> storageManagers = new ArrayList<>();
+    private final List<StorageManager<?, ?>> storageManagers = new ArrayList<>();
 
     private DudeWheresMyStuffPanel panel;
 
     private NavigationButton navButton;
+
 
     @Override
     protected void startUp() throws Exception {
@@ -112,7 +112,12 @@ public class DudeWheresMyStuffPlugin extends Plugin {
             if (storageManager.onGameTick()) isPanelDirty.set(true);
         });
 
-        if (isPanelDirty.get()) panel.update();
+        if (isPanelDirty.get()) {
+            panel.update();
+            return;
+        }
+
+        panel.softUpdate();
     }
 
     @Subscribe

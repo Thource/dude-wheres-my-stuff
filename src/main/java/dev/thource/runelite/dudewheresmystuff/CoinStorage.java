@@ -6,6 +6,8 @@ import net.runelite.api.ItemContainer;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.client.game.ItemManager;
 
+import java.time.Instant;
+
 @Getter
 public class CoinStorage extends Storage<CoinStorageType> {
     private final ItemStack coinStack = new ItemStack(995, "Coins", 0, 1, 0, true);
@@ -35,8 +37,9 @@ public class CoinStorage extends Storage<CoinStorageType> {
         ItemContainer itemContainer = client.getItemContainer(type.getItemContainerId());
         if (itemContainer == null) return false;
 
+        lastUpdated = Instant.now();
         int coins = itemContainer.count(995);
-        if (coinStack.getQuantity() == coins) return false;
+        if (coinStack.getQuantity() == coins) return !type.isAutomatic();
 
         coinStack.setQuantity(coins);
         return true;

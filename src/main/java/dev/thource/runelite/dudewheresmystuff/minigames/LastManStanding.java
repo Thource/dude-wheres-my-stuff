@@ -10,9 +10,8 @@ import net.runelite.api.events.WidgetClosed;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.game.ItemManager;
-import org.apache.commons.lang3.math.NumberUtils;
 
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.time.Instant;
 
 @Getter
 public class LastManStanding extends MinigameStorage {
@@ -24,6 +23,11 @@ public class LastManStanding extends MinigameStorage {
         super(MinigameStorageType.LAST_MAN_STANDING, client, itemManager);
 
         items.add(points);
+    }
+
+    @Override
+    public boolean onGameTick() {
+        return updateFromWidgets();
     }
 
     @Override
@@ -49,16 +53,13 @@ public class LastManStanding extends MinigameStorage {
     }
 
     boolean updateFromWidgets() {
-        AtomicBoolean updated = new AtomicBoolean(false);
+        if (shopWidget == null) return false;
 
-        if (shopWidget != null) {
-            int newPoints = client.getVarpValue(261);
-            if (newPoints == points.getQuantity()) return false;
+        lastUpdated = Instant.now();
+        int newPoints = client.getVarpValue(261);
+        if (newPoints == points.getQuantity()) return !type.isAutomatic();
 
-            points.setQuantity(newPoints);
-            updated.set(true);
-        }
-
-        return updated.get();
+        points.setQuantity(newPoints);
+        return true;
     }
 }

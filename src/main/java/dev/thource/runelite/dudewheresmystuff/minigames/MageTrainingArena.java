@@ -12,6 +12,7 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.client.game.ItemManager;
 import org.apache.commons.lang3.math.NumberUtils;
 
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -84,6 +85,7 @@ public class MageTrainingArena extends MinigameStorage {
         AtomicBoolean updated = new AtomicBoolean(false);
 
         if (shopWidget != null) {
+            lastUpdated = Instant.now();
             pointData.forEach((itemStack, pointData) -> {
                 int newPoints = client.getVarpValue(pointData.getVarpId());
                 if (newPoints == pointData.getLastVarpValue()) return;
@@ -99,7 +101,9 @@ public class MageTrainingArena extends MinigameStorage {
         pointData.forEach((itemStack, pointData) -> {
             if (pointData.getWidget() == null) return;
 
+            lastUpdated = Instant.now();
             int newPoints = NumberUtils.toInt(pointData.getWidget().getText(), 0);
+            if (!type.isAutomatic()) updated.set(true);
             if (newPoints == pointData.getLastWidgetValue()) return;
 
             itemStack.setQuantity(newPoints);
