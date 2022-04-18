@@ -8,15 +8,17 @@ import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 
+import java.io.*;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 abstract class StorageManager<ST extends StorageType, S extends Storage<ST>> {
-    protected final Client client;
-    protected final ItemManager itemManager;
-    protected final ConfigManager configManager;
-    protected final DudeWheresMyStuffConfig config;
-    protected final Notifier notifier;
+    protected transient final Client client;
+    protected transient final ItemManager itemManager;
+    protected transient final ConfigManager configManager;
+    protected transient final DudeWheresMyStuffConfig config;
+    protected transient final Notifier notifier;
 
     protected final List<S> storages = new ArrayList<>();
 
@@ -86,5 +88,15 @@ abstract class StorageManager<ST extends StorageType, S extends Storage<ST>> {
 
     void reset() {
         storages.forEach(Storage::reset);
+    }
+
+    public abstract String getConfigKey();
+
+    public void save() {
+        storages.forEach(storage -> storage.save(configManager, getConfigKey()));
+    }
+
+    public void load() {
+        storages.forEach(storage -> storage.load(configManager, getConfigKey()));
     }
 }

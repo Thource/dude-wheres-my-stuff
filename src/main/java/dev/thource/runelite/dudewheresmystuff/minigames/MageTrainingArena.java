@@ -1,5 +1,6 @@
 package dev.thource.runelite.dudewheresmystuff.minigames;
 
+import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffConfig;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
 import dev.thource.runelite.dudewheresmystuff.MinigameStorage;
 import dev.thource.runelite.dudewheresmystuff.MinigameStorageType;
@@ -9,13 +10,16 @@ import net.runelite.api.ItemID;
 import net.runelite.api.events.WidgetClosed;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import org.apache.commons.lang3.math.NumberUtils;
 
 import java.time.Instant;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
 
 @Getter
 public class MageTrainingArena extends MinigameStorage {
@@ -103,7 +107,6 @@ public class MageTrainingArena extends MinigameStorage {
 
             lastUpdated = Instant.now();
             int newPoints = NumberUtils.toInt(pointData.getWidget().getText(), 0);
-            if (!type.isAutomatic()) updated.set(true);
             if (newPoints == pointData.getLastWidgetValue()) return;
 
             itemStack.setQuantity(newPoints);
@@ -119,5 +122,44 @@ public class MageTrainingArena extends MinigameStorage {
         super.reset();
 
         pointData.forEach((itemStack, mageTrainingArenaPoint) -> mageTrainingArenaPoint.reset());
+    }
+
+    @Override
+    public void save(ConfigManager configManager, String managerConfigKey) {
+        String data = "";
+        if (lastUpdated != null) {
+            data += lastUpdated.getEpochSecond();
+        }
+        data += ";";
+        data += items.stream().map(item -> "" + item.getQuantity()).collect(Collectors.joining("="));
+
+        configManager.setRSProfileConfiguration(
+                DudeWheresMyStuffConfig.CONFIG_GROUP,
+                managerConfigKey + "." + type.getConfigKey(),
+                data
+        );
+    }
+
+    @Override
+    public void load(ConfigManager configManager, String managerConfigKey) {
+        String data = configManager.getRSProfileConfiguration(
+                DudeWheresMyStuffConfig.CONFIG_GROUP,
+                managerConfigKey + "." + type.getConfigKey(),
+                String.class
+        );
+        System.out.println(managerConfigKey + "." + type.getConfigKey() + " - " + data);
+        String[] dataSplit = data.split(";");
+        if (dataSplit.length != 2) return;
+
+        String[] pointSplit = dataSplit[1].split("=");
+        if (pointSplit.length != 4) return;
+
+        long lastUpdated = NumberUtils.toLong(dataSplit[0], 0);
+        if (lastUpdated != 0) this.lastUpdated = Instant.ofEpochSecond(lastUpdated);
+
+        telekineticPoints.setQuantity(NumberUtils.toInt(pointSplit[0]));
+        graveyardPoints.setQuantity(NumberUtils.toInt(pointSplit[1]));
+        enchantmentPoints.setQuantity(NumberUtils.toInt(pointSplit[2]));
+        alchemistPoints.setQuantity(NumberUtils.toInt(pointSplit[3]));
     }
 }

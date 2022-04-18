@@ -22,4 +22,9 @@ public class MinigamesManager extends StorageManager<MinigameStorageType, Miniga
         storages.add(new BarbarianAssault(client, itemManager));
         storages.add(new NightmareZone(client, itemManager));
     }
+
+    @Override
+    public String getConfigKey() {
+        return "minigames";
+    }
 }

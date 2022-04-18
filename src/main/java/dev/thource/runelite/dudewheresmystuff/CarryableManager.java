@@ -23,4 +23,9 @@ public class CarryableManager extends StorageManager<CarryableStorageType, Carry
 
         storages.add(new RunePouch(client, itemManager));
     }
+
+    @Override
+    public String getConfigKey() {
+        return "carryable";
+    }
 }

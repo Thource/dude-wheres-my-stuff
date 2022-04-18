@@ -41,11 +41,15 @@ public class DudeWheresMyStuffPlugin extends Plugin {
     @Inject
     private MinigamesManager minigamesManager;
 
+    @Inject
+    private ConfigManager configManager;
+
     private final List<StorageManager<?, ?>> storageManagers = new ArrayList<>();
 
     private DudeWheresMyStuffPanel panel;
 
     private NavigationButton navButton;
+    private boolean loggedIn;
 
 
     @Override
@@ -99,17 +103,29 @@ public class DudeWheresMyStuffPlugin extends Plugin {
     @Subscribe
     public void onGameStateChanged(GameStateChanged gameStateChanged) {
         if (gameStateChanged.getGameState() == GameState.LOGIN_SCREEN) {
+            loggedIn = false;
+
             storageManagers.forEach(StorageManager::reset);
+            panel.update();
+        } else if (gameStateChanged.getGameState() == GameState.LOGGED_IN && !loggedIn) {
+            loggedIn = true;
+
+            storageManagers.forEach(StorageManager::load);
             panel.update();
         }
     }
 
     @Subscribe
     public void onGameTick(GameTick gameTick) {
+        if (!loggedIn) return;
+
         AtomicBoolean isPanelDirty = new AtomicBoolean(false);
 
         storageManagers.forEach(storageManager -> {
-            if (storageManager.onGameTick()) isPanelDirty.set(true);
+            if (storageManager.onGameTick()) {
+                isPanelDirty.set(true);
+                storageManager.save();
+            }
         });
 
         if (isPanelDirty.get()) {
@@ -122,10 +138,15 @@ public class DudeWheresMyStuffPlugin extends Plugin {
 
     @Subscribe
     public void onWidgetLoaded(WidgetLoaded widgetLoaded) {
+        if (!loggedIn) return;
+
         AtomicBoolean isPanelDirty = new AtomicBoolean(false);
 
         storageManagers.forEach(storageManager -> {
-            if (storageManager.onWidgetLoaded(widgetLoaded)) isPanelDirty.set(true);
+            if (storageManager.onWidgetLoaded(widgetLoaded)) {
+                isPanelDirty.set(true);
+                storageManager.save();
+            }
         });
 
         if (isPanelDirty.get()) panel.update();
@@ -133,10 +154,15 @@ public class DudeWheresMyStuffPlugin extends Plugin {
 
     @Subscribe
     public void onWidgetClosed(WidgetClosed widgetClosed) {
+        if (!loggedIn) return;
+
         AtomicBoolean isPanelDirty = new AtomicBoolean(false);
 
         storageManagers.forEach(storageManager -> {
-            if (storageManager.onWidgetClosed(widgetClosed)) isPanelDirty.set(true);
+            if (storageManager.onWidgetClosed(widgetClosed)) {
+                isPanelDirty.set(true);
+                storageManager.save();
+            }
         });
 
         if (isPanelDirty.get()) panel.update();
@@ -144,10 +170,15 @@ public class DudeWheresMyStuffPlugin extends Plugin {
 
     @Subscribe
     public void onVarbitChanged(VarbitChanged varbitChanged) {
+        if (!loggedIn) return;
+
         AtomicBoolean isPanelDirty = new AtomicBoolean(false);
 
         storageManagers.forEach(storageManager -> {
-            if (storageManager.onVarbitChanged()) isPanelDirty.set(true);
+            if (storageManager.onVarbitChanged()) {
+                isPanelDirty.set(true);
+                storageManager.save();
+            }
         });
 
         if (isPanelDirty.get()) panel.update();
@@ -155,10 +186,15 @@ public class DudeWheresMyStuffPlugin extends Plugin {
 
     @Subscribe
     public void onItemContainerChanged(ItemContainerChanged itemContainerChanged) {
+        if (!loggedIn) return;
+
         AtomicBoolean isPanelDirty = new AtomicBoolean(false);
 
         storageManagers.forEach(storageManager -> {
-            if (storageManager.onItemContainerChanged(itemContainerChanged)) isPanelDirty.set(true);
+            if (storageManager.onItemContainerChanged(itemContainerChanged)) {
+                isPanelDirty.set(true);
+                storageManager.save();
+            }
         });
 
         if (isPanelDirty.get()) panel.update();

@@ -4,13 +4,14 @@ import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 
 import java.time.Instant;
 
 @Getter
 public class CoinStorage extends Storage<CoinStorageType> {
-    private final ItemStack coinStack = new ItemStack(995, "Coins", 0, 1, 0, true);
+    private ItemStack coinStack = new ItemStack(995, "Coins", 0, 1, 0, true);
 
     CoinStorage(CoinStorageType type, Client client, ItemManager itemManager) {
         super(type, client, itemManager);
@@ -39,7 +40,7 @@ public class CoinStorage extends Storage<CoinStorageType> {
 
         lastUpdated = Instant.now();
         int coins = itemContainer.count(995);
-        if (coinStack.getQuantity() == coins) return !type.isAutomatic();
+        if (coinStack.getQuantity() == coins) return false;
 
         coinStack.setQuantity(coins);
         return true;
@@ -48,5 +49,12 @@ public class CoinStorage extends Storage<CoinStorageType> {
     @Override
     public void reset() {
         coinStack.setQuantity(0);
+    }
+
+    @Override
+    public void load(ConfigManager configManager, String managerConfigKey) {
+        super.load(configManager, managerConfigKey);
+
+        if (!items.isEmpty()) this.coinStack = items.get(0);
     }
 }

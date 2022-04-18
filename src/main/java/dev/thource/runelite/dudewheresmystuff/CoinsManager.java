@@ -19,4 +19,9 @@ public class CoinsManager extends StorageManager<CoinStorageType, CoinStorage> {
             storages.add(new CoinStorage(type, client, itemManager));
         }
     }
+
+    @Override
+    public String getConfigKey() {
+        return "coins";
+    }
 }

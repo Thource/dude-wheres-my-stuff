@@ -6,4 +6,6 @@ interface StorageType {
     int getItemContainerId();
 
     boolean isAutomatic();
+
+    String getConfigKey();
 }

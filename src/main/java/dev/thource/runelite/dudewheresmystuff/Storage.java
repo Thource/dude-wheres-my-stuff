@@ -8,11 +8,14 @@ import net.runelite.api.ItemContainer;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.WidgetClosed;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
+import org.apache.commons.lang3.math.NumberUtils;
 
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 abstract class Storage<T extends StorageType> {
@@ -78,5 +81,61 @@ abstract class Storage<T extends StorageType> {
 
     public void reset() {
         items.clear();
+        lastUpdated = null;
+    }
+
+    public void save(ConfigManager configManager, String managerConfigKey) {
+        if (type.isAutomatic()) return;
+
+        String data = "";
+        if (lastUpdated != null) {
+            data += lastUpdated.getEpochSecond();
+        }
+        data += ";";
+        data += items.stream().map(item -> item.getId() + "," + item.getQuantity()).collect(Collectors.joining("="));
+
+        configManager.setRSProfileConfiguration(
+                DudeWheresMyStuffConfig.CONFIG_GROUP,
+                managerConfigKey + "." + type.getConfigKey(),
+                data
+        );
+    }
+
+    protected List<ItemStack> loadItems(ConfigManager configManager, String managerConfigKey) {
+        String data = configManager.getRSProfileConfiguration(
+                DudeWheresMyStuffConfig.CONFIG_GROUP,
+                managerConfigKey + "." + type.getConfigKey(),
+                String.class
+        );
+        System.out.println(managerConfigKey + "." + type.getConfigKey() + " - " + data);
+        String[] dataSplit = data.split(";");
+        if (dataSplit.length != 2) return null;
+
+        long lastUpdated = NumberUtils.toLong(dataSplit[0], 0);
+        if (lastUpdated != 0) this.lastUpdated = Instant.ofEpochSecond(lastUpdated);
+
+        List<ItemStack> items = new ArrayList<>();
+        for (String itemStackString : dataSplit[1].split("=")) {
+            String[] itemStackData = itemStackString.split(",");
+            if (itemStackData.length != 2) continue;
+
+            int itemId = NumberUtils.toInt(itemStackData[0]);
+            int itemQuantity = NumberUtils.toInt(itemStackData[1]);
+
+            ItemComposition itemComposition = itemManager.getItemComposition(itemId);
+            items.add(new ItemStack(itemId, itemComposition.getName(), itemQuantity, itemManager.getItemPrice(itemId), itemComposition.getHaPrice(), itemComposition.isStackable()));
+        }
+
+        return items;
+    }
+
+    public void load(ConfigManager configManager, String managerConfigKey) {
+        if (type.isAutomatic()) return;
+
+        List<ItemStack> loadedItems = loadItems(configManager, managerConfigKey);
+        if (loadedItems == null || loadedItems.isEmpty()) return;
+
+        items.clear();
+        items.addAll(loadedItems);
     }
 }

@@ -28,11 +28,13 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
+import java.io.Serializable;
+
 @AllArgsConstructor
 @Getter
 @EqualsAndHashCode
 public
-class ItemStack
+class ItemStack implements Serializable
 {
 	private final int id;
 	private final String name;
