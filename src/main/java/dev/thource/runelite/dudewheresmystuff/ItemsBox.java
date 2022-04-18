@@ -51,7 +51,7 @@ class ItemsBox extends JPanel {
     private static final int TITLE_PADDING = 5;
 
     private final JPanel itemContainer = new JPanel();
-    private final JLabel priceLabel = new JLabel();
+    private JLabel priceLabel = null;
     private final JLabel subTitleLabel = new JLabel();
     private final JPanel logTitle = new JPanel();
     private JPanel lastUpdatedPanel = null;
@@ -73,7 +73,8 @@ class ItemsBox extends JPanel {
             final ItemManager itemManager,
             final Storage<?> storage,
             @Nullable final String subtitle,
-            final boolean showAlchPrices) {
+            final boolean showAlchPrices,
+            boolean showPrice) {
         this.id = storage.getType().getName();
         this.itemManager = itemManager;
         this.showAlchPrices = showAlchPrices;
@@ -106,9 +107,12 @@ class ItemsBox extends JPanel {
         logTitle.add(Box.createHorizontalGlue());
         logTitle.add(Box.createRigidArea(new Dimension(TITLE_PADDING, 0)));
 
-        priceLabel.setFont(FontManager.getRunescapeSmallFont());
-        priceLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
-        logTitle.add(priceLabel);
+        if (showPrice) {
+            priceLabel = new JLabel();
+            priceLabel.setFont(FontManager.getRunescapeSmallFont());
+            priceLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
+            logTitle.add(priceLabel);
+        }
 
         add(logTitle, BorderLayout.NORTH);
         add(itemContainer, BorderLayout.CENTER);
@@ -135,8 +139,10 @@ class ItemsBox extends JPanel {
     void rebuild() {
         buildItems();
 
-        priceLabel.setText(QuantityFormatter.quantityToStackSize(totalPrice) + " gp");
-        priceLabel.setToolTipText(QuantityFormatter.formatNumber(totalPrice) + " gp");
+        if (priceLabel != null) {
+            priceLabel.setText(QuantityFormatter.quantityToStackSize(totalPrice) + " gp");
+            priceLabel.setToolTipText(QuantityFormatter.formatNumber(totalPrice) + " gp");
+        }
 
         updateLastUpdateLabel();
 

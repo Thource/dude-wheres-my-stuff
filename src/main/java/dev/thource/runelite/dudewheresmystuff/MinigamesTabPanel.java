@@ -37,4 +37,9 @@ class MinigamesTabPanel extends StorageTabPanel<MinigameStorageType, MinigameSto
     protected Comparator<MinigameStorage> getStorageSorter() {
         return Comparator.comparing(s -> s.getType().getName());
     }
+
+    @Override
+    protected boolean showPrice() {
+        return false;
+    }
 }
