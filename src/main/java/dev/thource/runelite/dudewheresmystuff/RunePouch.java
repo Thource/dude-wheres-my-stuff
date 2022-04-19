@@ -55,17 +55,17 @@ public class RunePouch extends CarryableStorage {
 
         if (rune1 != null) {
             ItemComposition itemComposition = itemManager.getItemComposition(rune1.getItemId());
-            items.add(new ItemStack(rune1.getItemId(), rune1.getName(), rune1Quantity, itemManager.getItemPrice(rune1.getItemId()), itemComposition.getHaPrice(), true));
+            items.add(new ItemStack(rune1.getItemId(), itemComposition.getName(), rune1Quantity, itemManager.getItemPrice(rune1.getItemId()), itemComposition.getHaPrice(), true));
         }
 
         if (rune2 != null) {
             ItemComposition itemComposition = itemManager.getItemComposition(rune2.getItemId());
-            items.add(new ItemStack(rune2.getItemId(), rune2.getName(), rune2Quantity, itemManager.getItemPrice(rune2.getItemId()), itemComposition.getHaPrice(), true));
+            items.add(new ItemStack(rune2.getItemId(), itemComposition.getName(), rune2Quantity, itemManager.getItemPrice(rune2.getItemId()), itemComposition.getHaPrice(), true));
         }
 
         if (rune3 != null) {
             ItemComposition itemComposition = itemManager.getItemComposition(rune3.getItemId());
-            items.add(new ItemStack(rune3.getItemId(), rune3.getName(), rune3Quantity, itemManager.getItemPrice(rune3.getItemId()), itemComposition.getHaPrice(), true));
+            items.add(new ItemStack(rune3.getItemId(), itemComposition.getName(), rune3Quantity, itemManager.getItemPrice(rune3.getItemId()), itemComposition.getHaPrice(), true));
         }
     }
 }

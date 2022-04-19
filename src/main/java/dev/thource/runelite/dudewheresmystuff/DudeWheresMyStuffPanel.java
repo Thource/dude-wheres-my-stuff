@@ -34,6 +34,7 @@ import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.materialtabs.MaterialTab;
 import net.runelite.client.ui.components.materialtabs.MaterialTabGroup;
 import net.runelite.client.util.AsyncBufferedImage;
+import net.runelite.client.util.ImageUtil;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
@@ -61,6 +62,12 @@ class DudeWheresMyStuffPanel extends PluginPanel {
     boolean isMember = true;
     String displayName = "";
 
+    private static final ImageIcon SEARCH_ICON;
+
+    static {
+        SEARCH_ICON = new ImageIcon(ImageUtil.loadImageResource(DudeWheresMyStuffPlugin.class, "/net/runelite/client/ui/components/search.png"));
+    }
+
     @Inject
     DudeWheresMyStuffPanel(ItemManager itemManager, DudeWheresMyStuffConfig config, ConfigManager configManager,
                            CoinsManager coinsManager, CarryableManager carryableManager, MinigamesManager minigamesManager,
@@ -87,6 +94,7 @@ class DudeWheresMyStuffPanel extends PluginPanel {
         addTab(Tab.COINS, new CoinsTabPanel(itemManager, config, this, coinsManager));
         addTab(Tab.CARRYABLE_STORAGE, new CarryableTabPanel(itemManager, config, this, carryableManager));
         addTab(Tab.MINIGAMES, new MinigamesTabPanel(itemManager, config, this, minigamesManager));
+        addTab(Tab.SEARCH, new SearchTabPanel(itemManager, config, this, coinsManager, carryableManager));
 
         for (Tab tab : Tab.TABS) {
             if (tab == Tab.OVERVIEW) continue;
@@ -119,14 +127,18 @@ class DudeWheresMyStuffPanel extends PluginPanel {
         materialTab.setName(tab.getName());
         materialTab.setToolTipText(tab.getName());
 
-        AsyncBufferedImage icon = itemManager.getImage(tab.getItemID(), tab.getItemQuantity(), false);
-        Runnable resize = () ->
-        {
-            BufferedImage subIcon = icon.getSubimage(0, 0, 32, 32);
-            materialTab.setIcon(new ImageIcon(subIcon.getScaledInstance(24, 24, Image.SCALE_SMOOTH)));
-        };
-        icon.onLoaded(resize);
-        resize.run();
+        if (tab == Tab.SEARCH) {
+            materialTab.setIcon(SEARCH_ICON);
+        } else {
+            AsyncBufferedImage icon = itemManager.getImage(tab.getItemID(), tab.getItemQuantity(), false);
+            Runnable resize = () ->
+            {
+                BufferedImage subIcon = icon.getSubimage(0, 0, 32, 32);
+                materialTab.setIcon(new ImageIcon(subIcon.getScaledInstance(24, 24, Image.SCALE_SMOOTH)));
+            };
+            icon.onLoaded(resize);
+            resize.run();
+        }
 
         materialTab.setOnSelectEvent(() ->
         {

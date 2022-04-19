@@ -122,6 +122,7 @@ public class DudeWheresMyStuffPlugin extends Plugin {
 
                 panel.switchTab(Tab.OVERVIEW);
             }
+            panel.uiTabs.get(Tab.SEARCH).setVisible(false);
             panel.setDisplayName("");
             panel.update();
         } else if (gameStateChanged.getGameState() == GameState.LOGGING_IN) {
@@ -153,7 +154,6 @@ public class DudeWheresMyStuffPlugin extends Plugin {
                     storageManager.disable();
                     continue;
                 }
-                ;
 
                 MaterialTab tab = panel.uiTabs.get(storageManager.getTab());
                 OverviewItemPanel overviewItemPanel = panel.overviewTab.overviews.get(storageManager.getTab());
@@ -161,6 +161,7 @@ public class DudeWheresMyStuffPlugin extends Plugin {
                 if (tab != null) tab.setVisible(true);
                 if (overviewItemPanel != null) overviewItemPanel.setVisible(true);
             }
+            panel.uiTabs.get(Tab.SEARCH).setVisible(true);
             panel.update();
             clientState = ClientState.LOGGED_IN;
 

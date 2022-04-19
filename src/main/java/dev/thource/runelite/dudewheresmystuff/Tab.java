@@ -43,7 +43,8 @@ public enum Tab
 	DEATH_PILES("Death Piles", ItemID.GRAVESTONE),
 	POH_STORAGE("POH Storage", ItemID.EXIT_PORTAL),
 	STASH_UNITS("Stash Units", ItemID.CLUE_SCROLL_MASTER),
-	LEPRECHAUN("Leprechaun", ItemID.LEPRECHAUN_HAT);
+	LEPRECHAUN("Leprechaun", ItemID.LEPRECHAUN_HAT),
+	SEARCH("Search", -1);
 
 	public static final Map<Class<? extends StorageManager<?, ?>>, Tab> MANAGER_TAB_MAP = new HashMap<>();
 
@@ -53,7 +54,7 @@ public enum Tab
 		MANAGER_TAB_MAP.put(MinigamesManager.class, MINIGAMES);
 	}
 
-	public static final Tab[] TABS = {COINS, CARRYABLE_STORAGE, MINIGAMES};
+	public static final Tab[] TABS = {COINS, CARRYABLE_STORAGE, MINIGAMES, SEARCH};
 
 	Tab(String name, int itemID) {
 		this.name = name;

@@ -61,7 +61,7 @@ class OverviewTabPanel extends TabContentPanel {
         add(summaryOverview);
 
         overviews = Stream.of(Tab.TABS)
-                .filter(v -> v != Tab.OVERVIEW)
+                .filter(v -> v != Tab.OVERVIEW && v != Tab.SEARCH)
                 .collect(ImmutableMap.toImmutableMap(
                         Function.identity(),
                         t ->

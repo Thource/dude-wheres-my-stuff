@@ -45,8 +45,6 @@ abstract class StorageTabPanel<ST extends StorageType, S extends Storage<ST>, SM
 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setBackground(ColorScheme.DARK_GRAY_COLOR);
-
-        rebuildList(true);
     }
 
     protected Comparator<S> getStorageSorter() {
