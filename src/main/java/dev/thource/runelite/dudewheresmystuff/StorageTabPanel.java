@@ -28,13 +28,15 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.ColorScheme;
 
 import javax.swing.*;
-import java.awt.*;
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 
 abstract class StorageTabPanel<ST extends StorageType, S extends Storage<ST>, SM extends StorageManager<ST, S>> extends TabContentPanel {
     protected final DudeWheresMyStuffConfig config;
     protected final SM storageManager;
     protected final ItemManager itemManager;
+    final List<ItemsBox> itemsBoxes = new ArrayList<>();
 
     StorageTabPanel(ItemManager itemManager, DudeWheresMyStuffConfig config, DudeWheresMyStuffPanel pluginPanel, SM storageManager) {
         this.itemManager = itemManager;
@@ -44,7 +46,7 @@ abstract class StorageTabPanel<ST extends StorageType, S extends Storage<ST>, SM
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setBackground(ColorScheme.DARK_GRAY_COLOR);
 
-        rebuildList();
+        rebuildList(true);
     }
 
     protected Comparator<S> getStorageSorter() {
@@ -57,16 +59,20 @@ abstract class StorageTabPanel<ST extends StorageType, S extends Storage<ST>, SM
         return true;
     }
 
-    protected void rebuildList() {
+    protected void rebuildList(boolean isMember) {
         removeAll();
 
+        itemsBoxes.clear();
         storageManager.storages.stream().sorted(getStorageSorter()).forEach((storage) -> {
+            if (storage.getType().isMembersOnly() && !isMember) return;
+
             ItemsBox itemsBox = new ItemsBox(itemManager, storage, null, false, showPrice());
             for (ItemStack itemStack : storage.getItems()) {
                 if (itemStack.getQuantity() > 0)
                     itemsBox.getItems().add(itemStack);
             }
             itemsBox.rebuild();
+            itemsBoxes.add(itemsBox);
             add(itemsBox);
         });
 
@@ -74,13 +80,11 @@ abstract class StorageTabPanel<ST extends StorageType, S extends Storage<ST>, SM
     }
 
     @Override
-    public void update() {
-        rebuildList();
+    public void update(boolean isMember) {
+        rebuildList(isMember);
     }
 
     public void softUpdate() {
-        for (Component component : getComponents()) {
-            if (component instanceof ItemsBox) ((ItemsBox) component).updateLastUpdateLabel();
-        }
+        itemsBoxes.forEach(ItemsBox::updateLastUpdateLabel);
     }
 }

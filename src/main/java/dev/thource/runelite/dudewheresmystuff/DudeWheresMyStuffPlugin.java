@@ -2,7 +2,9 @@ package dev.thource.runelite.dudewheresmystuff;
 
 import com.google.inject.Provides;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.*;
+import net.runelite.api.Client;
+import net.runelite.api.GameState;
+import net.runelite.api.VarClientInt;
 import net.runelite.api.events.*;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -10,6 +12,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
+import net.runelite.client.ui.components.materialtabs.MaterialTab;
 import net.runelite.client.util.ImageUtil;
 
 import javax.inject.Inject;
@@ -49,8 +52,9 @@ public class DudeWheresMyStuffPlugin extends Plugin {
     private DudeWheresMyStuffPanel panel;
 
     private NavigationButton navButton;
-    private boolean loggedIn;
 
+    private ClientState clientState = ClientState.LOGGED_OUT;
+    private boolean isMember;
 
     @Override
     protected void startUp() throws Exception {
@@ -79,51 +83,98 @@ public class DudeWheresMyStuffPlugin extends Plugin {
 
     @Subscribe
     public void onActorDeath(ActorDeath actorDeath) {
-        if (client.getLocalPlayer() == null) return;
-
-        if (actorDeath.getActor() == client.getLocalPlayer()) {
-            log.info("OH NO, YOU HAVE DIED!");
-            HashTable<ItemContainer> itemContainers = client.getItemContainers();
-
-            log.info(client.getLocalPlayer().getWorldLocation().toString());
-
-            log.info("Items:");
-            for (ItemContainer itemContainer : itemContainers) {
-                Item[] items = itemContainer.getItems();
-                if (items.length == 0) continue;
-
-                log.info("  Container " + itemContainer.getId() + ":");
-                for (Item item : items) {
-                    log.info("    " + item.getId() + " x " + item.getQuantity());
-                }
-            }
-        }
+//        if (client.getLocalPlayer() == null) return;
+//
+//        if (actorDeath.getActor() == client.getLocalPlayer()) {
+//            log.info("OH NO, YOU HAVE DIED!");
+//            HashTable<ItemContainer> itemContainers = client.getItemContainers();
+//
+//            log.info(client.getLocalPlayer().getWorldLocation().toString());
+//
+//            log.info("Items:");
+//            for (ItemContainer itemContainer : itemContainers) {
+//                Item[] items = itemContainer.getItems();
+//                if (items.length == 0) continue;
+//
+//                log.info("  Container " + itemContainer.getId() + ":");
+//                for (Item item : items) {
+//                    log.info("    " + item.getId() + " x " + item.getQuantity());
+//                }
+//            }
+//        }
     }
 
     @Subscribe
     public void onGameStateChanged(GameStateChanged gameStateChanged) {
         if (gameStateChanged.getGameState() == GameState.LOGIN_SCREEN) {
-            loggedIn = false;
+            clientState = ClientState.LOGGED_OUT;
+            isMember = true;
+            panel.isMember = true;
 
-            storageManagers.forEach(StorageManager::reset);
+            for (StorageManager<?, ?> storageManager : storageManagers) {
+                storageManager.reset();
+
+                MaterialTab tab = panel.uiTabs.get(storageManager.getTab());
+                OverviewItemPanel overviewItemPanel = panel.overviewTab.overviews.get(storageManager.getTab());
+
+                if (tab != null) tab.setVisible(false);
+                if (overviewItemPanel != null) overviewItemPanel.setVisible(false);
+
+                panel.switchTab(Tab.OVERVIEW);
+            }
+            panel.setDisplayName("");
             panel.update();
-        } else if (gameStateChanged.getGameState() == GameState.LOGGED_IN && !loggedIn) {
-            loggedIn = true;
-
+        } else if (gameStateChanged.getGameState() == GameState.LOGGING_IN) {
+            clientState = ClientState.LOGGING_IN;
+        } else if (gameStateChanged.getGameState() == GameState.LOGGED_IN) {
             storageManagers.forEach(StorageManager::load);
             panel.update();
         }
     }
 
     @Subscribe
+    private void onPlayerChanged(PlayerChanged ev) {
+        if (ev.getPlayer() != client.getLocalPlayer()) return;
+
+        panel.setDisplayName(ev.getPlayer().getName());
+        panel.update();
+    }
+
+    @Subscribe
     public void onGameTick(GameTick gameTick) {
-        if (!loggedIn) return;
+        if (clientState == ClientState.LOGGED_OUT) return;
+
+        if (clientState == ClientState.LOGGING_IN) {
+            isMember = client.getVar(VarClientInt.MEMBERSHIP_STATUS) == 1;
+            panel.isMember = isMember;
+
+            for (StorageManager<?, ?> storageManager : storageManagers) {
+                if (storageManager.isMembersOnly() && !isMember) {
+                    storageManager.disable();
+                    continue;
+                }
+                ;
+
+                MaterialTab tab = panel.uiTabs.get(storageManager.getTab());
+                OverviewItemPanel overviewItemPanel = panel.overviewTab.overviews.get(storageManager.getTab());
+
+                if (tab != null) tab.setVisible(true);
+                if (overviewItemPanel != null) overviewItemPanel.setVisible(true);
+            }
+            panel.update();
+            clientState = ClientState.LOGGED_IN;
+
+            return;
+        }
 
         AtomicBoolean isPanelDirty = new AtomicBoolean(false);
 
         storageManagers.forEach(storageManager -> {
-            if (storageManager.onGameTick()) {
+            if (storageManager.onGameTick(isMember)) {
                 isPanelDirty.set(true);
+
+                // don't save before loading is complete, to avoid deleting save data
+                if (clientState == ClientState.LOGGED_IN) storageManager.save();
                 storageManager.save();
             }
         });
@@ -138,14 +189,16 @@ public class DudeWheresMyStuffPlugin extends Plugin {
 
     @Subscribe
     public void onWidgetLoaded(WidgetLoaded widgetLoaded) {
-        if (!loggedIn) return;
+        if (clientState == ClientState.LOGGED_OUT) return;
 
         AtomicBoolean isPanelDirty = new AtomicBoolean(false);
 
         storageManagers.forEach(storageManager -> {
-            if (storageManager.onWidgetLoaded(widgetLoaded)) {
+            if (storageManager.onWidgetLoaded(widgetLoaded, isMember)) {
                 isPanelDirty.set(true);
-                storageManager.save();
+
+                // don't save before loading is complete, to avoid deleting save data
+                if (clientState == ClientState.LOGGED_IN) storageManager.save();
             }
         });
 
@@ -154,14 +207,16 @@ public class DudeWheresMyStuffPlugin extends Plugin {
 
     @Subscribe
     public void onWidgetClosed(WidgetClosed widgetClosed) {
-        if (!loggedIn) return;
+        if (clientState == ClientState.LOGGED_OUT) return;
 
         AtomicBoolean isPanelDirty = new AtomicBoolean(false);
 
         storageManagers.forEach(storageManager -> {
-            if (storageManager.onWidgetClosed(widgetClosed)) {
+            if (storageManager.onWidgetClosed(widgetClosed, isMember)) {
                 isPanelDirty.set(true);
-                storageManager.save();
+
+                // don't save before loading is complete, to avoid deleting save data
+                if (clientState == ClientState.LOGGED_IN) storageManager.save();
             }
         });
 
@@ -170,14 +225,16 @@ public class DudeWheresMyStuffPlugin extends Plugin {
 
     @Subscribe
     public void onVarbitChanged(VarbitChanged varbitChanged) {
-        if (!loggedIn) return;
+        if (clientState == ClientState.LOGGED_OUT) return;
 
         AtomicBoolean isPanelDirty = new AtomicBoolean(false);
 
         storageManagers.forEach(storageManager -> {
-            if (storageManager.onVarbitChanged()) {
+            if (storageManager.onVarbitChanged(isMember)) {
                 isPanelDirty.set(true);
-                storageManager.save();
+
+                // don't save before loading is complete, to avoid deleting save data
+                if (clientState == ClientState.LOGGED_IN) storageManager.save();
             }
         });
 
@@ -186,14 +243,16 @@ public class DudeWheresMyStuffPlugin extends Plugin {
 
     @Subscribe
     public void onItemContainerChanged(ItemContainerChanged itemContainerChanged) {
-        if (!loggedIn) return;
+        if (clientState == ClientState.LOGGED_OUT) return;
 
         AtomicBoolean isPanelDirty = new AtomicBoolean(false);
 
         storageManagers.forEach(storageManager -> {
-            if (storageManager.onItemContainerChanged(itemContainerChanged)) {
+            if (storageManager.onItemContainerChanged(itemContainerChanged, isMember)) {
                 isPanelDirty.set(true);
-                storageManager.save();
+
+                // don't save before loading is complete, to avoid deleting save data
+                if (clientState == ClientState.LOGGED_IN) storageManager.save();
             }
         });
 

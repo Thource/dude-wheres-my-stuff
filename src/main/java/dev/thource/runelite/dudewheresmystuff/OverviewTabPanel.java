@@ -25,28 +25,40 @@
 package dev.thource.runelite.dudewheresmystuff;
 
 import com.google.common.collect.ImmutableMap;
+import net.runelite.api.ItemID;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.ColorScheme;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
 class OverviewTabPanel extends TabContentPanel {
     private final DudeWheresMyStuffConfig config;
 
-    private final Map<Tab, OverviewItemPanel> overviews;
+    final Map<Tab, OverviewItemPanel> overviews;
     private final CoinsManager coinsManager;
     private final CarryableManager carryableManager;
+
+    static final String LOGGED_OUT_SUMMARY = "Log in to find your stuff!";
+    final OverviewItemPanel summaryOverview;
+    private final DudeWheresMyStuffPanel pluginPanel;
 
     OverviewTabPanel(ItemManager itemManager, DudeWheresMyStuffConfig config, DudeWheresMyStuffPanel pluginPanel, CoinsManager coinsManager, CarryableManager carryableManager) {
         this.config = config;
         this.coinsManager = coinsManager;
         this.carryableManager = carryableManager;
+        this.pluginPanel = pluginPanel;
 
         setLayout(new GridLayout(0, 1, 0, 8));
         setBackground(ColorScheme.DARK_GRAY_COLOR);
+
+        summaryOverview = new OverviewItemPanel(itemManager, null, () -> false, ItemID.NOTES, 1, LOGGED_OUT_SUMMARY);
+        add(summaryOverview);
 
         overviews = Stream.of(Tab.TABS)
                 .filter(v -> v != Tab.OVERVIEW)
@@ -56,14 +68,45 @@ class OverviewTabPanel extends TabContentPanel {
                         {
                             OverviewItemPanel p = new OverviewItemPanel(itemManager, pluginPanel, t, t.getName());
                             add(p);
+                            p.setVisible(false);
                             return p;
                         }
                 ));
     }
 
     @Override
-    public void update() {
+    public void update(boolean isMember) {
+        if (Objects.equals(pluginPanel.displayName, "")) {
+            summaryOverview.setTitle(LOGGED_OUT_SUMMARY);
+            summaryOverview.updateStatus("", Color.LIGHT_GRAY);
+        } else {
+            summaryOverview.setTitle(pluginPanel.displayName);
+            summaryOverview.updateStatus(String.format("%,d gp", getTotalValue()), Color.LIGHT_GRAY);
+        }
+
         overviews.get(Tab.COINS).updateStatus(String.format("%,d gp", coinsManager.getTotalValue()), Color.LIGHT_GRAY);
         overviews.get(Tab.CARRYABLE_STORAGE).updateStatus(String.format("%,d gp", carryableManager.getTotalValue()), Color.LIGHT_GRAY);
+    }
+
+    private long getTotalValue() {
+        return getAllItems().stream().mapToLong(ItemStack::getTotalGePrice).sum();
+    }
+
+    private List<ItemStack> getAllItems() {
+        List<ItemStack> items = new ArrayList<>();
+
+        for (CarryableStorage storage : carryableManager.storages) {
+            items.addAll(storage.getItems());
+        }
+
+        for (CoinStorage storage : coinsManager.storages) {
+            if (storage.getType() == CoinStorageType.INVENTORY || storage.getType() == CoinStorageType.LOOTING_BAG) {
+                continue;
+            }
+
+            items.addAll(storage.getItems());
+        }
+
+        return items;
     }
 }

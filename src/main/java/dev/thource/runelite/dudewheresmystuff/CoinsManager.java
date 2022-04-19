@@ -24,4 +24,9 @@ public class CoinsManager extends StorageManager<CoinStorageType, CoinStorage> {
     public String getConfigKey() {
         return "coins";
     }
+
+    @Override
+    public Tab getTab() {
+        return Tab.COINS;
+    }
 }

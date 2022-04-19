@@ -23,4 +23,8 @@ public enum MinigameStorageType implements StorageType {
     // Whether the storage can be updated with no action required by the player
     private final boolean automatic;
     private final String configKey;
+
+    public boolean isMembersOnly() {
+        return true;
+    }
 }

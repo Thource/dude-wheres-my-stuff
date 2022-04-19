@@ -28,11 +28,14 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.runelite.api.ItemID;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RequiredArgsConstructor
 @Getter
 public enum Tab
 {
-	OVERVIEW("Overview", ItemID.OLD_NOTES),
+	OVERVIEW("Overview", ItemID.NOTES),
 	COINS("Coins", ItemID.COINS_995, 0xBADCA7),
 	CARRYABLE_STORAGE("Carry-able Storage", ItemID.LOOTING_BAG),
 	MINIGAMES("Minigames", ItemID.PROGRESS_HAT),
@@ -41,6 +44,14 @@ public enum Tab
 	POH_STORAGE("POH Storage", ItemID.EXIT_PORTAL),
 	STASH_UNITS("Stash Units", ItemID.CLUE_SCROLL_MASTER),
 	LEPRECHAUN("Leprechaun", ItemID.LEPRECHAUN_HAT);
+
+	public static final Map<Class<? extends StorageManager<?, ?>>, Tab> MANAGER_TAB_MAP = new HashMap<>();
+
+	static {
+		MANAGER_TAB_MAP.put(CoinsManager.class, COINS);
+		MANAGER_TAB_MAP.put(CarryableManager.class, CARRYABLE_STORAGE);
+		MANAGER_TAB_MAP.put(MinigamesManager.class, MINIGAMES);
+	}
 
 	public static final Tab[] TABS = {COINS, CARRYABLE_STORAGE, MINIGAMES};
 

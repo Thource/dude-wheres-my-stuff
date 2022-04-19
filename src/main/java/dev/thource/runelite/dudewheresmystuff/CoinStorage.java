@@ -49,6 +49,7 @@ public class CoinStorage extends Storage<CoinStorageType> {
     @Override
     public void reset() {
         coinStack.setQuantity(0);
+        lastUpdated = null;
     }
 
     @Override

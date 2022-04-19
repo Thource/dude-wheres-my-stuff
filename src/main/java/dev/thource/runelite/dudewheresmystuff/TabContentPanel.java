@@ -30,5 +30,5 @@ import javax.swing.*;
 
 @Slf4j
 public abstract class TabContentPanel extends JPanel {
-    public abstract void update();
+    public abstract void update(boolean isMember);
 }

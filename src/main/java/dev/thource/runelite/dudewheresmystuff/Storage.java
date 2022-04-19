@@ -94,6 +94,7 @@ abstract class Storage<T extends StorageType> {
         data += ";";
         data += items.stream().map(item -> item.getId() + "," + item.getQuantity()).collect(Collectors.joining("="));
 
+//        System.out.println("save " + managerConfigKey + "." + type.getConfigKey() + ": " + data);
         configManager.setRSProfileConfiguration(
                 DudeWheresMyStuffConfig.CONFIG_GROUP,
                 managerConfigKey + "." + type.getConfigKey(),
@@ -107,6 +108,7 @@ abstract class Storage<T extends StorageType> {
                 managerConfigKey + "." + type.getConfigKey(),
                 String.class
         );
+//        System.out.println("load " + managerConfigKey + "." + type.getConfigKey() + ": " + data);
         String[] dataSplit = data.split(";");
         if (dataSplit.length != 2) return null;
 

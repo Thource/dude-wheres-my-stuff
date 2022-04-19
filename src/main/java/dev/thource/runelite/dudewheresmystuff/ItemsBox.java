@@ -44,6 +44,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.ToLongFunction;
 
 class ItemsBox extends JPanel {
@@ -150,7 +151,14 @@ class ItemsBox extends JPanel {
     }
 
     void updateLastUpdateLabel() {
-        if (lastUpdatedLabel == null || storage.lastUpdated == null) return;
+        if (lastUpdatedLabel == null) return;
+        if (storage.lastUpdated == null) {
+            if (!Objects.equals(lastUpdatedLabel.getText(), "Unknown")) {
+                lastUpdatedLabel.setText("Unknown");
+            }
+
+            return;
+        }
 
         lastUpdatedLabel.setText("Last updated " + TimeAgo.toDuration(Instant.now().toEpochMilli() - storage.getLastUpdated().toEpochMilli()));
     }

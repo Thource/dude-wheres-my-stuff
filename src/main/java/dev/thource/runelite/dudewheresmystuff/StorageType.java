@@ -8,4 +8,6 @@ interface StorageType {
     boolean isAutomatic();
 
     String getConfigKey();
+
+    boolean isMembersOnly();
 }

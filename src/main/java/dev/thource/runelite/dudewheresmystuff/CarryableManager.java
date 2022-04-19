@@ -28,4 +28,9 @@ public class CarryableManager extends StorageManager<CarryableStorageType, Carry
     public String getConfigKey() {
         return "carryable";
     }
+
+    @Override
+    public Tab getTab() {
+        return Tab.CARRYABLE_STORAGE;
+    }
 }

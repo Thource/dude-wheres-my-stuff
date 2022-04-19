@@ -49,13 +49,17 @@ class DudeWheresMyStuffPanel extends PluginPanel {
 
     /* This is the panel the tabs' respective panels will be displayed on. */
     private final JPanel display = new JPanel();
-    private final Map<Tab, MaterialTab> uiTabs = new HashMap<>();
+    final Map<Tab, MaterialTab> uiTabs = new HashMap<>();
     private final MaterialTabGroup tabGroup = new MaterialTabGroup(display);
+    final OverviewTabPanel overviewTab;
+    final Map<Tab, StorageTabPanel<?, ?, ?>> storageTabPanelMap = new HashMap<>();
 
     private boolean active;
 
     @Nullable
     private TabContentPanel activeTabPanel = null;
+    boolean isMember = true;
+    String displayName = "";
 
     @Inject
     DudeWheresMyStuffPanel(ItemManager itemManager, DudeWheresMyStuffConfig config, ConfigManager configManager,
@@ -77,18 +81,28 @@ class DudeWheresMyStuffPanel extends PluginPanel {
         add(tabGroup, BorderLayout.NORTH);
         add(display, BorderLayout.CENTER);
 
-        addTab(Tab.OVERVIEW, new OverviewTabPanel(itemManager, config, this, coinsManager, carryableManager));
+        overviewTab = new OverviewTabPanel(itemManager, config, this, coinsManager, carryableManager);
+        addTab(Tab.OVERVIEW, overviewTab);
 
         addTab(Tab.COINS, new CoinsTabPanel(itemManager, config, this, coinsManager));
         addTab(Tab.CARRYABLE_STORAGE, new CarryableTabPanel(itemManager, config, this, carryableManager));
         addTab(Tab.MINIGAMES, new MinigamesTabPanel(itemManager, config, this, minigamesManager));
 
-//        for (Tab tab : Tab.TABS) {
-//            addTab(tab, new OverviewTabPanel(itemManager, config, this, coinsManager));
-//        }
+        for (Tab tab : Tab.TABS) {
+            if (tab == Tab.OVERVIEW) continue;
+
+            MaterialTab materialTab = uiTabs.get(tab);
+            if (materialTab == null) continue;
+
+            materialTab.setVisible(false);
+        }
     }
 
     private void addTab(Tab tab, TabContentPanel tabContentPanel) {
+        if (tabContentPanel instanceof StorageTabPanel) {
+            storageTabPanelMap.put(tab, (StorageTabPanel<?, ?, ?>) tabContentPanel);
+        }
+
         JPanel wrapped = new JPanel(new BorderLayout());
         wrapped.add(tabContentPanel, BorderLayout.NORTH);
         wrapped.setBackground(ColorScheme.DARK_GRAY_COLOR);
@@ -118,7 +132,7 @@ class DudeWheresMyStuffPanel extends PluginPanel {
         {
             activeTabPanel = tabContentPanel;
 
-            tabContentPanel.update();
+            tabContentPanel.update(isMember);
             return true;
         });
 
@@ -142,7 +156,7 @@ class DudeWheresMyStuffPanel extends PluginPanel {
             return;
         }
 
-        SwingUtilities.invokeLater(activeTabPanel::update);
+        SwingUtilities.invokeLater(() -> activeTabPanel.update(isMember));
     }
 
     @Override
@@ -160,5 +174,9 @@ class DudeWheresMyStuffPanel extends PluginPanel {
         if (activeTabPanel == null || !(activeTabPanel instanceof StorageTabPanel)) return;
 
         ((StorageTabPanel<?, ?, ?>) activeTabPanel).softUpdate();
+    }
+
+    public void setDisplayName(String name) {
+        displayName = name;
     }
 }

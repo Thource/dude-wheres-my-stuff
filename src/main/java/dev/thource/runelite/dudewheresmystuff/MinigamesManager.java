@@ -27,4 +27,9 @@ public class MinigamesManager extends StorageManager<MinigameStorageType, Miniga
     public String getConfigKey() {
         return "minigames";
     }
+
+    @Override
+    public Tab getTab() {
+        return Tab.MINIGAMES;
+    }
 }

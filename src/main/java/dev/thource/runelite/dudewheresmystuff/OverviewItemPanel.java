@@ -30,6 +30,7 @@ import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.util.ImageUtil;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -47,6 +48,7 @@ class OverviewItemPanel extends JPanel
 	private final JLabel statusLabel;
 	private final JLabel arrowLabel;
 	private final BooleanSupplier isSelectable;
+	private final JLabel titleLabel;
 
 	private boolean isHighlighted;
 
@@ -55,12 +57,12 @@ class OverviewItemPanel extends JPanel
 		ARROW_RIGHT_ICON = new ImageIcon(ImageUtil.loadImageResource(DudeWheresMyStuffPlugin.class, "/util/arrow_right.png"));
 	}
 
-	OverviewItemPanel(ItemManager itemManager, DudeWheresMyStuffPanel pluginPanel, Tab tab, String title)
+	OverviewItemPanel(ItemManager itemManager, DudeWheresMyStuffPanel pluginPanel, @Nullable Tab tab, String title)
 	{
-		this(itemManager, () -> pluginPanel.switchTab(tab), () -> true, tab.getItemID(), tab.getItemQuantity(), title);
+		this(itemManager, () -> pluginPanel.switchTab(tab), () -> true, tab != null ? tab.getItemID() : -1, tab != null ? tab.getItemQuantity() : -1, title);
 	}
 
-	OverviewItemPanel(ItemManager itemManager, Runnable onTabSwitched, BooleanSupplier isSelectable, int iconItemID, int iconItemQuantity, String title)
+	OverviewItemPanel(ItemManager itemManager, @Nullable Runnable onTabSwitched, BooleanSupplier isSelectable, int iconItemID, int iconItemQuantity, String title)
 	{
 		this.isSelectable = isSelectable;
 
@@ -68,46 +70,45 @@ class OverviewItemPanel extends JPanel
 		setLayout(new BorderLayout());
 		setBorder(new EmptyBorder(7, 7, 7, 7));
 
-		JLabel iconLabel = new JLabel();
-		iconLabel.setMinimumSize(new Dimension(Constants.ITEM_SPRITE_WIDTH, Constants.ITEM_SPRITE_HEIGHT));
-		itemManager.getImage(iconItemID, iconItemQuantity, false).addTo(iconLabel);
-		add(iconLabel, BorderLayout.WEST);
+		if (iconItemID != -1) {
+			JLabel iconLabel = new JLabel();
+			iconLabel.setMinimumSize(new Dimension(Constants.ITEM_SPRITE_WIDTH, Constants.ITEM_SPRITE_HEIGHT));
+			itemManager.getImage(iconItemID, iconItemQuantity, false).addTo(iconLabel);
+			add(iconLabel, BorderLayout.WEST);
+		}
 
 		textContainer = new JPanel();
 		textContainer.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		textContainer.setLayout(new GridLayout(2, 1));
 		textContainer.setBorder(new EmptyBorder(5, 7, 5, 7));
 
-		addMouseListener(new MouseAdapter()
-		{
-			@Override
-			public void mousePressed(MouseEvent mouseEvent)
-			{
-				onTabSwitched.run();
+		if (isSelectable.getAsBoolean()) {
+			addMouseListener(new MouseAdapter() {
+				@Override
+				public void mousePressed(MouseEvent mouseEvent) {
+					if (onTabSwitched != null) onTabSwitched.run();
 
-				setHighlighted(false);
-			}
+					setHighlighted(false);
+				}
 
-			@Override
-			public void mouseReleased(MouseEvent e)
-			{
-				setHighlighted(true);
-			}
+				@Override
+				public void mouseReleased(MouseEvent e) {
+					setHighlighted(true);
+				}
 
-			@Override
-			public void mouseEntered(MouseEvent e)
-			{
-				setHighlighted(true);
-			}
+				@Override
+				public void mouseEntered(MouseEvent e) {
+					setHighlighted(true);
+				}
 
-			@Override
-			public void mouseExited(MouseEvent e)
-			{
-				setHighlighted(false);
-			}
-		});
+				@Override
+				public void mouseExited(MouseEvent e) {
+					setHighlighted(false);
+				}
+			});
+		}
 
-		JLabel titleLabel = new JLabel(title);
+		titleLabel = new JLabel(title);
 		titleLabel.setForeground(Color.WHITE);
 		titleLabel.setFont(FontManager.getRunescapeSmallFont());
 
@@ -150,5 +151,9 @@ class OverviewItemPanel extends JPanel
 		textContainer.setBackground(highlighted ? HOVER_COLOR : ColorScheme.DARKER_GRAY_COLOR);
 
 		isHighlighted = highlighted;
+	}
+
+	void setTitle(String title) {
+		this.titleLabel.setText(title);
 	}
 }
