@@ -39,12 +39,12 @@ public enum Tab
 	OVERVIEW("Overview", ItemID.NOTES),
 	COINS("Coins", ItemID.COINS_995, 0xBADCA7),
 	CARRYABLE_STORAGE("Carry-able Storage", ItemID.LOOTING_BAG),
+	WORLD("World Storage", ItemID.ROGUES_EQUIPMENT_CRATE),
 	MINIGAMES("Minigames", ItemID.PROGRESS_HAT),
 	DEATH_BANKS("Death Banks", ItemID.CASKET),
 	DEATH_PILES("Death Piles", ItemID.GRAVESTONE),
 	POH_STORAGE("POH Storage", ItemID.EXIT_PORTAL),
 	STASH_UNITS("Stash Units", ItemID.CLUE_SCROLL_MASTER),
-	LEPRECHAUN("Leprechaun", ItemID.LEPRECHAUN_HAT),
 	SEARCH("Search", -1);
 
 	public static final Map<Class<? extends StorageManager<?, ?>>, Tab> MANAGER_TAB_MAP = new HashMap<>();
@@ -52,10 +52,11 @@ public enum Tab
 	static {
 		MANAGER_TAB_MAP.put(CoinsStorageManager.class, COINS);
 		MANAGER_TAB_MAP.put(CarryableStorageManager.class, CARRYABLE_STORAGE);
+		MANAGER_TAB_MAP.put(WorldStorageManager.class, WORLD);
 		MANAGER_TAB_MAP.put(MinigamesStorageManager.class, MINIGAMES);
 	}
 
-	public static final Tab[] TABS = {COINS, CARRYABLE_STORAGE, MINIGAMES, SEARCH};
+	public static final Tab[] TABS = {COINS, CARRYABLE_STORAGE, WORLD, MINIGAMES, SEARCH};
 
 	Tab(String name, int itemID) {
 		this.name = name;

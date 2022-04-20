@@ -44,15 +44,17 @@ class OverviewTabPanel extends TabContentPanel {
     final Map<Tab, OverviewItemPanel> overviews;
     private final CoinsStorageManager coinsStorageManager;
     private final CarryableStorageManager carryableStorageManager;
+    private final WorldStorageManager worldStorageManager;
 
     static final String LOGGED_OUT_SUMMARY = "Log in to find your stuff!";
     final OverviewItemPanel summaryOverview;
     private final DudeWheresMyStuffPanel pluginPanel;
 
-    OverviewTabPanel(ItemManager itemManager, DudeWheresMyStuffConfig config, DudeWheresMyStuffPanel pluginPanel, CoinsStorageManager coinsStorageManager, CarryableStorageManager carryableStorageManager) {
+    OverviewTabPanel(ItemManager itemManager, DudeWheresMyStuffConfig config, DudeWheresMyStuffPanel pluginPanel, CoinsStorageManager coinsStorageManager, CarryableStorageManager carryableStorageManager, WorldStorageManager worldStorageManager) {
         this.config = config;
         this.coinsStorageManager = coinsStorageManager;
         this.carryableStorageManager = carryableStorageManager;
+        this.worldStorageManager = worldStorageManager;
         this.pluginPanel = pluginPanel;
 
         setLayout(new GridLayout(0, 1, 0, 8));
@@ -87,6 +89,7 @@ class OverviewTabPanel extends TabContentPanel {
 
         overviews.get(Tab.COINS).updateStatus(String.format("%,d gp", coinsStorageManager.getTotalValue()), Color.LIGHT_GRAY);
         overviews.get(Tab.CARRYABLE_STORAGE).updateStatus(String.format("%,d gp", carryableStorageManager.getTotalValue()), Color.LIGHT_GRAY);
+        overviews.get(Tab.WORLD).updateStatus(String.format("%,d gp", worldStorageManager.getTotalValue()), Color.LIGHT_GRAY);
     }
 
     private long getTotalValue() {

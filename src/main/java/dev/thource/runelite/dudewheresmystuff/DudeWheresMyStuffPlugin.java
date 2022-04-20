@@ -42,6 +42,9 @@ public class DudeWheresMyStuffPlugin extends Plugin {
     private CarryableStorageManager carryableStorageManager;
 
     @Inject
+    private WorldStorageManager worldStorageManager;
+
+    @Inject
     private MinigamesStorageManager minigamesStorageManager;
 
     @Inject
@@ -73,6 +76,7 @@ public class DudeWheresMyStuffPlugin extends Plugin {
 
         storageManagers.add(coinsStorageManager);
         storageManagers.add(carryableStorageManager);
+        storageManagers.add(worldStorageManager);
         storageManagers.add(minigamesStorageManager);
     }
 

@@ -28,32 +28,57 @@ package dev.thource.runelite.dudewheresmystuff;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import net.runelite.api.Client;
+import net.runelite.api.ItemComposition;
+import net.runelite.client.callback.ClientThread;
+import net.runelite.client.game.ItemManager;
 
+import javax.inject.Inject;
 import java.io.Serializable;
 
 @AllArgsConstructor
 @Getter
 @EqualsAndHashCode
 public
-class ItemStack implements Serializable
-{
-	private final int id;
-	private final String name;
-	private int quantity;
-	private final int gePrice;
-	private final int haPrice;
-	private final boolean stackable;
+class ItemStack implements Serializable {
+    public int id;
+    String name;
+    int quantity;
+    int gePrice;
+    int haPrice;
+    boolean stackable;
 
-	long getTotalGePrice()
-	{
-		return (long) gePrice * quantity;
-	}
-	long getTotalHaPrice()
-	{
-		return (long) haPrice * quantity;
+    public ItemStack(int id, Client client, ClientThread clientThread, ItemManager itemManager) {
+		this.id = id;
+		this.name = "Loading";
+		this.quantity = 0;
+
+		if (client.isClientThread()) {
+			populateFromComposition(itemManager);
+
+			return;
+		}
+
+		clientThread.invoke(()->this.populateFromComposition(itemManager));
 	}
 
-	public void setQuantity(int quantity) {
-		this.quantity = quantity;
+	public void populateFromComposition(ItemManager itemManager) {
+		ItemComposition composition = itemManager.getItemComposition(id);
+		this.name = composition.getName();
+		this.gePrice = itemManager.getItemPrice(id);
+		this.haPrice = composition.getHaPrice();
+		this.stackable = composition.isStackable();
 	}
+
+	long getTotalGePrice() {
+        return (long) gePrice * quantity;
+    }
+
+    long getTotalHaPrice() {
+        return (long) haPrice * quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
 }

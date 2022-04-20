@@ -19,14 +19,16 @@ import java.util.stream.Stream;
 class SearchTabPanel extends StorageTabPanel<StorageType, Storage<StorageType>, StorageManager<StorageType, Storage<StorageType>>> {
     private final CoinsStorageManager coinsStorageManager;
     private final CarryableStorageManager carryableStorageManager;
+    private final WorldStorageManager worldStorageManager;
 
     private final JPanel itemsBoxContainer;
     private final IconTextField searchBar;
 
-    SearchTabPanel(ItemManager itemManager, DudeWheresMyStuffConfig config, DudeWheresMyStuffPanel pluginPanel, CoinsStorageManager coinsStorageManager, CarryableStorageManager carryableStorageManager) {
+    SearchTabPanel(ItemManager itemManager, DudeWheresMyStuffConfig config, DudeWheresMyStuffPanel pluginPanel, CoinsStorageManager coinsStorageManager, CarryableStorageManager carryableStorageManager, WorldStorageManager worldStorageManager) {
         super(itemManager, config, pluginPanel, null);
         this.coinsStorageManager = coinsStorageManager;
         this.carryableStorageManager = carryableStorageManager;
+        this.worldStorageManager = worldStorageManager;
 
         searchBar = new IconTextField();
         searchBar.setIcon(IconTextField.Icon.SEARCH);
@@ -74,7 +76,8 @@ class SearchTabPanel extends StorageTabPanel<StorageType, Storage<StorageType>, 
         Stream.of(
                         coinsStorageManager.storages.stream()
                                 .filter(storage -> storage.getType() != CoinsStorageType.INVENTORY && storage.getType() != CoinsStorageType.LOOTING_BAG),
-                        carryableStorageManager.storages.stream()
+                        carryableStorageManager.storages.stream(),
+                        worldStorageManager.storages.stream()
                 ).flatMap(i -> i)
                 .sorted(Comparator.comparing(s -> s.getType().getName()))
                 .forEach((storage) -> {
