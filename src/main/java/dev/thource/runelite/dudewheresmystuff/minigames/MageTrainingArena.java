@@ -2,8 +2,8 @@ package dev.thource.runelite.dudewheresmystuff.minigames;
 
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffConfig;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
-import dev.thource.runelite.dudewheresmystuff.MinigameStorage;
-import dev.thource.runelite.dudewheresmystuff.MinigameStorageType;
+import dev.thource.runelite.dudewheresmystuff.MinigamesStorage;
+import dev.thource.runelite.dudewheresmystuff.MinigamesStorageType;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.ItemID;
@@ -16,13 +16,12 @@ import org.apache.commons.lang3.math.NumberUtils;
 
 import java.time.Instant;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 @Getter
-public class MageTrainingArena extends MinigameStorage {
+public class MageTrainingArena extends MinigamesStorage {
     ItemStack telekineticPoints = new ItemStack(ItemID.LAW_RUNE, "Telekinetic Points", 0, 0, 0, true);
     ItemStack graveyardPoints = new ItemStack(ItemID.PEACH, "Graveyard Points", 0, 0, 0, true);
     ItemStack enchantmentPoints = new ItemStack(ItemID.CYLINDER, "Enchantment Points", 0, 0, 0, true);
@@ -33,7 +32,7 @@ public class MageTrainingArena extends MinigameStorage {
     Widget shopWidget = null;
 
     public MageTrainingArena(Client client, ItemManager itemManager) {
-        super(MinigameStorageType.MAGE_TRAINING_ARENA, client, itemManager);
+        super(MinigamesStorageType.MAGE_TRAINING_ARENA, client, itemManager);
 
         items.add(telekineticPoints);
         items.add(graveyardPoints);

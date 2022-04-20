@@ -72,7 +72,7 @@ class DudeWheresMyStuffPanel extends PluginPanel {
 
     @Inject
     DudeWheresMyStuffPanel(ItemManager itemManager, DudeWheresMyStuffConfig config, ConfigManager configManager,
-                           CoinsManager coinsManager, CarryableManager carryableManager, MinigamesManager minigamesManager,
+                           CoinsStorageManager coinsStorageManager, CarryableStorageManager carryableStorageManager, MinigamesStorageManager minigamesStorageManager,
                            @Named("developerMode") boolean developerMode) {
         super(false);
 
@@ -90,13 +90,13 @@ class DudeWheresMyStuffPanel extends PluginPanel {
         add(tabGroup, BorderLayout.NORTH);
         add(display, BorderLayout.CENTER);
 
-        overviewTab = new OverviewTabPanel(itemManager, config, this, coinsManager, carryableManager);
+        overviewTab = new OverviewTabPanel(itemManager, config, this, coinsStorageManager, carryableStorageManager);
         addTab(Tab.OVERVIEW, overviewTab);
 
-        addTab(Tab.COINS, new CoinsTabPanel(itemManager, config, this, coinsManager));
-        addTab(Tab.CARRYABLE_STORAGE, new CarryableTabPanel(itemManager, config, this, carryableManager));
-        addTab(Tab.MINIGAMES, new MinigamesTabPanel(itemManager, config, this, minigamesManager));
-        addTab(Tab.SEARCH, new SearchTabPanel(itemManager, config, this, coinsManager, carryableManager));
+        addTab(Tab.COINS, new CoinsStorageTabPanel(itemManager, config, this, coinsStorageManager));
+        addTab(Tab.CARRYABLE_STORAGE, new CarryableStorageTabPanel(itemManager, config, this, carryableStorageManager));
+        addTab(Tab.MINIGAMES, new MinigamesStorageTabPanel(itemManager, config, this, minigamesStorageManager));
+        addTab(Tab.SEARCH, new SearchTabPanel(itemManager, config, this, coinsStorageManager, carryableStorageManager));
 
         for (Tab tab : Tab.TABS) {
             if (tab == Tab.OVERVIEW) continue;

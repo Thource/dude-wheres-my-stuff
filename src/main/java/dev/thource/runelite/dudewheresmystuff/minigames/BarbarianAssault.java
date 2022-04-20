@@ -1,8 +1,8 @@
 package dev.thource.runelite.dudewheresmystuff.minigames;
 
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
-import dev.thource.runelite.dudewheresmystuff.MinigameStorage;
-import dev.thource.runelite.dudewheresmystuff.MinigameStorageType;
+import dev.thource.runelite.dudewheresmystuff.MinigamesStorage;
+import dev.thource.runelite.dudewheresmystuff.MinigamesStorageType;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.ItemID;
@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @Getter
-public class BarbarianAssault extends MinigameStorage {
+public class BarbarianAssault extends MinigamesStorage {
     ItemStack attackerPoints = new ItemStack(ItemID.ATTACKER_ICON, "Attacker Points", 0, 0, 0, true);
     ItemStack collectorPoints = new ItemStack(ItemID.COLLECTOR_ICON, "Collector Points", 0, 0, 0, true);
     ItemStack defenderPoints = new ItemStack(ItemID.DEFENDER_ICON, "Defender Points", 0, 0, 0, true);
@@ -22,7 +22,7 @@ public class BarbarianAssault extends MinigameStorage {
     Map<Integer, ItemStack> varbits = new HashMap<>();
 
     public BarbarianAssault(Client client, ItemManager itemManager) {
-        super(MinigameStorageType.BARBARIAN_ASSAULT, client, itemManager);
+        super(MinigamesStorageType.BARBARIAN_ASSAULT, client, itemManager);
 
         items.add(attackerPoints);
         items.add(collectorPoints);

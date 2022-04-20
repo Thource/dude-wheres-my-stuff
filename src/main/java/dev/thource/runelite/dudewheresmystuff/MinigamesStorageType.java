@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Getter
-public enum MinigameStorageType implements StorageType {
+public enum MinigamesStorageType implements StorageType {
     MAGE_TRAINING_ARENA("Mage Training Arena", -1, false, "magetrainingarena"),
     TITHE_FARM("Tithe Farm", -1, true, "tithefarm"),
     LAST_MAN_STANDING("Last Man Standing", -1, false, "lastmanstanding"),

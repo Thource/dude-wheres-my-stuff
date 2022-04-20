@@ -50,9 +50,9 @@ public enum Tab
 	public static final Map<Class<? extends StorageManager<?, ?>>, Tab> MANAGER_TAB_MAP = new HashMap<>();
 
 	static {
-		MANAGER_TAB_MAP.put(CoinsManager.class, COINS);
-		MANAGER_TAB_MAP.put(CarryableManager.class, CARRYABLE_STORAGE);
-		MANAGER_TAB_MAP.put(MinigamesManager.class, MINIGAMES);
+		MANAGER_TAB_MAP.put(CoinsStorageManager.class, COINS);
+		MANAGER_TAB_MAP.put(CarryableStorageManager.class, CARRYABLE_STORAGE);
+		MANAGER_TAB_MAP.put(MinigamesStorageManager.class, MINIGAMES);
 	}
 
 	public static final Tab[] TABS = {COINS, CARRYABLE_STORAGE, MINIGAMES, SEARCH};

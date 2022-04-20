@@ -10,9 +10,9 @@ import net.runelite.client.game.ItemManager;
 
 @Slf4j
 @Singleton
-public class CarryableManager extends StorageManager<CarryableStorageType, CarryableStorage> {
+public class CarryableStorageManager extends StorageManager<CarryableStorageType, CarryableStorage> {
     @Inject
-    private CarryableManager(Client client, ItemManager itemManager, ConfigManager configManager, DudeWheresMyStuffConfig config, Notifier notifier) {
+    private CarryableStorageManager(Client client, ItemManager itemManager, ConfigManager configManager, DudeWheresMyStuffConfig config, Notifier notifier) {
         super(client, itemManager, configManager, config, notifier);
 
         for (CarryableStorageType type : CarryableStorageType.values()) {

@@ -36,13 +36,13 @@ public class DudeWheresMyStuffPlugin extends Plugin {
     private DudeWheresMyStuffConfig config;
 
     @Inject
-    private CoinsManager coinsManager;
+    private CoinsStorageManager coinsStorageManager;
 
     @Inject
-    private CarryableManager carryableManager;
+    private CarryableStorageManager carryableStorageManager;
 
     @Inject
-    private MinigamesManager minigamesManager;
+    private MinigamesStorageManager minigamesStorageManager;
 
     @Inject
     private ConfigManager configManager;
@@ -71,9 +71,9 @@ public class DudeWheresMyStuffPlugin extends Plugin {
 
         clientToolbar.addNavigation(navButton);
 
-        storageManagers.add(coinsManager);
-        storageManagers.add(carryableManager);
-        storageManagers.add(minigamesManager);
+        storageManagers.add(coinsStorageManager);
+        storageManagers.add(carryableStorageManager);
+        storageManagers.add(minigamesStorageManager);
     }
 
     @Override

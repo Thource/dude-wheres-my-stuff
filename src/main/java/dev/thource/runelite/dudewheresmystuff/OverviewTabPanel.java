@@ -42,17 +42,17 @@ class OverviewTabPanel extends TabContentPanel {
     private final DudeWheresMyStuffConfig config;
 
     final Map<Tab, OverviewItemPanel> overviews;
-    private final CoinsManager coinsManager;
-    private final CarryableManager carryableManager;
+    private final CoinsStorageManager coinsStorageManager;
+    private final CarryableStorageManager carryableStorageManager;
 
     static final String LOGGED_OUT_SUMMARY = "Log in to find your stuff!";
     final OverviewItemPanel summaryOverview;
     private final DudeWheresMyStuffPanel pluginPanel;
 
-    OverviewTabPanel(ItemManager itemManager, DudeWheresMyStuffConfig config, DudeWheresMyStuffPanel pluginPanel, CoinsManager coinsManager, CarryableManager carryableManager) {
+    OverviewTabPanel(ItemManager itemManager, DudeWheresMyStuffConfig config, DudeWheresMyStuffPanel pluginPanel, CoinsStorageManager coinsStorageManager, CarryableStorageManager carryableStorageManager) {
         this.config = config;
-        this.coinsManager = coinsManager;
-        this.carryableManager = carryableManager;
+        this.coinsStorageManager = coinsStorageManager;
+        this.carryableStorageManager = carryableStorageManager;
         this.pluginPanel = pluginPanel;
 
         setLayout(new GridLayout(0, 1, 0, 8));
@@ -85,8 +85,8 @@ class OverviewTabPanel extends TabContentPanel {
             summaryOverview.updateStatus(String.format("%,d gp", getTotalValue()), Color.LIGHT_GRAY);
         }
 
-        overviews.get(Tab.COINS).updateStatus(String.format("%,d gp", coinsManager.getTotalValue()), Color.LIGHT_GRAY);
-        overviews.get(Tab.CARRYABLE_STORAGE).updateStatus(String.format("%,d gp", carryableManager.getTotalValue()), Color.LIGHT_GRAY);
+        overviews.get(Tab.COINS).updateStatus(String.format("%,d gp", coinsStorageManager.getTotalValue()), Color.LIGHT_GRAY);
+        overviews.get(Tab.CARRYABLE_STORAGE).updateStatus(String.format("%,d gp", carryableStorageManager.getTotalValue()), Color.LIGHT_GRAY);
     }
 
     private long getTotalValue() {
@@ -96,12 +96,12 @@ class OverviewTabPanel extends TabContentPanel {
     private List<ItemStack> getAllItems() {
         List<ItemStack> items = new ArrayList<>();
 
-        for (CarryableStorage storage : carryableManager.storages) {
+        for (CarryableStorage storage : carryableStorageManager.storages) {
             items.addAll(storage.getItems());
         }
 
-        for (CoinStorage storage : coinsManager.storages) {
-            if (storage.getType() == CoinStorageType.INVENTORY || storage.getType() == CoinStorageType.LOOTING_BAG) {
+        for (CoinsStorage storage : coinsStorageManager.storages) {
+            if (storage.getType() == CoinsStorageType.INVENTORY || storage.getType() == CoinsStorageType.LOOTING_BAG) {
                 continue;
             }
 

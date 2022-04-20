@@ -11,9 +11,9 @@ import net.runelite.client.game.ItemManager;
 
 @Slf4j
 @Singleton
-public class MinigamesManager extends StorageManager<MinigameStorageType, MinigameStorage> {
+public class MinigamesStorageManager extends StorageManager<MinigamesStorageType, MinigamesStorage> {
     @Inject
-    private MinigamesManager(Client client, ItemManager itemManager, ConfigManager configManager, DudeWheresMyStuffConfig config, Notifier notifier) {
+    private MinigamesStorageManager(Client client, ItemManager itemManager, ConfigManager configManager, DudeWheresMyStuffConfig config, Notifier notifier) {
         super(client, itemManager, configManager, config, notifier);
 
         storages.add(new MageTrainingArena(client, itemManager));

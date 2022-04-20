@@ -2,13 +2,11 @@ package dev.thource.runelite.dudewheresmystuff;
 
 import lombok.Getter;
 import net.runelite.api.Client;
-import net.runelite.api.ItemContainer;
-import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.client.game.ItemManager;
 
 @Getter
-public abstract class MinigameStorage extends Storage<MinigameStorageType> {
-    protected MinigameStorage(MinigameStorageType type, Client client, ItemManager itemManager) {
+public abstract class MinigamesStorage extends Storage<MinigamesStorageType> {
+    protected MinigamesStorage(MinigamesStorageType type, Client client, ItemManager itemManager) {
         super(type, client, itemManager);
     }
 

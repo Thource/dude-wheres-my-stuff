@@ -17,16 +17,16 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 class SearchTabPanel extends StorageTabPanel<StorageType, Storage<StorageType>, StorageManager<StorageType, Storage<StorageType>>> {
-    private final CoinsManager coinsManager;
-    private final CarryableManager carryableManager;
+    private final CoinsStorageManager coinsStorageManager;
+    private final CarryableStorageManager carryableStorageManager;
 
     private final JPanel itemsBoxContainer;
     private final IconTextField searchBar;
 
-    SearchTabPanel(ItemManager itemManager, DudeWheresMyStuffConfig config, DudeWheresMyStuffPanel pluginPanel, CoinsManager coinsManager, CarryableManager carryableManager) {
+    SearchTabPanel(ItemManager itemManager, DudeWheresMyStuffConfig config, DudeWheresMyStuffPanel pluginPanel, CoinsStorageManager coinsStorageManager, CarryableStorageManager carryableStorageManager) {
         super(itemManager, config, pluginPanel, null);
-        this.coinsManager = coinsManager;
-        this.carryableManager = carryableManager;
+        this.coinsStorageManager = coinsStorageManager;
+        this.carryableStorageManager = carryableStorageManager;
 
         searchBar = new IconTextField();
         searchBar.setIcon(IconTextField.Icon.SEARCH);
@@ -57,7 +57,7 @@ class SearchTabPanel extends StorageTabPanel<StorageType, Storage<StorageType>, 
     }
 
     private void onSearchBarChanged() {
-        rebuildList(coinsManager.client.getVar(VarClientInt.MEMBERSHIP_STATUS) == 1);
+        rebuildList(coinsStorageManager.client.getVar(VarClientInt.MEMBERSHIP_STATUS) == 1);
     }
 
     @Override
@@ -72,9 +72,9 @@ class SearchTabPanel extends StorageTabPanel<StorageType, Storage<StorageType>, 
         String searchText = searchBar.getText().toLowerCase(Locale.ROOT);
         itemsBoxes.clear();
         Stream.of(
-                        coinsManager.storages.stream()
-                                .filter(storage -> storage.getType() != CoinStorageType.INVENTORY && storage.getType() != CoinStorageType.LOOTING_BAG),
-                        carryableManager.storages.stream()
+                        coinsStorageManager.storages.stream()
+                                .filter(storage -> storage.getType() != CoinsStorageType.INVENTORY && storage.getType() != CoinsStorageType.LOOTING_BAG),
+                        carryableStorageManager.storages.stream()
                 ).flatMap(i -> i)
                 .sorted(Comparator.comparing(s -> s.getType().getName()))
                 .forEach((storage) -> {
