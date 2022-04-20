@@ -40,7 +40,7 @@ public class CoinStorage extends Storage<CoinStorageType> {
 
         lastUpdated = Instant.now();
         int coins = itemContainer.count(995);
-        if (coinStack.getQuantity() == coins) return false;
+        if (coinStack.getQuantity() == coins) return !this.getType().isAutomatic();
 
         coinStack.setQuantity(coins);
         return true;

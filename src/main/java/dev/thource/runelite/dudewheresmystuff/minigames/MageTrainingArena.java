@@ -86,8 +86,6 @@ public class MageTrainingArena extends MinigameStorage {
     }
 
     boolean updateFromWidgets() {
-        AtomicBoolean updated = new AtomicBoolean(false);
-
         if (shopWidget != null) {
             lastUpdated = Instant.now();
             pointData.forEach((itemStack, pointData) -> {
@@ -96,22 +94,23 @@ public class MageTrainingArena extends MinigameStorage {
 
                 itemStack.setQuantity(newPoints);
                 pointData.lastVarpValue = newPoints;
-                updated.set(true);
             });
 
-            return updated.get();
+            return true;
         }
+
+        AtomicBoolean updated = new AtomicBoolean(false);
 
         pointData.forEach((itemStack, pointData) -> {
             if (pointData.getWidget() == null) return;
 
+            updated.set(true);
             lastUpdated = Instant.now();
             int newPoints = NumberUtils.toInt(pointData.getWidget().getText(), 0);
             if (newPoints == pointData.getLastWidgetValue()) return;
 
             itemStack.setQuantity(newPoints);
             pointData.lastWidgetValue = newPoints;
-            updated.set(true);
         });
 
         return updated.get();

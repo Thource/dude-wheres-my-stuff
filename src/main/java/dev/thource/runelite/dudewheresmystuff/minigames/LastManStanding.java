@@ -62,7 +62,7 @@ public class LastManStanding extends MinigameStorage {
 
         lastUpdated = Instant.now();
         int newPoints = client.getVarpValue(261);
-        if (newPoints == points.getQuantity()) return false;
+        if (newPoints == points.getQuantity()) return !this.getType().isAutomatic();
 
         points.setQuantity(newPoints);
         return true;
