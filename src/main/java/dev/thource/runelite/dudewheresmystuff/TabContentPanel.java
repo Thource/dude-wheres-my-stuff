@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2022, Thource <https://github.com/Thource>
  * Copyright (c) 2018, Daniel Teo <https://github.com/takuyakanbr>
  * All rights reserved.
  *

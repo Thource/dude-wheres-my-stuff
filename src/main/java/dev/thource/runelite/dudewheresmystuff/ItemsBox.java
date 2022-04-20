@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2022, Thource <https://github.com/Thource>
  * Copyright (c) 2018, Psikoi <https://github.com/psikoi>
  * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.

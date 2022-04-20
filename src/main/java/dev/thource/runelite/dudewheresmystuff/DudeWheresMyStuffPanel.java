@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2018 Abex
+ * Copyright (c) 2022, Thource <https://github.com/Thource>
+ * Copyright (c) 2018, Abex
  * Copyright (c) 2018, Psikoi <https://github.com/psikoi>
  * All rights reserved.
  *
@@ -23,6 +24,7 @@
  *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 package dev.thource.runelite.dudewheresmystuff;
 
 import com.google.inject.Inject;
