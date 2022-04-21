@@ -204,4 +204,12 @@ public class Leprechaun extends WorldStorage {
         wateringCan.populateFromComposition(itemManager);
         return true;
     }
+
+    @Override
+    public void reset() {
+        for (ItemStack item : items) {
+            item.setQuantity(0);
+        }
+        lastUpdated = null;
+    }
 }

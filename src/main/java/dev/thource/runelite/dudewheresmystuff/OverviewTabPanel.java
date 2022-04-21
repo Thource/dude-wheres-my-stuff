@@ -111,6 +111,10 @@ class OverviewTabPanel extends TabContentPanel {
             items.addAll(storage.getItems());
         }
 
+        for (WorldStorage storage : worldStorageManager.storages) {
+            items.addAll(storage.getItems());
+        }
+
         return items;
     }
 }
