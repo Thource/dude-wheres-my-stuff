@@ -72,7 +72,7 @@ class DudeWheresMyStuffPanel extends PluginPanel {
 
     @Inject
     DudeWheresMyStuffPanel(ItemManager itemManager, DudeWheresMyStuffConfig config, ConfigManager configManager,
-                           CoinsStorageManager coinsStorageManager, CarryableStorageManager carryableStorageManager, WorldStorageManager worldStorageManager, MinigamesStorageManager minigamesStorageManager,
+                           DeathStorageManager deathStorageManager, CoinsStorageManager coinsStorageManager, CarryableStorageManager carryableStorageManager, WorldStorageManager worldStorageManager, MinigamesStorageManager minigamesStorageManager,
                            @Named("developerMode") boolean developerMode) {
         super(false);
 
@@ -90,14 +90,16 @@ class DudeWheresMyStuffPanel extends PluginPanel {
         add(tabGroup, BorderLayout.NORTH);
         add(display, BorderLayout.CENTER);
 
-        overviewTab = new OverviewTabPanel(itemManager, config, this, coinsStorageManager, carryableStorageManager, worldStorageManager);
+        overviewTab = new OverviewTabPanel(itemManager, config, this, deathStorageManager, coinsStorageManager, carryableStorageManager, worldStorageManager);
         addTab(Tab.OVERVIEW, overviewTab);
 
+        addTab(Tab.DEATH, new DeathStorageTabPanel(itemManager, config, this, deathStorageManager));
         addTab(Tab.COINS, new CoinsStorageTabPanel(itemManager, config, this, coinsStorageManager));
         addTab(Tab.CARRYABLE_STORAGE, new CarryableStorageTabPanel(itemManager, config, this, carryableStorageManager));
         addTab(Tab.WORLD, new WorldStorageTabPanel(itemManager, config, this, worldStorageManager));
         addTab(Tab.MINIGAMES, new MinigamesStorageTabPanel(itemManager, config, this, minigamesStorageManager));
-        addTab(Tab.SEARCH, new SearchTabPanel(itemManager, config, this, coinsStorageManager, carryableStorageManager, worldStorageManager));
+
+        addTab(Tab.SEARCH, new SearchTabPanel(itemManager, config, this, deathStorageManager, coinsStorageManager, carryableStorageManager, worldStorageManager));
 
         for (Tab tab : Tab.TABS) {
             if (tab == Tab.OVERVIEW) continue;

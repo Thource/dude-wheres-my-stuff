@@ -59,6 +59,6 @@ abstract class StorageTabPanel<ST extends StorageType, S extends Storage<ST>, SM
     }
 
     public void softUpdate() {
-        itemsBoxes.forEach(ItemsBox::updateLastUpdateLabel);
+        itemsBoxes.forEach(ItemsBox::updateLabels);
     }
 }

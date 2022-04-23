@@ -1,9 +1,7 @@
 package dev.thource.runelite.dudewheresmystuff;
 
 import net.runelite.api.Client;
-import net.runelite.api.events.ItemContainerChanged;
-import net.runelite.api.events.WidgetClosed;
-import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.events.*;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
@@ -20,7 +18,7 @@ abstract class StorageManager<ST extends StorageType, S extends Storage<ST>> {
 
     protected final List<S> storages = new ArrayList<>();
 
-    private boolean enabled = true;
+    protected boolean enabled = true;
 
     StorageManager(Client client, ItemManager itemManager, ConfigManager configManager, DudeWheresMyStuffConfig config, Notifier notifier) {
         this.client = client;
@@ -106,6 +104,12 @@ abstract class StorageManager<ST extends StorageType, S extends Storage<ST>> {
         return updated;
     }
 
+    public void onGameStateChanged(GameStateChanged gameStateChanged) {
+    }
+
+    public void onActorDeath(ActorDeath actorDeath) {
+    }
+
     void reset() {
         storages.forEach(Storage::reset);
         enable();
@@ -142,4 +146,8 @@ abstract class StorageManager<ST extends StorageType, S extends Storage<ST>> {
     }
 
     public abstract Tab getTab();
+
+    public boolean onItemDespawned(ItemDespawned itemDespawned) {
+        return false;
+    }
 }

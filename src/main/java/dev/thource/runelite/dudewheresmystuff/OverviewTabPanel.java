@@ -42,6 +42,7 @@ class OverviewTabPanel extends TabContentPanel {
     private final DudeWheresMyStuffConfig config;
 
     final Map<Tab, OverviewItemPanel> overviews;
+    private final DeathStorageManager deathStorageManager;
     private final CoinsStorageManager coinsStorageManager;
     private final CarryableStorageManager carryableStorageManager;
     private final WorldStorageManager worldStorageManager;
@@ -50,8 +51,9 @@ class OverviewTabPanel extends TabContentPanel {
     final OverviewItemPanel summaryOverview;
     private final DudeWheresMyStuffPanel pluginPanel;
 
-    OverviewTabPanel(ItemManager itemManager, DudeWheresMyStuffConfig config, DudeWheresMyStuffPanel pluginPanel, CoinsStorageManager coinsStorageManager, CarryableStorageManager carryableStorageManager, WorldStorageManager worldStorageManager) {
+    OverviewTabPanel(ItemManager itemManager, DudeWheresMyStuffConfig config, DudeWheresMyStuffPanel pluginPanel, DeathStorageManager deathStorageManager, CoinsStorageManager coinsStorageManager, CarryableStorageManager carryableStorageManager, WorldStorageManager worldStorageManager) {
         this.config = config;
+        this.deathStorageManager = deathStorageManager;
         this.coinsStorageManager = coinsStorageManager;
         this.carryableStorageManager = carryableStorageManager;
         this.worldStorageManager = worldStorageManager;
@@ -87,6 +89,7 @@ class OverviewTabPanel extends TabContentPanel {
             summaryOverview.updateStatus(String.format("%,d gp", getTotalValue()), Color.LIGHT_GRAY);
         }
 
+        overviews.get(Tab.DEATH).updateStatus(String.format("%,d gp", deathStorageManager.getTotalValue()), Color.LIGHT_GRAY);
         overviews.get(Tab.COINS).updateStatus(String.format("%,d gp", coinsStorageManager.getTotalValue()), Color.LIGHT_GRAY);
         overviews.get(Tab.CARRYABLE_STORAGE).updateStatus(String.format("%,d gp", carryableStorageManager.getTotalValue()), Color.LIGHT_GRAY);
         overviews.get(Tab.WORLD).updateStatus(String.format("%,d gp", worldStorageManager.getTotalValue()), Color.LIGHT_GRAY);

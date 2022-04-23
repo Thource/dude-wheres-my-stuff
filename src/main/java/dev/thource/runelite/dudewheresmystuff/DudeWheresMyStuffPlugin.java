@@ -4,7 +4,9 @@ import com.google.inject.Provides;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.TileItem;
 import net.runelite.api.VarClientInt;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.*;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -34,6 +36,9 @@ public class DudeWheresMyStuffPlugin extends Plugin {
 
     @Inject
     private DudeWheresMyStuffConfig config;
+
+    @Inject
+    private DeathStorageManager deathStorageManager;
 
     @Inject
     private CoinsStorageManager coinsStorageManager;
@@ -74,6 +79,7 @@ public class DudeWheresMyStuffPlugin extends Plugin {
 
         clientToolbar.addNavigation(navButton);
 
+        storageManagers.add(deathStorageManager);
         storageManagers.add(coinsStorageManager);
         storageManagers.add(carryableStorageManager);
         storageManagers.add(worldStorageManager);
@@ -87,29 +93,13 @@ public class DudeWheresMyStuffPlugin extends Plugin {
 
     @Subscribe
     public void onActorDeath(ActorDeath actorDeath) {
-//        if (client.getLocalPlayer() == null) return;
-//
-//        if (actorDeath.getActor() == client.getLocalPlayer()) {
-//            log.info("OH NO, YOU HAVE DIED!");
-//            HashTable<ItemContainer> itemContainers = client.getItemContainers();
-//
-//            log.info(client.getLocalPlayer().getWorldLocation().toString());
-//
-//            log.info("Items:");
-//            for (ItemContainer itemContainer : itemContainers) {
-//                Item[] items = itemContainer.getItems();
-//                if (items.length == 0) continue;
-//
-//                log.info("  Container " + itemContainer.getId() + ":");
-//                for (Item item : items) {
-//                    log.info("    " + item.getId() + " x " + item.getQuantity());
-//                }
-//            }
-//        }
+        storageManagers.forEach(storageManager -> storageManager.onActorDeath(actorDeath));
     }
 
     @Subscribe
     public void onGameStateChanged(GameStateChanged gameStateChanged) {
+        storageManagers.forEach(storageManager -> storageManager.onGameStateChanged(gameStateChanged));
+
         if (gameStateChanged.getGameState() == GameState.LOGIN_SCREEN) {
             clientState = ClientState.LOGGED_OUT;
             isMember = true;
@@ -132,6 +122,8 @@ public class DudeWheresMyStuffPlugin extends Plugin {
         } else if (gameStateChanged.getGameState() == GameState.LOGGING_IN) {
             clientState = ClientState.LOGGING_IN;
         } else if (gameStateChanged.getGameState() == GameState.LOGGED_IN) {
+            if (clientState != ClientState.LOGGING_IN) return;
+
             storageManagers.forEach(StorageManager::load);
             panel.update();
         }
@@ -154,7 +146,7 @@ public class DudeWheresMyStuffPlugin extends Plugin {
             panel.isMember = isMember;
 
             for (StorageManager<?, ?> storageManager : storageManagers) {
-                if (storageManager.isMembersOnly() && !isMember) {
+                if (storageManager.getTab() != Tab.DEATH && storageManager.isMembersOnly() && !isMember) {
                     storageManager.disable();
                     continue;
                 }
@@ -254,6 +246,25 @@ public class DudeWheresMyStuffPlugin extends Plugin {
 
         storageManagers.forEach(storageManager -> {
             if (storageManager.onItemContainerChanged(itemContainerChanged, isMember)) {
+                isPanelDirty.set(true);
+
+                // don't save before loading is complete, to avoid deleting save data
+                if (clientState == ClientState.LOGGED_IN) storageManager.save();
+            }
+        });
+
+        if (isPanelDirty.get()) panel.update();
+    }
+
+    @Subscribe
+    public void onItemDespawned(ItemDespawned itemDespawned)
+    {
+        if (clientState == ClientState.LOGGED_OUT) return;
+
+        AtomicBoolean isPanelDirty = new AtomicBoolean(false);
+
+        storageManagers.forEach(storageManager -> {
+            if (storageManager.onItemDespawned(itemDespawned)) {
                 isPanelDirty.set(true);
 
                 // don't save before loading is complete, to avoid deleting save data

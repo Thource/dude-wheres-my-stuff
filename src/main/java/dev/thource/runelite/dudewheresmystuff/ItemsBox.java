@@ -41,7 +41,6 @@ import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -58,6 +57,8 @@ class ItemsBox extends JPanel {
     private final JPanel logTitle = new JPanel();
     private JPanel lastUpdatedPanel = null;
     private JLabel lastUpdatedLabel = null;
+    private JPanel expiryPanel = null;
+    private JLabel expiryLabel = null;
     private final ItemManager itemManager;
     @Getter(AccessLevel.PACKAGE)
     private final String id;
@@ -67,20 +68,22 @@ class ItemsBox extends JPanel {
     @Getter
     private final List<ItemStack> items = new ArrayList<>();
 
-    private final Storage<?> storage;
+    private Storage<?> storage = null;
 
     private long totalPrice;
+    private long expiryMs;
 
-    ItemsBox(
+    private ItemsBox(
             final ItemManager itemManager,
-            final Storage<?> storage,
+            final String name,
+            final boolean automatic,
             @Nullable final String subtitle,
             final boolean showAlchPrices,
-            boolean showPrice) {
-        this.id = storage.getType().getName();
+            boolean showPrice
+    ) {
+        this.id = name;
         this.itemManager = itemManager;
         this.showAlchPrices = showAlchPrices;
-        this.storage = storage;
 
         setLayout(new BorderLayout(0, 1));
         setBorder(new EmptyBorder(5, 0, 0, 0));
@@ -102,6 +105,7 @@ class ItemsBox extends JPanel {
 
         if (!Strings.isNullOrEmpty(subtitle)) {
             subTitleLabel.setText(subtitle);
+            subTitleLabel.setToolTipText(subtitle);
         }
 
         logTitle.add(Box.createRigidArea(new Dimension(TITLE_PADDING, 0)));
@@ -119,7 +123,7 @@ class ItemsBox extends JPanel {
         add(logTitle, BorderLayout.NORTH);
         add(itemContainer, BorderLayout.CENTER);
 
-        if (!storage.getType().isAutomatic()) {
+        if (!automatic) {
             lastUpdatedPanel = new JPanel();
             lastUpdatedPanel.setLayout(new BoxLayout(lastUpdatedPanel, BoxLayout.X_AXIS));
             lastUpdatedPanel.setBorder(new EmptyBorder(7, 7, 7, 7));
@@ -138,6 +142,27 @@ class ItemsBox extends JPanel {
         }
     }
 
+    ItemsBox(
+            final ItemManager itemManager,
+            final String name,
+            @Nullable final String subtitle,
+            final boolean showAlchPrices,
+            boolean showPrice
+    ) {
+        this(itemManager, name, true, subtitle, showAlchPrices, showPrice);
+    }
+
+    ItemsBox(
+            final ItemManager itemManager,
+            final Storage<?> storage,
+            @Nullable final String subtitle,
+            final boolean showAlchPrices,
+            boolean showPrice
+    ) {
+        this(itemManager, storage.getType().getName(), storage.getType().isAutomatic(), subtitle, showAlchPrices, showPrice);
+        this.storage = storage;
+    }
+
     void rebuild() {
         buildItems();
 
@@ -146,12 +171,43 @@ class ItemsBox extends JPanel {
             priceLabel.setToolTipText(QuantityFormatter.formatNumber(totalPrice) + " gp");
         }
 
-        updateLastUpdateLabel();
+        updateLabels();
 
         revalidate();
     }
 
-    void updateLastUpdateLabel() {
+    void setSubTitle(String text) {
+        subTitleLabel.setText(text);
+        subTitleLabel.setToolTipText(text);
+    }
+
+    void addExpiry(long expiryMs) {
+        this.expiryMs = expiryMs;
+
+        expiryPanel = new JPanel();
+        expiryPanel.setLayout(new BoxLayout(expiryPanel, BoxLayout.X_AXIS));
+        expiryPanel.setBorder(new EmptyBorder(7, 7, 7, 7));
+        expiryPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+
+        expiryLabel = new JLabel();
+        expiryLabel.setText("Expires in");
+        expiryLabel.setFont(FontManager.getRunescapeSmallFont());
+        expiryLabel.setForeground(Color.WHITE);
+        // Set a size to make BoxLayout truncate the name
+        expiryLabel.setMinimumSize(new Dimension(1, expiryLabel.getPreferredSize().height));
+        expiryPanel.add(expiryLabel);
+
+        add(expiryPanel, BorderLayout.SOUTH);
+
+        updateExpiryLabel();
+    }
+
+    void updateLabels() {
+        updateLastUpdatedLabel();
+        updateExpiryLabel();
+    }
+
+    private void updateLastUpdatedLabel() {
         if (lastUpdatedLabel == null) return;
         if (storage.lastUpdated == null) {
             if (!Objects.equals(lastUpdatedLabel.getText(), "Unknown")) {
@@ -161,7 +217,21 @@ class ItemsBox extends JPanel {
             return;
         }
 
-        lastUpdatedLabel.setText("Last updated " + TimeAgo.toDuration(Instant.now().toEpochMilli() - storage.getLastUpdated().toEpochMilli()));
+        lastUpdatedLabel.setText("Last updated " + DurationFormatter.format(System.currentTimeMillis() - storage.getLastUpdated().toEpochMilli()) + " ago");
+    }
+
+    private void updateExpiryLabel() {
+        if (expiryLabel == null) return;
+
+        String expireText = "Expire";
+        long timeUntilExpiry = expiryMs - System.currentTimeMillis();
+        if (timeUntilExpiry < 0) {
+            expireText += "d " + DurationFormatter.format(Math.abs(timeUntilExpiry)) + " ago";
+        } else {
+            expireText += "s in " + DurationFormatter.format(Math.abs(timeUntilExpiry));
+        }
+
+        expiryLabel.setText(expireText);
     }
 
     void collapse() {

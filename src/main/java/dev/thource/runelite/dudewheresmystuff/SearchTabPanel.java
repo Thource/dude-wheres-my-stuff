@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 class SearchTabPanel extends StorageTabPanel<StorageType, Storage<StorageType>, StorageManager<StorageType, Storage<StorageType>>> {
+    private final DeathStorageManager deathStorageManager;
     private final CoinsStorageManager coinsStorageManager;
     private final CarryableStorageManager carryableStorageManager;
     private final WorldStorageManager worldStorageManager;
@@ -24,8 +25,9 @@ class SearchTabPanel extends StorageTabPanel<StorageType, Storage<StorageType>, 
     private final JPanel itemsBoxContainer;
     private final IconTextField searchBar;
 
-    SearchTabPanel(ItemManager itemManager, DudeWheresMyStuffConfig config, DudeWheresMyStuffPanel pluginPanel, CoinsStorageManager coinsStorageManager, CarryableStorageManager carryableStorageManager, WorldStorageManager worldStorageManager) {
+    SearchTabPanel(ItemManager itemManager, DudeWheresMyStuffConfig config, DudeWheresMyStuffPanel pluginPanel, DeathStorageManager deathStorageManager, CoinsStorageManager coinsStorageManager, CarryableStorageManager carryableStorageManager, WorldStorageManager worldStorageManager) {
         super(itemManager, config, pluginPanel, null);
+        this.deathStorageManager = deathStorageManager;
         this.coinsStorageManager = coinsStorageManager;
         this.carryableStorageManager = carryableStorageManager;
         this.worldStorageManager = worldStorageManager;
@@ -74,6 +76,7 @@ class SearchTabPanel extends StorageTabPanel<StorageType, Storage<StorageType>, 
         String searchText = searchBar.getText().toLowerCase(Locale.ROOT);
         itemsBoxes.clear();
         Stream.of(
+                        deathStorageManager.storages.stream(),
                         coinsStorageManager.storages.stream()
                                 .filter(storage -> storage.getType() != CoinsStorageType.INVENTORY && storage.getType() != CoinsStorageType.LOOTING_BAG),
                         carryableStorageManager.storages.stream(),
