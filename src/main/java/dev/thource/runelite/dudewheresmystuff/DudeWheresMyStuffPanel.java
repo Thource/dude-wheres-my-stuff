@@ -84,7 +84,7 @@ class DudeWheresMyStuffPanel extends PluginPanel {
 
         display.setBorder(new EmptyBorder(6, 6, 6, 6));
 
-        tabGroup.setLayout(new GridLayout(0, 6, 7, 7));
+        tabGroup.setLayout(new InvisibleGridLayout(0, 6, 7, 7));
         tabGroup.setBorder(new EmptyBorder(6, 6, 0, 6));
 
         add(tabGroup, BorderLayout.NORTH);
@@ -93,7 +93,7 @@ class DudeWheresMyStuffPanel extends PluginPanel {
         overviewTab = new OverviewTabPanel(itemManager, config, this, deathStorageManager, coinsStorageManager, carryableStorageManager, worldStorageManager);
         addTab(Tab.OVERVIEW, overviewTab);
 
-        addTab(Tab.DEATH, new DeathStorageTabPanel(itemManager, config, this, deathStorageManager));
+        addTab(Tab.DEATH, new DeathStorageTabPanel(itemManager, config, this, deathStorageManager, developerMode));
         addTab(Tab.COINS, new CoinsStorageTabPanel(itemManager, config, this, coinsStorageManager));
         addTab(Tab.CARRYABLE_STORAGE, new CarryableStorageTabPanel(itemManager, config, this, carryableStorageManager));
         addTab(Tab.WORLD, new WorldStorageTabPanel(itemManager, config, this, worldStorageManager));

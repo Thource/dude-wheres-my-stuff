@@ -11,8 +11,11 @@ import java.util.Comparator;
 
 @Slf4j
 class DeathStorageTabPanel extends StorageTabPanel<DeathStorageType, DeathStorage, DeathStorageManager> {
-    DeathStorageTabPanel(ItemManager itemManager, DudeWheresMyStuffConfig config, DudeWheresMyStuffPanel pluginPanel, DeathStorageManager storageManager) {
+    private final boolean developerMode;
+
+    DeathStorageTabPanel(ItemManager itemManager, DudeWheresMyStuffConfig config, DudeWheresMyStuffPanel pluginPanel, DeathStorageManager storageManager, boolean developerMode) {
         super(itemManager, config, pluginPanel, storageManager);
+        this.developerMode = developerMode;
     }
 
     @Override
@@ -38,14 +41,16 @@ class DeathStorageTabPanel extends StorageTabPanel<DeathStorageType, DeathStorag
 
         itemsBoxes.clear();
 
-        ItemsBox debugDeathBox = new ItemsBox(itemManager, "Death items debug", null, false, showPrice());
-        for (ItemStack itemStack : storageManager.getDeathItems()) {
-            if (itemStack.getQuantity() > 0)
-                debugDeathBox.getItems().add(itemStack);
+        if (developerMode) {
+            ItemsBox debugDeathBox = new ItemsBox(itemManager, "Death items debug", null, false, showPrice());
+            for (ItemStack itemStack : storageManager.getDeathItems()) {
+                if (itemStack.getQuantity() > 0)
+                    debugDeathBox.getItems().add(itemStack);
+            }
+            debugDeathBox.rebuild();
+            itemsBoxes.add(debugDeathBox);
+            add(debugDeathBox);
         }
-        debugDeathBox.rebuild();
-        itemsBoxes.add(debugDeathBox);
-        add(debugDeathBox);
 
         storageManager.storages.stream().sorted(getStorageSorter()).forEach((storage) -> {
             if (storage.getType().isMembersOnly() && !isMember) return;
