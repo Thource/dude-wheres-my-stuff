@@ -2,6 +2,7 @@ package dev.thource.runelite.dudewheresmystuff;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import dev.thource.runelite.dudewheresmystuff.coins.ServantsMoneybag;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.client.Notifier;
@@ -16,8 +17,12 @@ public class CoinsStorageManager extends StorageManager<CoinsStorageType, CoinsS
         super(client, itemManager, configManager, config, notifier);
 
         for (CoinsStorageType type : CoinsStorageType.values()) {
+            if (type == CoinsStorageType.SERVANT_MONEYBAG) continue;
+
             storages.add(new CoinsStorage(type, client, itemManager));
         }
+
+        storages.add(new ServantsMoneybag(client, itemManager));
     }
 
     @Override

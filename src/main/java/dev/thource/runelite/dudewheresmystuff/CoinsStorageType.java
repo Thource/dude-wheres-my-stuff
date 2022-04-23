@@ -9,7 +9,7 @@ import net.runelite.api.InventoryID;
 public enum CoinsStorageType implements StorageType {
     NMZ("Nightmare Zone", 3948, -1, true, "nightmarezone", true, 1000),
     LMS("Last Man Standing", 5305, -1, true, "lastmanstanding", false, 1000),
-    //    SERVANT_MONEYBAG("Servant's Moneybag", 5305, -1, 100),
+    SERVANT_MONEYBAG("Servant's Moneybag", -1, -1, false, "servantsmoneybag", true),
     BF("Blast Furnace", 5357, -1, true, "blastfurnace", true),
     INVENTORY("Inventory", -1, InventoryID.INVENTORY.getId(), true, "inventory", false),
     LOOTING_BAG("Looting Bag", -1, 516, false, "lootingbag", true);
