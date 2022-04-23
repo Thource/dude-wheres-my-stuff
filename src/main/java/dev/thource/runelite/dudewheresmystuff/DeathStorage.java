@@ -12,10 +12,6 @@ public class DeathStorage extends Storage<DeathStorageType> {
     }
 
     @Override
-    public void reset() {
-    }
-
-    @Override
     public void save(ConfigManager configManager, String managerConfigKey) {
     }
 

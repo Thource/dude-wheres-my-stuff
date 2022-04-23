@@ -24,7 +24,7 @@ abstract class Storage<T extends StorageType> {
     protected T type;
     protected List<ItemStack> items = new ArrayList<>();
 
-    protected long lastUpdated = 0L;
+    protected long lastUpdated = -1L;
 
     Storage(T type, Client client, ItemManager itemManager) {
         this.type = type;

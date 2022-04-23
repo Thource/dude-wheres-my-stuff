@@ -24,6 +24,10 @@ public class Deathpile extends DeathStorage {
         this.items = deathItems;
     }
 
+    @Override
+    public void reset() {
+    }
+
     public String getExpireText() {
         String expireText = "Expire";
         long timeUntilExpiry = getExpiryMs() - System.currentTimeMillis();
