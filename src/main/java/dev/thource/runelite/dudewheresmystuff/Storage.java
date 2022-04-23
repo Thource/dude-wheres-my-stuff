@@ -108,6 +108,8 @@ abstract class Storage<T extends StorageType> {
                 managerConfigKey + "." + type.getConfigKey(),
                 String.class
         );
+        if (data == null) return null;
+
 //        System.out.println("load " + managerConfigKey + "." + type.getConfigKey() + ": " + data);
         String[] dataSplit = data.split(";");
         if (dataSplit.length != 2) return null;

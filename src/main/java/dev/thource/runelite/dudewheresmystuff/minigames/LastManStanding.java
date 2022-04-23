@@ -89,6 +89,8 @@ public class LastManStanding extends MinigamesStorage {
                 managerConfigKey + "." + type.getConfigKey(),
                 String.class
         );
+        if (data == null) return;
+
         String[] dataSplit = data.split(";");
         if (dataSplit.length != 2) return;
 
