@@ -86,7 +86,7 @@ public class MageTrainingArena extends MinigamesStorage {
 
     boolean updateFromWidgets() {
         if (shopWidget != null) {
-            lastUpdated = Instant.now();
+            lastUpdated = System.currentTimeMillis();
             pointData.forEach((itemStack, pointData) -> {
                 int newPoints = client.getVarpValue(pointData.getVarpId());
                 if (newPoints == pointData.getLastVarpValue()) return;
@@ -104,7 +104,7 @@ public class MageTrainingArena extends MinigamesStorage {
             if (pointData.getWidget() == null) return;
 
             updated.set(true);
-            lastUpdated = Instant.now();
+            lastUpdated = System.currentTimeMillis();
             int newPoints = NumberUtils.toInt(pointData.getWidget().getText(), 0);
             if (newPoints == pointData.getLastWidgetValue()) return;
 
@@ -124,12 +124,8 @@ public class MageTrainingArena extends MinigamesStorage {
 
     @Override
     public void save(ConfigManager configManager, String managerConfigKey) {
-        String data = "";
-        if (lastUpdated != null) {
-            data += lastUpdated.getEpochSecond();
-        }
-        data += ";";
-        data += items.stream().map(item -> "" + item.getQuantity()).collect(Collectors.joining("="));
+        String data = lastUpdated + ";"
+                + items.stream().map(item -> "" + item.getQuantity()).collect(Collectors.joining("="));
 
         configManager.setRSProfileConfiguration(
                 DudeWheresMyStuffConfig.CONFIG_GROUP,
@@ -153,8 +149,7 @@ public class MageTrainingArena extends MinigamesStorage {
         String[] pointSplit = dataSplit[1].split("=");
         if (pointSplit.length != 4) return;
 
-        long lastUpdated = NumberUtils.toLong(dataSplit[0], 0);
-        if (lastUpdated != 0) this.lastUpdated = Instant.ofEpochSecond(lastUpdated);
+        this.lastUpdated = NumberUtils.toLong(dataSplit[0], -1);
 
         telekineticPoints.setQuantity(NumberUtils.toInt(pointSplit[0]));
         graveyardPoints.setQuantity(NumberUtils.toInt(pointSplit[1]));

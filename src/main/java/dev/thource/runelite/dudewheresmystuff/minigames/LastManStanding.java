@@ -58,7 +58,7 @@ public class LastManStanding extends MinigamesStorage {
     boolean updateFromWidgets() {
         if (shopWidget == null) return false;
 
-        lastUpdated = Instant.now();
+        lastUpdated = System.currentTimeMillis();
         int newPoints = client.getVarpValue(261);
         if (newPoints == points.getQuantity()) return !this.getType().isAutomatic();
 
@@ -68,12 +68,8 @@ public class LastManStanding extends MinigamesStorage {
 
     @Override
     public void save(ConfigManager configManager, String managerConfigKey) {
-        String data = "";
-        if (lastUpdated != null) {
-            data += lastUpdated.getEpochSecond();
-        }
-        data += ";";
-        data += points.getQuantity();
+        String data = lastUpdated + ";"
+                + points.getQuantity();
 
         configManager.setRSProfileConfiguration(
                 DudeWheresMyStuffConfig.CONFIG_GROUP,
@@ -94,8 +90,7 @@ public class LastManStanding extends MinigamesStorage {
         String[] dataSplit = data.split(";");
         if (dataSplit.length != 2) return;
 
-        long lastUpdated = NumberUtils.toLong(dataSplit[0], 0);
-        if (lastUpdated != 0) this.lastUpdated = Instant.ofEpochSecond(lastUpdated);
+        this.lastUpdated = NumberUtils.toLong(dataSplit[0], -1);
 
         points.setQuantity(NumberUtils.toInt(dataSplit[1], 0));
     }

@@ -15,6 +15,6 @@ public abstract class MinigamesStorage extends Storage<MinigamesStorageType> {
         for (ItemStack item : items) {
             item.setQuantity(0);
         }
-        lastUpdated = null;
+        lastUpdated = -1L;
     }
 }

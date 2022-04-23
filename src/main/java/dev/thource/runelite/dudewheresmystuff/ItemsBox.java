@@ -209,7 +209,7 @@ class ItemsBox extends JPanel {
 
     private void updateLastUpdatedLabel() {
         if (lastUpdatedLabel == null) return;
-        if (storage.lastUpdated == null) {
+        if (storage.lastUpdated == -1L) {
             if (!Objects.equals(lastUpdatedLabel.getText(), "Unknown")) {
                 lastUpdatedLabel.setText("Unknown");
             }
@@ -217,7 +217,7 @@ class ItemsBox extends JPanel {
             return;
         }
 
-        lastUpdatedLabel.setText("Last updated " + DurationFormatter.format(System.currentTimeMillis() - storage.getLastUpdated().toEpochMilli()) + " ago");
+        lastUpdatedLabel.setText("Last updated " + DurationFormatter.format(System.currentTimeMillis() - storage.getLastUpdated()) + " ago");
     }
 
     private void updateExpiryLabel() {

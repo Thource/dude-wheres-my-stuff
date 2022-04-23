@@ -210,6 +210,6 @@ public class Leprechaun extends WorldStorage {
         for (ItemStack item : items) {
             item.setQuantity(0);
         }
-        lastUpdated = null;
+        lastUpdated = -1;
     }
 }

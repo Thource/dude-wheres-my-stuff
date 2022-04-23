@@ -1,5 +1,6 @@
 package dev.thource.runelite.dudewheresmystuff;
 
+import dev.thource.runelite.dudewheresmystuff.death.Deathbank;
 import dev.thource.runelite.dudewheresmystuff.death.Deathpile;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.game.ItemManager;
@@ -20,9 +21,9 @@ class DeathStorageTabPanel extends StorageTabPanel<DeathStorageType, DeathStorag
             if (s instanceof Deathpile) {
                 Deathpile deathpile = ((Deathpile) s);
 
-                // Move expired deathpiles to the bottom of the list, don't worry about int overflow, no one has 2182 years played
+                // Move expired deathpiles to the bottom of the list and sort them the opposite way (newest first)
                 if (deathpile.hasExpired())
-                    return deathpile.getPlayedMinutesAtCreation() + 1000000000;
+                    return 2000000000 - deathpile.getPlayedMinutesAtCreation();
 
                 return deathpile.getPlayedMinutesAtCreation();
             } else {
@@ -54,11 +55,42 @@ class DeathStorageTabPanel extends StorageTabPanel<DeathStorageType, DeathStorag
                 if (itemStack.getQuantity() > 0)
                     itemsBox.getItems().add(itemStack);
             }
+            if (itemsBox.getItems().isEmpty()) return;
+
             itemsBox.rebuild();
             itemsBoxes.add(itemsBox);
             add(itemsBox);
 
-            if (storage instanceof Deathpile) {
+            if (storage instanceof Deathbank) {
+                if (storage.getType() != DeathStorageType.ZULRAH)
+                    itemsBox.setSubTitle(((Deathbank) storage).isLocked() ? "Locked" : "Unlocked");
+
+                final JPopupMenu popupMenu = new JPopupMenu();
+                popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
+                itemsBox.setComponentPopupMenu(popupMenu);
+
+                final JMenuItem clearDeathbank = new JMenuItem("Clear Deathbank");
+                clearDeathbank.addActionListener(e -> {
+                    int result = JOptionPane.OK_OPTION;
+
+                    try {
+                        result = JOptionPane.showConfirmDialog(
+                                this,
+                                "Are you sure you want to clear your deathbank?\nThis cannot be undone.", "Confirm clear",
+                                JOptionPane.OK_CANCEL_OPTION,
+                                JOptionPane.WARNING_MESSAGE);
+                    } catch (Exception err) {
+                        log.warn("Unexpected exception occurred while check for confirm required", err);
+                    }
+
+                    if (result == JOptionPane.OK_OPTION) {
+                        storageManager.deathbank.reset();
+                        rebuildList(isMember);
+                        storageManager.save();
+                    }
+                });
+                popupMenu.add(clearDeathbank);
+            } else if (storage instanceof Deathpile) {
                 Deathpile deathpile = (Deathpile) storage;
                 itemsBox.addExpiry(deathpile.getExpiryMs());
 
@@ -66,32 +98,28 @@ class DeathStorageTabPanel extends StorageTabPanel<DeathStorageType, DeathStorag
                 popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
                 itemsBox.setComponentPopupMenu(popupMenu);
 
-                final JMenuItem toggle = new JMenuItem("Delete Deathpile");
-                toggle.addActionListener(e -> {
+                final JMenuItem deleteDeathpile = new JMenuItem("Delete Deathpile");
+                deleteDeathpile.addActionListener(e -> {
                     int result = JOptionPane.OK_OPTION;
 
-                    try
-                    {
+                    try {
                         result = JOptionPane.showConfirmDialog(
                                 this,
                                 "Are you sure you want to delete this deathpile?\nThis cannot be undone.", "Confirm deletion",
                                 JOptionPane.OK_CANCEL_OPTION,
                                 JOptionPane.WARNING_MESSAGE);
-                    }
-                    catch (Exception err)
-                    {
+                    } catch (Exception err) {
                         log.warn("Unexpected exception occurred while check for confirm required", err);
                     }
 
-                    if (result == JOptionPane.OK_OPTION)
-                    {
+                    if (result == JOptionPane.OK_OPTION) {
                         storageManager.storages.remove(deathpile);
                         rebuildList(isMember);
                         storageManager.refreshMapPoints();
                         storageManager.save();
                     }
                 });
-                popupMenu.add(toggle);
+                popupMenu.add(deleteDeathpile);
 
                 Region region = Region.get(deathpile.getWorldPoint().getRegionID());
 

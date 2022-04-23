@@ -26,8 +26,6 @@ abstract class StorageManager<ST extends StorageType, S extends Storage<ST>> {
         this.configManager = configManager;
         this.config = config;
         this.notifier = notifier;
-
-        reset();
     }
 
     long getTotalValue() {
