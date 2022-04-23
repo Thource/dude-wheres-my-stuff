@@ -12,7 +12,6 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import org.apache.commons.lang3.math.NumberUtils;
 
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,7 +24,7 @@ abstract class Storage<T extends StorageType> {
     protected T type;
     protected List<ItemStack> items = new ArrayList<>();
 
-    protected Instant lastUpdated = null;
+    protected long lastUpdated = 0L;
 
     Storage(T type, Client client, ItemManager itemManager) {
         this.type = type;
@@ -74,25 +73,21 @@ abstract class Storage<T extends StorageType> {
             items.add(new ItemStack(item.getId(), itemComposition.getName(), item.getQuantity(), itemManager.getItemPrice(item.getId()), itemComposition.getHaPrice(), itemComposition.isStackable()));
         }
 
-        lastUpdated = Instant.now();
+        lastUpdated = System.currentTimeMillis();
 
         return true;
     }
 
     public void reset() {
         items.clear();
-        lastUpdated = null;
+        lastUpdated = -1;
     }
 
     public void save(ConfigManager configManager, String managerConfigKey) {
         if (type.isAutomatic()) return;
 
-        String data = "";
-        if (lastUpdated != null) {
-            data += lastUpdated.getEpochSecond();
-        }
-        data += ";";
-        data += items.stream().map(item -> item.getId() + "," + item.getQuantity()).collect(Collectors.joining("="));
+        String data = lastUpdated + ";"
+                + items.stream().map(item -> item.getId() + "," + item.getQuantity()).collect(Collectors.joining("="));
 
 //        System.out.println("save " + managerConfigKey + "." + type.getConfigKey() + ": " + data);
         configManager.setRSProfileConfiguration(
@@ -114,8 +109,7 @@ abstract class Storage<T extends StorageType> {
         String[] dataSplit = data.split(";");
         if (dataSplit.length != 2) return null;
 
-        long lastUpdated = NumberUtils.toLong(dataSplit[0], 0);
-        if (lastUpdated != 0) this.lastUpdated = Instant.ofEpochSecond(lastUpdated);
+        this.lastUpdated = NumberUtils.toLong(dataSplit[0], -1);
 
         List<ItemStack> items = new ArrayList<>();
         for (String itemStackString : dataSplit[1].split("=")) {

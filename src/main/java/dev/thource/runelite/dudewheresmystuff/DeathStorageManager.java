@@ -9,6 +9,7 @@ import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ActorDeath;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.ItemDespawned;
 import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
@@ -17,9 +18,7 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
 import org.apache.commons.lang3.math.NumberUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -54,7 +53,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
     private List<ItemStack> deathItems;
 
     @Inject
-    private DeathStorageManager(Client client, ItemManager itemManager, ConfigManager configManager, DudeWheresMyStuffConfig config, Notifier notifier, ClientThread clientThread) {
+    private DeathStorageManager(Client client, ItemManager itemManager, ConfigManager configManager, DudeWheresMyStuffConfig config, Notifier notifier) {
         super(client, itemManager, configManager, config, notifier);
     }
 
@@ -64,6 +63,38 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
                 .filter(s -> s.getType() != DeathStorageType.DEATHPILE || !((Deathpile) s).hasExpired())
                 .mapToLong(Storage::getTotalValue)
                 .sum();
+    }
+
+    @Override
+    boolean onItemContainerChanged(ItemContainerChanged itemContainerChanged, boolean isMember) {
+        if (!enabled) return false;
+
+        DeathStorage deathbank = null;
+        for (DeathStorageType deathStorageType : DeathStorageType.values()) {
+            if (deathStorageType == DeathStorageType.DEATHPILE) continue;
+            if (itemContainerChanged.getContainerId() != deathStorageType.getItemContainerId()) continue;
+
+            deathbank = new DeathStorage(deathStorageType, client, itemManager);
+            deathbank.lastUpdated = System.currentTimeMillis();
+            for (Item item : itemContainerChanged.getItemContainer().getItems()) {
+                if (item.getId() == -1) continue;
+
+                ItemStack itemStack = deathbank.items.stream().filter(i -> i.getId() == item.getId()).findFirst().orElse(null);
+                if (itemStack != null) {
+                    itemStack.setQuantity(itemStack.getQuantity() + item.getQuantity());
+                    continue;
+                }
+
+                ItemComposition itemComposition = itemManager.getItemComposition(item.getId());
+                deathbank.items.add(new ItemStack(item.getId(), itemComposition.getName(), item.getQuantity(), itemManager.getItemPrice(item.getId()), itemComposition.getHaPrice(), itemComposition.isStackable()));
+            }
+        }
+        if (deathbank == null) return false;
+
+        clearDeathbank();
+        storages.add(deathbank);
+
+        return true;
     }
 
     @Override
@@ -213,12 +244,29 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
         if (!enabled) return;
 
         saveDeathpiles();
+        saveDeathbank();
+    }
+
+    private void saveDeathbank() {
+        String data = "";
+
+        DeathStorage deathbank = storages.stream().filter(s -> !(s instanceof Deathpile)).findFirst().orElse(null);
+        if (deathbank != null)
+            data += deathbank.getType().getConfigKey() + ";"
+                    + deathbank.getLastUpdated() + ";"
+                    + deathbank.getItems().stream().map(i -> i.getId() + "," + i.getQuantity()).collect(Collectors.joining("="));
+
+        configManager.setRSProfileConfiguration(
+                DudeWheresMyStuffConfig.CONFIG_GROUP,
+                getConfigKey() + ".deathbank",
+                data
+        );
     }
 
     private void saveDeathpiles() {
         configManager.setRSProfileConfiguration(
                 DudeWheresMyStuffConfig.CONFIG_GROUP,
-                getConfigKey() + ".deathpiles",
+                getConfigKey() + "." + DeathStorageType.DEATHPILE.getConfigKey(),
                 storages.stream().filter(Deathpile.class::isInstance)
                         .map(s -> {
                             Deathpile d = (Deathpile) s;
@@ -234,6 +282,54 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
         if (!enabled) return;
 
         loadDeathpiles();
+        loadDeathbank();
+    }
+
+    private void loadDeathbank() {
+        clearDeathbank();
+
+        String data = configManager.getRSProfileConfiguration(
+                DudeWheresMyStuffConfig.CONFIG_GROUP,
+                getConfigKey() + ".deathbank",
+                String.class
+        );
+        if (data == null) return;
+
+        String[] dataSplit = data.split(";");
+        if (dataSplit.length != 3) return;
+
+        String deathbankKey = dataSplit[0];
+        DeathStorageType deathStorageType = Arrays.stream(DeathStorageType.values())
+                .filter(s -> Objects.equals(s.getConfigKey(), deathbankKey))
+                .findFirst().orElse(null);
+        if (deathStorageType == null) return;
+
+        long lastUpdate = NumberUtils.toLong(dataSplit[1], 0);
+        if (lastUpdate == 0) return;
+
+        List<ItemStack> items = new ArrayList<>();
+        for (String itemData : dataSplit[2].split("=")) {
+            String[] itemDataSplit = itemData.split(",");
+            if (itemDataSplit.length != 2) continue;
+
+            int itemId = NumberUtils.toInt(itemDataSplit[0], 0);
+            int quantity = NumberUtils.toInt(itemDataSplit[1], 0);
+            if (itemId == 0 || quantity == 0) continue;
+
+            ItemStack item = new ItemStack(itemId, client, clientThread, itemManager);
+            item.setQuantity(quantity);
+            items.add(item);
+        }
+        if (items.isEmpty()) return;
+
+        DeathStorage deathbank = new DeathStorage(deathStorageType, client, itemManager);
+        deathbank.lastUpdated = lastUpdate;
+        deathbank.items = items;
+        storages.add(deathbank);
+    }
+
+    private void clearDeathbank() {
+        storages.removeIf(s -> !(s instanceof Deathpile));
     }
 
     @Override
@@ -263,7 +359,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
     private void loadDeathpiles() {
         String data = configManager.getRSProfileConfiguration(
                 DudeWheresMyStuffConfig.CONFIG_GROUP,
-                getConfigKey() + ".deathpiles",
+                getConfigKey() + "." + DeathStorageType.DEATHPILE.getConfigKey(),
                 String.class
         );
         if (data == null) return;

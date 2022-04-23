@@ -38,7 +38,7 @@ public class CoinsStorage extends Storage<CoinsStorageType> {
         ItemContainer itemContainer = client.getItemContainer(type.getItemContainerId());
         if (itemContainer == null) return false;
 
-        lastUpdated = Instant.now();
+        lastUpdated = System.currentTimeMillis();
         int coins = itemContainer.count(995);
         if (coinStack.getQuantity() == coins) return !this.getType().isAutomatic();
 
@@ -49,7 +49,7 @@ public class CoinsStorage extends Storage<CoinsStorageType> {
     @Override
     public void reset() {
         coinStack.setQuantity(0);
-        lastUpdated = null;
+        lastUpdated = -1;
     }
 
     @Override

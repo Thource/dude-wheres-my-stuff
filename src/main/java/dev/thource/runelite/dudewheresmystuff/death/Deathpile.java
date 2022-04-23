@@ -44,16 +44,4 @@ public class Deathpile extends DeathStorage {
     public boolean hasExpired() {
         return getExpiryMs() < System.currentTimeMillis();
     }
-
-    @Override
-    public void reset() {
-    }
-
-    @Override
-    public void save(ConfigManager configManager, String managerConfigKey) {
-    }
-
-    @Override
-    public void load(ConfigManager configManager, String managerConfigKey) {
-    }
 }
