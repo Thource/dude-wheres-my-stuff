@@ -1,6 +1,10 @@
 package dev.thource.runelite.dudewheresmystuff;
 
+import dev.thource.runelite.dudewheresmystuff.death.Deathbank;
+import dev.thource.runelite.dudewheresmystuff.death.Deathpile;
+import net.runelite.api.Client;
 import net.runelite.api.VarClientInt;
+import net.runelite.api.vars.AccountType;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.components.IconTextField;
@@ -24,13 +28,15 @@ class SearchTabPanel extends StorageTabPanel<StorageType, Storage<StorageType>, 
 
     private final JPanel itemsBoxContainer;
     private final IconTextField searchBar;
+    private Client client;
 
-    SearchTabPanel(ItemManager itemManager, DudeWheresMyStuffConfig config, DudeWheresMyStuffPanel pluginPanel, DeathStorageManager deathStorageManager, CoinsStorageManager coinsStorageManager, CarryableStorageManager carryableStorageManager, WorldStorageManager worldStorageManager) {
+    SearchTabPanel(ItemManager itemManager, DudeWheresMyStuffConfig config, DudeWheresMyStuffPanel pluginPanel, DeathStorageManager deathStorageManager, CoinsStorageManager coinsStorageManager, CarryableStorageManager carryableStorageManager, WorldStorageManager worldStorageManager, Client client) {
         super(itemManager, config, pluginPanel, null);
         this.deathStorageManager = deathStorageManager;
         this.coinsStorageManager = coinsStorageManager;
         this.carryableStorageManager = carryableStorageManager;
         this.worldStorageManager = worldStorageManager;
+        this.client = client;
 
         searchBar = new IconTextField();
         searchBar.setIcon(IconTextField.Icon.SEARCH);
@@ -76,7 +82,8 @@ class SearchTabPanel extends StorageTabPanel<StorageType, Storage<StorageType>, 
         String searchText = searchBar.getText().toLowerCase(Locale.ROOT);
         itemsBoxes.clear();
         Stream.of(
-                        deathStorageManager.storages.stream(),
+                        deathStorageManager.storages.stream()
+                                .filter(s -> s.getType() != DeathStorageType.DEATHPILE || !((Deathpile) s).hasExpired()),
                         coinsStorageManager.storages.stream()
                                 .filter(storage -> storage.getType() != CoinsStorageType.INVENTORY && storage.getType() != CoinsStorageType.LOOTING_BAG),
                         carryableStorageManager.storages.stream(),
@@ -96,6 +103,23 @@ class SearchTabPanel extends StorageTabPanel<StorageType, Storage<StorageType>, 
                         if (itemStack.getQuantity() > 0)
                             itemsBox.getItems().add(itemStack);
                     }
+
+                    if (storage instanceof Deathbank) {
+                        if (client.getAccountType() != AccountType.ULTIMATE_IRONMAN || storage.getType() != DeathStorageType.ZULRAH)
+                            itemsBox.setSubTitle(((Deathbank) storage).isLocked() ? "Locked" : "Unlocked");
+                    } else if (storage instanceof Deathpile) {
+                        Deathpile deathpile = (Deathpile) storage;
+                        itemsBox.addExpiry(deathpile.getExpiryMs());
+
+                        Region region = Region.get(deathpile.getWorldPoint().getRegionID());
+
+                        if (region == null) {
+                            itemsBox.setSubTitle("Unknown");
+                        } else {
+                            itemsBox.setSubTitle(region.getName());
+                        }
+                    }
+
                     itemsBox.rebuild();
                     itemsBoxes.add(itemsBox);
                     itemsBoxContainer.add(itemsBox);

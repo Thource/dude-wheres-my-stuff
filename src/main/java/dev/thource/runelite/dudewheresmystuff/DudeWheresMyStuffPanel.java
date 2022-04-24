@@ -29,6 +29,7 @@ package dev.thource.runelite.dudewheresmystuff;
 
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
+import net.runelite.api.Client;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.ColorScheme;
@@ -73,7 +74,7 @@ class DudeWheresMyStuffPanel extends PluginPanel {
     @Inject
     DudeWheresMyStuffPanel(ItemManager itemManager, DudeWheresMyStuffConfig config, ConfigManager configManager,
                            DeathStorageManager deathStorageManager, CoinsStorageManager coinsStorageManager, CarryableStorageManager carryableStorageManager, WorldStorageManager worldStorageManager, MinigamesStorageManager minigamesStorageManager,
-                           @Named("developerMode") boolean developerMode) {
+                           @Named("developerMode") boolean developerMode, Client client) {
         super(false);
 
         this.itemManager = itemManager;
@@ -99,7 +100,7 @@ class DudeWheresMyStuffPanel extends PluginPanel {
         addTab(Tab.WORLD, new WorldStorageTabPanel(itemManager, config, this, worldStorageManager));
         addTab(Tab.MINIGAMES, new MinigamesStorageTabPanel(itemManager, config, this, minigamesStorageManager));
 
-        addTab(Tab.SEARCH, new SearchTabPanel(itemManager, config, this, deathStorageManager, coinsStorageManager, carryableStorageManager, worldStorageManager));
+        addTab(Tab.SEARCH, new SearchTabPanel(itemManager, config, this, deathStorageManager, coinsStorageManager, carryableStorageManager, worldStorageManager, client));
 
         for (Tab tab : Tab.TABS) {
             if (tab == Tab.OVERVIEW) continue;
