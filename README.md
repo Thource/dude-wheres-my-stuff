@@ -1,6 +1,7 @@
 # Dude, Where's My Stuff?
 
-[![](https://img.shields.io/endpoint?url=https://i.pluginhub.info/shields/rank/plugin/dude-wheres-my-stuff)](https://runelite.net/plugin-hub) [![](https://img.shields.io/endpoint?url=https://i.pluginhub.info/shields/installs/plugin/dude-wheres-my-stuff)](https://runelite.net/plugin-hub)
+[![](https://img.shields.io/endpoint?url=https://i.pluginhub.info/shields/rank/plugin/dude-wheres-my-stuff)](https://runelite.net/plugin-hub/show/dude-wheres-my-stuff)
+[![](https://img.shields.io/endpoint?url=https://i.pluginhub.info/shields/installs/plugin/dude-wheres-my-stuff)](https://runelite.net/plugin-hub/show/dude-wheres-my-stuff)
 
 Helps you keep track of your stuff (items, gp, minigame points) in Old School RuneScape by recording and showing you where they are in an easy to view way.
 
