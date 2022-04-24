@@ -4,10 +4,9 @@ import com.google.inject.Provides;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.api.TileItem;
 import net.runelite.api.VarClientInt;
-import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.*;
+import net.runelite.api.vars.AccountType;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
@@ -62,7 +61,8 @@ public class DudeWheresMyStuffPlugin extends Plugin {
     private NavigationButton navButton;
 
     private ClientState clientState = ClientState.LOGGED_OUT;
-    private boolean isMember;
+    boolean isMember;
+    private AccountType accountType;
 
     @Override
     protected void startUp() throws Exception {
@@ -103,7 +103,7 @@ public class DudeWheresMyStuffPlugin extends Plugin {
         if (gameStateChanged.getGameState() == GameState.LOGIN_SCREEN) {
             clientState = ClientState.LOGGED_OUT;
             isMember = true;
-            panel.isMember = true;
+            accountType = null;
 
             for (StorageManager<?, ?> storageManager : storageManagers) {
                 storageManager.reset();
@@ -143,6 +143,7 @@ public class DudeWheresMyStuffPlugin extends Plugin {
 
         if (clientState == ClientState.LOGGING_IN) {
             isMember = client.getVar(VarClientInt.MEMBERSHIP_STATUS) == 1;
+            accountType = client.getAccountType();
             panel.isMember = isMember;
 
             for (StorageManager<?, ?> storageManager : storageManagers) {
@@ -167,7 +168,7 @@ public class DudeWheresMyStuffPlugin extends Plugin {
         AtomicBoolean isPanelDirty = new AtomicBoolean(false);
 
         storageManagers.forEach(storageManager -> {
-            if (storageManager.onGameTick(isMember)) {
+            if (storageManager.onGameTick()) {
                 isPanelDirty.set(true);
 
                 // don't save before loading is complete, to avoid deleting save data
@@ -191,7 +192,7 @@ public class DudeWheresMyStuffPlugin extends Plugin {
         AtomicBoolean isPanelDirty = new AtomicBoolean(false);
 
         storageManagers.forEach(storageManager -> {
-            if (storageManager.onWidgetLoaded(widgetLoaded, isMember)) {
+            if (storageManager.onWidgetLoaded(widgetLoaded)) {
                 isPanelDirty.set(true);
 
                 // don't save before loading is complete, to avoid deleting save data
@@ -209,7 +210,7 @@ public class DudeWheresMyStuffPlugin extends Plugin {
         AtomicBoolean isPanelDirty = new AtomicBoolean(false);
 
         storageManagers.forEach(storageManager -> {
-            if (storageManager.onWidgetClosed(widgetClosed, isMember)) {
+            if (storageManager.onWidgetClosed(widgetClosed)) {
                 isPanelDirty.set(true);
 
                 // don't save before loading is complete, to avoid deleting save data
@@ -227,7 +228,7 @@ public class DudeWheresMyStuffPlugin extends Plugin {
         AtomicBoolean isPanelDirty = new AtomicBoolean(false);
 
         storageManagers.forEach(storageManager -> {
-            if (storageManager.onVarbitChanged(isMember)) {
+            if (storageManager.onVarbitChanged()) {
                 isPanelDirty.set(true);
 
                 // don't save before loading is complete, to avoid deleting save data
@@ -245,7 +246,7 @@ public class DudeWheresMyStuffPlugin extends Plugin {
         AtomicBoolean isPanelDirty = new AtomicBoolean(false);
 
         storageManagers.forEach(storageManager -> {
-            if (storageManager.onItemContainerChanged(itemContainerChanged, isMember)) {
+            if (storageManager.onItemContainerChanged(itemContainerChanged)) {
                 isPanelDirty.set(true);
 
                 // don't save before loading is complete, to avoid deleting save data

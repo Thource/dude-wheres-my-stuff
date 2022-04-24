@@ -53,7 +53,8 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
             13150, // Prifddinas (it's possible to spawn in 2 adjacent regions)
             12894, // Prifddinas
             14642, // ToB
-            12172 // Gauntlet
+            12172, // Gauntlet
+            12633 // death's office
     );
     private boolean dying;
     private WorldPoint deathLocation;
@@ -61,8 +62,8 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
     private Item[] oldInventoryItems;
 
     @Inject
-    private DeathStorageManager(Client client, ItemManager itemManager, ConfigManager configManager, DudeWheresMyStuffConfig config, Notifier notifier) {
-        super(client, itemManager, configManager, config, notifier);
+    private DeathStorageManager(Client client, ItemManager itemManager, ConfigManager configManager, DudeWheresMyStuffConfig config, Notifier notifier, DudeWheresMyStuffPlugin plugin) {
+        super(client, itemManager, configManager, config, notifier, plugin);
 
         deathbank = new Deathbank(DeathStorageType.UNKNOWN_DEATHBANK, client, itemManager);
         storages.add(deathbank);
@@ -71,13 +72,14 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
     @Override
     long getTotalValue() {
         return storages.stream()
-                .filter(s -> s.getType() != DeathStorageType.DEATHPILE || !((Deathpile) s).hasExpired())
+                .filter(s -> (s.getType() == DeathStorageType.DEATHPILE && !((Deathpile) s).hasExpired())
+                        || (s.getType() != DeathStorageType.DEATHPILE && ((Deathbank) s).getLostAt() == -1L))
                 .mapToLong(Storage::getTotalValue)
                 .sum();
     }
 
     @Override
-    boolean onItemContainerChanged(ItemContainerChanged itemContainerChanged, boolean isMember) {
+    boolean onItemContainerChanged(ItemContainerChanged itemContainerChanged) {
         if (!enabled) return false;
 
         if (itemContainerChanged.getContainerId() == InventoryID.INVENTORY.getId()) {
@@ -90,7 +92,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
                 removeItemsFromList(inventoryItemsList, oldInventoryItems);
                 removeItemsFromList(deathbank.getItems(), inventoryItemsList);
                 if (deathbank.getItems().isEmpty())
-                    deathbank.reset();
+                    clearDeathbank(false);
             }
 
             oldInventoryItems = inventoryItems;
@@ -157,6 +159,19 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
         }
     }
 
+    void clearDeathbank(boolean wasLost) {
+        System.out.println("Clearing deathbank");
+
+        if (wasLost && !deathbank.getItems().isEmpty()) {
+            Deathbank db = new Deathbank(deathbank.getType(), client, itemManager);
+            db.lostAt = System.currentTimeMillis();
+            db.items.addAll(deathbank.getItems());
+            storages.add(db);
+        }
+
+        deathbank.reset();
+    }
+
     @Override
     public void onGameStateChanged(GameStateChanged gameStateChanged) {
         if (gameStateChanged.getGameState() == GameState.LOGIN_SCREEN || gameStateChanged.getGameState() == GameState.HOPPING) {
@@ -166,7 +181,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
     }
 
     @Override
-    public boolean onGameTick(boolean isMember) {
+    public boolean onGameTick() {
         int playedMinutes = client.getVarcIntValue(526);
         if (playedMinutes != startPlayedMinutes) {
             if (startPlayedMinutes == -1)
@@ -181,7 +196,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
         if (deathbank.lastUpdated != -1L) {
             Widget itemWindow = client.getWidget(602, 3);
             if (itemWindow != null && client.getVarpValue(261) == -1) {
-                deathbank.reset();
+                clearDeathbank(false);
                 updated = true;
             }
         }
@@ -217,6 +232,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
     private boolean processDeath() {
         if (client.getLocalPlayer() == null) return false;
 
+        System.out.println("Processing death dying: " + dying + " hp " + client.getBoostedSkillLevel(Skill.HITPOINTS));
         boolean updated = false;
 
         if (!dying || client.getBoostedSkillLevel(Skill.HITPOINTS) < 10)
@@ -233,7 +249,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
                     client.getLocalPlayer().getWorldLocation().getRegionID());
         } else {
             updated = true;
-            deathbank.reset();
+            clearDeathbank(true);
 
             if (deathRegion != Region.MG_CORRUPTED_GAUNTLET && deathRegion != Region.MG_GAUNTLET) {
                 DeathStorageType deathStorageType = null;
@@ -261,13 +277,19 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
 
                 ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
                 if (inventory != null) {
+                    System.out.println("inventory items " + inventory.getItems().length);
                     removeItemsFromList(deathItems, inventory.getItems());
                 }
 
                 ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
                 if (equipment != null) {
+                    System.out.println("equipment items " + equipment.getItems().length);
                     removeItemsFromList(deathItems, equipment.getItems());
                 }
+
+                System.out.println("deathitems " + deathItems.size());
+                System.out.println("deathStorageType " + deathStorageType);
+                System.out.println("deathRegionId " + deathLocation.getRegionID());
 
                 if (deathStorageType == null) {
                     if (client.getAccountType() == AccountType.ULTIMATE_IRONMAN)
@@ -359,6 +381,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
 
         saveDeathpiles();
         saveDeathbank();
+        saveLostDeathbanks();
     }
 
     private void saveDeathbank() {
@@ -388,16 +411,31 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
         );
     }
 
+    private void saveLostDeathbanks() {
+        configManager.setRSProfileConfiguration(
+                DudeWheresMyStuffConfig.CONFIG_GROUP,
+                getConfigKey() + ".lostdeathbanks",
+                storages.stream().filter(s -> s instanceof Deathbank && s != deathbank)
+                        .map(s -> {
+                            Deathbank d = (Deathbank) s;
+                            return d.getType().getConfigKey() + ";"
+                                    + d.getLostAt() + ";"
+                                    + d.getItems().stream().map(i -> i.getId() + "," + i.getQuantity()).collect(Collectors.joining("="));
+                        }).collect(Collectors.joining("$"))
+        );
+    }
+
     @Override
     public void load() {
         if (!enabled) return;
 
         loadDeathpiles();
         loadDeathbank();
+        loadLostDeathbanks();
     }
 
     private void loadDeathbank() {
-        deathbank.reset();
+        clearDeathbank(false);
 
         String data = configManager.getRSProfileConfiguration(
                 DudeWheresMyStuffConfig.CONFIG_GROUP,
@@ -441,12 +479,56 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
         deathbank.locked = locked;
     }
 
+    private void loadLostDeathbanks() {
+        String data = configManager.getRSProfileConfiguration(
+                DudeWheresMyStuffConfig.CONFIG_GROUP,
+                getConfigKey() + ".lostdeathbanks",
+                String.class
+        );
+        if (data == null) return;
+
+        String[] banksData = data.split("\\$");
+        for (String banksDatum : banksData) {
+            String[] dataSplit = banksDatum.split(";");
+            if (dataSplit.length != 3) return;
+
+            String deathbankKey = dataSplit[0];
+            DeathStorageType deathStorageType = Arrays.stream(DeathStorageType.values())
+                    .filter(s -> Objects.equals(s.getConfigKey(), deathbankKey))
+                    .findFirst().orElse(null);
+            if (deathStorageType == null) return;
+
+            long lostAt = NumberUtils.toLong(dataSplit[1], -1L);
+            if (lostAt == -1L) return;
+
+            List<ItemStack> items = new ArrayList<>();
+            for (String itemData : dataSplit[2].split("=")) {
+                String[] itemDataSplit = itemData.split(",");
+                if (itemDataSplit.length != 2) continue;
+
+                int itemId = NumberUtils.toInt(itemDataSplit[0], 0);
+                int quantity = NumberUtils.toInt(itemDataSplit[1], 0);
+                if (itemId == 0 || quantity == 0) continue;
+
+                ItemStack item = new ItemStack(itemId, client, clientThread, itemManager);
+                item.setQuantity(quantity);
+                items.add(item);
+            }
+            if (items.isEmpty()) return;
+
+            Deathbank deathbank = new Deathbank(deathStorageType, client, itemManager);
+            deathbank.lostAt = lostAt;
+            deathbank.items = items;
+            storages.add(deathbank);
+        }
+    }
+
     @Override
     void reset() {
         oldInventoryItems = null;
         storages.clear();
         storages.add(deathbank);
-        deathbank.reset();
+        clearDeathbank(false);
         enable();
         refreshMapPoints();
     }

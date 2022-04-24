@@ -13,8 +13,8 @@ import net.runelite.client.game.ItemManager;
 @Singleton
 public class MinigamesStorageManager extends StorageManager<MinigamesStorageType, MinigamesStorage> {
     @Inject
-    private MinigamesStorageManager(Client client, ItemManager itemManager, ConfigManager configManager, DudeWheresMyStuffConfig config, Notifier notifier) {
-        super(client, itemManager, configManager, config, notifier);
+    private MinigamesStorageManager(Client client, ItemManager itemManager, ConfigManager configManager, DudeWheresMyStuffConfig config, Notifier notifier, DudeWheresMyStuffPlugin plugin) {
+        super(client, itemManager, configManager, config, notifier, plugin);
 
         storages.add(new MageTrainingArena(client, itemManager));
         storages.add(new TitheFarm(client, itemManager));

@@ -14,8 +14,8 @@ import net.runelite.client.game.ItemManager;
 @Singleton
 public class WorldStorageManager extends StorageManager<WorldStorageType, WorldStorage> {
     @Inject
-    private WorldStorageManager(Client client, ItemManager itemManager, ConfigManager configManager, DudeWheresMyStuffConfig config, Notifier notifier, ClientThread clientThread) {
-        super(client, itemManager, configManager, config, notifier);
+    private WorldStorageManager(Client client, ItemManager itemManager, ConfigManager configManager, DudeWheresMyStuffConfig config, Notifier notifier, ClientThread clientThread, DudeWheresMyStuffPlugin plugin) {
+        super(client, itemManager, configManager, config, notifier, plugin);
 
         storages.add(new Leprechaun(client, clientThread, itemManager));
     }

@@ -12,8 +12,8 @@ import net.runelite.client.game.ItemManager;
 @Singleton
 public class CarryableStorageManager extends StorageManager<CarryableStorageType, CarryableStorage> {
     @Inject
-    private CarryableStorageManager(Client client, ItemManager itemManager, ConfigManager configManager, DudeWheresMyStuffConfig config, Notifier notifier) {
-        super(client, itemManager, configManager, config, notifier);
+    private CarryableStorageManager(Client client, ItemManager itemManager, ConfigManager configManager, DudeWheresMyStuffConfig config, Notifier notifier, DudeWheresMyStuffPlugin plugin) {
+        super(client, itemManager, configManager, config, notifier, plugin);
 
         for (CarryableStorageType type : CarryableStorageType.values()) {
             if (type.getItemContainerId() != -1) {

@@ -100,7 +100,7 @@ class DudeWheresMyStuffPanel extends PluginPanel {
         addTab(Tab.WORLD, new WorldStorageTabPanel(itemManager, config, this, worldStorageManager));
         addTab(Tab.MINIGAMES, new MinigamesStorageTabPanel(itemManager, config, this, minigamesStorageManager));
 
-        addTab(Tab.SEARCH, new SearchTabPanel(itemManager, config, this, deathStorageManager, coinsStorageManager, carryableStorageManager, worldStorageManager, client));
+        addTab(Tab.SEARCH, new SearchTabPanel(itemManager, config, this, deathStorageManager, coinsStorageManager, carryableStorageManager, worldStorageManager));
 
         for (Tab tab : Tab.TABS) {
             if (tab == Tab.OVERVIEW) continue;

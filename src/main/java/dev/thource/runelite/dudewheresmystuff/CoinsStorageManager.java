@@ -13,8 +13,8 @@ import net.runelite.client.game.ItemManager;
 @Singleton
 public class CoinsStorageManager extends StorageManager<CoinsStorageType, CoinsStorage> {
     @Inject
-    CoinsStorageManager(Client client, ItemManager itemManager, ConfigManager configManager, DudeWheresMyStuffConfig config, Notifier notifier) {
-        super(client, itemManager, configManager, config, notifier);
+    CoinsStorageManager(Client client, ItemManager itemManager, ConfigManager configManager, DudeWheresMyStuffConfig config, Notifier notifier, DudeWheresMyStuffPlugin plugin) {
+        super(client, itemManager, configManager, config, notifier, plugin);
 
         for (CoinsStorageType type : CoinsStorageType.values()) {
             if (type == CoinsStorageType.SERVANT_MONEYBAG) continue;

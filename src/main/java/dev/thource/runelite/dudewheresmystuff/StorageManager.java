@@ -19,26 +19,28 @@ abstract class StorageManager<ST extends StorageType, S extends Storage<ST>> {
     protected final List<S> storages = new ArrayList<>();
 
     protected boolean enabled = true;
+    private DudeWheresMyStuffPlugin plugin;
 
-    StorageManager(Client client, ItemManager itemManager, ConfigManager configManager, DudeWheresMyStuffConfig config, Notifier notifier) {
+    StorageManager(Client client, ItemManager itemManager, ConfigManager configManager, DudeWheresMyStuffConfig config, Notifier notifier, DudeWheresMyStuffPlugin plugin) {
         this.client = client;
         this.itemManager = itemManager;
         this.configManager = configManager;
         this.config = config;
         this.notifier = notifier;
+        this.plugin = plugin;
     }
 
     long getTotalValue() {
         return storages.stream().mapToLong(Storage::getTotalValue).sum();
     }
 
-    boolean onGameTick(boolean isMember) {
+    boolean onGameTick() {
         if (!enabled) return false;
 
         boolean updated = false;
 
         for (S storage : storages) {
-            if (storage.getType().isMembersOnly() && !isMember) continue;
+            if (storage.getType().isMembersOnly() && !plugin.isMember) continue;
 
             if (storage.onGameTick()) updated = true;
         }
@@ -46,13 +48,13 @@ abstract class StorageManager<ST extends StorageType, S extends Storage<ST>> {
         return updated;
     }
 
-    boolean onWidgetLoaded(WidgetLoaded widgetLoaded, boolean isMember) {
+    boolean onWidgetLoaded(WidgetLoaded widgetLoaded) {
         if (!enabled) return false;
 
         boolean updated = false;
 
         for (S storage : storages) {
-            if (storage.getType().isMembersOnly() && !isMember) continue;
+            if (storage.getType().isMembersOnly() && !plugin.isMember) continue;
 
             if (storage.onWidgetLoaded(widgetLoaded)) updated = true;
         }
@@ -60,13 +62,13 @@ abstract class StorageManager<ST extends StorageType, S extends Storage<ST>> {
         return updated;
     }
 
-    boolean onWidgetClosed(WidgetClosed widgetClosed, boolean isMember) {
+    boolean onWidgetClosed(WidgetClosed widgetClosed) {
         if (!enabled) return false;
 
         boolean updated = false;
 
         for (S storage : storages) {
-            if (storage.getType().isMembersOnly() && !isMember) continue;
+            if (storage.getType().isMembersOnly() && !plugin.isMember) continue;
 
             if (storage.onWidgetClosed(widgetClosed)) updated = true;
         }
@@ -74,13 +76,13 @@ abstract class StorageManager<ST extends StorageType, S extends Storage<ST>> {
         return updated;
     }
 
-    boolean onVarbitChanged(boolean isMember) {
+    boolean onVarbitChanged() {
         if (!enabled) return false;
 
         boolean updated = false;
 
         for (S storage : storages) {
-            if (storage.getType().isMembersOnly() && !isMember) continue;
+            if (storage.getType().isMembersOnly() && !plugin.isMember) continue;
 
             if (storage.onVarbitChanged()) updated = true;
         }
@@ -88,13 +90,13 @@ abstract class StorageManager<ST extends StorageType, S extends Storage<ST>> {
         return updated;
     }
 
-    boolean onItemContainerChanged(ItemContainerChanged itemContainerChanged, boolean isMember) {
+    boolean onItemContainerChanged(ItemContainerChanged itemContainerChanged) {
         if (!enabled) return false;
 
         boolean updated = false;
 
         for (S storage : storages) {
-            if (storage.getType().isMembersOnly() && !isMember) continue;
+            if (storage.getType().isMembersOnly() && !plugin.isMember) continue;
 
             if (storage.onItemContainerChanged(itemContainerChanged)) updated = true;
         }

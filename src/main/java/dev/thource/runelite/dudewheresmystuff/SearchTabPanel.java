@@ -28,15 +28,14 @@ class SearchTabPanel extends StorageTabPanel<StorageType, Storage<StorageType>, 
 
     private final JPanel itemsBoxContainer;
     private final IconTextField searchBar;
-    private Client client;
+    public AccountType accountType;
 
-    SearchTabPanel(ItemManager itemManager, DudeWheresMyStuffConfig config, DudeWheresMyStuffPanel pluginPanel, DeathStorageManager deathStorageManager, CoinsStorageManager coinsStorageManager, CarryableStorageManager carryableStorageManager, WorldStorageManager worldStorageManager, Client client) {
+    SearchTabPanel(ItemManager itemManager, DudeWheresMyStuffConfig config, DudeWheresMyStuffPanel pluginPanel, DeathStorageManager deathStorageManager, CoinsStorageManager coinsStorageManager, CarryableStorageManager carryableStorageManager, WorldStorageManager worldStorageManager) {
         super(itemManager, config, pluginPanel, null);
         this.deathStorageManager = deathStorageManager;
         this.coinsStorageManager = coinsStorageManager;
         this.carryableStorageManager = carryableStorageManager;
         this.worldStorageManager = worldStorageManager;
-        this.client = client;
 
         searchBar = new IconTextField();
         searchBar.setIcon(IconTextField.Icon.SEARCH);
@@ -83,7 +82,8 @@ class SearchTabPanel extends StorageTabPanel<StorageType, Storage<StorageType>, 
         itemsBoxes.clear();
         Stream.of(
                         deathStorageManager.storages.stream()
-                                .filter(s -> s.getType() != DeathStorageType.DEATHPILE || !((Deathpile) s).hasExpired()),
+                                .filter(s -> (s.getType() == DeathStorageType.DEATHPILE && !((Deathpile) s).hasExpired())
+                                        || (s.getType() != DeathStorageType.DEATHPILE && ((Deathbank) s).getLostAt() == -1L)),
                         coinsStorageManager.storages.stream()
                                 .filter(storage -> storage.getType() != CoinsStorageType.INVENTORY && storage.getType() != CoinsStorageType.LOOTING_BAG),
                         carryableStorageManager.storages.stream(),
@@ -105,7 +105,7 @@ class SearchTabPanel extends StorageTabPanel<StorageType, Storage<StorageType>, 
                     }
 
                     if (storage instanceof Deathbank) {
-                        if (client.getAccountType() != AccountType.ULTIMATE_IRONMAN || storage.getType() != DeathStorageType.ZULRAH)
+                        if (accountType != AccountType.ULTIMATE_IRONMAN || storage.getType() != DeathStorageType.ZULRAH)
                             itemsBox.setSubTitle(((Deathbank) storage).isLocked() ? "Locked" : "Unlocked");
                     } else if (storage instanceof Deathpile) {
                         Deathpile deathpile = (Deathpile) storage;

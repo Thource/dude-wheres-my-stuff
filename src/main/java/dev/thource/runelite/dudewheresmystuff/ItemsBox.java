@@ -27,6 +27,7 @@
 package dev.thource.runelite.dudewheresmystuff;
 
 import com.google.common.base.Strings;
+import dev.thource.runelite.dudewheresmystuff.death.Deathbank;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.ItemID;
@@ -209,10 +210,13 @@ class ItemsBox extends JPanel {
 
     private void updateLastUpdatedLabel() {
         if (lastUpdatedLabel == null) return;
+        if (storage instanceof Deathbank && ((Deathbank) storage).getLostAt() != -1L) {
+            lastUpdatedLabel.setText("Lost " + DurationFormatter.format(System.currentTimeMillis() - ((Deathbank) storage).getLostAt()) + " ago");
+            return;
+        }
+
         if (storage.lastUpdated == -1L) {
-            if (!Objects.equals(lastUpdatedLabel.getText(), "Unknown")) {
-                lastUpdatedLabel.setText("Unknown");
-            }
+            if (!Objects.equals(lastUpdatedLabel.getText(), "Unknown")) lastUpdatedLabel.setText("Unknown");
 
             return;
         }

@@ -3,6 +3,8 @@ package dev.thource.runelite.dudewheresmystuff;
 import dev.thource.runelite.dudewheresmystuff.death.Deathbank;
 import dev.thource.runelite.dudewheresmystuff.death.Deathpile;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Client;
+import net.runelite.api.vars.AccountType;
 import net.runelite.client.game.ItemManager;
 
 import javax.swing.*;
@@ -12,6 +14,7 @@ import java.util.Comparator;
 @Slf4j
 class DeathStorageTabPanel extends StorageTabPanel<DeathStorageType, DeathStorage, DeathStorageManager> {
     private final boolean developerMode;
+    public AccountType accountType;
 
     DeathStorageTabPanel(ItemManager itemManager, DudeWheresMyStuffConfig config, DudeWheresMyStuffPanel pluginPanel, DeathStorageManager storageManager, boolean developerMode) {
         super(itemManager, config, pluginPanel, storageManager);
@@ -20,17 +23,22 @@ class DeathStorageTabPanel extends StorageTabPanel<DeathStorageType, DeathStorag
 
     @Override
     protected Comparator<DeathStorage> getStorageSorter() {
-        return Comparator.comparingInt(s -> {
+        return Comparator.comparingLong(s -> {
             if (s instanceof Deathpile) {
-                Deathpile deathpile = ((Deathpile) s);
+                Deathpile deathpile = (Deathpile) s;
 
                 // Move expired deathpiles to the bottom of the list and sort them the opposite way (newest first)
                 if (deathpile.hasExpired())
-                    return 2000000000 - deathpile.getPlayedMinutesAtCreation();
+                    return deathpile.getExpiryMs();
 
-                return deathpile.getPlayedMinutesAtCreation();
+                return -deathpile.getExpiryMs();
             } else {
-                return -1;
+                Deathbank deathbank = (Deathbank) s;
+
+                if (deathbank.lostAt != -1L)
+                    return deathbank.lostAt;
+
+                return Long.MIN_VALUE;
             }
         });
     }
@@ -67,21 +75,21 @@ class DeathStorageTabPanel extends StorageTabPanel<DeathStorageType, DeathStorag
             add(itemsBox);
 
             if (storage instanceof Deathbank) {
-                if (storage.getType() != DeathStorageType.ZULRAH)
+                if (((Deathbank) storage).getLostAt() == -1L && (accountType != AccountType.ULTIMATE_IRONMAN || storage.getType() != DeathStorageType.ZULRAH))
                     itemsBox.setSubTitle(((Deathbank) storage).isLocked() ? "Locked" : "Unlocked");
 
                 final JPopupMenu popupMenu = new JPopupMenu();
                 popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
                 itemsBox.setComponentPopupMenu(popupMenu);
 
-                final JMenuItem clearDeathbank = new JMenuItem("Clear Deathbank");
+                final JMenuItem clearDeathbank = new JMenuItem("Delete Deathbank");
                 clearDeathbank.addActionListener(e -> {
                     int result = JOptionPane.OK_OPTION;
 
                     try {
                         result = JOptionPane.showConfirmDialog(
                                 this,
-                                "Are you sure you want to clear your deathbank?\nThis cannot be undone.", "Confirm clear",
+                                "Are you sure you want to delete your deathbank?\nThis cannot be undone.", "Confirm deletion",
                                 JOptionPane.OK_CANCEL_OPTION,
                                 JOptionPane.WARNING_MESSAGE);
                     } catch (Exception err) {
@@ -89,7 +97,11 @@ class DeathStorageTabPanel extends StorageTabPanel<DeathStorageType, DeathStorag
                     }
 
                     if (result == JOptionPane.OK_OPTION) {
-                        storageManager.deathbank.reset();
+                        if (storage == storageManager.deathbank) {
+                            storageManager.clearDeathbank(false);
+                        } else {
+                            storageManager.storages.remove(storage);
+                        }
                         rebuildList(isMember);
                         storageManager.save();
                     }
