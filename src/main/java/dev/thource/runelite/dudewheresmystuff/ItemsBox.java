@@ -49,7 +49,7 @@ import java.util.Objects;
 import java.util.function.ToLongFunction;
 
 class ItemsBox extends JPanel {
-    private static final int ITEMS_PER_ROW = 5;
+    private static final int ITEMS_PER_ROW = 4;
     private static final int TITLE_PADDING = 5;
 
     private final JPanel itemContainer = new JPanel();

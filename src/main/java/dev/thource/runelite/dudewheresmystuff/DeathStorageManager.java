@@ -160,8 +160,6 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
     }
 
     void clearDeathbank(boolean wasLost) {
-        System.out.println("Clearing deathbank");
-
         if (wasLost && !deathbank.getItems().isEmpty()) {
             Deathbank db = new Deathbank(deathbank.getType(), client, itemManager);
             db.lostAt = System.currentTimeMillis();
@@ -232,7 +230,6 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
     private boolean processDeath() {
         if (client.getLocalPlayer() == null) return false;
 
-        System.out.println("Processing death dying: " + dying + " hp " + client.getBoostedSkillLevel(Skill.HITPOINTS));
         boolean updated = false;
 
         if (!dying || client.getBoostedSkillLevel(Skill.HITPOINTS) < 10)
@@ -277,19 +274,13 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
 
                 ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
                 if (inventory != null) {
-                    System.out.println("inventory items " + inventory.getItems().length);
                     removeItemsFromList(deathItems, inventory.getItems());
                 }
 
                 ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
                 if (equipment != null) {
-                    System.out.println("equipment items " + equipment.getItems().length);
                     removeItemsFromList(deathItems, equipment.getItems());
                 }
-
-                System.out.println("deathitems " + deathItems.size());
-                System.out.println("deathStorageType " + deathStorageType);
-                System.out.println("deathRegionId " + deathLocation.getRegionID());
 
                 if (deathStorageType == null) {
                     if (client.getAccountType() == AccountType.ULTIMATE_IRONMAN)

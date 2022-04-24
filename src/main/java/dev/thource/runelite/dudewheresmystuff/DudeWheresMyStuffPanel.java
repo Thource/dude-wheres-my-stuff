@@ -83,10 +83,10 @@ class DudeWheresMyStuffPanel extends PluginPanel {
         setLayout(new BorderLayout());
         setBackground(ColorScheme.DARK_GRAY_COLOR);
 
-        display.setBorder(new EmptyBorder(6, 6, 6, 6));
+        display.setBorder(new EmptyBorder(10, 10, 8, 10));
 
         tabGroup.setLayout(new InvisibleGridLayout(0, 6, 7, 7));
-        tabGroup.setBorder(new EmptyBorder(6, 6, 0, 6));
+        tabGroup.setBorder(new EmptyBorder(10, 10, 0, 10));
 
         add(tabGroup, BorderLayout.NORTH);
         add(display, BorderLayout.CENTER);
@@ -121,7 +121,7 @@ class DudeWheresMyStuffPanel extends PluginPanel {
         wrapped.add(tabContentPanel, BorderLayout.NORTH);
         wrapped.setBackground(ColorScheme.DARK_GRAY_COLOR);
 
-        JScrollPane scroller = new JScrollPane(wrapped);
+        JScrollPane scroller = new JScrollPane(new ScrollableContainer(wrapped));
         scroller.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scroller.getVerticalScrollBar().setPreferredSize(new Dimension(16, 0));
         scroller.getVerticalScrollBar().setBorder(new EmptyBorder(0, 9, 0, 0));
