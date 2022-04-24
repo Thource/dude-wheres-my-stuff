@@ -15,6 +15,27 @@ class MinigamesStorageTabPanel extends StorageTabPanel<MinigamesStorageType, Min
     }
 
     @Override
+    protected void rebuildList(boolean isMember) {
+        removeAll();
+
+        itemsBoxes.clear();
+        storageManager.storages.stream().sorted(getStorageSorter()).forEach((storage) -> {
+            if (storage.getType().isMembersOnly() && !isMember) return;
+
+            ItemsBox itemsBox = new ItemsBox(itemManager, storage, null, false, showPrice());
+            for (ItemStack itemStack : storage.getItems()) {
+                if (storage.getType().isAutomatic() || storage.getLastUpdated() != -1L || itemStack.getQuantity() > 0)
+                    itemsBox.getItems().add(itemStack);
+            }
+            itemsBox.rebuild();
+            itemsBoxes.add(itemsBox);
+            add(itemsBox);
+        });
+
+        revalidate();
+    }
+
+    @Override
     protected boolean showPrice() {
         return false;
     }

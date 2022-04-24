@@ -9,7 +9,7 @@ public enum DeathStorageType implements StorageType {
     DEATHPILE("Deathpile", -1, true, "deathpiles", false, -100, -100, null),
     UNKNOWN_DEATHBANK("Unknown Deathbank", -1, false, "unknown", true, -100, -100, null),
     HYDRA("Alchemical Hydra", -1, false, "hydra", true, 13, 14, Region.BOSS_HYDRA), // confirmed
-    GUARDIANS("Grotesque Guardians", -1, false, "guardians", true, 3, 4, Region.BOSS_GROTESQUE_GUARDIANS),
+    GUARDIANS("Grotesque Guardians", -1, false, "guardians", true, 3, 4, Region.BOSS_GROTESQUE_GUARDIANS), // confirmed
     SEPULCHRE("Hallowed Sepulchre", -1, false, "sepulchre", true, 29, 30, Region.MG_HALLOWED_SEPULCHRE), // confirmed
     HESPORI("Hespori", -1, false, "hespori", true, 15, 16, Region.BOSS_HESPORI), // confirmed
     MIMIC("The Mimic", -1, false, "mimic", true, 17, 18, null),
