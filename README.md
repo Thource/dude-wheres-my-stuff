@@ -1,5 +1,10 @@
 # Dude, Where's My Stuff?
-Helps you keep track of your stuff (items, gp, minigame points) in Old School RuneScape by recording and showing you where they are in an easy to view way. 
+
+[![](https://img.shields.io/endpoint?url=https://i.pluginhub.info/shields/rank/plugin/dude-wheres-my-stuff)](https://runelite.net/plugin-hub) [![](https://img.shields.io/endpoint?url=https://i.pluginhub.info/shields/installs/plugin/dude-wheres-my-stuff)](https://runelite.net/plugin-hub)
+
+Helps you keep track of your stuff (items, gp, minigame points) in Old School RuneScape by recording and showing you where they are in an easy to view way.
+
+[![Discord](https://discord.com/api/guilds/967795701599850567/widget.png?style=banner2)](https://discord.gg/tz3abR5nxA)
 
 ## Current features
 
