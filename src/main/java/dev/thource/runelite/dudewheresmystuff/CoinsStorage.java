@@ -11,7 +11,7 @@ import java.time.Instant;
 
 @Getter
 public class CoinsStorage extends Storage<CoinsStorageType> {
-    private ItemStack coinStack = new ItemStack(995, "Coins", 0, 1, 0, true);
+    protected ItemStack coinStack = new ItemStack(995, "Coins", 0, 1, 0, true);
 
     protected CoinsStorage(CoinsStorageType type, Client client, ItemManager itemManager) {
         super(type, client, itemManager);

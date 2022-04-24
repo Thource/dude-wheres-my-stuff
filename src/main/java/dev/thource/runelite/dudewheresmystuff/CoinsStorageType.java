@@ -12,7 +12,9 @@ public enum CoinsStorageType implements StorageType {
     SERVANT_MONEYBAG("Servant's Moneybag", -1, -1, false, "servantsmoneybag", true),
     BF("Blast Furnace", 5357, -1, true, "blastfurnace", true),
     INVENTORY("Inventory", -1, InventoryID.INVENTORY.getId(), true, "inventory", false),
-    LOOTING_BAG("Looting Bag", -1, 516, false, "lootingbag", true);
+    LOOTING_BAG("Looting Bag", -1, 516, false, "lootingbag", true),
+    GRAND_EXCHANGE("Grand Exchange", -1, 516, false, "grandexchange", false),
+    SHILO_FURNACE("Shilo Furnace", -1, 516, false, "shilofurnace", true);
 
     CoinsStorageType(String name, int varbitId, int itemContainerId, boolean automatic, String configKey, boolean membersOnly) {
         this.name = name;

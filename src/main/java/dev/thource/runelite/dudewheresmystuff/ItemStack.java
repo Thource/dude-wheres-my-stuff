@@ -33,7 +33,6 @@ import net.runelite.api.ItemComposition;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.game.ItemManager;
 
-import javax.inject.Inject;
 import java.io.Serializable;
 
 @AllArgsConstructor
@@ -43,42 +42,42 @@ public
 class ItemStack implements Serializable {
     public int id;
     String name;
-    int quantity;
+    long quantity;
     int gePrice;
     int haPrice;
     boolean stackable;
 
     public ItemStack(int id, Client client, ClientThread clientThread, ItemManager itemManager) {
-		this.id = id;
-		this.name = "Loading";
-		this.quantity = 0;
+        this.id = id;
+        this.name = "Loading";
+        this.quantity = 0L;
 
-		if (client.isClientThread()) {
-			populateFromComposition(itemManager);
+        if (client.isClientThread()) {
+            populateFromComposition(itemManager);
 
-			return;
-		}
+            return;
+        }
 
-		clientThread.invoke(()->this.populateFromComposition(itemManager));
-	}
+        clientThread.invoke(() -> this.populateFromComposition(itemManager));
+    }
 
-	public void populateFromComposition(ItemManager itemManager) {
-		ItemComposition composition = itemManager.getItemComposition(id);
-		this.name = composition.getName();
-		this.gePrice = itemManager.getItemPrice(id);
-		this.haPrice = composition.getHaPrice();
-		this.stackable = composition.isStackable();
-	}
+    public void populateFromComposition(ItemManager itemManager) {
+        ItemComposition composition = itemManager.getItemComposition(id);
+        this.name = composition.getName();
+        this.gePrice = itemManager.getItemPrice(id);
+        this.haPrice = composition.getHaPrice();
+        this.stackable = composition.isStackable();
+    }
 
-	long getTotalGePrice() {
-        return (long) gePrice * quantity;
+    long getTotalGePrice() {
+        return gePrice * quantity;
     }
 
     long getTotalHaPrice() {
-        return (long) haPrice * quantity;
+        return haPrice * quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(long quantity) {
         this.quantity = quantity;
     }
 }

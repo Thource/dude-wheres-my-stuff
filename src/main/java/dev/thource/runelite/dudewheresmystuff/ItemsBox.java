@@ -303,7 +303,7 @@ class ItemsBox extends JPanel {
                 imageLabel.setVerticalAlignment(SwingConstants.CENTER);
                 imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-                AsyncBufferedImage itemImage = itemManager.getImage(item.getId(), item.getQuantity(), item.isStackable() || item.getQuantity() > 1);
+                AsyncBufferedImage itemImage = itemManager.getImage(item.getId(), (int) Math.min(item.getQuantity(), Integer.MAX_VALUE), item.isStackable() || item.getQuantity() > 1);
                 itemImage.addTo(imageLabel);
 
                 slotContainer.add(imageLabel);
@@ -317,7 +317,7 @@ class ItemsBox extends JPanel {
 
     private static String buildToolTip(ItemStack item) {
         final String name = item.getName();
-        final int quantity = item.getQuantity();
+        final long quantity = item.getQuantity();
         final long gePrice = item.getTotalGePrice();
         final long haPrice = item.getTotalHaPrice();
         final StringBuilder sb = new StringBuilder("<html>");

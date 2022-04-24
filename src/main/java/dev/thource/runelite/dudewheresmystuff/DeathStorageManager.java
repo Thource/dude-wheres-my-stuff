@@ -127,11 +127,11 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
         for (ItemStack itemToRemove : itemsToRemove) {
             if (itemToRemove.getId() == -1) continue;
 
-            int quantityToRemove = itemToRemove.getQuantity();
+            long quantityToRemove = itemToRemove.getQuantity();
             for (ItemStack inventoryItem : listToRemoveFrom) {
                 if (inventoryItem.getId() != itemToRemove.getId()) continue;
 
-                int qtyToRemove = Math.min(quantityToRemove, inventoryItem.getQuantity());
+                long qtyToRemove = Math.min(quantityToRemove, inventoryItem.getQuantity());
                 quantityToRemove -= qtyToRemove;
                 inventoryItem.setQuantity(inventoryItem.getQuantity() - qtyToRemove);
                 if (inventoryItem.getQuantity() == 0) listToRemoveFrom.remove(inventoryItem);
@@ -145,11 +145,11 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
         for (Item itemToRemove : itemsToRemove) {
             if (itemToRemove.getId() == -1) continue;
 
-            int quantityToRemove = itemToRemove.getQuantity();
+            long quantityToRemove = itemToRemove.getQuantity();
             for (ItemStack inventoryItem : listToRemoveFrom) {
                 if (inventoryItem.getId() != itemToRemove.getId()) continue;
 
-                int qtyToRemove = Math.min(quantityToRemove, inventoryItem.getQuantity());
+                long qtyToRemove = Math.min(quantityToRemove, inventoryItem.getQuantity());
                 quantityToRemove -= qtyToRemove;
                 inventoryItem.setQuantity(inventoryItem.getQuantity() - qtyToRemove);
                 if (inventoryItem.getQuantity() == 0) listToRemoveFrom.remove(inventoryItem);

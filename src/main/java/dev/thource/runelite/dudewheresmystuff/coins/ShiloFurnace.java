@@ -7,18 +7,21 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.client.game.ItemManager;
 import org.apache.commons.lang3.math.NumberUtils;
 
-public class ServantsMoneybag extends CoinsStorage {
-    public ServantsMoneybag(Client client, ItemManager itemManager) {
-        super(CoinsStorageType.SERVANT_MONEYBAG, client, itemManager);
+public class ShiloFurnace extends CoinsStorage {
+    public ShiloFurnace(Client client, ItemManager itemManager) {
+        super(CoinsStorageType.SHILO_FURNACE, client, itemManager);
     }
 
     @Override
     public boolean onGameTick() {
-        Widget widget = client.getWidget(193, 2);
+        Widget widget = client.getWidget(219, 1);
         if (widget == null) return false;
-        if (!widget.getText().startsWith("The moneybag ")) return false;
 
-        int parsedCoins = NumberUtils.toInt(widget.getText().replaceAll("\\D+", ""), 0);
+        Widget textWidget = widget.getChild(0);
+        if (textWidget == null) return false;
+        if (!textWidget.getText().startsWith("Furnace coffer: ")) return false;
+
+        int parsedCoins = NumberUtils.toInt(textWidget.getText().replaceAll("\\D+", ""), 0);
         this.getCoinStack().setQuantity(parsedCoins);
         this.lastUpdated = System.currentTimeMillis();
         return true;
