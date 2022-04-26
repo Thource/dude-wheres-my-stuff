@@ -286,6 +286,7 @@ class ItemsBox extends JPanel {
                 .sum();
 
         itemContainer.removeAll();
+        itemContainer.setLayout(null);
 
         if (itemSortMode == ItemSortMode.VALUE)
             items.sort(Comparator.comparingLong(getPrice).reversed());
@@ -293,32 +294,34 @@ class ItemsBox extends JPanel {
         if (itemSortMode != ItemSortMode.UNSORTED)
             items = items.stream().filter(itemStack -> itemStack.getId() != -1).collect(Collectors.toList());
 
-        // Calculates how many rows need to be display to fit all items
-        final int rowSize = ((items.size() % ITEMS_PER_ROW == 0) ? 0 : 1) + items.size() / ITEMS_PER_ROW;
+        if (items.stream().anyMatch(itemStack -> itemStack.getId() != -1)) {
+            // Calculates how many rows need to be display to fit all items
+            final int rowSize = ((items.size() % ITEMS_PER_ROW == 0) ? 0 : 1) + items.size() / ITEMS_PER_ROW;
 
-        itemContainer.setLayout(new GridLayout(rowSize, ITEMS_PER_ROW, 1, 1));
+            itemContainer.setLayout(new GridLayout(rowSize, ITEMS_PER_ROW, 1, 1));
 
-        for (int i = 0; i < rowSize * ITEMS_PER_ROW; i++) {
-            final JPanel slotContainer = new JPanel();
-            slotContainer.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+            for (int i = 0; i < rowSize * ITEMS_PER_ROW; i++) {
+                final JPanel slotContainer = new JPanel();
+                slotContainer.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
-            if (i < items.size()) {
-                final ItemStack item = items.get(i);
+                if (i < items.size()) {
+                    final ItemStack item = items.get(i);
 
-                final JLabel imageLabel = new JLabel();
-                imageLabel.setToolTipText(buildToolTip(item));
-                imageLabel.setVerticalAlignment(SwingConstants.CENTER);
-                imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
+                    final JLabel imageLabel = new JLabel();
+                    imageLabel.setToolTipText(buildToolTip(item));
+                    imageLabel.setVerticalAlignment(SwingConstants.CENTER);
+                    imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-                if (item.getId() != -1) {
-                    AsyncBufferedImage itemImage = itemManager.getImage(item.getId(), (int) Math.min(item.getQuantity(), Integer.MAX_VALUE), item.isStackable() || item.getQuantity() > 1);
-                    itemImage.addTo(imageLabel);
+                    if (item.getId() != -1) {
+                        AsyncBufferedImage itemImage = itemManager.getImage(item.getId(), (int) Math.min(item.getQuantity(), Integer.MAX_VALUE), item.isStackable() || item.getQuantity() > 1);
+                        itemImage.addTo(imageLabel);
+                    }
+
+                    slotContainer.add(imageLabel);
                 }
 
-                slotContainer.add(imageLabel);
+                itemContainer.add(slotContainer);
             }
-
-            itemContainer.add(slotContainer);
         }
 
         itemContainer.revalidate();
