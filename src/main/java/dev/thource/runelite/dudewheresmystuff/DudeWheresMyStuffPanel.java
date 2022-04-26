@@ -196,4 +196,23 @@ class DudeWheresMyStuffPanel extends PluginPanel {
     public void setDisplayName(String name) {
         displayName = name;
     }
+
+    void reset() {
+        uiTabs.forEach((tab, materialTab) -> {
+            if (tab == Tab.OVERVIEW) return;
+
+            materialTab.setVisible(false);
+        });
+
+        overviewTab.overviews.forEach((tab, overviewItemPanel) -> {
+            if (tab == Tab.OVERVIEW) return;
+
+            overviewItemPanel.setVisible(false);
+        });
+
+        SwingUtilities.invokeLater(() -> ((SearchTabPanel) storageTabPanelMap.get(Tab.SEARCH)).searchBar.setText(""));
+        switchTab(Tab.OVERVIEW);
+        setDisplayName("");
+        update();
+    }
 }

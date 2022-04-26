@@ -25,7 +25,7 @@ class SearchTabPanel extends StorageTabPanel<StorageType, Storage<StorageType>, 
     private final CarryableStorageManager carryableStorageManager;
     private final WorldStorageManager worldStorageManager;
 
-    private final IconTextField searchBar;
+    final IconTextField searchBar;
     public AccountType accountType;
 
     SearchTabPanel(ItemManager itemManager, DudeWheresMyStuffConfig config, DudeWheresMyStuffPanel pluginPanel, DeathStorageManager deathStorageManager, CoinsStorageManager coinsStorageManager, CarryableStorageManager carryableStorageManager, WorldStorageManager worldStorageManager) {

@@ -4,9 +4,9 @@ import com.google.inject.Provides;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.ItemContainer;
 import net.runelite.api.VarClientInt;
 import net.runelite.api.events.*;
-import net.runelite.api.vars.AccountType;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
@@ -34,9 +34,6 @@ public class DudeWheresMyStuffPlugin extends Plugin {
     private Client client;
 
     @Inject
-    private DudeWheresMyStuffConfig config;
-
-    @Inject
     private DeathStorageManager deathStorageManager;
 
     @Inject
@@ -51,9 +48,6 @@ public class DudeWheresMyStuffPlugin extends Plugin {
     @Inject
     private MinigamesStorageManager minigamesStorageManager;
 
-    @Inject
-    private ConfigManager configManager;
-
     private final List<StorageManager<?, ?>> storageManagers = new ArrayList<>();
 
     private DudeWheresMyStuffPanel panel;
@@ -61,31 +55,50 @@ public class DudeWheresMyStuffPlugin extends Plugin {
     private NavigationButton navButton;
 
     private ClientState clientState = ClientState.LOGGED_OUT;
+    private boolean pluginStartedAlreadyLoggedIn;
 
     @Override
-    protected void startUp() throws Exception {
-        final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "icon.png");
+    protected void startUp() {
+        if (panel == null)
+            panel = injector.getInstance(DudeWheresMyStuffPanel.class);
 
-        panel = injector.getInstance(DudeWheresMyStuffPanel.class);
+        if (navButton == null) {
+            final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "icon.png");
 
-        navButton = NavigationButton.builder()
-                .tooltip("Dude, Where's My Stuff?")
-                .icon(icon)
-                .panel(panel)
-                .priority(4)
-                .build();
-
-        clientToolbar.addNavigation(navButton);
+            navButton = NavigationButton.builder()
+                    .tooltip("Dude, Where's My Stuff?")
+                    .icon(icon)
+                    .panel(panel)
+                    .priority(4)
+                    .build();
+        }
 
         storageManagers.add(deathStorageManager);
         storageManagers.add(coinsStorageManager);
         storageManagers.add(carryableStorageManager);
         storageManagers.add(worldStorageManager);
         storageManagers.add(minigamesStorageManager);
+        reset();
+
+        clientToolbar.addNavigation(navButton);
+
+        if (client.getGameState() == GameState.LOGGED_IN) {
+            clientState = ClientState.LOGGING_IN;
+            pluginStartedAlreadyLoggedIn = true;
+        } else if (client.getGameState() == GameState.LOGGING_IN) {
+            clientState = ClientState.LOGGING_IN;
+        }
+    }
+
+    private void reset() {
+        clientState = ClientState.LOGGED_OUT;
+
+        storageManagers.forEach(StorageManager::reset);
+        panel.reset();
     }
 
     @Override
-    protected void shutDown() throws Exception {
+    protected void shutDown() {
         clientToolbar.removeNavigation(navButton);
     }
 
@@ -99,22 +112,7 @@ public class DudeWheresMyStuffPlugin extends Plugin {
         storageManagers.forEach(storageManager -> storageManager.onGameStateChanged(gameStateChanged));
 
         if (gameStateChanged.getGameState() == GameState.LOGIN_SCREEN) {
-            clientState = ClientState.LOGGED_OUT;
-
-            for (StorageManager<?, ?> storageManager : storageManagers) {
-                storageManager.reset();
-
-                MaterialTab tab = panel.uiTabs.get(storageManager.getTab());
-                OverviewItemPanel overviewItemPanel = panel.overviewTab.overviews.get(storageManager.getTab());
-
-                if (tab != null) tab.setVisible(false);
-                if (overviewItemPanel != null) overviewItemPanel.setVisible(false);
-
-                panel.switchTab(Tab.OVERVIEW);
-            }
-            panel.uiTabs.get(Tab.SEARCH).setVisible(false);
-            panel.setDisplayName("");
-            panel.update();
+            reset();
         } else if (gameStateChanged.getGameState() == GameState.LOGGING_IN) {
             clientState = ClientState.LOGGING_IN;
         } else if (gameStateChanged.getGameState() == GameState.LOGGED_IN) {
@@ -158,8 +156,24 @@ public class DudeWheresMyStuffPlugin extends Plugin {
                 if (overviewItemPanel != null) overviewItemPanel.setVisible(true);
             }
             panel.uiTabs.get(Tab.SEARCH).setVisible(true);
-            panel.update();
             clientState = ClientState.LOGGED_IN;
+
+            if (pluginStartedAlreadyLoggedIn) {
+                storageManagers.forEach(StorageManager::load);
+
+                for (ItemContainer itemContainer : client.getItemContainers()) {
+                    onItemContainerChanged(new ItemContainerChanged(itemContainer.getId(), itemContainer));
+                }
+
+                onVarbitChanged(new VarbitChanged());
+
+                if (client.getLocalPlayer() != null)
+                    panel.setDisplayName(client.getLocalPlayer().getName());
+
+                pluginStartedAlreadyLoggedIn = false;
+            }
+
+            panel.update();
 
             return;
         }
@@ -257,8 +271,7 @@ public class DudeWheresMyStuffPlugin extends Plugin {
     }
 
     @Subscribe
-    public void onItemDespawned(ItemDespawned itemDespawned)
-    {
+    public void onItemDespawned(ItemDespawned itemDespawned) {
         if (clientState == ClientState.LOGGED_OUT) return;
 
         AtomicBoolean isPanelDirty = new AtomicBoolean(false);
