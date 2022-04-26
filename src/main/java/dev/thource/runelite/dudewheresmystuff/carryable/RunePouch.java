@@ -77,4 +77,17 @@ public class RunePouch extends CarryableStorage {
             items.add(new ItemStack(-1, "empty", 1, 0, 0, false));
         }
     }
+
+    @Override
+    public void reset() {
+        super.reset();
+
+        rune1Type = 0;
+        rune2Type = 0;
+        rune3Type = 0;
+
+        rune1Quantity = 0;
+        rune2Quantity = 0;
+        rune3Quantity = 0;
+    }
 }
