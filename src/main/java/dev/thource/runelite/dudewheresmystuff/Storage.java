@@ -25,6 +25,7 @@ abstract class Storage<T extends StorageType> {
     protected List<ItemStack> items = new ArrayList<>();
 
     protected long lastUpdated = -1L;
+    protected boolean enabled = true;
 
     Storage(T type, Client client, ItemManager itemManager) {
         this.type = type;
@@ -61,11 +62,8 @@ abstract class Storage<T extends StorageType> {
 
         items.clear();
         for (Item item : itemContainer.getItems()) {
-            if (item.getId() == -1) continue;
-
-            ItemStack itemStack = items.stream().filter(i -> i.getId() == item.getId()).findFirst().orElse(null);
-            if (itemStack != null) {
-                itemStack.setQuantity(itemStack.getQuantity() + item.getQuantity());
+            if (item.getId() == -1) {
+                items.add(new ItemStack(item.getId(), "empty slot", 1, 0, 0, false));
                 continue;
             }
 
@@ -81,6 +79,7 @@ abstract class Storage<T extends StorageType> {
     public void reset() {
         items.clear();
         lastUpdated = -1;
+        enable();
     }
 
     public void save(ConfigManager configManager, String managerConfigKey) {
@@ -134,5 +133,13 @@ abstract class Storage<T extends StorageType> {
 
         items.clear();
         items.addAll(loadedItems);
+    }
+
+    public void disable() {
+        enabled = false;
+    }
+
+    public void enable() {
+        enabled = true;
     }
 }

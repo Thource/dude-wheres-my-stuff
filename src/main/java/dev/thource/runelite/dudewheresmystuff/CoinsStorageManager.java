@@ -3,6 +3,7 @@ package dev.thource.runelite.dudewheresmystuff;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import dev.thource.runelite.dudewheresmystuff.coins.GrandExchange;
+import dev.thource.runelite.dudewheresmystuff.coins.LootingBag;
 import dev.thource.runelite.dudewheresmystuff.coins.ServantsMoneybag;
 import dev.thource.runelite.dudewheresmystuff.coins.ShiloFurnace;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +22,8 @@ public class CoinsStorageManager extends StorageManager<CoinsStorageType, CoinsS
         for (CoinsStorageType type : CoinsStorageType.values()) {
             if (type == CoinsStorageType.SERVANT_MONEYBAG
                     || type == CoinsStorageType.SHILO_FURNACE
-                    || type == CoinsStorageType.GRAND_EXCHANGE) continue;
+                    || type == CoinsStorageType.GRAND_EXCHANGE
+                    || type == CoinsStorageType.LOOTING_BAG) continue;
 
             storages.add(new CoinsStorage(type, client, itemManager));
         }
@@ -29,6 +31,7 @@ public class CoinsStorageManager extends StorageManager<CoinsStorageType, CoinsS
         storages.add(new ServantsMoneybag(client, itemManager));
         storages.add(new ShiloFurnace(client, itemManager));
         storages.add(new GrandExchange(client, itemManager));
+        storages.add(new LootingBag(client, itemManager));
     }
 
     @Override

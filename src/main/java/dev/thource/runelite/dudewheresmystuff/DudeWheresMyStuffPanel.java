@@ -62,7 +62,6 @@ class DudeWheresMyStuffPanel extends PluginPanel {
 
     @Nullable
     private TabContentPanel activeTabPanel = null;
-    boolean isMember = true;
     String displayName = "";
 
     private static final ImageIcon SEARCH_ICON;
@@ -150,7 +149,7 @@ class DudeWheresMyStuffPanel extends PluginPanel {
         {
             activeTabPanel = tabContentPanel;
 
-            tabContentPanel.update(isMember);
+            tabContentPanel.update();
             return true;
         });
 
@@ -174,7 +173,7 @@ class DudeWheresMyStuffPanel extends PluginPanel {
             return;
         }
 
-        SwingUtilities.invokeLater(() -> activeTabPanel.update(isMember));
+        SwingUtilities.invokeLater(() -> activeTabPanel.update());
     }
 
     @Override

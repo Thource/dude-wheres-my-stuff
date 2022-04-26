@@ -2,14 +2,13 @@ package dev.thource.runelite.dudewheresmystuff;
 
 import dev.thource.runelite.dudewheresmystuff.death.Deathbank;
 import dev.thource.runelite.dudewheresmystuff.death.Deathpile;
-import net.runelite.api.Client;
-import net.runelite.api.VarClientInt;
 import net.runelite.api.vars.AccountType;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.components.IconTextField;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
@@ -26,7 +25,6 @@ class SearchTabPanel extends StorageTabPanel<StorageType, Storage<StorageType>, 
     private final CarryableStorageManager carryableStorageManager;
     private final WorldStorageManager worldStorageManager;
 
-    private final JPanel itemsBoxContainer;
     private final IconTextField searchBar;
     public AccountType accountType;
 
@@ -36,6 +34,11 @@ class SearchTabPanel extends StorageTabPanel<StorageType, Storage<StorageType>, 
         this.coinsStorageManager = coinsStorageManager;
         this.carryableStorageManager = carryableStorageManager;
         this.worldStorageManager = worldStorageManager;
+
+        JPanel searchBarContainer = new JPanel();
+        searchBarContainer.setLayout(new BoxLayout(searchBarContainer, BoxLayout.Y_AXIS));
+        searchBarContainer.setBorder(new EmptyBorder(6, 0, 2, 0));
+        add(searchBarContainer, 1);
 
         searchBar = new IconTextField();
         searchBar.setIcon(IconTextField.Icon.SEARCH);
@@ -58,15 +61,11 @@ class SearchTabPanel extends StorageTabPanel<StorageType, Storage<StorageType>, 
                 onSearchBarChanged();
             }
         });
-        add(searchBar);
-
-        itemsBoxContainer = new JPanel();
-        itemsBoxContainer.setLayout(new BoxLayout(itemsBoxContainer, BoxLayout.Y_AXIS));
-        add(itemsBoxContainer);
+        searchBarContainer.add(searchBar);
     }
 
     private void onSearchBarChanged() {
-        rebuildList(coinsStorageManager.client.getVar(VarClientInt.MEMBERSHIP_STATUS) == 1);
+        rebuildList();
     }
 
     @Override
@@ -75,7 +74,7 @@ class SearchTabPanel extends StorageTabPanel<StorageType, Storage<StorageType>, 
     }
 
     @Override
-    protected void rebuildList(boolean isMember) {
+    protected void rebuildList() {
         itemsBoxContainer.removeAll();
 
         String searchText = searchBar.getText().toLowerCase(Locale.ROOT);
@@ -91,10 +90,10 @@ class SearchTabPanel extends StorageTabPanel<StorageType, Storage<StorageType>, 
                 ).flatMap(i -> i)
                 .sorted(Comparator.comparing(s -> s.getType().getName()))
                 .forEach((storage) -> {
-                    if (storage.getType().isMembersOnly() && !isMember) return;
+                    if (!storage.isEnabled()) return;
 
                     List<ItemStack> items = storage.getItems().stream()
-                            .filter(i -> i.getQuantity() > 0 && (Objects.equals(searchText, "") || i.getName().toLowerCase(Locale.ROOT).contains(searchText)))
+                            .filter(i -> i.getId() != -1 && i.getQuantity() > 0 && (Objects.equals(searchText, "") || i.getName().toLowerCase(Locale.ROOT).contains(searchText)))
                             .collect(Collectors.toList());
                     if (items.isEmpty()) return;
 
@@ -120,11 +119,12 @@ class SearchTabPanel extends StorageTabPanel<StorageType, Storage<StorageType>, 
                         }
                     }
 
+                    itemsBox.setSortMode(config.itemSortMode());
                     itemsBox.rebuild();
                     itemsBoxes.add(itemsBox);
                     itemsBoxContainer.add(itemsBox);
                 });
 
-        itemsBoxContainer.revalidate();
+        revalidate();
     }
 }

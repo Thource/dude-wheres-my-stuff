@@ -61,8 +61,6 @@ public class DudeWheresMyStuffPlugin extends Plugin {
     private NavigationButton navButton;
 
     private ClientState clientState = ClientState.LOGGED_OUT;
-    boolean isMember;
-    private AccountType accountType;
 
     @Override
     protected void startUp() throws Exception {
@@ -102,8 +100,6 @@ public class DudeWheresMyStuffPlugin extends Plugin {
 
         if (gameStateChanged.getGameState() == GameState.LOGIN_SCREEN) {
             clientState = ClientState.LOGGED_OUT;
-            isMember = true;
-            accountType = null;
 
             for (StorageManager<?, ?> storageManager : storageManagers) {
                 storageManager.reset();
@@ -142,14 +138,17 @@ public class DudeWheresMyStuffPlugin extends Plugin {
         if (clientState == ClientState.LOGGED_OUT) return;
 
         if (clientState == ClientState.LOGGING_IN) {
-            isMember = client.getVar(VarClientInt.MEMBERSHIP_STATUS) == 1;
-            accountType = client.getAccountType();
-            panel.isMember = isMember;
+            boolean isMember = client.getVar(VarClientInt.MEMBERSHIP_STATUS) == 1;
+            ((DeathStorageTabPanel) panel.storageTabPanelMap.get(Tab.DEATH)).accountType = client.getAccountType();
 
             for (StorageManager<?, ?> storageManager : storageManagers) {
                 if (storageManager.getTab() != Tab.DEATH && storageManager.isMembersOnly() && !isMember) {
                     storageManager.disable();
                     continue;
+                }
+
+                for (Storage<?> storage : storageManager.storages) {
+                    if (storage.getType().isMembersOnly() && !isMember) storage.disable();
                 }
 
                 MaterialTab tab = panel.uiTabs.get(storageManager.getTab());

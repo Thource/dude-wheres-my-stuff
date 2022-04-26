@@ -7,6 +7,8 @@ import java.util.Comparator;
 class MinigamesStorageTabPanel extends StorageTabPanel<MinigamesStorageType, MinigamesStorage, MinigamesStorageManager> {
     MinigamesStorageTabPanel(ItemManager itemManager, DudeWheresMyStuffConfig config, DudeWheresMyStuffPanel pluginPanel, MinigamesStorageManager storageManager) {
         super(itemManager, config, pluginPanel, storageManager);
+
+        remove(sortItemsDropdown);
     }
 
     @Override
@@ -15,12 +17,12 @@ class MinigamesStorageTabPanel extends StorageTabPanel<MinigamesStorageType, Min
     }
 
     @Override
-    protected void rebuildList(boolean isMember) {
+    protected void rebuildList() {
         removeAll();
 
         itemsBoxes.clear();
         storageManager.storages.stream().sorted(getStorageSorter()).forEach((storage) -> {
-            if (storage.getType().isMembersOnly() && !isMember) return;
+            if (!storage.isEnabled()) return;
 
             ItemsBox itemsBox = new ItemsBox(itemManager, storage, null, false, showPrice());
             for (ItemStack itemStack : storage.getItems()) {

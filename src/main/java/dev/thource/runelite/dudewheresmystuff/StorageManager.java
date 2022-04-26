@@ -40,7 +40,7 @@ abstract class StorageManager<ST extends StorageType, S extends Storage<ST>> {
         boolean updated = false;
 
         for (S storage : storages) {
-            if (storage.getType().isMembersOnly() && !plugin.isMember) continue;
+            if (!storage.isEnabled()) continue;
 
             if (storage.onGameTick()) updated = true;
         }
@@ -54,7 +54,7 @@ abstract class StorageManager<ST extends StorageType, S extends Storage<ST>> {
         boolean updated = false;
 
         for (S storage : storages) {
-            if (storage.getType().isMembersOnly() && !plugin.isMember) continue;
+            if (!storage.isEnabled()) continue;
 
             if (storage.onWidgetLoaded(widgetLoaded)) updated = true;
         }
@@ -68,7 +68,7 @@ abstract class StorageManager<ST extends StorageType, S extends Storage<ST>> {
         boolean updated = false;
 
         for (S storage : storages) {
-            if (storage.getType().isMembersOnly() && !plugin.isMember) continue;
+            if (!storage.isEnabled()) continue;
 
             if (storage.onWidgetClosed(widgetClosed)) updated = true;
         }
@@ -82,7 +82,7 @@ abstract class StorageManager<ST extends StorageType, S extends Storage<ST>> {
         boolean updated = false;
 
         for (S storage : storages) {
-            if (storage.getType().isMembersOnly() && !plugin.isMember) continue;
+            if (!storage.isEnabled()) continue;
 
             if (storage.onVarbitChanged()) updated = true;
         }
@@ -96,7 +96,7 @@ abstract class StorageManager<ST extends StorageType, S extends Storage<ST>> {
         boolean updated = false;
 
         for (S storage : storages) {
-            if (storage.getType().isMembersOnly() && !plugin.isMember) continue;
+            if (!storage.isEnabled()) continue;
 
             if (storage.onItemContainerChanged(itemContainerChanged)) updated = true;
         }

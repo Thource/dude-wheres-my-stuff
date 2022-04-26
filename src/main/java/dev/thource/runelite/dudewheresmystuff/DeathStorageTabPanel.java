@@ -3,7 +3,6 @@ package dev.thource.runelite.dudewheresmystuff;
 import dev.thource.runelite.dudewheresmystuff.death.Deathbank;
 import dev.thource.runelite.dudewheresmystuff.death.Deathpile;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.Client;
 import net.runelite.api.vars.AccountType;
 import net.runelite.client.game.ItemManager;
 
@@ -13,8 +12,8 @@ import java.util.Comparator;
 
 @Slf4j
 class DeathStorageTabPanel extends StorageTabPanel<DeathStorageType, DeathStorage, DeathStorageManager> {
-    private final boolean developerMode;
     public AccountType accountType;
+    private final boolean developerMode;
 
     DeathStorageTabPanel(ItemManager itemManager, DudeWheresMyStuffConfig config, DudeWheresMyStuffPanel pluginPanel, DeathStorageManager storageManager, boolean developerMode) {
         super(itemManager, config, pluginPanel, storageManager);
@@ -44,8 +43,8 @@ class DeathStorageTabPanel extends StorageTabPanel<DeathStorageType, DeathStorag
     }
 
     @Override
-    protected void rebuildList(boolean isMember) {
-        removeAll();
+    protected void rebuildList() {
+        itemsBoxContainer.removeAll();
 
         itemsBoxes.clear();
 
@@ -57,11 +56,11 @@ class DeathStorageTabPanel extends StorageTabPanel<DeathStorageType, DeathStorag
             }
             debugDeathBox.rebuild();
             itemsBoxes.add(debugDeathBox);
-            add(debugDeathBox);
+            itemsBoxContainer.add(debugDeathBox);
         }
 
         storageManager.storages.stream().sorted(getStorageSorter()).forEach((storage) -> {
-            if (storage.getType().isMembersOnly() && !isMember) return;
+            if (!storage.isEnabled()) return;
 
             ItemsBox itemsBox = new ItemsBox(itemManager, storage, null, false, showPrice());
             for (ItemStack itemStack : storage.getItems()) {
@@ -70,9 +69,10 @@ class DeathStorageTabPanel extends StorageTabPanel<DeathStorageType, DeathStorag
             }
             if (itemsBox.getItems().isEmpty()) return;
 
+            itemsBox.setSortMode(config.itemSortMode());
             itemsBox.rebuild();
             itemsBoxes.add(itemsBox);
-            add(itemsBox);
+            itemsBoxContainer.add(itemsBox);
 
             if (storage instanceof Deathbank) {
                 if (((Deathbank) storage).getLostAt() == -1L && (accountType != AccountType.ULTIMATE_IRONMAN || storage.getType() != DeathStorageType.ZULRAH))
@@ -102,7 +102,7 @@ class DeathStorageTabPanel extends StorageTabPanel<DeathStorageType, DeathStorag
                         } else {
                             storageManager.storages.remove(storage);
                         }
-                        rebuildList(isMember);
+                        rebuildList();
                         storageManager.save();
                     }
                 });
@@ -131,7 +131,7 @@ class DeathStorageTabPanel extends StorageTabPanel<DeathStorageType, DeathStorag
 
                     if (result == JOptionPane.OK_OPTION) {
                         storageManager.storages.remove(deathpile);
-                        rebuildList(isMember);
+                        rebuildList();
                         storageManager.refreshMapPoints();
                         storageManager.save();
                     }

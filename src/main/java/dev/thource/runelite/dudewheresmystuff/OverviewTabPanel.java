@@ -80,7 +80,7 @@ class OverviewTabPanel extends TabContentPanel {
     }
 
     @Override
-    public void update(boolean isMember) {
+    public void update() {
         if (Objects.equals(pluginPanel.displayName, "")) {
             summaryOverview.setTitle(LOGGED_OUT_SUMMARY);
             summaryOverview.updateStatus("", Color.LIGHT_GRAY);

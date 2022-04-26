@@ -47,6 +47,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.ToLongFunction;
+import java.util.stream.Collectors;
 
 class ItemsBox extends JPanel {
     private static final int ITEMS_PER_ROW = 4;
@@ -73,6 +74,7 @@ class ItemsBox extends JPanel {
 
     private long totalPrice;
     private long expiryMs;
+    private ItemSortMode itemSortMode = ItemSortMode.UNSORTED;
 
     private ItemsBox(
             final ItemManager itemManager,
@@ -285,7 +287,11 @@ class ItemsBox extends JPanel {
 
         itemContainer.removeAll();
 
-        items.sort(Comparator.comparingLong(getPrice).reversed());
+        if (itemSortMode == ItemSortMode.VALUE)
+            items.sort(Comparator.comparingLong(getPrice).reversed());
+
+        if (itemSortMode != ItemSortMode.UNSORTED)
+            items = items.stream().filter(itemStack -> itemStack.getId() != -1).collect(Collectors.toList());
 
         // Calculates how many rows need to be display to fit all items
         final int rowSize = ((items.size() % ITEMS_PER_ROW == 0) ? 0 : 1) + items.size() / ITEMS_PER_ROW;
@@ -298,13 +304,16 @@ class ItemsBox extends JPanel {
 
             if (i < items.size()) {
                 final ItemStack item = items.get(i);
+
                 final JLabel imageLabel = new JLabel();
                 imageLabel.setToolTipText(buildToolTip(item));
                 imageLabel.setVerticalAlignment(SwingConstants.CENTER);
                 imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-                AsyncBufferedImage itemImage = itemManager.getImage(item.getId(), (int) Math.min(item.getQuantity(), Integer.MAX_VALUE), item.isStackable() || item.getQuantity() > 1);
-                itemImage.addTo(imageLabel);
+                if (item.getId() != -1) {
+                    AsyncBufferedImage itemImage = itemManager.getImage(item.getId(), (int) Math.min(item.getQuantity(), Integer.MAX_VALUE), item.isStackable() || item.getQuantity() > 1);
+                    itemImage.addTo(imageLabel);
+                }
 
                 slotContainer.add(imageLabel);
             }
@@ -347,5 +356,9 @@ class ItemsBox extends JPanel {
         }
         sb.append("</html>");
         return sb.toString();
+    }
+
+    public void setSortMode(ItemSortMode itemSortMode) {
+        this.itemSortMode = itemSortMode;
     }
 }

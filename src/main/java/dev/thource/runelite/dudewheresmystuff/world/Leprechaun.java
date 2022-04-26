@@ -211,5 +211,6 @@ public class Leprechaun extends WorldStorage {
             item.setQuantity(0);
         }
         lastUpdated = -1;
+        enable();
     }
 }

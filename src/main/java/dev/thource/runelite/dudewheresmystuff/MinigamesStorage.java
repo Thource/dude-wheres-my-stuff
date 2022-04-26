@@ -12,9 +12,8 @@ public abstract class MinigamesStorage extends Storage<MinigamesStorageType> {
 
     @Override
     public void reset() {
-        for (ItemStack item : items) {
-            item.setQuantity(0);
-        }
+        items.forEach(item -> item.setQuantity(0));
         lastUpdated = -1L;
+        enable();
     }
 }

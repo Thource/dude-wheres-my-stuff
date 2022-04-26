@@ -82,6 +82,8 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
     boolean onItemContainerChanged(ItemContainerChanged itemContainerChanged) {
         if (!enabled) return false;
 
+        boolean updated = false;
+
         if (itemContainerChanged.getContainerId() == InventoryID.INVENTORY.getId()) {
             Item[] inventoryItems = itemContainerChanged.getItemContainer().getItems();
             if (oldInventoryItems != null
@@ -91,6 +93,12 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
                 List<ItemStack> inventoryItemsList = Arrays.stream(inventoryItems).map(i -> new ItemStack(i.getId(), "", i.getQuantity(), 0, 0, true)).collect(Collectors.toList());
                 removeItemsFromList(inventoryItemsList, oldInventoryItems);
                 removeItemsFromList(deathbank.getItems(), inventoryItemsList);
+
+                if (!inventoryItemsList.isEmpty()) {
+                    deathbank.lastUpdated = System.currentTimeMillis();
+                    updated = true;
+                }
+
                 if (deathbank.getItems().isEmpty())
                     clearDeathbank(false);
             }
@@ -108,19 +116,13 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
             for (Item item : itemContainerChanged.getItemContainer().getItems()) {
                 if (item.getId() == -1) continue;
 
-                ItemStack itemStack = deathbank.items.stream().filter(i -> i.getId() == item.getId()).findFirst().orElse(null);
-                if (itemStack != null) {
-                    itemStack.setQuantity(itemStack.getQuantity() + item.getQuantity());
-                    continue;
-                }
-
                 ItemComposition itemComposition = itemManager.getItemComposition(item.getId());
                 deathbank.items.add(new ItemStack(item.getId(), itemComposition.getName(), item.getQuantity(), itemManager.getItemPrice(item.getId()), itemComposition.getHaPrice(), itemComposition.isStackable()));
             }
-            return true;
+            updated = true;
         }
 
-        return false;
+        return updated;
     }
 
     private void removeItemsFromList(List<ItemStack> listToRemoveFrom, List<ItemStack> itemsToRemove) {
@@ -128,13 +130,16 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
             if (itemToRemove.getId() == -1) continue;
 
             long quantityToRemove = itemToRemove.getQuantity();
-            for (ItemStack inventoryItem : listToRemoveFrom) {
+
+            Iterator<ItemStack> listIterator = listToRemoveFrom.iterator();
+            while (listIterator.hasNext()) {
+                ItemStack inventoryItem = listIterator.next();
                 if (inventoryItem.getId() != itemToRemove.getId()) continue;
 
                 long qtyToRemove = Math.min(quantityToRemove, inventoryItem.getQuantity());
                 quantityToRemove -= qtyToRemove;
                 inventoryItem.setQuantity(inventoryItem.getQuantity() - qtyToRemove);
-                if (inventoryItem.getQuantity() == 0) listToRemoveFrom.remove(inventoryItem);
+                if (inventoryItem.getQuantity() == 0) listIterator.remove();
 
                 if (quantityToRemove == 0) break;
             }
@@ -146,13 +151,16 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
             if (itemToRemove.getId() == -1) continue;
 
             long quantityToRemove = itemToRemove.getQuantity();
-            for (ItemStack inventoryItem : listToRemoveFrom) {
+
+            Iterator<ItemStack> listIterator = listToRemoveFrom.iterator();
+            while (listIterator.hasNext()) {
+                ItemStack inventoryItem = listIterator.next();
                 if (inventoryItem.getId() != itemToRemove.getId()) continue;
 
                 long qtyToRemove = Math.min(quantityToRemove, inventoryItem.getQuantity());
                 quantityToRemove -= qtyToRemove;
                 inventoryItem.setQuantity(inventoryItem.getQuantity() - qtyToRemove);
-                if (inventoryItem.getQuantity() == 0) listToRemoveFrom.remove(inventoryItem);
+                if (inventoryItem.getQuantity() == 0) listIterator.remove();
 
                 if (quantityToRemove == 0) break;
             }
@@ -307,11 +315,12 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
     public void onActorDeath(ActorDeath actorDeath) {
         if (client.getLocalPlayer() == null || actorDeath.getActor() != client.getLocalPlayer()) return;
 
-        List<ItemStack> items = getDeathItems();
+        WorldPoint location = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation());
+        List<ItemStack> items = getDeathItems().stream().filter(itemStack -> itemStack.getId() != -1).collect(Collectors.toList());
         if (items.isEmpty()) return;
 
         dying = true;
-        deathLocation = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation());
+        deathLocation = location;
         deathItems = items;
     }
 
@@ -327,12 +336,14 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
             if (deathpile.hasExpired()) continue;
             if (!deathpile.getWorldPoint().equals(worldPoint)) continue;
 
-            for (ItemStack itemStack : deathpile.items) {
+            Iterator<ItemStack> listIterator = deathpile.items.iterator();
+            while (listIterator.hasNext()) {
+                ItemStack itemStack = listIterator.next();
                 if (itemStack.getId() != item.getId()) continue;
                 if (itemStack.getQuantity() >= 65535 && item.getQuantity() != 65535) continue;
                 if (itemStack.getQuantity() != item.getQuantity()) continue;
 
-                deathpile.items.remove(itemStack);
+                listIterator.remove();
                 if (deathpile.items.isEmpty()) {
                     storages.remove(deathpile);
                     refreshMapPoints();
@@ -359,11 +370,69 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
         return (int) (startPlayedMinutes + ((System.currentTimeMillis() - startMs) / 60000));
     }
 
+    List<ItemStack> compoundItemStacks(List<ItemStack> itemStacks) {
+        ArrayList<ItemStack> compoundedItemStacks = new ArrayList<>();
+
+        itemStacks.forEach(itemStack -> {
+            if (itemStack.getId() == -1) return;
+
+            boolean wasCompounded = false;
+            for (ItemStack compoundedItemStack : compoundedItemStacks) {
+                if (compoundedItemStack.getId() != itemStack.getId()) continue;
+
+                compoundedItemStack.setQuantity(compoundedItemStack.getQuantity() + itemStack.getQuantity());
+                wasCompounded = true;
+            }
+
+            if (!wasCompounded) compoundedItemStacks.add(itemStack);
+        });
+
+        return compoundedItemStacks;
+    }
+
     List<ItemStack> getDeathItems() {
-        return carryableStorageManager.storages.stream()
+        List<ItemStack> itemStacks = carryableStorageManager.storages.stream()
+                .filter(s -> s.getType() != CarryableStorageType.SEED_BOX
+                        && s.getType() != CarryableStorageType.LOOTING_BAG
+                        && s.getType() != CarryableStorageType.RUNE_POUCH)
+                .sorted(Comparator.comparingInt(s -> {
+                    if (s.getType() == CarryableStorageType.INVENTORY) return 0;
+                    if (s.getType() == CarryableStorageType.EQUIPMENT) return 1;
+
+                    return Integer.MAX_VALUE;
+                }))
                 .flatMap(s -> s.getItems().stream())
-                .filter(i -> i.getId() != ItemID.LOOTING_BAG && i.getId() != ItemID.LOOTING_BAG_22586)
                 .collect(Collectors.toList());
+
+        boolean lootingBagPresent = false;
+
+        ListIterator<ItemStack> itemStacksIterator = itemStacks.listIterator();
+        while (itemStacksIterator.hasNext()) {
+            ItemStack itemStack = itemStacksIterator.next();
+
+            if (itemStack.getId() == ItemID.SEED_BOX || itemStack.getId() == ItemID.OPEN_SEED_BOX) {
+                carryableStorageManager.storages.stream()
+                        .filter(s -> s.getType() == CarryableStorageType.SEED_BOX)
+                        .findFirst()
+                        .ifPresent(seedBox -> seedBox.getItems().forEach(itemStacksIterator::add));
+            } else if (itemStack.getId() == ItemID.RUNE_POUCH) {
+                carryableStorageManager.storages.stream()
+                        .filter(s -> s.getType() == CarryableStorageType.RUNE_POUCH)
+                        .findFirst()
+                        .ifPresent(runePouch -> runePouch.getItems().forEach(itemStacksIterator::add));
+            } else if (itemStack.getId() == ItemID.LOOTING_BAG || itemStack.getId() == ItemID.LOOTING_BAG_22586) {
+                lootingBagPresent = true;
+            }
+        }
+
+        if (lootingBagPresent) {
+            carryableStorageManager.storages.stream()
+                    .filter(s -> s.getType() == CarryableStorageType.LOOTING_BAG)
+                    .findFirst()
+                    .ifPresent(lootingBag -> itemStacks.addAll(lootingBag.getItems()));
+        }
+
+        return compoundItemStacks(itemStacks);
     }
 
     @Override

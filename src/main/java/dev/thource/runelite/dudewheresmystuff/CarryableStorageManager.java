@@ -2,6 +2,8 @@ package dev.thource.runelite.dudewheresmystuff;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import dev.thource.runelite.dudewheresmystuff.carryable.LootingBag;
+import dev.thource.runelite.dudewheresmystuff.carryable.RunePouch;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.client.Notifier;
@@ -16,12 +18,13 @@ public class CarryableStorageManager extends StorageManager<CarryableStorageType
         super(client, itemManager, configManager, config, notifier, plugin);
 
         for (CarryableStorageType type : CarryableStorageType.values()) {
-            if (type.getItemContainerId() != -1) {
-                storages.add(new CarryableStorage(type, client, itemManager));
-            }
+            if (type == CarryableStorageType.RUNE_POUCH || type == CarryableStorageType.LOOTING_BAG) continue;
+
+            storages.add(new CarryableStorage(type, client, itemManager));
         }
 
         storages.add(new RunePouch(client, itemManager));
+        storages.add(new LootingBag(client, itemManager));
     }
 
     @Override

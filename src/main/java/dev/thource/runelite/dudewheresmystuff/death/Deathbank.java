@@ -22,5 +22,6 @@ public class Deathbank extends DeathStorage {
         super.reset();
         locked = false;
         lostAt = -1L;
+        enable();
     }
 }
