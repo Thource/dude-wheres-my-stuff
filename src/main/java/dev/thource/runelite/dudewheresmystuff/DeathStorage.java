@@ -16,6 +16,6 @@ public class DeathStorage extends Storage<DeathStorageType> {
     }
 
     @Override
-    public void load(ConfigManager configManager, String managerConfigKey) {
+    public void load(ConfigManager configManager, String managerConfigKey, String profileKey) {
     }
 }

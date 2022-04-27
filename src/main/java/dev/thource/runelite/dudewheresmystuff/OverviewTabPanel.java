@@ -26,10 +26,14 @@
 package dev.thource.runelite.dudewheresmystuff;
 
 import com.google.common.collect.ImmutableMap;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ItemID;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.ColorScheme;
 
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +42,7 @@ import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
+@Slf4j
 class OverviewTabPanel extends TabContentPanel {
     private final DudeWheresMyStuffConfig config;
 
@@ -47,23 +52,28 @@ class OverviewTabPanel extends TabContentPanel {
     private final CarryableStorageManager carryableStorageManager;
     private final WorldStorageManager worldStorageManager;
 
-    static final String LOGGED_OUT_SUMMARY = "Log in to find your stuff!";
+    static final String LOGGED_OUT_SUMMARY = "Log in to find your stuff, or right-click this tile to view saved data.";
     final OverviewItemPanel summaryOverview;
     private final DudeWheresMyStuffPanel pluginPanel;
+    private final DudeWheresMyStuffPlugin plugin;
+    private final ConfigManager configManager;
 
-    OverviewTabPanel(ItemManager itemManager, DudeWheresMyStuffConfig config, DudeWheresMyStuffPanel pluginPanel, DeathStorageManager deathStorageManager, CoinsStorageManager coinsStorageManager, CarryableStorageManager carryableStorageManager, WorldStorageManager worldStorageManager) {
+    OverviewTabPanel(DudeWheresMyStuffPlugin plugin, DudeWheresMyStuffPanel pluginPanel, DudeWheresMyStuffConfig config, ItemManager itemManager, ConfigManager configManager, DeathStorageManager deathStorageManager, CoinsStorageManager coinsStorageManager, CarryableStorageManager carryableStorageManager, WorldStorageManager worldStorageManager) {
         this.config = config;
+        this.configManager = configManager;
         this.deathStorageManager = deathStorageManager;
         this.coinsStorageManager = coinsStorageManager;
         this.carryableStorageManager = carryableStorageManager;
         this.worldStorageManager = worldStorageManager;
         this.pluginPanel = pluginPanel;
+        this.plugin = plugin;
 
         setLayout(new GridLayout(0, 1, 0, 8));
         setBackground(ColorScheme.DARK_GRAY_COLOR);
 
         summaryOverview = new OverviewItemPanel(itemManager, null, () -> false, ItemID.NOTES, 1, LOGGED_OUT_SUMMARY);
         add(summaryOverview);
+        resetSummaryContextMenu();
 
         overviews = Stream.of(Tab.TABS)
                 .filter(v -> v != Tab.OVERVIEW && v != Tab.SEARCH)
@@ -81,6 +91,8 @@ class OverviewTabPanel extends TabContentPanel {
 
     @Override
     public void update() {
+        resetSummaryContextMenu();
+
         if (Objects.equals(pluginPanel.displayName, "")) {
             summaryOverview.setTitle(LOGGED_OUT_SUMMARY);
             summaryOverview.updateStatus("", Color.LIGHT_GRAY);
@@ -119,5 +131,48 @@ class OverviewTabPanel extends TabContentPanel {
         }
 
         return items;
+    }
+
+    void resetSummaryContextMenu() {
+        SwingUtilities.invokeLater(() -> {
+            final JPopupMenu popupMenu = new JPopupMenu();
+            popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
+            summaryOverview.setComponentPopupMenu(popupMenu);
+
+            if (pluginPanel.previewMode) {
+                final JMenuItem clearDeathbank = new JMenuItem("Delete data");
+                clearDeathbank.addActionListener(e -> {
+                    int result = JOptionPane.OK_OPTION;
+
+                    try {
+                        result = JOptionPane.showConfirmDialog(
+                                this,
+                                "Are you sure you want to delete your save data?\nThis cannot be undone.", "Confirm deletion",
+                                JOptionPane.OK_CANCEL_OPTION,
+                                JOptionPane.WARNING_MESSAGE);
+                    } catch (Exception err) {
+                        log.warn("Unexpected exception occurred while check for confirm required", err);
+                    }
+
+                    if (result == JOptionPane.OK_OPTION) {
+                        plugin.disablePreviewMode(true);
+                        resetSummaryContextMenu();
+                    }
+                });
+                popupMenu.add(clearDeathbank);
+
+                final JMenuItem exitPreviewMode = new JMenuItem("Exit preview mode");
+                exitPreviewMode.addActionListener(e -> plugin.disablePreviewMode(false));
+                popupMenu.add(exitPreviewMode);
+            } else {
+                configManager.getRSProfiles().forEach(profile -> {
+                    if (configManager.getConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP, profile.getKey(), "isMember") == null) return;
+
+                    final JMenuItem previewItem = new JMenuItem(profile.getDisplayName());
+                    previewItem.addActionListener(e -> plugin.enablePreviewMode(profile.getKey(), profile.getDisplayName()));
+                    popupMenu.add(previewItem);
+                });
+            }
+        });
     }
 }

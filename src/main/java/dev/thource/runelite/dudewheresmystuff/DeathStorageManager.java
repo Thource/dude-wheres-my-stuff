@@ -2,7 +2,6 @@ package dev.thource.runelite.dudewheresmystuff;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import dev.thource.runelite.dudewheresmystuff.death.Deathbank;
 import dev.thource.runelite.dudewheresmystuff.death.Deathpile;
 import lombok.extern.slf4j.Slf4j;
@@ -25,14 +24,10 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
-@Singleton
 public class DeathStorageManager extends StorageManager<DeathStorageType, DeathStorage> {
     final Deathbank deathbank;
 
-    @Inject
     CarryableStorageManager carryableStorageManager;
-
-    @Inject
     CoinsStorageManager coinsStorageManager;
 
     @Inject
@@ -41,7 +36,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
     @Inject
     WorldMapPointManager worldMapPointManager;
 
-    private int startPlayedMinutes = -1;
+    int startPlayedMinutes = -1;
     public long startMs = 0L;
 
     private static final Set<Integer> RESPAWN_REGIONS = ImmutableSet.of(
@@ -62,7 +57,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
     private Item[] oldInventoryItems;
 
     @Inject
-    private DeathStorageManager(Client client, ItemManager itemManager, ConfigManager configManager, DudeWheresMyStuffConfig config, Notifier notifier, DudeWheresMyStuffPlugin plugin) {
+    private DeathStorageManager(DudeWheresMyStuffPlugin plugin, DudeWheresMyStuffConfig config, Client client, ItemManager itemManager, ConfigManager configManager, Notifier notifier) {
         super(client, itemManager, configManager, config, notifier, plugin);
 
         deathbank = new Deathbank(DeathStorageType.UNKNOWN_DEATHBANK, client, itemManager);
@@ -72,7 +67,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
     @Override
     long getTotalValue() {
         return storages.stream()
-                .filter(s -> (s.getType() == DeathStorageType.DEATHPILE && !((Deathpile) s).hasExpired())
+                .filter(s -> (s.getType() == DeathStorageType.DEATHPILE && !((Deathpile) s).hasExpired(plugin.panelContainer.previewing))
                         || (s.getType() != DeathStorageType.DEATHPILE && ((Deathbank) s).getLostAt() == -1L))
                 .mapToLong(Storage::getTotalValue)
                 .sum();
@@ -198,6 +193,10 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
         }
         if (startPlayedMinutes == -1) return false;
 
+        Integer savedPlayedMinutes = configManager.getRSProfileConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP, "minutesPlayed", int.class);
+        if (savedPlayedMinutes == null || savedPlayedMinutes != getPlayedMinutes())
+            configManager.setRSProfileConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP, "minutesPlayed", getPlayedMinutes());
+
         boolean updated = false;
         if (deathbank.lastUpdated != -1L) {
             Widget itemWindow = client.getWidget(602, 3);
@@ -217,7 +216,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
 
             Deathpile deathpile = (Deathpile) storage;
             if (deathpile.worldMapPoint == null) {
-                if (!deathpile.hasExpired()) {
+                if (!deathpile.hasExpired(plugin.panelContainer.previewing)) {
                     refreshMapPoints();
                     break;
                 }
@@ -225,13 +224,13 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
                 continue;
             }
 
-            if (deathpile.hasExpired()) {
+            if (deathpile.hasExpired(plugin.panelContainer.previewing)) {
                 refreshMapPoints();
                 break;
             }
             if (deathpile.worldMapPoint.getTooltip() == null) continue;
 
-            deathpile.worldMapPoint.setTooltip("Deathpile (" + deathpile.getExpireText() + ")");
+            deathpile.worldMapPoint.setTooltip("Deathpile (" + deathpile.getExpireText(plugin.panelContainer.previewing) + ")");
         }
     }
 
@@ -333,7 +332,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
             if (!(storage instanceof Deathpile)) continue;
 
             Deathpile deathpile = (Deathpile) storage;
-            if (deathpile.hasExpired()) continue;
+            if (deathpile.hasExpired(plugin.panelContainer.previewing)) continue;
             if (!deathpile.getWorldPoint().equals(worldPoint)) continue;
 
             Iterator<ItemStack> listIterator = deathpile.items.iterator();
@@ -367,6 +366,8 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
     }
 
     public int getPlayedMinutes() {
+        if (plugin.panelContainer.previewing) return startPlayedMinutes;
+
         return (int) (startPlayedMinutes + ((System.currentTimeMillis() - startMs) / 60000));
     }
 
@@ -486,19 +487,20 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
     }
 
     @Override
-    public void load() {
+    public void load(String profileKey) {
         if (!enabled) return;
 
-        loadDeathpiles();
-        loadDeathbank();
-        loadLostDeathbanks();
+        loadDeathpiles(profileKey);
+        loadDeathbank(profileKey);
+        loadLostDeathbanks(profileKey);
     }
 
-    private void loadDeathbank() {
+    private void loadDeathbank(String profileKey) {
         clearDeathbank(false);
 
-        String data = configManager.getRSProfileConfiguration(
+        String data = configManager.getConfiguration(
                 DudeWheresMyStuffConfig.CONFIG_GROUP,
+                profileKey,
                 getConfigKey() + ".deathbank",
                 String.class
         );
@@ -539,9 +541,10 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
         deathbank.locked = locked;
     }
 
-    private void loadLostDeathbanks() {
-        String data = configManager.getRSProfileConfiguration(
+    private void loadLostDeathbanks(String profileKey) {
+        String data = configManager.getConfiguration(
                 DudeWheresMyStuffConfig.CONFIG_GROUP,
+                profileKey,
                 getConfigKey() + ".lostdeathbanks",
                 String.class
         );
@@ -603,16 +606,17 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
             if (!(storage instanceof Deathpile)) continue;
 
             Deathpile deathpile = (Deathpile) storage;
-            if (deathpile.hasExpired()) continue;
+            if (deathpile.hasExpired(plugin.panelContainer.previewing)) continue;
 
             deathpile.worldMapPoint = new DeathWorldMapPoint(deathpile.getWorldPoint(), itemManager, index++);
             worldMapPointManager.add(deathpile.getWorldMapPoint());
         }
     }
 
-    private void loadDeathpiles() {
-        String data = configManager.getRSProfileConfiguration(
+    private void loadDeathpiles(String profileKey) {
+        String data = configManager.getConfiguration(
                 DudeWheresMyStuffConfig.CONFIG_GROUP,
+                profileKey,
                 getConfigKey() + "." + DeathStorageType.DEATHPILE.getConfigKey(),
                 String.class
         );

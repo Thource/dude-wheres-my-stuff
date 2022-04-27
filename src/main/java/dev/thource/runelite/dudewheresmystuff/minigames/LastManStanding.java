@@ -14,8 +14,6 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import org.apache.commons.lang3.math.NumberUtils;
 
-import java.time.Instant;
-
 @Getter
 public class LastManStanding extends MinigamesStorage {
     ItemStack points = new ItemStack(ItemID.SKULL, "Points", 0, 0, 0, true);
@@ -79,9 +77,10 @@ public class LastManStanding extends MinigamesStorage {
     }
 
     @Override
-    public void load(ConfigManager configManager, String managerConfigKey) {
-        String data = configManager.getRSProfileConfiguration(
+    public void load(ConfigManager configManager, String managerConfigKey, String profileKey) {
+        String data = configManager.getConfiguration(
                 DudeWheresMyStuffConfig.CONFIG_GROUP,
+                profileKey,
                 managerConfigKey + "." + type.getConfigKey(),
                 String.class
         );

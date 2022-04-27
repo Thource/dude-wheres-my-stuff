@@ -7,8 +7,6 @@ import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 
-import java.time.Instant;
-
 @Getter
 public class CoinsStorage extends Storage<CoinsStorageType> {
     protected ItemStack coinStack = new ItemStack(995, "Coins", 0, 1, 0, true);
@@ -54,8 +52,8 @@ public class CoinsStorage extends Storage<CoinsStorageType> {
     }
 
     @Override
-    public void load(ConfigManager configManager, String managerConfigKey) {
-        super.load(configManager, managerConfigKey);
+    public void load(ConfigManager configManager, String managerConfigKey, String profileKey) {
+        super.load(configManager, managerConfigKey, profileKey);
 
         if (!items.isEmpty()) this.coinStack = items.get(0);
     }

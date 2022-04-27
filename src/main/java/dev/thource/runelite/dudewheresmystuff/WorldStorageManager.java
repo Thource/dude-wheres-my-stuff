@@ -11,7 +11,6 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 
 @Slf4j
-@Singleton
 public class WorldStorageManager extends StorageManager<WorldStorageType, WorldStorage> {
     @Inject
     private WorldStorageManager(Client client, ItemManager itemManager, ConfigManager configManager, DudeWheresMyStuffConfig config, Notifier notifier, ClientThread clientThread, DudeWheresMyStuffPlugin plugin) {

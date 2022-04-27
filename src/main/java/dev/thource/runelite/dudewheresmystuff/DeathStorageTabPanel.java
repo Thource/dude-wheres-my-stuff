@@ -14,10 +14,12 @@ import java.util.Comparator;
 class DeathStorageTabPanel extends StorageTabPanel<DeathStorageType, DeathStorage, DeathStorageManager> {
     public AccountType accountType;
     private final boolean developerMode;
+    private DudeWheresMyStuffPanel pluginPanel;
 
     DeathStorageTabPanel(ItemManager itemManager, DudeWheresMyStuffConfig config, DudeWheresMyStuffPanel pluginPanel, DeathStorageManager storageManager, boolean developerMode) {
         super(itemManager, config, pluginPanel, storageManager);
         this.developerMode = developerMode;
+        this.pluginPanel = pluginPanel;
     }
 
     @Override
@@ -27,10 +29,10 @@ class DeathStorageTabPanel extends StorageTabPanel<DeathStorageType, DeathStorag
                 Deathpile deathpile = (Deathpile) s;
 
                 // Move expired deathpiles to the bottom of the list and sort them the opposite way (newest first)
-                if (deathpile.hasExpired())
-                    return deathpile.getExpiryMs();
+                if (deathpile.hasExpired(pluginPanel.previewMode))
+                    return deathpile.getExpiryMs(pluginPanel.previewMode);
 
-                return -deathpile.getExpiryMs();
+                return -deathpile.getExpiryMs(pluginPanel.previewMode);
             } else {
                 Deathbank deathbank = (Deathbank) s;
 
@@ -48,7 +50,7 @@ class DeathStorageTabPanel extends StorageTabPanel<DeathStorageType, DeathStorag
 
         itemsBoxes.clear();
 
-        if (developerMode) {
+        if (developerMode && !pluginPanel.previewMode) {
             ItemsBox debugDeathBox = new ItemsBox(itemManager, "Death items debug", null, false, showPrice());
             for (ItemStack itemStack : storageManager.getDeathItems()) {
                 if (itemStack.getQuantity() > 0)
@@ -109,7 +111,7 @@ class DeathStorageTabPanel extends StorageTabPanel<DeathStorageType, DeathStorag
                 popupMenu.add(clearDeathbank);
             } else if (storage instanceof Deathpile) {
                 Deathpile deathpile = (Deathpile) storage;
-                itemsBox.addExpiry(deathpile.getExpiryMs());
+                itemsBox.addExpiry(deathpile.getExpiryMs(pluginPanel.previewMode));
 
                 final JPopupMenu popupMenu = new JPopupMenu();
                 popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));

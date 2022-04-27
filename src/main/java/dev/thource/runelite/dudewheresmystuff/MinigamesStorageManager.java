@@ -10,7 +10,6 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 
 @Slf4j
-@Singleton
 public class MinigamesStorageManager extends StorageManager<MinigamesStorageType, MinigamesStorage> {
     @Inject
     private MinigamesStorageManager(Client client, ItemManager itemManager, ConfigManager configManager, DudeWheresMyStuffConfig config, Notifier notifier, DudeWheresMyStuffPlugin plugin) {

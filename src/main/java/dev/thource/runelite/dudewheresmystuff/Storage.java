@@ -83,8 +83,6 @@ abstract class Storage<T extends StorageType> {
     }
 
     public void save(ConfigManager configManager, String managerConfigKey) {
-        if (type.isAutomatic()) return;
-
         String data = lastUpdated + ";"
                 + items.stream().map(item -> item.getId() + "," + item.getQuantity()).collect(Collectors.joining("="));
 
@@ -96,9 +94,10 @@ abstract class Storage<T extends StorageType> {
         );
     }
 
-    protected List<ItemStack> loadItems(ConfigManager configManager, String managerConfigKey) {
-        String data = configManager.getRSProfileConfiguration(
+    protected List<ItemStack> loadItems(ConfigManager configManager, String managerConfigKey, String profileKey) {
+        String data = configManager.getConfiguration(
                 DudeWheresMyStuffConfig.CONFIG_GROUP,
+                profileKey,
                 managerConfigKey + "." + type.getConfigKey(),
                 String.class
         );
@@ -125,10 +124,8 @@ abstract class Storage<T extends StorageType> {
         return items;
     }
 
-    public void load(ConfigManager configManager, String managerConfigKey) {
-        if (type.isAutomatic()) return;
-
-        List<ItemStack> loadedItems = loadItems(configManager, managerConfigKey);
+    public void load(ConfigManager configManager, String managerConfigKey, String profileKey) {
+        List<ItemStack> loadedItems = loadItems(configManager, managerConfigKey, profileKey);
         if (loadedItems == null || loadedItems.isEmpty()) return;
 
         items.clear();

@@ -46,8 +46,6 @@ public class DeathWorldMapPoint extends WorldMapPoint {
         super(worldPoint, null);
         this.itemManager = itemManager;
 
-        System.out.println("new deathmappoint " + index);
-
         worldmapHintArrow = new BufferedImage(getMapArrow().getWidth(), getMapArrow().getHeight(), BufferedImage.TYPE_INT_ARGB);
         Graphics graphics = worldmapHintArrow.getGraphics();
         graphics.drawImage(getMapArrow(), 0, 0, null);
@@ -62,7 +60,6 @@ public class DeathWorldMapPoint extends WorldMapPoint {
         this.setImagePoint(worldmapHintArrowPoint);
         this.setTooltip("Deathpile");
         this.setName("Deathpile " + index);
-        System.out.println(this.getName());
     }
 
     BufferedImage getMapArrow() {

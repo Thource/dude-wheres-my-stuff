@@ -27,13 +27,10 @@
 
 package dev.thource.runelite.dudewheresmystuff;
 
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
-import net.runelite.api.Client;
+import net.runelite.api.vars.AccountType;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.ColorScheme;
-import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.materialtabs.MaterialTab;
 import net.runelite.client.ui.components.materialtabs.MaterialTabGroup;
 import net.runelite.client.util.AsyncBufferedImage;
@@ -47,9 +44,10 @@ import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
 
-class DudeWheresMyStuffPanel extends PluginPanel {
+class DudeWheresMyStuffPanel extends JPanel {
     private final ItemManager itemManager;
     private final DudeWheresMyStuffConfig config;
+    boolean previewMode;
 
     /* This is the panel the tabs' respective panels will be displayed on. */
     private final JPanel display = new JPanel();
@@ -58,7 +56,7 @@ class DudeWheresMyStuffPanel extends PluginPanel {
     final OverviewTabPanel overviewTab;
     final Map<Tab, StorageTabPanel<?, ?, ?>> storageTabPanelMap = new HashMap<>();
 
-    private boolean active;
+    boolean active;
 
     @Nullable
     private TabContentPanel activeTabPanel = null;
@@ -70,16 +68,17 @@ class DudeWheresMyStuffPanel extends PluginPanel {
         SEARCH_ICON = new ImageIcon(ImageUtil.loadImageResource(DudeWheresMyStuffPlugin.class, "/net/runelite/client/ui/components/search.png"));
     }
 
-    @Inject
-    DudeWheresMyStuffPanel(ItemManager itemManager, DudeWheresMyStuffConfig config, ConfigManager configManager,
-                           DeathStorageManager deathStorageManager, CoinsStorageManager coinsStorageManager, CarryableStorageManager carryableStorageManager, WorldStorageManager worldStorageManager, MinigamesStorageManager minigamesStorageManager,
-                           @Named("developerMode") boolean developerMode, Client client) {
-        super(false);
+    DudeWheresMyStuffPanel(DudeWheresMyStuffPlugin plugin, DudeWheresMyStuffConfig config, ItemManager itemManager,
+                           ConfigManager configManager, DeathStorageManager deathStorageManager, CoinsStorageManager coinsStorageManager, CarryableStorageManager carryableStorageManager, WorldStorageManager worldStorageManager, MinigamesStorageManager minigamesStorageManager,
+                           boolean developerMode, boolean previewMode) {
+        super();
 
         this.itemManager = itemManager;
         this.config = config;
+        this.previewMode = previewMode;
 
         setLayout(new BorderLayout());
+        setBorder(new EmptyBorder(0, 0, 0, 0));
         setBackground(ColorScheme.DARK_GRAY_COLOR);
 
         display.setBorder(new EmptyBorder(10, 10, 8, 10));
@@ -90,7 +89,7 @@ class DudeWheresMyStuffPanel extends PluginPanel {
         add(tabGroup, BorderLayout.NORTH);
         add(display, BorderLayout.CENTER);
 
-        overviewTab = new OverviewTabPanel(itemManager, config, this, deathStorageManager, coinsStorageManager, carryableStorageManager, worldStorageManager);
+        overviewTab = new OverviewTabPanel(plugin, this, config, itemManager, configManager, deathStorageManager, coinsStorageManager, carryableStorageManager, worldStorageManager);
         addTab(Tab.OVERVIEW, overviewTab);
 
         addTab(Tab.DEATH, new DeathStorageTabPanel(itemManager, config, this, deathStorageManager, developerMode));
@@ -165,30 +164,14 @@ class DudeWheresMyStuffPanel extends PluginPanel {
         tabGroup.select(uiTabs.get(tab));
     }
 
-    /**
-     * Updates the active tab panel, if this plugin panel is displayed.
-     */
     void update() {
-        if (!active || activeTabPanel == null) {
-            return;
-        }
+        if (!active || activeTabPanel == null) return;
 
         SwingUtilities.invokeLater(() -> activeTabPanel.update());
     }
 
-    @Override
-    public void onActivate() {
-        active = true;
-        update();
-    }
-
-    @Override
-    public void onDeactivate() {
-        active = false;
-    }
-
     public void softUpdate() {
-        if (activeTabPanel == null || !(activeTabPanel instanceof StorageTabPanel)) return;
+        if (!active || activeTabPanel == null || !(activeTabPanel instanceof StorageTabPanel)) return;
 
         ((StorageTabPanel<?, ?, ?>) activeTabPanel).softUpdate();
     }
@@ -198,6 +181,11 @@ class DudeWheresMyStuffPanel extends PluginPanel {
     }
 
     void reset() {
+        logOut();
+        update();
+    }
+
+    void logOut() {
         uiTabs.forEach((tab, materialTab) -> {
             if (tab == Tab.OVERVIEW) return;
 
@@ -212,7 +200,32 @@ class DudeWheresMyStuffPanel extends PluginPanel {
 
         SwingUtilities.invokeLater(() -> ((SearchTabPanel) storageTabPanelMap.get(Tab.SEARCH)).searchBar.setText(""));
         switchTab(Tab.OVERVIEW);
+
         setDisplayName("");
-        update();
+    }
+
+    void logIn(boolean isMember, AccountType accountType, String displayName) {
+        ((DeathStorageTabPanel) storageTabPanelMap.get(Tab.DEATH)).accountType = accountType;
+        storageTabPanelMap.forEach((tab, storageTabPanel) -> {
+            MaterialTab materialTab = uiTabs.get(tab);
+            OverviewItemPanel overviewItemPanel = overviewTab.overviews.get(tab);
+
+            StorageManager<?, ?> storageManager = storageTabPanel.storageManager;
+            if (storageManager != null) {
+                if (tab != Tab.DEATH && storageManager.isMembersOnly() && !isMember) {
+                    storageManager.disable();
+                    return;
+                }
+
+                for (Storage<?> storage : storageManager.storages) {
+                    if (storage.getType().isMembersOnly() && !isMember) storage.disable();
+                }
+            }
+
+            if (materialTab != null) materialTab.setVisible(true);
+            if (overviewItemPanel != null) overviewItemPanel.setVisible(true);
+        });
+        uiTabs.get(Tab.SEARCH).setVisible(true);
+        setDisplayName(displayName);
     }
 }

@@ -14,7 +14,6 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import org.apache.commons.lang3.math.NumberUtils;
 
-import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -135,9 +134,10 @@ public class MageTrainingArena extends MinigamesStorage {
     }
 
     @Override
-    public void load(ConfigManager configManager, String managerConfigKey) {
-        String data = configManager.getRSProfileConfiguration(
+    public void load(ConfigManager configManager, String managerConfigKey, String profileKey) {
+        String data = configManager.getConfiguration(
                 DudeWheresMyStuffConfig.CONFIG_GROUP,
+                profileKey,
                 managerConfigKey + "." + type.getConfigKey(),
                 String.class
         );

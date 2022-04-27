@@ -19,7 +19,7 @@ abstract class StorageManager<ST extends StorageType, S extends Storage<ST>> {
     protected final List<S> storages = new ArrayList<>();
 
     protected boolean enabled = true;
-    private DudeWheresMyStuffPlugin plugin;
+    protected DudeWheresMyStuffPlugin plugin;
 
     StorageManager(Client client, ItemManager itemManager, ConfigManager configManager, DudeWheresMyStuffConfig config, Notifier notifier, DudeWheresMyStuffPlugin plugin) {
         this.client = client;
@@ -124,9 +124,13 @@ abstract class StorageManager<ST extends StorageType, S extends Storage<ST>> {
     }
 
     public void load() {
+        load(configManager.getRSProfileKey());
+    }
+
+    public void load(String profileKey) {
         if (!enabled) return;
 
-        storages.forEach(storage -> storage.load(configManager, getConfigKey()));
+        storages.forEach(storage -> storage.load(configManager, getConfigKey(), profileKey));
     }
 
     boolean isMembersOnly() {

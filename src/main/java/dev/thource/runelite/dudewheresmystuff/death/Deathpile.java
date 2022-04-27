@@ -28,9 +28,9 @@ public class Deathpile extends DeathStorage {
     public void reset() {
     }
 
-    public String getExpireText() {
+    public String getExpireText(boolean previewMode) {
         String expireText = "Expire";
-        long timeUntilExpiry = getExpiryMs() - System.currentTimeMillis();
+        long timeUntilExpiry = getExpiryMs(previewMode) - System.currentTimeMillis();
         if (timeUntilExpiry < 0) {
             expireText += "d " + DurationFormatter.format(Math.abs(timeUntilExpiry)) + " ago";
         } else {
@@ -39,13 +39,14 @@ public class Deathpile extends DeathStorage {
         return expireText;
     }
 
-    public long getExpiryMs() {
+    public long getExpiryMs(boolean previewMode) {
         int minutesLeft = playedMinutesAtCreation + 59 - deathStorageManager.getPlayedMinutes();
+        if (previewMode) return System.currentTimeMillis() + (minutesLeft * 60000L);
 
         return System.currentTimeMillis() + (minutesLeft * 60000L) - ((System.currentTimeMillis() - deathStorageManager.startMs) % 60000);
     }
 
-    public boolean hasExpired() {
-        return getExpiryMs() < System.currentTimeMillis();
+    public boolean hasExpired(boolean previewMode) {
+        return getExpiryMs(previewMode) < System.currentTimeMillis();
     }
 }

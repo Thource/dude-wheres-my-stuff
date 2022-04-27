@@ -27,6 +27,7 @@ class SearchTabPanel extends StorageTabPanel<StorageType, Storage<StorageType>, 
 
     final IconTextField searchBar;
     public AccountType accountType;
+    private final DudeWheresMyStuffPanel pluginPanel;
 
     SearchTabPanel(ItemManager itemManager, DudeWheresMyStuffConfig config, DudeWheresMyStuffPanel pluginPanel, DeathStorageManager deathStorageManager, CoinsStorageManager coinsStorageManager, CarryableStorageManager carryableStorageManager, WorldStorageManager worldStorageManager) {
         super(itemManager, config, pluginPanel, null);
@@ -34,6 +35,7 @@ class SearchTabPanel extends StorageTabPanel<StorageType, Storage<StorageType>, 
         this.coinsStorageManager = coinsStorageManager;
         this.carryableStorageManager = carryableStorageManager;
         this.worldStorageManager = worldStorageManager;
+        this.pluginPanel = pluginPanel;
 
         JPanel searchBarContainer = new JPanel();
         searchBarContainer.setLayout(new BoxLayout(searchBarContainer, BoxLayout.Y_AXIS));
@@ -81,7 +83,7 @@ class SearchTabPanel extends StorageTabPanel<StorageType, Storage<StorageType>, 
         itemsBoxes.clear();
         Stream.of(
                         deathStorageManager.storages.stream()
-                                .filter(s -> (s.getType() == DeathStorageType.DEATHPILE && !((Deathpile) s).hasExpired())
+                                .filter(s -> (s.getType() == DeathStorageType.DEATHPILE && !((Deathpile) s).hasExpired(pluginPanel.previewMode))
                                         || (s.getType() != DeathStorageType.DEATHPILE && ((Deathbank) s).getLostAt() == -1L)),
                         coinsStorageManager.storages.stream()
                                 .filter(storage -> storage.getType() != CoinsStorageType.INVENTORY && storage.getType() != CoinsStorageType.LOOTING_BAG),
@@ -108,7 +110,7 @@ class SearchTabPanel extends StorageTabPanel<StorageType, Storage<StorageType>, 
                             itemsBox.setSubTitle(((Deathbank) storage).isLocked() ? "Locked" : "Unlocked");
                     } else if (storage instanceof Deathpile) {
                         Deathpile deathpile = (Deathpile) storage;
-                        itemsBox.addExpiry(deathpile.getExpiryMs());
+                        itemsBox.addExpiry(deathpile.getExpiryMs(pluginPanel.previewMode));
 
                         Region region = Region.get(deathpile.getWorldPoint().getRegionID());
 
