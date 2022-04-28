@@ -183,6 +183,8 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
 
     @Override
     public boolean onGameTick() {
+        boolean updated = false;
+
         int playedMinutes = client.getVarcIntValue(526);
         if (playedMinutes != startPlayedMinutes) {
             if (startPlayedMinutes == -1)
@@ -190,6 +192,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
 
             startPlayedMinutes = playedMinutes;
             startMs = System.currentTimeMillis();
+            updated = true;
         }
         if (startPlayedMinutes == -1) return false;
 
@@ -197,7 +200,6 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
         if (savedPlayedMinutes == null || savedPlayedMinutes != getPlayedMinutes())
             configManager.setRSProfileConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP, "minutesPlayed", getPlayedMinutes());
 
-        boolean updated = false;
         if (deathbank.lastUpdated != -1L) {
             Widget itemWindow = client.getWidget(602, 3);
             if (itemWindow != null && client.getVarpValue(261) == -1) {
@@ -371,26 +373,6 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
         return (int) (startPlayedMinutes + ((System.currentTimeMillis() - startMs) / 60000));
     }
 
-    List<ItemStack> compoundItemStacks(List<ItemStack> itemStacks) {
-        ArrayList<ItemStack> compoundedItemStacks = new ArrayList<>();
-
-        itemStacks.forEach(itemStack -> {
-            if (itemStack.getId() == -1) return;
-
-            boolean wasCompounded = false;
-            for (ItemStack compoundedItemStack : compoundedItemStacks) {
-                if (compoundedItemStack.getId() != itemStack.getId()) continue;
-
-                compoundedItemStack.setQuantity(compoundedItemStack.getQuantity() + itemStack.getQuantity());
-                wasCompounded = true;
-            }
-
-            if (!wasCompounded) compoundedItemStacks.add(itemStack);
-        });
-
-        return compoundedItemStacks;
-    }
-
     List<ItemStack> getDeathItems() {
         List<ItemStack> itemStacks = carryableStorageManager.storages.stream()
                 .filter(s -> s.getType() != CarryableStorageType.SEED_BOX
@@ -433,7 +415,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
                     .ifPresent(lootingBag -> itemStacks.addAll(lootingBag.getItems()));
         }
 
-        return compoundItemStacks(itemStacks);
+        return ItemStackService.compound(itemStacks);
     }
 
     @Override
@@ -597,7 +579,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
     }
 
     void refreshMapPoints() {
-        if (worldMapPointManager == null) return;
+        if (worldMapPointManager == null || plugin.panelContainer.previewing) return;
 
         worldMapPointManager.removeIf(DeathWorldMapPoint.class::isInstance);
 

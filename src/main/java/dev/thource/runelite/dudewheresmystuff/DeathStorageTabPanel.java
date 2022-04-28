@@ -30,14 +30,14 @@ class DeathStorageTabPanel extends StorageTabPanel<DeathStorageType, DeathStorag
 
                 // Move expired deathpiles to the bottom of the list and sort them the opposite way (newest first)
                 if (deathpile.hasExpired(pluginPanel.previewMode))
-                    return deathpile.getExpiryMs(pluginPanel.previewMode);
+                    return Long.MAX_VALUE - deathpile.getExpiryMs(pluginPanel.previewMode);
 
-                return -deathpile.getExpiryMs(pluginPanel.previewMode);
+                return Long.MIN_VALUE + deathpile.getExpiryMs(pluginPanel.previewMode);
             } else {
                 Deathbank deathbank = (Deathbank) s;
 
                 if (deathbank.lostAt != -1L)
-                    return deathbank.lostAt;
+                    return Long.MAX_VALUE - deathbank.lostAt;
 
                 return Long.MIN_VALUE;
             }

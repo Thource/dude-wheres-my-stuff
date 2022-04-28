@@ -89,7 +89,7 @@ class DudeWheresMyStuffPanel extends JPanel {
         add(tabGroup, BorderLayout.NORTH);
         add(display, BorderLayout.CENTER);
 
-        overviewTab = new OverviewTabPanel(plugin, this, config, itemManager, configManager, deathStorageManager, coinsStorageManager, carryableStorageManager, worldStorageManager);
+        overviewTab = new OverviewTabPanel(plugin, this, config, itemManager, configManager, deathStorageManager, coinsStorageManager, carryableStorageManager, worldStorageManager, developerMode);
         addTab(Tab.OVERVIEW, overviewTab);
 
         addTab(Tab.DEATH, new DeathStorageTabPanel(itemManager, config, this, deathStorageManager, developerMode));
@@ -123,6 +123,7 @@ class DudeWheresMyStuffPanel extends JPanel {
         scroller.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scroller.getVerticalScrollBar().setPreferredSize(new Dimension(16, 0));
         scroller.getVerticalScrollBar().setBorder(new EmptyBorder(0, 9, 0, 0));
+        scroller.getVerticalScrollBar().setUnitIncrement(21);
         scroller.setBackground(ColorScheme.DARK_GRAY_COLOR);
 
         // Use a placeholder icon until the async image gets loaded

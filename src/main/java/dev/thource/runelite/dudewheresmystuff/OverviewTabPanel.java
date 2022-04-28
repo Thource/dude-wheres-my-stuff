@@ -35,6 +35,8 @@ import net.runelite.client.ui.ColorScheme;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -52,13 +54,13 @@ class OverviewTabPanel extends TabContentPanel {
     private final CarryableStorageManager carryableStorageManager;
     private final WorldStorageManager worldStorageManager;
 
-    static final String LOGGED_OUT_SUMMARY = "Log in to find your stuff, or right-click this tile to view saved data.";
+    static final String LOGGED_OUT_SUMMARY = "Log in to find your stuff!";
     final OverviewItemPanel summaryOverview;
     private final DudeWheresMyStuffPanel pluginPanel;
     private final DudeWheresMyStuffPlugin plugin;
     private final ConfigManager configManager;
 
-    OverviewTabPanel(DudeWheresMyStuffPlugin plugin, DudeWheresMyStuffPanel pluginPanel, DudeWheresMyStuffConfig config, ItemManager itemManager, ConfigManager configManager, DeathStorageManager deathStorageManager, CoinsStorageManager coinsStorageManager, CarryableStorageManager carryableStorageManager, WorldStorageManager worldStorageManager) {
+    OverviewTabPanel(DudeWheresMyStuffPlugin plugin, DudeWheresMyStuffPanel pluginPanel, DudeWheresMyStuffConfig config, ItemManager itemManager, ConfigManager configManager, DeathStorageManager deathStorageManager, CoinsStorageManager coinsStorageManager, CarryableStorageManager carryableStorageManager, WorldStorageManager worldStorageManager, boolean developerMode) {
         this.config = config;
         this.configManager = configManager;
         this.deathStorageManager = deathStorageManager;
@@ -68,11 +70,50 @@ class OverviewTabPanel extends TabContentPanel {
         this.pluginPanel = pluginPanel;
         this.plugin = plugin;
 
-        setLayout(new GridLayout(0, 1, 0, 8));
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setBackground(ColorScheme.DARK_GRAY_COLOR);
 
         summaryOverview = new OverviewItemPanel(itemManager, null, () -> false, ItemID.NOTES, 1, LOGGED_OUT_SUMMARY);
         add(summaryOverview);
+        add(Box.createVerticalStrut(8));
+        if (developerMode) {
+            summaryOverview.addMouseListener(new MouseListener() {
+                int clicks;
+                long lastClick;
+
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    if (System.currentTimeMillis() - lastClick < 500) {
+                        if (++clicks == 5) {
+                            clicks = 0;
+                            FakeDataService.createData(configManager);
+                            log.info("Created fake data!");
+                            resetSummaryContextMenu();
+                        }
+                    } else {
+                        clicks = 1;
+                    }
+
+                    lastClick = System.currentTimeMillis();
+                }
+
+                @Override
+                public void mousePressed(MouseEvent e) {
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                }
+
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                }
+            });
+        }
         resetSummaryContextMenu();
 
         overviews = Stream.of(Tab.TABS)
@@ -83,6 +124,7 @@ class OverviewTabPanel extends TabContentPanel {
                         {
                             OverviewItemPanel p = new OverviewItemPanel(itemManager, pluginPanel, t, t.getName());
                             add(p);
+                            add(Box.createVerticalStrut(8));
                             p.setVisible(false);
                             return p;
                         }
@@ -95,10 +137,15 @@ class OverviewTabPanel extends TabContentPanel {
 
         if (Objects.equals(pluginPanel.displayName, "")) {
             summaryOverview.setTitle(LOGGED_OUT_SUMMARY);
-            summaryOverview.updateStatus("", Color.LIGHT_GRAY);
+            summaryOverview.updateStatus("Right-click to preview data.", Color.LIGHT_GRAY);
         } else {
             summaryOverview.setTitle(pluginPanel.displayName);
-            summaryOverview.updateStatus(String.format("%,d gp", getTotalValue()), Color.LIGHT_GRAY);
+
+            if (pluginPanel.previewMode && !Objects.equals(pluginPanel.displayName, "Thource")) {
+                summaryOverview.updateStatus(String.format("<html><body style=\"margin: 0; padding: 0;\">%,d gp<br>Right-click to exit preview.</body></html>", getTotalValue()), Color.LIGHT_GRAY);
+            } else {
+                summaryOverview.updateStatus(String.format("%,d gp", getTotalValue()), Color.LIGHT_GRAY);
+            }
         }
 
         overviews.get(Tab.DEATH).updateStatus(String.format("%,d gp", deathStorageManager.getTotalValue()), Color.LIGHT_GRAY);
@@ -166,7 +213,8 @@ class OverviewTabPanel extends TabContentPanel {
                 popupMenu.add(exitPreviewMode);
             } else {
                 configManager.getRSProfiles().forEach(profile -> {
-                    if (configManager.getConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP, profile.getKey(), "isMember") == null) return;
+                    if (configManager.getConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP, profile.getKey(), "isMember") == null)
+                        return;
 
                     final JMenuItem previewItem = new JMenuItem(profile.getDisplayName());
                     previewItem.addActionListener(e -> plugin.enablePreviewMode(profile.getKey(), profile.getDisplayName()));

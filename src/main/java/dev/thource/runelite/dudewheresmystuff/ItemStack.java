@@ -34,6 +34,8 @@ import net.runelite.client.callback.ClientThread;
 import net.runelite.client.game.ItemManager;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @AllArgsConstructor
 @Getter

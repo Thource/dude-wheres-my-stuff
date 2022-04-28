@@ -7,8 +7,11 @@ import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.ItemID;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @Getter
@@ -212,5 +215,36 @@ public class Leprechaun extends WorldStorage {
         }
         lastUpdated = -1;
         enable();
+    }
+
+    @Override
+    public void load(ConfigManager configManager, String managerConfigKey, String profileKey) {
+        List<ItemStack> loadedItems = loadItems(configManager, managerConfigKey, profileKey);
+        if (loadedItems == null || loadedItems.isEmpty()) return;
+
+        for (ItemStack loadedItem : loadedItems) {
+            if (loadedItem.getId() == -1) continue;
+
+            if (Arrays.stream(WATERING_CAN_IDS).anyMatch(i -> i == loadedItem.getId())) {
+                wateringCan.id = loadedItem.getId();
+                wateringCan.setQuantity(loadedItem.getQuantity());
+                wateringCan.populateFromComposition(itemManager);
+                continue;
+            }
+
+            if (loadedItem.getId() == ItemID.MAGIC_SECATEURS || loadedItem.getId() == ItemID.SECATEURS) {
+                secateurs.id = loadedItem.getId();
+                secateurs.setQuantity(loadedItem.getQuantity());
+                secateurs.populateFromComposition(itemManager);
+                continue;
+            }
+
+            for (ItemStack item : items) {
+                if (loadedItem.getId() != item.getId()) continue;
+
+                item.setQuantity(loadedItem.getQuantity());
+                break;
+            }
+        }
     }
 }

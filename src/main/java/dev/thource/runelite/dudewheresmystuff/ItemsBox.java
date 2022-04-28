@@ -47,7 +47,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.ToLongFunction;
-import java.util.stream.Collectors;
 
 class ItemsBox extends JPanel {
     private static final int ITEMS_PER_ROW = 4;
@@ -292,7 +291,7 @@ class ItemsBox extends JPanel {
             items.sort(Comparator.comparingLong(getPrice).reversed());
 
         if (itemSortMode != ItemSortMode.UNSORTED)
-            items = items.stream().filter(itemStack -> itemStack.getId() != -1).collect(Collectors.toList());
+            items = ItemStackService.compound(items);
 
         if (items.stream().anyMatch(itemStack -> itemStack.getId() != -1)) {
             // Calculates how many rows need to be display to fit all items
