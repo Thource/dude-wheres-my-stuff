@@ -25,7 +25,7 @@ public class ItemStackService {
       }
 
         if (!wasCompounded) {
-            compoundedItemStacks.add(itemStack);
+            compoundedItemStacks.add(new ItemStack(itemStack));
         }
     });
 

@@ -61,6 +61,15 @@ class ItemStack implements Serializable {
     clientThread.invoke(() -> this.populateFromComposition(itemManager));
   }
 
+  public ItemStack(ItemStack itemStack) {
+    this.id = itemStack.getId();
+    this.name = itemStack.getName();
+    this.quantity = itemStack.getQuantity();
+    this.gePrice = itemStack.getGePrice();
+    this.haPrice = itemStack.getHaPrice();
+    this.stackable = itemStack.isStackable();
+  }
+
   public void populateFromComposition(ItemManager itemManager) {
     ItemComposition composition = itemManager.getItemComposition(id);
     this.name = composition.getName();
