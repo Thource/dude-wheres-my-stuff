@@ -9,9 +9,18 @@ Helps you keep track of your stuff (items, gp, minigame points) in Old School Ru
 
 ## Current features
 
+* View storage for alt characters
 * Overview of your storages, including total account wealth
 
-![img.png](readme/overview.png)
+![Overview](readme/overview.png)
+
+
+* Death storage
+  * Deathbanks
+  * Deathpiles
+
+![Death Storage](readme/death.gif)
+
 
 * Coin tracking
   * Blast Furnace coffer
@@ -19,8 +28,11 @@ Helps you keep track of your stuff (items, gp, minigame points) in Old School Ru
   * Last Man Standing coffer
   * Looting bag
   * Nightmare Zone coffer
+  * Grand Exchange (cancelled offers only)
+  * Servant's Moneybag
+  * Shilo Village Furnace
 
-![img.png](readme/coins.png)
+![Coins Storage](readme/coins.gif)
 
 
 * Carry-able storage
@@ -30,8 +42,14 @@ Helps you keep track of your stuff (items, gp, minigame points) in Old School Ru
   * Rune pouch
   * Seed box
 
-![img.png](readme/carryables.png)
-  
+![Carryable Storage](readme/carryables.gif)
+
+
+* World storage
+  * Tool Leprechaun
+
+![World Storage](readme/world.png)
+
 
 * Minigame points
   * Barbarian Assault
@@ -40,42 +58,13 @@ Helps you keep track of your stuff (items, gp, minigame points) in Old School Ru
   * Nightmare Zone
   * Tithe Farm
 
-![img.png](readme/minigames.png)
+![Minigame Storage](readme/minigames.png)
 
 
 * Storage-wide search for items
 
-![img.png](readme/search.png)
+![Item Search](readme/search.png)
 
 ## Planned features
 
-* Carry-able storage
-  * Herb sack
-  * Gem bag
-  * Bolt pouch
-  * Plank sack
-  * Fish barrel
-  * Flamtaer bag
-  * Tackle box
-  * Gnomish firelighter
-  * Master scroll book
-  * Coffins
-  * Essence pouches
-
-
-* Minigame points
-  * Pest Control
-  * Tempoross
-  * Guardians of the Rift
-  * Slayer points
-  * Soul Wars
-  * Mahogany Homes
-
-
-* Deathbanks
-* Deathpiles
-* POH storage
-* Stash units
-* Tool leprechaun
-* Fossil storage
-* Log storage
+Check out the Trello board: https://trello.com/b/YMugGCCW/dude-wheres-my-stuff
