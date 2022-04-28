@@ -25,46 +25,43 @@
  */
 package dev.thource.runelite.dudewheresmystuff;
 
+import java.util.HashMap;
+import java.util.Map;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.runelite.api.ItemID;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @RequiredArgsConstructor
 @Getter
-public enum Tab
-{
-	OVERVIEW("Overview", ItemID.NOTES),
-	COINS("Coins", ItemID.COINS_995, 0xBADCA7),
-	CARRYABLE_STORAGE("Carry-able Storage", ItemID.LOOTING_BAG),
-	WORLD("World Storage", ItemID.ROGUES_EQUIPMENT_CRATE),
-	MINIGAMES("Minigames", ItemID.PROGRESS_HAT),
-	DEATH("Death Storage", ItemID.SKULL),
-	POH_STORAGE("POH Storage", ItemID.EXIT_PORTAL),
-	STASH_UNITS("Stash Units", ItemID.CLUE_SCROLL_MASTER),
-	SEARCH("Search", -1);
+public enum Tab {
+  OVERVIEW("Overview", ItemID.NOTES),
+  COINS("Coins", ItemID.COINS_995, 0xBADCA7),
+  CARRYABLE_STORAGE("Carry-able Storage", ItemID.LOOTING_BAG),
+  WORLD("World Storage", ItemID.ROGUES_EQUIPMENT_CRATE),
+  MINIGAMES("Minigames", ItemID.PROGRESS_HAT),
+  DEATH("Death Storage", ItemID.SKULL),
+  POH_STORAGE("POH Storage", ItemID.EXIT_PORTAL),
+  STASH_UNITS("Stash Units", ItemID.CLUE_SCROLL_MASTER),
+  SEARCH("Search", -1);
 
-	public static final Map<Class<? extends StorageManager<?, ?>>, Tab> MANAGER_TAB_MAP = new HashMap<>();
+  public static final Map<Class<? extends StorageManager<?, ?>>, Tab> MANAGER_TAB_MAP = new HashMap<>();
+  public static final Tab[] TABS = {OVERVIEW, DEATH, COINS, CARRYABLE_STORAGE, WORLD, MINIGAMES,
+      SEARCH};
 
-	static {
-		MANAGER_TAB_MAP.put(DeathStorageManager.class, DEATH);
-		MANAGER_TAB_MAP.put(CoinsStorageManager.class, COINS);
-		MANAGER_TAB_MAP.put(CarryableStorageManager.class, CARRYABLE_STORAGE);
-		MANAGER_TAB_MAP.put(WorldStorageManager.class, WORLD);
-		MANAGER_TAB_MAP.put(MinigamesStorageManager.class, MINIGAMES);
-	}
+  static {
+    MANAGER_TAB_MAP.put(DeathStorageManager.class, DEATH);
+    MANAGER_TAB_MAP.put(CoinsStorageManager.class, COINS);
+    MANAGER_TAB_MAP.put(CarryableStorageManager.class, CARRYABLE_STORAGE);
+    MANAGER_TAB_MAP.put(WorldStorageManager.class, WORLD);
+    MANAGER_TAB_MAP.put(MinigamesStorageManager.class, MINIGAMES);
+  }
 
-	public static final Tab[] TABS = {OVERVIEW, DEATH, COINS, CARRYABLE_STORAGE, WORLD, MINIGAMES, SEARCH};
-
-	Tab(String name, int itemID) {
-		this.name = name;
-		this.itemID = itemID;
-		this.itemQuantity = 1;
-	}
-
-	private final String name;
-	private final int itemID;
-	private final int itemQuantity;
+  private final String name;
+  private final int itemID;
+  private final int itemQuantity;
+  Tab(String name, int itemID) {
+    this.name = name;
+    this.itemID = itemID;
+    this.itemQuantity = 1;
+  }
 }

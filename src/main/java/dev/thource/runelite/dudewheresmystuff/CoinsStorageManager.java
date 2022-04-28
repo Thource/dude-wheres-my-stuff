@@ -1,7 +1,6 @@
 package dev.thource.runelite.dudewheresmystuff;
 
 import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import dev.thource.runelite.dudewheresmystuff.coins.GrandExchange;
 import dev.thource.runelite.dudewheresmystuff.coins.LootingBag;
 import dev.thource.runelite.dudewheresmystuff.coins.ServantsMoneybag;
@@ -14,32 +13,36 @@ import net.runelite.client.game.ItemManager;
 
 @Slf4j
 public class CoinsStorageManager extends StorageManager<CoinsStorageType, CoinsStorage> {
-    @Inject
-    CoinsStorageManager(Client client, ItemManager itemManager, ConfigManager configManager, DudeWheresMyStuffConfig config, Notifier notifier, DudeWheresMyStuffPlugin plugin) {
-        super(client, itemManager, configManager, config, notifier, plugin);
 
-        for (CoinsStorageType type : CoinsStorageType.values()) {
-            if (type == CoinsStorageType.SERVANT_MONEYBAG
-                    || type == CoinsStorageType.SHILO_FURNACE
-                    || type == CoinsStorageType.GRAND_EXCHANGE
-                    || type == CoinsStorageType.LOOTING_BAG) continue;
+  @Inject
+  CoinsStorageManager(Client client, ItemManager itemManager, ConfigManager configManager,
+      DudeWheresMyStuffConfig config, Notifier notifier, DudeWheresMyStuffPlugin plugin) {
+    super(client, itemManager, configManager, config, notifier, plugin);
 
-            storages.add(new CoinsStorage(type, client, itemManager));
-        }
+    for (CoinsStorageType type : CoinsStorageType.values()) {
+      if (type == CoinsStorageType.SERVANT_MONEYBAG
+          || type == CoinsStorageType.SHILO_FURNACE
+          || type == CoinsStorageType.GRAND_EXCHANGE
+          || type == CoinsStorageType.LOOTING_BAG) {
+        continue;
+      }
 
-        storages.add(new ServantsMoneybag(client, itemManager));
-        storages.add(new ShiloFurnace(client, itemManager));
-        storages.add(new GrandExchange(client, itemManager));
-        storages.add(new LootingBag(client, itemManager));
+      storages.add(new CoinsStorage(type, client, itemManager));
     }
 
-    @Override
-    public String getConfigKey() {
-        return "coins";
-    }
+    storages.add(new ServantsMoneybag(client, itemManager));
+    storages.add(new ShiloFurnace(client, itemManager));
+    storages.add(new GrandExchange(client, itemManager));
+    storages.add(new LootingBag(client, itemManager));
+  }
 
-    @Override
-    public Tab getTab() {
-        return Tab.COINS;
-    }
+  @Override
+  public String getConfigKey() {
+    return "coins";
+  }
+
+  @Override
+  public Tab getTab() {
+    return Tab.COINS;
+  }
 }

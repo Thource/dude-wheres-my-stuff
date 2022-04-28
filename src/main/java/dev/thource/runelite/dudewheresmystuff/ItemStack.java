@@ -25,6 +25,7 @@
  */
 package dev.thource.runelite.dudewheresmystuff;
 
+import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -33,53 +34,50 @@ import net.runelite.api.ItemComposition;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.game.ItemManager;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
 @AllArgsConstructor
 @Getter
 @EqualsAndHashCode
 public
 class ItemStack implements Serializable {
-    public int id;
-    String name;
-    long quantity;
-    int gePrice;
-    int haPrice;
-    boolean stackable;
 
-    public ItemStack(int id, Client client, ClientThread clientThread, ItemManager itemManager) {
-        this.id = id;
-        this.name = "Loading";
-        this.quantity = 0L;
+  public int id;
+  String name;
+  long quantity;
+  int gePrice;
+  int haPrice;
+  boolean stackable;
 
-        if (client.isClientThread()) {
-            populateFromComposition(itemManager);
+  public ItemStack(int id, Client client, ClientThread clientThread, ItemManager itemManager) {
+    this.id = id;
+    this.name = "Loading";
+    this.quantity = 0L;
 
-            return;
-        }
+    if (client.isClientThread()) {
+      populateFromComposition(itemManager);
 
-        clientThread.invoke(() -> this.populateFromComposition(itemManager));
+      return;
     }
 
-    public void populateFromComposition(ItemManager itemManager) {
-        ItemComposition composition = itemManager.getItemComposition(id);
-        this.name = composition.getName();
-        this.gePrice = itemManager.getItemPrice(id);
-        this.haPrice = composition.getHaPrice();
-        this.stackable = composition.isStackable();
-    }
+    clientThread.invoke(() -> this.populateFromComposition(itemManager));
+  }
 
-    long getTotalGePrice() {
-        return gePrice * quantity;
-    }
+  public void populateFromComposition(ItemManager itemManager) {
+    ItemComposition composition = itemManager.getItemComposition(id);
+    this.name = composition.getName();
+    this.gePrice = itemManager.getItemPrice(id);
+    this.haPrice = composition.getHaPrice();
+    this.stackable = composition.isStackable();
+  }
 
-    long getTotalHaPrice() {
-        return haPrice * quantity;
-    }
+  long getTotalGePrice() {
+    return gePrice * quantity;
+  }
 
-    public void setQuantity(long quantity) {
-        this.quantity = quantity;
-    }
+  long getTotalHaPrice() {
+    return haPrice * quantity;
+  }
+
+  public void setQuantity(long quantity) {
+    this.quantity = quantity;
+  }
 }

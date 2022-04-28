@@ -1,13 +1,14 @@
 package dev.thource.runelite.dudewheresmystuff;
 
 interface StorageType {
-    String getName();
 
-    int getItemContainerId();
+  String getName();
 
-    boolean isAutomatic();
+  int getItemContainerId();
 
-    String getConfigKey();
+  boolean isAutomatic();
 
-    boolean isMembersOnly();
+  String getConfigKey();
+
+  boolean isMembersOnly();
 }

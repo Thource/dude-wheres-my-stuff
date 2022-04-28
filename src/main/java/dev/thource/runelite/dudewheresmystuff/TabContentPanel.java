@@ -25,11 +25,11 @@
  */
 package dev.thource.runelite.dudewheresmystuff;
 
+import javax.swing.JPanel;
 import lombok.extern.slf4j.Slf4j;
-
-import javax.swing.*;
 
 @Slf4j
 public abstract class TabContentPanel extends JPanel {
-    public abstract void update();
+
+  public abstract void update();
 }

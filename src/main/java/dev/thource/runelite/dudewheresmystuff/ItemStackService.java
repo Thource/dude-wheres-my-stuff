@@ -4,23 +4,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ItemStackService {
-    public static List<ItemStack> compound(List<ItemStack> itemStacks) {
-        ArrayList<ItemStack> compoundedItemStacks = new ArrayList<>();
 
-        itemStacks.forEach(itemStack -> {
-            if (itemStack.getId() == -1) return;
+  public static List<ItemStack> compound(List<ItemStack> itemStacks) {
+    ArrayList<ItemStack> compoundedItemStacks = new ArrayList<>();
 
-            boolean wasCompounded = false;
-            for (ItemStack compoundedItemStack : compoundedItemStacks) {
-                if (compoundedItemStack.getId() != itemStack.getId()) continue;
+    itemStacks.forEach(itemStack -> {
+        if (itemStack.getId() == -1) {
+            return;
+        }
 
-                compoundedItemStack.setQuantity(compoundedItemStack.getQuantity() + itemStack.getQuantity());
-                wasCompounded = true;
-            }
+      boolean wasCompounded = false;
+      for (ItemStack compoundedItemStack : compoundedItemStacks) {
+          if (compoundedItemStack.getId() != itemStack.getId()) {
+              continue;
+          }
 
-            if (!wasCompounded) compoundedItemStacks.add(itemStack);
-        });
+        compoundedItemStack.setQuantity(
+            compoundedItemStack.getQuantity() + itemStack.getQuantity());
+        wasCompounded = true;
+      }
 
-        return compoundedItemStacks;
-    }
+        if (!wasCompounded) {
+            compoundedItemStacks.add(itemStack);
+        }
+    });
+
+    return compoundedItemStacks;
+  }
 }

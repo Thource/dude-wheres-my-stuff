@@ -16,81 +16,94 @@ import org.apache.commons.lang3.math.NumberUtils;
 
 @Getter
 public class LastManStanding extends MinigamesStorage {
-    ItemStack points = new ItemStack(ItemID.SKULL, "Points", 0, 0, 0, true);
 
-    Widget shopWidget = null;
+  ItemStack points = new ItemStack(ItemID.SKULL, "Points", 0, 0, 0, true);
 
-    public LastManStanding(Client client, ItemManager itemManager) {
-        super(MinigamesStorageType.LAST_MAN_STANDING, client, itemManager);
+  Widget shopWidget = null;
 
-        items.add(points);
+  public LastManStanding(Client client, ItemManager itemManager) {
+    super(MinigamesStorageType.LAST_MAN_STANDING, client, itemManager);
+
+    items.add(points);
+  }
+
+  @Override
+  public boolean onGameTick() {
+    return updateFromWidgets();
+  }
+
+  @Override
+  public boolean onWidgetLoaded(WidgetLoaded widgetLoaded) {
+    if (client.getLocalPlayer() == null) {
+      return false;
     }
 
-    @Override
-    public boolean onGameTick() {
-        return updateFromWidgets();
+    if (widgetLoaded.getGroupId() == 645) {
+      shopWidget = client.getWidget(645, 0);
     }
 
-    @Override
-    public boolean onWidgetLoaded(WidgetLoaded widgetLoaded) {
-        if (client.getLocalPlayer() == null) return false;
+    return updateFromWidgets();
+  }
 
-        if (widgetLoaded.getGroupId() == 645) {
-            shopWidget = client.getWidget(645, 0);
-        }
-
-        return updateFromWidgets();
+  @Override
+  public boolean onWidgetClosed(WidgetClosed widgetClosed) {
+    if (client.getLocalPlayer() == null) {
+      return false;
     }
 
-    @Override
-    public boolean onWidgetClosed(WidgetClosed widgetClosed) {
-        if (client.getLocalPlayer() == null) return false;
-
-        if (widgetClosed.getGroupId() == 645) {
-            shopWidget = null;
-        }
-
-        return false;
+    if (widgetClosed.getGroupId() == 645) {
+      shopWidget = null;
     }
 
-    boolean updateFromWidgets() {
-        if (shopWidget == null) return false;
+    return false;
+  }
 
-        lastUpdated = System.currentTimeMillis();
-        int newPoints = client.getVarpValue(261);
-        if (newPoints == points.getQuantity()) return !this.getType().isAutomatic();
-
-        points.setQuantity(newPoints);
-        return true;
+  boolean updateFromWidgets() {
+    if (shopWidget == null) {
+      return false;
     }
 
-    @Override
-    public void save(ConfigManager configManager, String managerConfigKey) {
-        String data = lastUpdated + ";"
-                + points.getQuantity();
-
-        configManager.setRSProfileConfiguration(
-                DudeWheresMyStuffConfig.CONFIG_GROUP,
-                managerConfigKey + "." + type.getConfigKey(),
-                data
-        );
+    lastUpdated = System.currentTimeMillis();
+    int newPoints = client.getVarpValue(261);
+    if (newPoints == points.getQuantity()) {
+      return !this.getType().isAutomatic();
     }
 
-    @Override
-    public void load(ConfigManager configManager, String managerConfigKey, String profileKey) {
-        String data = configManager.getConfiguration(
-                DudeWheresMyStuffConfig.CONFIG_GROUP,
-                profileKey,
-                managerConfigKey + "." + type.getConfigKey(),
-                String.class
-        );
-        if (data == null) return;
+    points.setQuantity(newPoints);
+    return true;
+  }
 
-        String[] dataSplit = data.split(";");
-        if (dataSplit.length != 2) return;
+  @Override
+  public void save(ConfigManager configManager, String managerConfigKey) {
+    String data = lastUpdated + ";"
+        + points.getQuantity();
 
-        this.lastUpdated = NumberUtils.toLong(dataSplit[0], -1);
+    configManager.setRSProfileConfiguration(
+        DudeWheresMyStuffConfig.CONFIG_GROUP,
+        managerConfigKey + "." + type.getConfigKey(),
+        data
+    );
+  }
 
-        points.setQuantity(NumberUtils.toInt(dataSplit[1], 0));
+  @Override
+  public void load(ConfigManager configManager, String managerConfigKey, String profileKey) {
+    String data = configManager.getConfiguration(
+        DudeWheresMyStuffConfig.CONFIG_GROUP,
+        profileKey,
+        managerConfigKey + "." + type.getConfigKey(),
+        String.class
+    );
+    if (data == null) {
+      return;
     }
+
+    String[] dataSplit = data.split(";");
+    if (dataSplit.length != 2) {
+      return;
+    }
+
+    this.lastUpdated = NumberUtils.toLong(dataSplit[0], -1);
+
+    points.setQuantity(NumberUtils.toInt(dataSplit[1], 0));
+  }
 }

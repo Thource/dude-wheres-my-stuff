@@ -7,15 +7,16 @@ import net.runelite.client.game.ItemManager;
 
 @Getter
 public class DeathStorage extends Storage<DeathStorageType> {
-    protected DeathStorage(DeathStorageType type, Client client, ItemManager itemManager) {
-        super(type, client, itemManager);
-    }
 
-    @Override
-    public void save(ConfigManager configManager, String managerConfigKey) {
-    }
+  protected DeathStorage(DeathStorageType type, Client client, ItemManager itemManager) {
+    super(type, client, itemManager);
+  }
 
-    @Override
-    public void load(ConfigManager configManager, String managerConfigKey, String profileKey) {
-    }
+  @Override
+  public void save(ConfigManager configManager, String managerConfigKey) {
+  }
+
+  @Override
+  public void load(ConfigManager configManager, String managerConfigKey, String profileKey) {
+  }
 }

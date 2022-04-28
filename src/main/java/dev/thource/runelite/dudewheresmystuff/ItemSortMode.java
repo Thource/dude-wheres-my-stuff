@@ -6,13 +6,13 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum ItemSortMode {
-    VALUE("Value"),
-    UNSORTED("Unsorted");
+  VALUE("Value"),
+  UNSORTED("Unsorted");
 
-    private final String name;
+  private final String name;
 
-    @Override
-    public String toString() {
-        return name;
-    }
+  @Override
+  public String toString() {
+    return name;
+  }
 }

@@ -26,6 +26,8 @@
 
 package dev.thource.runelite.dudewheresmystuff;
 
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 import net.runelite.api.ItemID;
 import net.runelite.api.Point;
 import net.runelite.api.coords.WorldPoint;
@@ -33,55 +35,55 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPoint;
 import net.runelite.client.util.ImageUtil;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
-
 public class DeathWorldMapPoint extends WorldMapPoint {
-    private final ItemManager itemManager;
-    private final BufferedImage worldmapHintArrow;
-    private final Point worldmapHintArrowPoint;
-    private BufferedImage mapArrow;
 
-    DeathWorldMapPoint(final WorldPoint worldPoint, ItemManager itemManager, int index) {
-        super(worldPoint, null);
-        this.itemManager = itemManager;
+  private final ItemManager itemManager;
+  private final BufferedImage worldmapHintArrow;
+  private final Point worldmapHintArrowPoint;
+  private BufferedImage mapArrow;
 
-        worldmapHintArrow = new BufferedImage(getMapArrow().getWidth(), getMapArrow().getHeight(), BufferedImage.TYPE_INT_ARGB);
-        Graphics graphics = worldmapHintArrow.getGraphics();
-        graphics.drawImage(getMapArrow(), 0, 0, null);
-        graphics.drawImage(itemManager.getImage(ItemID.BONES), 0, 0, null);
-        worldmapHintArrowPoint = new Point(
-                worldmapHintArrow.getWidth() / 2,
-                worldmapHintArrow.getHeight());
+  DeathWorldMapPoint(final WorldPoint worldPoint, ItemManager itemManager, int index) {
+    super(worldPoint, null);
+    this.itemManager = itemManager;
 
-        this.setSnapToEdge(true);
-        this.setJumpOnClick(true);
-        this.setImage(worldmapHintArrow);
-        this.setImagePoint(worldmapHintArrowPoint);
-        this.setTooltip("Deathpile");
-        this.setName("Deathpile " + index);
+    worldmapHintArrow = new BufferedImage(getMapArrow().getWidth(), getMapArrow().getHeight(),
+        BufferedImage.TYPE_INT_ARGB);
+    Graphics graphics = worldmapHintArrow.getGraphics();
+    graphics.drawImage(getMapArrow(), 0, 0, null);
+    graphics.drawImage(itemManager.getImage(ItemID.BONES), 0, 0, null);
+    worldmapHintArrowPoint = new Point(
+        worldmapHintArrow.getWidth() / 2,
+        worldmapHintArrow.getHeight());
+
+    this.setSnapToEdge(true);
+    this.setJumpOnClick(true);
+    this.setImage(worldmapHintArrow);
+    this.setImagePoint(worldmapHintArrowPoint);
+    this.setTooltip("Deathpile");
+    this.setName("Deathpile " + index);
+  }
+
+  BufferedImage getMapArrow() {
+    if (mapArrow != null) {
+      return mapArrow;
     }
 
-    BufferedImage getMapArrow() {
-        if (mapArrow != null)
-            return mapArrow;
+    mapArrow = ImageUtil.loadImageResource(getClass(), "/util/clue_arrow.png");
 
-        mapArrow = ImageUtil.loadImageResource(getClass(), "/util/clue_arrow.png");
+    return mapArrow;
+  }
 
-        return mapArrow;
-    }
+  @Override
+  public void onEdgeSnap() {
+    this.setImage(itemManager.getImage(ItemID.BONES));
+    this.setImagePoint(null);
+    this.setTooltip(null);
+  }
 
-    @Override
-    public void onEdgeSnap() {
-        this.setImage(itemManager.getImage(ItemID.BONES));
-        this.setImagePoint(null);
-        this.setTooltip(null);
-    }
-
-    @Override
-    public void onEdgeUnsnap() {
-        this.setImage(worldmapHintArrow);
-        this.setImagePoint(worldmapHintArrowPoint);
-        this.setTooltip("Deathpile");
-    }
+  @Override
+  public void onEdgeUnsnap() {
+    this.setImage(worldmapHintArrow);
+    this.setImagePoint(worldmapHintArrowPoint);
+    this.setTooltip("Deathpile");
+  }
 }

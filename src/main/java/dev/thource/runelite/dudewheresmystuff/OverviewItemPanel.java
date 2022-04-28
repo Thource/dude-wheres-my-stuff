@@ -25,136 +25,141 @@
  */
 package dev.thource.runelite.dudewheresmystuff;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.function.BooleanSupplier;
+import javax.annotation.Nullable;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
 import net.runelite.api.Constants;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.util.ImageUtil;
 
-import javax.annotation.Nullable;
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.function.BooleanSupplier;
+class OverviewItemPanel extends JPanel {
 
-class OverviewItemPanel extends JPanel
-{
-	private static final ImageIcon ARROW_RIGHT_ICON;
+  private static final ImageIcon ARROW_RIGHT_ICON;
 
-	private static final Color HOVER_COLOR = ColorScheme.DARKER_GRAY_HOVER_COLOR;
+  private static final Color HOVER_COLOR = ColorScheme.DARKER_GRAY_HOVER_COLOR;
 
-	private final JPanel textContainer;
-	private final JLabel statusLabel;
-	private final JLabel arrowLabel;
-	private final BooleanSupplier isSelectable;
-	private final JLabel titleLabel;
+  static {
+    ARROW_RIGHT_ICON = new ImageIcon(
+        ImageUtil.loadImageResource(DudeWheresMyStuffPlugin.class, "/util/arrow_right.png"));
+  }
 
-	private boolean isHighlighted;
+  private final JPanel textContainer;
+  private final JLabel statusLabel;
+  private final JLabel arrowLabel;
+  private final BooleanSupplier isSelectable;
+  private final JLabel titleLabel;
+  private boolean isHighlighted;
 
-	static
-	{
-		ARROW_RIGHT_ICON = new ImageIcon(ImageUtil.loadImageResource(DudeWheresMyStuffPlugin.class, "/util/arrow_right.png"));
-	}
+  OverviewItemPanel(ItemManager itemManager, DudeWheresMyStuffPanel pluginPanel, @Nullable Tab tab,
+      String title) {
+    this(itemManager, () -> pluginPanel.switchTab(tab), () -> true,
+        tab != null ? tab.getItemID() : -1, tab != null ? tab.getItemQuantity() : -1, title);
+  }
 
-	OverviewItemPanel(ItemManager itemManager, DudeWheresMyStuffPanel pluginPanel, @Nullable Tab tab, String title)
-	{
-		this(itemManager, () -> pluginPanel.switchTab(tab), () -> true, tab != null ? tab.getItemID() : -1, tab != null ? tab.getItemQuantity() : -1, title);
-	}
+  OverviewItemPanel(ItemManager itemManager, @Nullable Runnable onTabSwitched,
+      BooleanSupplier isSelectable, int iconItemID, int iconItemQuantity, String title) {
+    this.isSelectable = isSelectable;
 
-	OverviewItemPanel(ItemManager itemManager, @Nullable Runnable onTabSwitched, BooleanSupplier isSelectable, int iconItemID, int iconItemQuantity, String title)
-	{
-		this.isSelectable = isSelectable;
+    setBackground(ColorScheme.DARKER_GRAY_COLOR);
+    setLayout(new BorderLayout());
+    setBorder(new EmptyBorder(7, 7, 7, 7));
 
-		setBackground(ColorScheme.DARKER_GRAY_COLOR);
-		setLayout(new BorderLayout());
-		setBorder(new EmptyBorder(7, 7, 7, 7));
+    if (iconItemID != -1) {
+      JLabel iconLabel = new JLabel();
+      iconLabel.setMinimumSize(
+          new Dimension(Constants.ITEM_SPRITE_WIDTH, Constants.ITEM_SPRITE_HEIGHT));
+      itemManager.getImage(iconItemID, iconItemQuantity, false).addTo(iconLabel);
+      add(iconLabel, BorderLayout.WEST);
+    }
 
-		if (iconItemID != -1) {
-			JLabel iconLabel = new JLabel();
-			iconLabel.setMinimumSize(new Dimension(Constants.ITEM_SPRITE_WIDTH, Constants.ITEM_SPRITE_HEIGHT));
-			itemManager.getImage(iconItemID, iconItemQuantity, false).addTo(iconLabel);
-			add(iconLabel, BorderLayout.WEST);
-		}
+    textContainer = new JPanel();
+    textContainer.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+    textContainer.setLayout(new GridLayout(2, 1));
+    textContainer.setBorder(new EmptyBorder(5, 7, 5, 7));
 
-		textContainer = new JPanel();
-		textContainer.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-		textContainer.setLayout(new GridLayout(2, 1));
-		textContainer.setBorder(new EmptyBorder(5, 7, 5, 7));
+    if (isSelectable.getAsBoolean()) {
+      addMouseListener(new MouseAdapter() {
+        @Override
+        public void mousePressed(MouseEvent mouseEvent) {
+          if (onTabSwitched != null) {
+            onTabSwitched.run();
+          }
 
-		if (isSelectable.getAsBoolean()) {
-			addMouseListener(new MouseAdapter() {
-				@Override
-				public void mousePressed(MouseEvent mouseEvent) {
-					if (onTabSwitched != null) onTabSwitched.run();
+          setHighlighted(false);
+        }
 
-					setHighlighted(false);
-				}
+        @Override
+        public void mouseReleased(MouseEvent e) {
+          setHighlighted(true);
+        }
 
-				@Override
-				public void mouseReleased(MouseEvent e) {
-					setHighlighted(true);
-				}
+        @Override
+        public void mouseEntered(MouseEvent e) {
+          setHighlighted(true);
+        }
 
-				@Override
-				public void mouseEntered(MouseEvent e) {
-					setHighlighted(true);
-				}
+        @Override
+        public void mouseExited(MouseEvent e) {
+          setHighlighted(false);
+        }
+      });
+    }
 
-				@Override
-				public void mouseExited(MouseEvent e) {
-					setHighlighted(false);
-				}
-			});
-		}
+    titleLabel = new JLabel(title);
+    titleLabel.setForeground(Color.WHITE);
+    titleLabel.setFont(FontManager.getRunescapeSmallFont());
 
-		titleLabel = new JLabel(title);
-		titleLabel.setForeground(Color.WHITE);
-		titleLabel.setFont(FontManager.getRunescapeSmallFont());
+    statusLabel = new JLabel();
+    statusLabel.setForeground(Color.GRAY);
+    statusLabel.setFont(FontManager.getRunescapeSmallFont());
 
-		statusLabel = new JLabel();
-		statusLabel.setForeground(Color.GRAY);
-		statusLabel.setFont(FontManager.getRunescapeSmallFont());
+    textContainer.add(titleLabel);
+    textContainer.add(statusLabel);
 
-		textContainer.add(titleLabel);
-		textContainer.add(statusLabel);
+    add(textContainer, BorderLayout.CENTER);
 
-		add(textContainer, BorderLayout.CENTER);
+    arrowLabel = new JLabel(ARROW_RIGHT_ICON);
+    arrowLabel.setVisible(isSelectable.getAsBoolean());
+    add(arrowLabel, BorderLayout.EAST);
+  }
 
-		arrowLabel = new JLabel(ARROW_RIGHT_ICON);
-		arrowLabel.setVisible(isSelectable.getAsBoolean());
-		add(arrowLabel, BorderLayout.EAST);
-	}
+  void updateStatus(String text, Color color) {
+    statusLabel.setText(text);
+    statusLabel.setForeground(color);
 
-	void updateStatus(String text, Color color)
-	{
-		statusLabel.setText(text);
-		statusLabel.setForeground(color);
+    arrowLabel.setVisible(isSelectable.getAsBoolean());
 
-		arrowLabel.setVisible(isSelectable.getAsBoolean());
+    if (isHighlighted && !isSelectable.getAsBoolean()) {
+      setHighlighted(false);
+    }
+  }
 
-		if (isHighlighted && !isSelectable.getAsBoolean())
-		{
-			setHighlighted(false);
-		}
-	}
+  private void setHighlighted(boolean highlighted) {
+    if (highlighted && !isSelectable.getAsBoolean()) {
+      return;
+    }
 
-	private void setHighlighted(boolean highlighted)
-	{
-		if (highlighted && !isSelectable.getAsBoolean())
-		{
-			return;
-		}
+    setBackground(highlighted ? HOVER_COLOR : ColorScheme.DARKER_GRAY_COLOR);
+    setCursor(new Cursor(highlighted && getMousePosition(true) != null ? Cursor.HAND_CURSOR
+        : Cursor.DEFAULT_CURSOR));
+    textContainer.setBackground(highlighted ? HOVER_COLOR : ColorScheme.DARKER_GRAY_COLOR);
 
-		setBackground(highlighted ? HOVER_COLOR : ColorScheme.DARKER_GRAY_COLOR);
-		setCursor(new Cursor(highlighted && getMousePosition(true) != null ? Cursor.HAND_CURSOR : Cursor.DEFAULT_CURSOR));
-		textContainer.setBackground(highlighted ? HOVER_COLOR : ColorScheme.DARKER_GRAY_COLOR);
+    isHighlighted = highlighted;
+  }
 
-		isHighlighted = highlighted;
-	}
-
-	void setTitle(String title) {
-		this.titleLabel.setText(title);
-	}
+  void setTitle(String title) {
+    this.titleLabel.setText(title);
+  }
 }

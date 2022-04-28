@@ -26,15 +26,7 @@
 package dev.thource.runelite.dudewheresmystuff;
 
 import com.google.common.collect.ImmutableMap;
-import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.ItemID;
-import net.runelite.client.config.ConfigManager;
-import net.runelite.client.game.ItemManager;
-import net.runelite.client.ui.ColorScheme;
-
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import java.awt.*;
+import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
@@ -43,184 +35,216 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Stream;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
+import javax.swing.SwingUtilities;
+import javax.swing.border.EmptyBorder;
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.ItemID;
+import net.runelite.client.config.ConfigManager;
+import net.runelite.client.game.ItemManager;
+import net.runelite.client.ui.ColorScheme;
 
 @Slf4j
 class OverviewTabPanel extends TabContentPanel {
-    private final DudeWheresMyStuffConfig config;
 
-    final Map<Tab, OverviewItemPanel> overviews;
-    private final DeathStorageManager deathStorageManager;
-    private final CoinsStorageManager coinsStorageManager;
-    private final CarryableStorageManager carryableStorageManager;
-    private final WorldStorageManager worldStorageManager;
+  static final String LOGGED_OUT_SUMMARY = "Log in to find your stuff!";
+  final Map<Tab, OverviewItemPanel> overviews;
+  final OverviewItemPanel summaryOverview;
+  private final DudeWheresMyStuffConfig config;
+  private final DeathStorageManager deathStorageManager;
+  private final CoinsStorageManager coinsStorageManager;
+  private final CarryableStorageManager carryableStorageManager;
+  private final WorldStorageManager worldStorageManager;
+  private final DudeWheresMyStuffPanel pluginPanel;
+  private final DudeWheresMyStuffPlugin plugin;
+  private final ConfigManager configManager;
 
-    static final String LOGGED_OUT_SUMMARY = "Log in to find your stuff!";
-    final OverviewItemPanel summaryOverview;
-    private final DudeWheresMyStuffPanel pluginPanel;
-    private final DudeWheresMyStuffPlugin plugin;
-    private final ConfigManager configManager;
+  OverviewTabPanel(DudeWheresMyStuffPlugin plugin, DudeWheresMyStuffPanel pluginPanel,
+      DudeWheresMyStuffConfig config, ItemManager itemManager, ConfigManager configManager,
+      DeathStorageManager deathStorageManager, CoinsStorageManager coinsStorageManager,
+      CarryableStorageManager carryableStorageManager, WorldStorageManager worldStorageManager,
+      boolean developerMode) {
+    this.config = config;
+    this.configManager = configManager;
+    this.deathStorageManager = deathStorageManager;
+    this.coinsStorageManager = coinsStorageManager;
+    this.carryableStorageManager = carryableStorageManager;
+    this.worldStorageManager = worldStorageManager;
+    this.pluginPanel = pluginPanel;
+    this.plugin = plugin;
 
-    OverviewTabPanel(DudeWheresMyStuffPlugin plugin, DudeWheresMyStuffPanel pluginPanel, DudeWheresMyStuffConfig config, ItemManager itemManager, ConfigManager configManager, DeathStorageManager deathStorageManager, CoinsStorageManager coinsStorageManager, CarryableStorageManager carryableStorageManager, WorldStorageManager worldStorageManager, boolean developerMode) {
-        this.config = config;
-        this.configManager = configManager;
-        this.deathStorageManager = deathStorageManager;
-        this.coinsStorageManager = coinsStorageManager;
-        this.carryableStorageManager = carryableStorageManager;
-        this.worldStorageManager = worldStorageManager;
-        this.pluginPanel = pluginPanel;
-        this.plugin = plugin;
+    setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+    setBackground(ColorScheme.DARK_GRAY_COLOR);
 
-        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        setBackground(ColorScheme.DARK_GRAY_COLOR);
+    summaryOverview = new OverviewItemPanel(itemManager, null, () -> false, ItemID.NOTES, 1,
+        LOGGED_OUT_SUMMARY);
+    add(summaryOverview);
+    add(Box.createVerticalStrut(8));
+    if (developerMode) {
+      summaryOverview.addMouseListener(new MouseListener() {
+        int clicks;
+        long lastClick;
 
-        summaryOverview = new OverviewItemPanel(itemManager, null, () -> false, ItemID.NOTES, 1, LOGGED_OUT_SUMMARY);
-        add(summaryOverview);
-        add(Box.createVerticalStrut(8));
-        if (developerMode) {
-            summaryOverview.addMouseListener(new MouseListener() {
-                int clicks;
-                long lastClick;
-
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    if (System.currentTimeMillis() - lastClick < 500) {
-                        if (++clicks == 5) {
-                            clicks = 0;
-                            FakeDataService.createData(configManager);
-                            log.info("Created fake data!");
-                            resetSummaryContextMenu();
-                        }
-                    } else {
-                        clicks = 1;
-                    }
-
-                    lastClick = System.currentTimeMillis();
-                }
-
-                @Override
-                public void mousePressed(MouseEvent e) {
-                }
-
-                @Override
-                public void mouseReleased(MouseEvent e) {
-                }
-
-                @Override
-                public void mouseEntered(MouseEvent e) {
-                }
-
-                @Override
-                public void mouseExited(MouseEvent e) {
-                }
-            });
-        }
-        resetSummaryContextMenu();
-
-        overviews = Stream.of(Tab.TABS)
-                .filter(v -> v != Tab.OVERVIEW && v != Tab.SEARCH)
-                .collect(ImmutableMap.toImmutableMap(
-                        Function.identity(),
-                        t ->
-                        {
-                            OverviewItemPanel p = new OverviewItemPanel(itemManager, pluginPanel, t, t.getName());
-                            add(p);
-                            add(Box.createVerticalStrut(8));
-                            p.setVisible(false);
-                            return p;
-                        }
-                ));
-    }
-
-    @Override
-    public void update() {
-        resetSummaryContextMenu();
-
-        if (Objects.equals(pluginPanel.displayName, "")) {
-            summaryOverview.setTitle(LOGGED_OUT_SUMMARY);
-            summaryOverview.updateStatus("Right-click to preview data.", Color.LIGHT_GRAY);
-        } else {
-            summaryOverview.setTitle(pluginPanel.displayName);
-
-            if (pluginPanel.previewMode && !Objects.equals(pluginPanel.displayName, "Thource")) {
-                summaryOverview.updateStatus(String.format("<html><body style=\"margin: 0; padding: 0;\">%,d gp<br>Right-click to exit preview.</body></html>", getTotalValue()), Color.LIGHT_GRAY);
-            } else {
-                summaryOverview.updateStatus(String.format("%,d gp", getTotalValue()), Color.LIGHT_GRAY);
+        @Override
+        public void mouseClicked(MouseEvent e) {
+          if (System.currentTimeMillis() - lastClick < 500) {
+            if (++clicks == 5) {
+              clicks = 0;
+              FakeDataService.createData(configManager);
+              log.info("Created fake data!");
+              resetSummaryContextMenu();
             }
+          } else {
+            clicks = 1;
+          }
+
+          lastClick = System.currentTimeMillis();
         }
 
-        overviews.get(Tab.DEATH).updateStatus(String.format("%,d gp", deathStorageManager.getTotalValue()), Color.LIGHT_GRAY);
-        overviews.get(Tab.COINS).updateStatus(String.format("%,d gp", coinsStorageManager.getTotalValue()), Color.LIGHT_GRAY);
-        overviews.get(Tab.CARRYABLE_STORAGE).updateStatus(String.format("%,d gp", carryableStorageManager.getTotalValue()), Color.LIGHT_GRAY);
-        overviews.get(Tab.WORLD).updateStatus(String.format("%,d gp", worldStorageManager.getTotalValue()), Color.LIGHT_GRAY);
-    }
-
-    private long getTotalValue() {
-        return getAllItems().stream().mapToLong(ItemStack::getTotalGePrice).sum();
-    }
-
-    private List<ItemStack> getAllItems() {
-        List<ItemStack> items = new ArrayList<>();
-
-        for (CarryableStorage storage : carryableStorageManager.storages) {
-            items.addAll(storage.getItems());
+        @Override
+        public void mousePressed(MouseEvent e) {
         }
 
-        for (CoinsStorage storage : coinsStorageManager.storages) {
-            if (storage.getType() == CoinsStorageType.INVENTORY || storage.getType() == CoinsStorageType.LOOTING_BAG) {
-                continue;
+        @Override
+        public void mouseReleased(MouseEvent e) {
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+        }
+      });
+    }
+    resetSummaryContextMenu();
+
+    overviews = Stream.of(Tab.TABS)
+        .filter(v -> v != Tab.OVERVIEW && v != Tab.SEARCH)
+        .collect(ImmutableMap.toImmutableMap(
+            Function.identity(),
+            t ->
+            {
+              OverviewItemPanel p = new OverviewItemPanel(itemManager, pluginPanel, t, t.getName());
+              add(p);
+              add(Box.createVerticalStrut(8));
+              p.setVisible(false);
+              return p;
             }
+        ));
+  }
 
-            items.addAll(storage.getItems());
-        }
+  @Override
+  public void update() {
+    resetSummaryContextMenu();
 
-        for (WorldStorage storage : worldStorageManager.storages) {
-            items.addAll(storage.getItems());
-        }
+    if (Objects.equals(pluginPanel.displayName, "")) {
+      summaryOverview.setTitle(LOGGED_OUT_SUMMARY);
+      summaryOverview.updateStatus("Right-click to preview data.", Color.LIGHT_GRAY);
+    } else {
+      summaryOverview.setTitle(pluginPanel.displayName);
 
-        return items;
+      if (pluginPanel.previewMode && !Objects.equals(pluginPanel.displayName, "Thource")) {
+        summaryOverview.updateStatus(String.format(
+            "<html><body style=\"margin: 0; padding: 0;\">%,d gp<br>Right-click to exit preview.</body></html>",
+            getTotalValue()), Color.LIGHT_GRAY);
+      } else {
+        summaryOverview.updateStatus(String.format("%,d gp", getTotalValue()), Color.LIGHT_GRAY);
+      }
     }
 
-    void resetSummaryContextMenu() {
-        SwingUtilities.invokeLater(() -> {
-            final JPopupMenu popupMenu = new JPopupMenu();
-            popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
-            summaryOverview.setComponentPopupMenu(popupMenu);
+    overviews.get(Tab.DEATH)
+        .updateStatus(String.format("%,d gp", deathStorageManager.getTotalValue()),
+            Color.LIGHT_GRAY);
+    overviews.get(Tab.COINS)
+        .updateStatus(String.format("%,d gp", coinsStorageManager.getTotalValue()),
+            Color.LIGHT_GRAY);
+    overviews.get(Tab.CARRYABLE_STORAGE)
+        .updateStatus(String.format("%,d gp", carryableStorageManager.getTotalValue()),
+            Color.LIGHT_GRAY);
+    overviews.get(Tab.WORLD)
+        .updateStatus(String.format("%,d gp", worldStorageManager.getTotalValue()),
+            Color.LIGHT_GRAY);
+  }
 
-            if (pluginPanel.previewMode) {
-                final JMenuItem clearDeathbank = new JMenuItem("Delete data");
-                clearDeathbank.addActionListener(e -> {
-                    int result = JOptionPane.OK_OPTION;
+  private long getTotalValue() {
+    return getAllItems().stream().mapToLong(ItemStack::getTotalGePrice).sum();
+  }
 
-                    try {
-                        result = JOptionPane.showConfirmDialog(
-                                this,
-                                "Are you sure you want to delete your save data?\nThis cannot be undone.", "Confirm deletion",
-                                JOptionPane.OK_CANCEL_OPTION,
-                                JOptionPane.WARNING_MESSAGE);
-                    } catch (Exception err) {
-                        log.warn("Unexpected exception occurred while check for confirm required", err);
-                    }
+  private List<ItemStack> getAllItems() {
+    List<ItemStack> items = new ArrayList<>();
 
-                    if (result == JOptionPane.OK_OPTION) {
-                        plugin.disablePreviewMode(true);
-                        resetSummaryContextMenu();
-                    }
-                });
-                popupMenu.add(clearDeathbank);
+    for (CarryableStorage storage : carryableStorageManager.storages) {
+      items.addAll(storage.getItems());
+    }
 
-                final JMenuItem exitPreviewMode = new JMenuItem("Exit preview mode");
-                exitPreviewMode.addActionListener(e -> plugin.disablePreviewMode(false));
-                popupMenu.add(exitPreviewMode);
-            } else {
-                configManager.getRSProfiles().forEach(profile -> {
-                    if (configManager.getConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP, profile.getKey(), "isMember") == null)
-                        return;
+    for (CoinsStorage storage : coinsStorageManager.storages) {
+      if (storage.getType() == CoinsStorageType.INVENTORY
+          || storage.getType() == CoinsStorageType.LOOTING_BAG) {
+        continue;
+      }
 
-                    final JMenuItem previewItem = new JMenuItem(profile.getDisplayName());
-                    previewItem.addActionListener(e -> plugin.enablePreviewMode(profile.getKey(), profile.getDisplayName()));
-                    popupMenu.add(previewItem);
-                });
-            }
+      items.addAll(storage.getItems());
+    }
+
+    for (WorldStorage storage : worldStorageManager.storages) {
+      items.addAll(storage.getItems());
+    }
+
+    return items;
+  }
+
+  void resetSummaryContextMenu() {
+    SwingUtilities.invokeLater(() -> {
+      final JPopupMenu popupMenu = new JPopupMenu();
+      popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
+      summaryOverview.setComponentPopupMenu(popupMenu);
+
+      if (pluginPanel.previewMode) {
+        final JMenuItem clearDeathbank = new JMenuItem("Delete data");
+        clearDeathbank.addActionListener(e -> {
+          int result = JOptionPane.OK_OPTION;
+
+          try {
+            result = JOptionPane.showConfirmDialog(
+                this,
+                "Are you sure you want to delete your save data?\nThis cannot be undone.",
+                "Confirm deletion",
+                JOptionPane.OK_CANCEL_OPTION,
+                JOptionPane.WARNING_MESSAGE);
+          } catch (Exception err) {
+            log.warn("Unexpected exception occurred while check for confirm required", err);
+          }
+
+          if (result == JOptionPane.OK_OPTION) {
+            plugin.disablePreviewMode(true);
+            resetSummaryContextMenu();
+          }
         });
-    }
+        popupMenu.add(clearDeathbank);
+
+        final JMenuItem exitPreviewMode = new JMenuItem("Exit preview mode");
+        exitPreviewMode.addActionListener(e -> plugin.disablePreviewMode(false));
+        popupMenu.add(exitPreviewMode);
+      } else {
+        configManager.getRSProfiles().forEach(profile -> {
+            if (configManager.getConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP,
+                profile.getKey(),
+                "isMember") == null) {
+                return;
+            }
+
+          final JMenuItem previewItem = new JMenuItem(profile.getDisplayName());
+          previewItem.addActionListener(
+              e -> plugin.enablePreviewMode(profile.getKey(), profile.getDisplayName()));
+          popupMenu.add(previewItem);
+        });
+      }
+    });
+  }
 }

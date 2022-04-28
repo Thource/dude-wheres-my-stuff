@@ -9,19 +9,20 @@ import net.runelite.client.game.ItemManager;
 
 @Getter
 public class Deathbank extends DeathStorage {
-    public boolean locked = false;
-    public DeathWorldMapPoint worldMapPoint;
-    public long lostAt = -1L;
 
-    public Deathbank(DeathStorageType deathStorageType, Client client, ItemManager itemManager) {
-        super(deathStorageType, client, itemManager);
-    }
+  public boolean locked = false;
+  public DeathWorldMapPoint worldMapPoint;
+  public long lostAt = -1L;
 
-    @Override
-    public void reset() {
-        super.reset();
-        locked = false;
-        lostAt = -1L;
-        enable();
-    }
+  public Deathbank(DeathStorageType deathStorageType, Client client, ItemManager itemManager) {
+    super(deathStorageType, client, itemManager);
+  }
+
+  @Override
+  public void reset() {
+    super.reset();
+    locked = false;
+    lostAt = -1L;
+    enable();
+  }
 }
