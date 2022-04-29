@@ -400,33 +400,27 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
   @Override
   public boolean onItemDespawned(ItemDespawned itemDespawned) {
     WorldPoint worldPoint = itemDespawned.getTile().getWorldLocation();
-    TileItem item = itemDespawned.getItem();
+    TileItem despawnedItem = itemDespawned.getItem();
 
     for (DeathStorage storage : storages) {
-        if (!(storage instanceof Deathpile)) {
-            continue;
-        }
+      if (!(storage instanceof Deathpile)) {
+        continue;
+      }
 
       Deathpile deathpile = (Deathpile) storage;
-        if (deathpile.hasExpired(plugin.panelContainer.previewing)) {
-            continue;
-        }
-        if (!deathpile.getWorldPoint().equals(worldPoint)) {
-            continue;
-        }
+      if (deathpile.hasExpired(plugin.panelContainer.previewing) || !deathpile.getWorldPoint()
+          .equals(worldPoint)) {
+        continue;
+      }
 
       Iterator<ItemStack> listIterator = deathpile.items.iterator();
       while (listIterator.hasNext()) {
         ItemStack itemStack = listIterator.next();
-          if (itemStack.getId() != item.getId()) {
-              continue;
-          }
-          if (itemStack.getQuantity() >= 65535 && item.getQuantity() != 65535) {
-              continue;
-          }
-          if (itemStack.getQuantity() != item.getQuantity()) {
-              continue;
-          }
+        if (itemStack.getId() != despawnedItem.getId()
+            || (itemStack.getQuantity() != despawnedItem.getQuantity()
+            && (itemStack.getQuantity() < 65535 || despawnedItem.getQuantity() != 65535))) {
+          continue;
+        }
 
         listIterator.remove();
         if (deathpile.items.isEmpty()) {
@@ -506,7 +500,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
           .ifPresent(lootingBag -> itemStacks.addAll(lootingBag.getItems()));
     }
 
-    return ItemStackService.compound(itemStacks);
+    return ItemStackService.compound(itemStacks, false);
   }
 
   @Override

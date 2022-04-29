@@ -345,7 +345,7 @@ class ItemsBox extends JPanel {
       }
 
       if (itemSortMode != ItemSortMode.UNSORTED) {
-          items = ItemStackService.compound(items);
+          items = ItemStackService.compound(items, true);
       }
 
     if (items.stream().anyMatch(itemStack -> itemStack.getId() != -1)) {

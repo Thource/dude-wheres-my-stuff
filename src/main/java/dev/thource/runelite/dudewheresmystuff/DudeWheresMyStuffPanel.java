@@ -39,6 +39,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
+import net.runelite.api.Client;
 import net.runelite.api.vars.AccountType;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
@@ -76,7 +77,7 @@ class DudeWheresMyStuffPanel extends JPanel {
       ConfigManager configManager, DeathStorageManager deathStorageManager,
       CoinsStorageManager coinsStorageManager, CarryableStorageManager carryableStorageManager,
       WorldStorageManager worldStorageManager, MinigamesStorageManager minigamesStorageManager,
-      boolean developerMode, boolean previewMode) {
+      boolean developerMode, boolean previewMode, Client client) {
     super();
 
     this.itemManager = itemManager;
@@ -101,7 +102,8 @@ class DudeWheresMyStuffPanel extends JPanel {
     addTab(Tab.OVERVIEW, overviewTab);
 
     addTab(Tab.DEATH,
-        new DeathStorageTabPanel(itemManager, config, this, deathStorageManager, developerMode));
+        new DeathStorageTabPanel(itemManager, config, this, deathStorageManager, developerMode,
+            client));
     addTab(Tab.COINS, new CoinsStorageTabPanel(itemManager, config, this, coinsStorageManager));
     addTab(Tab.CARRYABLE_STORAGE,
         new CarryableStorageTabPanel(itemManager, config, this, carryableStorageManager));

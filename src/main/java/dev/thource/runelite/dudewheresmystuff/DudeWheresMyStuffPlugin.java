@@ -110,12 +110,12 @@ public class DudeWheresMyStuffPlugin extends Plugin {
           new DudeWheresMyStuffPanel(this, config, itemManager, configManager, deathStorageManager,
               coinsStorageManager,
               carryableStorageManager, worldStorageManager, minigamesStorageManager, developerMode,
-              false),
+              false, client),
           new DudeWheresMyStuffPanel(this, config, itemManager, configManager,
               previewDeathStorageManager,
               previewCoinsStorageManager, previewCarryableStorageManager,
               previewWorldStorageManager,
-              previewMinigamesStorageManager, developerMode, true),
+              previewMinigamesStorageManager, developerMode, true, client),
           configManager
       );
 

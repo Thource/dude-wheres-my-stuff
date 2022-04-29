@@ -3,11 +3,14 @@ package dev.thource.runelite.dudewheresmystuff;
 import dev.thource.runelite.dudewheresmystuff.death.Deathbank;
 import dev.thource.runelite.dudewheresmystuff.death.Deathpile;
 import java.util.Comparator;
+import java.util.Objects;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.border.EmptyBorder;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Client;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.vars.AccountType;
 import net.runelite.client.game.ItemManager;
 
@@ -18,13 +21,15 @@ class DeathStorageTabPanel extends
   private final boolean developerMode;
   public AccountType accountType;
   private final DudeWheresMyStuffPanel pluginPanel;
+  private Client client;
 
   DeathStorageTabPanel(ItemManager itemManager, DudeWheresMyStuffConfig config,
       DudeWheresMyStuffPanel pluginPanel, DeathStorageManager storageManager,
-      boolean developerMode) {
+      boolean developerMode, Client client) {
     super(itemManager, config, pluginPanel, storageManager);
     this.developerMode = developerMode;
     this.pluginPanel = pluginPanel;
+    this.client = client;
   }
 
   @Override
@@ -34,17 +39,17 @@ class DeathStorageTabPanel extends
         Deathpile deathpile = (Deathpile) s;
 
         // Move expired deathpiles to the bottom of the list and sort them the opposite way (newest first)
-          if (deathpile.hasExpired(pluginPanel.previewMode)) {
-              return Long.MAX_VALUE - deathpile.getExpiryMs(pluginPanel.previewMode);
-          }
+        if (deathpile.hasExpired(pluginPanel.previewMode)) {
+          return Long.MAX_VALUE - deathpile.getExpiryMs(pluginPanel.previewMode);
+        }
 
         return Long.MIN_VALUE + deathpile.getExpiryMs(pluginPanel.previewMode);
       } else {
         Deathbank deathbank = (Deathbank) s;
 
-          if (deathbank.lostAt != -1L) {
-              return Long.MAX_VALUE - deathbank.lostAt;
-          }
+        if (deathbank.lostAt != -1L) {
+          return Long.MAX_VALUE - deathbank.lostAt;
+        }
 
         return Long.MIN_VALUE;
       }
@@ -61,29 +66,43 @@ class DeathStorageTabPanel extends
       ItemsBox debugDeathBox = new ItemsBox(itemManager, "Death items debug", null, false,
           showPrice());
       for (ItemStack itemStack : storageManager.getDeathItems()) {
-          if (itemStack.getQuantity() > 0) {
-              debugDeathBox.getItems().add(itemStack);
-          }
+        if (itemStack.getQuantity() > 0) {
+          debugDeathBox.getItems().add(itemStack);
+        }
       }
       debugDeathBox.rebuild();
       itemsBoxes.add(debugDeathBox);
       itemsBoxContainer.add(debugDeathBox);
+
+      final JPopupMenu popupMenu = new JPopupMenu();
+      popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
+      debugDeathBox.setComponentPopupMenu(popupMenu);
+
+      final JMenuItem createDeathpile = new JMenuItem("Create Deathpile");
+      createDeathpile.addActionListener(e -> {
+        storageManager.storages.add(
+            new Deathpile(client, itemManager, storageManager.getPlayedMinutes(),
+                WorldPoint.fromLocalInstance(client, Objects.requireNonNull(
+                    client.getLocalPlayer()).getLocalLocation()), storageManager,
+                storageManager.getDeathItems()));
+      });
+      popupMenu.add(createDeathpile);
     }
 
     storageManager.storages.stream().sorted(getStorageSorter()).forEach((storage) -> {
-        if (!storage.isEnabled()) {
-            return;
-        }
+      if (!storage.isEnabled()) {
+        return;
+      }
 
       ItemsBox itemsBox = new ItemsBox(itemManager, storage, null, false, showPrice());
       for (ItemStack itemStack : storage.getItems()) {
-          if (itemStack.getQuantity() > 0) {
-              itemsBox.getItems().add(itemStack);
-          }
-      }
-        if (itemsBox.getItems().isEmpty()) {
-            return;
+        if (itemStack.getQuantity() > 0) {
+          itemsBox.getItems().add(itemStack);
         }
+      }
+      if (itemsBox.getItems().isEmpty()) {
+        return;
+      }
 
       itemsBox.setSortMode(config.itemSortMode());
       itemsBox.rebuild();
@@ -91,11 +110,11 @@ class DeathStorageTabPanel extends
       itemsBoxContainer.add(itemsBox);
 
       if (storage instanceof Deathbank) {
-          if (((Deathbank) storage).getLostAt() == -1L && (
-              accountType != AccountType.ULTIMATE_IRONMAN
-                  || storage.getType() != DeathStorageType.ZULRAH)) {
-              itemsBox.setSubTitle(((Deathbank) storage).isLocked() ? "Locked" : "Unlocked");
-          }
+        if (((Deathbank) storage).getLostAt() == -1L && (
+            accountType != AccountType.ULTIMATE_IRONMAN
+                || storage.getType() != DeathStorageType.ZULRAH)) {
+          itemsBox.setSubTitle(((Deathbank) storage).isLocked() ? "Locked" : "Unlocked");
+        }
 
         final JPopupMenu popupMenu = new JPopupMenu();
         popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
