@@ -490,6 +490,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
       } else if (itemStack.getId() == ItemID.LOOTING_BAG
           || itemStack.getId() == ItemID.LOOTING_BAG_22586) {
         lootingBagPresent = true;
+        itemStacksIterator.remove();
       }
     }
 
