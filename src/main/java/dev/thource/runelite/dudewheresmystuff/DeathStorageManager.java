@@ -12,6 +12,9 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -402,37 +405,44 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
     WorldPoint worldPoint = itemDespawned.getTile().getWorldLocation();
     TileItem despawnedItem = itemDespawned.getItem();
 
-    for (DeathStorage storage : storages) {
-      if (!(storage instanceof Deathpile)) {
-        continue;
-      }
-
-      Deathpile deathpile = (Deathpile) storage;
-      if (deathpile.hasExpired(plugin.panelContainer.previewing) || !deathpile.getWorldPoint()
-          .equals(worldPoint)) {
-        continue;
-      }
-
-      Iterator<ItemStack> listIterator = deathpile.items.iterator();
-      while (listIterator.hasNext()) {
-        ItemStack itemStack = listIterator.next();
-        if (itemStack.getId() != despawnedItem.getId()
-            || (itemStack.getQuantity() != despawnedItem.getQuantity()
-            && (itemStack.getQuantity() < 65535 || despawnedItem.getQuantity() != 65535))) {
-          continue;
-        }
-
-        listIterator.remove();
-        if (deathpile.items.isEmpty()) {
-          storages.remove(deathpile);
-          refreshMapPoints();
-        }
-
-        return true;
-      }
+    AtomicBoolean updated = new AtomicBoolean(false);
+    AtomicLong quantityToRemove = new AtomicLong(despawnedItem.getQuantity());
+    if (quantityToRemove.get() == 65535) {
+      quantityToRemove.set(Long.MAX_VALUE);
     }
 
-    return false;
+    storages.stream()
+        .filter(Deathpile.class::isInstance)
+        .map(deathpile -> (Deathpile) deathpile)
+        .filter(deathpile -> !deathpile.hasExpired(plugin.panelContainer.previewing))
+        .filter(deathpile -> deathpile.getWorldPoint().equals(worldPoint))
+        .forEach((Deathpile deathpile) -> {
+          if (quantityToRemove.get() == 0) {
+            return;
+          }
+
+          Iterator<ItemStack> listIterator = deathpile.items.iterator();
+          while (listIterator.hasNext()) {
+            ItemStack itemStack = listIterator.next();
+            if (itemStack.getId() != despawnedItem.getId()) {
+              continue;
+            }
+
+            updated.set(true);
+            long qtyToRemove = Math.min(quantityToRemove.get(), itemStack.getQuantity());
+            quantityToRemove.addAndGet(-qtyToRemove);
+            itemStack.setQuantity(itemStack.getQuantity() - qtyToRemove);
+            if (itemStack.getQuantity() <= 0) {
+              listIterator.remove();
+            }
+
+            if (quantityToRemove.get() == 0) {
+              break;
+            }
+          }
+        });
+
+    return updated.get();
   }
 
   @Override
