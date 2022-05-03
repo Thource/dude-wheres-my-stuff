@@ -1,9 +1,11 @@
 package dev.thource.runelite.dudewheresmystuff;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.Getter;
+import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
@@ -16,18 +18,17 @@ import net.runelite.client.game.ItemManager;
 import org.apache.commons.lang3.math.NumberUtils;
 
 @Getter
-abstract class Storage<T extends StorageType> {
+public abstract class Storage<T extends StorageType> {
 
+  protected final List<ItemStack> items = new ArrayList<>();
   protected Client client;
   protected ItemManager itemManager;
-
   protected T type;
-  protected List<ItemStack> items = new ArrayList<>();
-
+  @Setter
   protected long lastUpdated = -1L;
   protected boolean enabled = true;
 
-  Storage(T type, Client client, ItemManager itemManager) {
+  protected Storage(T type, Client client, ItemManager itemManager) {
     this.type = type;
     this.client = client;
     this.itemManager = itemManager;
@@ -54,15 +55,15 @@ abstract class Storage<T extends StorageType> {
   }
 
   public boolean onItemContainerChanged(ItemContainerChanged itemContainerChanged) {
-      if (type.getItemContainerId() == -1
-              || type.getItemContainerId() != itemContainerChanged.getContainerId()) {
-          return false;
-      }
+    if (type.getItemContainerId() == -1
+        || type.getItemContainerId() != itemContainerChanged.getContainerId()) {
+      return false;
+    }
 
     ItemContainer itemContainer = client.getItemContainer(type.getItemContainerId());
-      if (itemContainer == null) {
-          return false;
-      }
+    if (itemContainer == null) {
+      return false;
+    }
 
     items.clear();
     for (Item item : itemContainer.getItems()) {
@@ -89,62 +90,53 @@ abstract class Storage<T extends StorageType> {
   }
 
   public void save(ConfigManager configManager, String managerConfigKey) {
-    String data = lastUpdated + ";"
-        + items.stream().map(item -> item.getId() + "," + item.getQuantity())
-        .collect(Collectors.joining("="));
+    String data =
+        lastUpdated + ";" + items.stream().map(item -> item.getId() + "," + item.getQuantity())
+            .collect(Collectors.joining("="));
 
-//        System.out.println("save " + managerConfigKey + "." + type.getConfigKey() + ": " + data);
-    configManager.setRSProfileConfiguration(
-        DudeWheresMyStuffConfig.CONFIG_GROUP,
-        managerConfigKey + "." + type.getConfigKey(),
-        data
-    );
+    configManager.setRSProfileConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP,
+        managerConfigKey + "." + type.getConfigKey(), data);
   }
 
   protected List<ItemStack> loadItems(ConfigManager configManager, String managerConfigKey,
       String profileKey) {
-    String data = configManager.getConfiguration(
-        DudeWheresMyStuffConfig.CONFIG_GROUP,
-        profileKey,
-        managerConfigKey + "." + type.getConfigKey(),
-        String.class
-    );
-      if (data == null) {
-          return null;
-      }
+    String data = configManager.getConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP, profileKey,
+        managerConfigKey + "." + type.getConfigKey(), String.class);
+    if (data == null) {
+      return Collections.emptyList();
+    }
 
-//        System.out.println("load " + managerConfigKey + "." + type.getConfigKey() + ": " + data);
     String[] dataSplit = data.split(";");
-      if (dataSplit.length != 2) {
-          return null;
-      }
+    if (dataSplit.length != 2) {
+      return Collections.emptyList();
+    }
 
     this.lastUpdated = NumberUtils.toLong(dataSplit[0], -1);
 
-    List<ItemStack> items = new ArrayList<>();
+    List<ItemStack> loadedItems = new ArrayList<>();
     for (String itemStackString : dataSplit[1].split("=")) {
       String[] itemStackData = itemStackString.split(",");
-        if (itemStackData.length != 2) {
-            continue;
-        }
+      if (itemStackData.length != 2) {
+        continue;
+      }
 
       int itemId = NumberUtils.toInt(itemStackData[0]);
       int itemQuantity = NumberUtils.toInt(itemStackData[1]);
 
       ItemComposition itemComposition = itemManager.getItemComposition(itemId);
-      items.add(new ItemStack(itemId, itemComposition.getName(), itemQuantity,
+      loadedItems.add(new ItemStack(itemId, itemComposition.getName(), itemQuantity,
           itemManager.getItemPrice(itemId), itemComposition.getHaPrice(),
           itemComposition.isStackable()));
     }
 
-    return items;
+    return loadedItems;
   }
 
   public void load(ConfigManager configManager, String managerConfigKey, String profileKey) {
     List<ItemStack> loadedItems = loadItems(configManager, managerConfigKey, profileKey);
-      if (loadedItems == null || loadedItems.isEmpty()) {
-          return;
-      }
+    if (loadedItems == null || loadedItems.isEmpty()) {
+      return;
+    }
 
     items.clear();
     items.addAll(loadedItems);

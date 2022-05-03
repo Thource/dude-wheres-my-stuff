@@ -9,21 +9,11 @@ public interface DudeWheresMyStuffConfig extends Config {
 
   String CONFIG_GROUP = "dudewheresmystuff";
 
-  @ConfigItem(
-      keyName = "itemSortMode",
-      name = "Item Sort Mode",
-      description = "Which mode to use when sorting items",
-      hidden = true
-  )
+  @ConfigItem(keyName = "itemSortMode", name = "Item Sort Mode", description = "Which mode to use when sorting items", hidden = true)
   default ItemSortMode itemSortMode() {
     return ItemSortMode.UNSORTED;
   }
 
-  @ConfigItem(
-      keyName = "itemSortMode",
-      name = "",
-      description = "",
-      hidden = true
-  )
+  @ConfigItem(keyName = "itemSortMode", name = "", description = "", hidden = true)
   void setItemSortMode(ItemSortMode itemSortMode);
 }

@@ -1,7 +1,5 @@
 package dev.thource.runelite.dudewheresmystuff.carryable;
 
-import dev.thource.runelite.dudewheresmystuff.CarryableStorage;
-import dev.thource.runelite.dudewheresmystuff.CarryableStorageType;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
 import lombok.Getter;
 import net.runelite.api.Client;
@@ -12,6 +10,8 @@ import net.runelite.client.game.RunepouchRune;
 
 @Getter
 public class RunePouch extends CarryableStorage {
+
+  private static final String EMPTY = "empty";
 
   private int rune1Type;
   private int rune2Type;
@@ -25,6 +25,7 @@ public class RunePouch extends CarryableStorage {
     super(CarryableStorageType.RUNE_POUCH, client, itemManager);
   }
 
+  @Override
   public boolean onVarbitChanged() {
     int newRune1Type = client.getVarbitValue(Varbits.RUNE_POUCH_RUNE1);
     int newRune2Type = client.getVarbitValue(Varbits.RUNE_POUCH_RUNE2);
@@ -64,7 +65,7 @@ public class RunePouch extends CarryableStorage {
       items.add(new ItemStack(rune1.getItemId(), itemComposition.getName(), rune1Quantity,
           itemManager.getItemPrice(rune1.getItemId()), itemComposition.getHaPrice(), true));
     } else {
-      items.add(new ItemStack(-1, "empty", 1, 0, 0, false));
+      items.add(new ItemStack(-1, EMPTY, 1, 0, 0, false));
     }
 
     if (rune2 != null) {
@@ -72,7 +73,7 @@ public class RunePouch extends CarryableStorage {
       items.add(new ItemStack(rune2.getItemId(), itemComposition.getName(), rune2Quantity,
           itemManager.getItemPrice(rune2.getItemId()), itemComposition.getHaPrice(), true));
     } else {
-      items.add(new ItemStack(-1, "empty", 1, 0, 0, false));
+      items.add(new ItemStack(-1, EMPTY, 1, 0, 0, false));
     }
 
     if (rune3 != null) {
@@ -80,7 +81,7 @@ public class RunePouch extends CarryableStorage {
       items.add(new ItemStack(rune3.getItemId(), itemComposition.getName(), rune3Quantity,
           itemManager.getItemPrice(rune3.getItemId()), itemComposition.getHaPrice(), true));
     } else {
-      items.add(new ItemStack(-1, "empty", 1, 0, 0, false));
+      items.add(new ItemStack(-1, EMPTY, 1, 0, 0, false));
     }
   }
 

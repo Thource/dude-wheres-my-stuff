@@ -2,8 +2,6 @@ package dev.thource.runelite.dudewheresmystuff.minigames;
 
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffConfig;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
-import dev.thource.runelite.dudewheresmystuff.MinigamesStorage;
-import dev.thource.runelite.dudewheresmystuff.MinigamesStorageType;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -18,13 +16,16 @@ import org.apache.commons.lang3.math.NumberUtils;
 @Getter
 public class BarbarianAssault extends MinigamesStorage {
 
-  ItemStack attackerPoints = new ItemStack(ItemID.ATTACKER_ICON, "Attacker Points", 0, 0, 0, true);
-  ItemStack collectorPoints = new ItemStack(ItemID.COLLECTOR_ICON, "Collector Points", 0, 0, 0,
+  private final ItemStack attackerPoints = new ItemStack(ItemID.ATTACKER_ICON, "Attacker Points", 0,
+      0, 0, true);
+  private final ItemStack collectorPoints = new ItemStack(ItemID.COLLECTOR_ICON, "Collector Points",
+      0, 0, 0, true);
+  private final ItemStack defenderPoints = new ItemStack(ItemID.DEFENDER_ICON, "Defender Points", 0,
+      0, 0, true);
+  private final ItemStack healerPoints = new ItemStack(ItemID.HEALER_ICON, "Healer Points", 0, 0, 0,
       true);
-  ItemStack defenderPoints = new ItemStack(ItemID.DEFENDER_ICON, "Defender Points", 0, 0, 0, true);
-  ItemStack healerPoints = new ItemStack(ItemID.HEALER_ICON, "Healer Points", 0, 0, 0, true);
 
-  Map<Integer, ItemStack> varbits = new HashMap<>();
+  private final Map<Integer, ItemStack> varbits = new HashMap<>();
 
   public BarbarianAssault(Client client, ItemManager itemManager) {
     super(MinigamesStorageType.BARBARIAN_ASSAULT, client, itemManager);
@@ -62,21 +63,14 @@ public class BarbarianAssault extends MinigamesStorage {
     String data = items.stream().map(item -> "" + item.getQuantity())
         .collect(Collectors.joining("="));
 
-    configManager.setRSProfileConfiguration(
-        DudeWheresMyStuffConfig.CONFIG_GROUP,
-        managerConfigKey + "." + type.getConfigKey(),
-        data
-    );
+    configManager.setRSProfileConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP,
+        managerConfigKey + "." + type.getConfigKey(), data);
   }
 
   @Override
   public void load(ConfigManager configManager, String managerConfigKey, String profileKey) {
-    String data = configManager.getConfiguration(
-        DudeWheresMyStuffConfig.CONFIG_GROUP,
-        profileKey,
-        managerConfigKey + "." + type.getConfigKey(),
-        String.class
-    );
+    String data = configManager.getConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP, profileKey,
+        managerConfigKey + "." + type.getConfigKey(), String.class);
     if (data == null) {
       return;
     }

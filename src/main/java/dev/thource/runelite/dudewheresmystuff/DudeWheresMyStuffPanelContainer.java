@@ -1,18 +1,17 @@
 package dev.thource.runelite.dudewheresmystuff;
 
 import javax.swing.border.EmptyBorder;
-import net.runelite.client.config.ConfigManager;
 import net.runelite.client.ui.PluginPanel;
 
 public class DudeWheresMyStuffPanelContainer extends PluginPanel {
 
   final DudeWheresMyStuffPanel panel;
   final DudeWheresMyStuffPanel previewPanel;
-  boolean previewing;
+  private boolean previewing;
   private boolean active;
 
-  DudeWheresMyStuffPanelContainer(DudeWheresMyStuffPanel panel, DudeWheresMyStuffPanel previewPanel,
-      ConfigManager configManager) {
+  DudeWheresMyStuffPanelContainer(DudeWheresMyStuffPanel panel,
+      DudeWheresMyStuffPanel previewPanel) {
     super(false);
 
     this.panel = panel;

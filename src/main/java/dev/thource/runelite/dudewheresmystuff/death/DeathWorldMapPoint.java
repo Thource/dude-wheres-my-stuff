@@ -24,7 +24,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package dev.thource.runelite.dudewheresmystuff;
+package dev.thource.runelite.dudewheresmystuff.death;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
@@ -51,8 +51,7 @@ public class DeathWorldMapPoint extends WorldMapPoint {
     Graphics graphics = worldmapHintArrow.getGraphics();
     graphics.drawImage(getMapArrow(), 0, 0, null);
     graphics.drawImage(itemManager.getImage(ItemID.BONES), 0, 0, null);
-    worldmapHintArrowPoint = new Point(
-        worldmapHintArrow.getWidth() / 2,
+    worldmapHintArrowPoint = new Point(worldmapHintArrow.getWidth() / 2,
         worldmapHintArrow.getHeight());
 
     this.setSnapToEdge(true);
@@ -85,5 +84,15 @@ public class DeathWorldMapPoint extends WorldMapPoint {
     this.setImage(worldmapHintArrow);
     this.setImagePoint(worldmapHintArrowPoint);
     this.setTooltip("Deathpile");
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    return super.equals(o);
+  }
+
+  @Override
+  public int hashCode() {
+    return super.hashCode();
   }
 }

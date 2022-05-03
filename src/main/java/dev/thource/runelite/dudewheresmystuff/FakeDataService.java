@@ -7,16 +7,26 @@ class FakeDataService {
 
   private static final String PROFILE = "rsprofile.ZZZ";
 
+  private FakeDataService() {
+  }
+
   static void createData(ConfigManager configManager) {
     // Create a fake profile, real profiles have 8 character keys, so this has no chance of being a duplicate
     configManager.setConfiguration("rsprofile", PROFILE, "displayName", "Thource");
-
     configManager.setConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP, PROFILE, "minutesPlayed",
         600);
     configManager.setConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP, PROFILE, "isMember", true);
     configManager.setConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP, PROFILE, "accountType",
         AccountType.ULTIMATE_IRONMAN.ordinal());
 
+    createDeathData(configManager);
+    createCoinsData(configManager);
+    createCarryableData(configManager);
+    createWorldData(configManager);
+    createMinigamesData(configManager);
+  }
+
+  private static void createDeathData(ConfigManager configManager) {
     configManager.setConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP, PROFILE, "death.deathbank",
         "hespori;true;" + (System.currentTimeMillis() - (1000 * 60 * 14)) + ";4214,1=11802,1=");
     configManager.setConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP, PROFILE,
@@ -26,7 +36,9 @@ class FakeDataService {
     configManager.setConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP, PROFILE,
         "death.deathpiles",
         "589;3222,3218,0;1523=150,4838=142,1697=3031,3789=7937,144000=2362,1030=1618,155$555;2205,3212,0;562,7756=556,12148=560,5336=554,10885=3031,3789=168,642=2459,936=2999,272$400;3203,3824,0;995,26000000=5295,185=22875,3=5296,278=5343,19=952,15=7409,1=13353,1");
+  }
 
+  private static void createCoinsData(ConfigManager configManager) {
     configManager.setConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP, PROFILE,
         "coins.nightmarezone", "-1;995,73000000");
     configManager.setConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP, PROFILE,
@@ -44,7 +56,9 @@ class FakeDataService {
         "coins.grandexchange", System.currentTimeMillis() - (1000 * 60 * 60 * 50) + ";995,69420");
     configManager.setConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP, PROFILE,
         "coins.shilofurnace", System.currentTimeMillis() - (1000 * 60 * 30) + ";995,2020");
+  }
 
+  private static void createCarryableData(ConfigManager configManager) {
     configManager.setConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP, PROFILE,
         "carryable.inventory",
         "-1;2434,1=2434,1=-1,1=892,10593=143,1=-1,1=-1,1=9433,1=7937,144000=2362,1030=1618,155=1392,470=1514,12499=441,8800=1620,300=568,2700=566,60=563,3439=565,1075=555,6450=562,7756=556,12148=560,5336=554,10885=995,26000000=24482,1=12791,1=11941,1");
@@ -59,11 +73,15 @@ class FakeDataService {
             + ";5295,185=22875,3=5296,278=5300,35=5304,11");
     configManager.setConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP, PROFILE,
         "carryable.runepouch", "-1;563,580=4696,853=554,429");
+  }
 
+  private static void createWorldData(ConfigManager configManager) {
     configManager.setConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP, PROFILE,
         "world.leprechaun",
         "-1;5341,10=5343,19=952,15=7409,1=13353,1=5325,5=6036,8=1925,940=6032,65=6034,17=21483,647");
+  }
 
+  private static void createMinigamesData(ConfigManager configManager) {
     configManager.setConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP, PROFILE,
         "minigames.magetrainingarena",
         System.currentTimeMillis() - (1000 * 60 * 60 * 2) + ";84=30=1020=489");

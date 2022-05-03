@@ -2,11 +2,13 @@ package dev.thource.runelite.dudewheresmystuff;
 
 import com.google.inject.Provides;
 import com.google.inject.name.Named;
+import dev.thource.runelite.dudewheresmystuff.carryable.CarryableStorageManager;
+import dev.thource.runelite.dudewheresmystuff.coins.CoinsStorageManager;
+import dev.thource.runelite.dudewheresmystuff.death.DeathStorageManager;
+import dev.thource.runelite.dudewheresmystuff.minigames.MinigamesStorageManager;
+import dev.thource.runelite.dudewheresmystuff.world.WorldStorageManager;
 import java.awt.image.BufferedImage;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicBoolean;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -34,15 +36,13 @@ import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ImageUtil;
 
 @Slf4j
-@PluginDescriptor(
-    name = "Dude, Where's My Stuff?"
-)
+@PluginDescriptor(name = "Dude, Where's My Stuff?")
 public class DudeWheresMyStuffPlugin extends Plugin {
 
   @Inject
   @Named("developerMode")
   boolean developerMode;
-  DudeWheresMyStuffPanelContainer panelContainer;
+  private DudeWheresMyStuffPanelContainer panelContainer;
   @Inject
   private ClientToolbar clientToolbar;
   @Inject
@@ -65,7 +65,7 @@ public class DudeWheresMyStuffPlugin extends Plugin {
   private WorldStorageManager worldStorageManager;
   @Inject
   private MinigamesStorageManager minigamesStorageManager;
-  private List<StorageManager<?, ?>> storageManagers;
+  private StorageManagerManager storageManagerManager;
   @Inject
   private DeathStorageManager previewDeathStorageManager;
   @Inject
@@ -76,7 +76,7 @@ public class DudeWheresMyStuffPlugin extends Plugin {
   private WorldStorageManager previewWorldStorageManager;
   @Inject
   private MinigamesStorageManager previewMinigamesStorageManager;
-  private List<StorageManager<?, ?>> previewStorageManagers;
+  private StorageManagerManager previewStorageManagerManager;
   private NavigationButton navButton;
 
   private ClientState clientState = ClientState.LOGGED_OUT;
@@ -86,47 +86,27 @@ public class DudeWheresMyStuffPlugin extends Plugin {
   @Override
   protected void startUp() {
     if (panelContainer == null) {
-      deathStorageManager.carryableStorageManager = carryableStorageManager;
-      deathStorageManager.coinsStorageManager = coinsStorageManager;
-      storageManagers = Arrays.asList(
-          deathStorageManager,
-          coinsStorageManager,
-          carryableStorageManager,
-          worldStorageManager,
-          minigamesStorageManager
-      );
+      deathStorageManager.setCarryableStorageManager(carryableStorageManager);
+      deathStorageManager.setCoinsStorageManager(coinsStorageManager);
+      storageManagerManager = new StorageManagerManager(this, carryableStorageManager,
+          coinsStorageManager, deathStorageManager, minigamesStorageManager, worldStorageManager);
 
-      previewDeathStorageManager.carryableStorageManager = previewCarryableStorageManager;
-      previewDeathStorageManager.coinsStorageManager = previewCoinsStorageManager;
-      previewStorageManagers = Arrays.asList(
-          previewDeathStorageManager,
-          previewCoinsStorageManager,
-          previewCarryableStorageManager,
-          previewWorldStorageManager,
-          previewMinigamesStorageManager
-      );
+      previewDeathStorageManager.setCarryableStorageManager(previewCarryableStorageManager);
+      previewDeathStorageManager.setCoinsStorageManager(previewCoinsStorageManager);
+      previewStorageManagerManager = new StorageManagerManager(this, previewCarryableStorageManager,
+          previewCoinsStorageManager, previewDeathStorageManager, previewMinigamesStorageManager,
+          previewWorldStorageManager);
 
       panelContainer = new DudeWheresMyStuffPanelContainer(
-          new DudeWheresMyStuffPanel(this, config, itemManager, configManager, deathStorageManager,
-              coinsStorageManager,
-              carryableStorageManager, worldStorageManager, minigamesStorageManager, developerMode,
-              false, client),
           new DudeWheresMyStuffPanel(this, config, itemManager, configManager,
-              previewDeathStorageManager,
-              previewCoinsStorageManager, previewCarryableStorageManager,
-              previewWorldStorageManager,
-              previewMinigamesStorageManager, developerMode, true, client),
-          configManager
-      );
+              storageManagerManager, false, client),
+          new DudeWheresMyStuffPanel(this, config, itemManager, configManager,
+              previewStorageManagerManager, true, client));
 
       final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "icon.png");
 
-      navButton = NavigationButton.builder()
-          .tooltip("Dude, Where's My Stuff?")
-          .icon(icon)
-          .panel(panelContainer)
-          .priority(4)
-          .build();
+      navButton = NavigationButton.builder().tooltip("Dude, Where's My Stuff?").icon(icon)
+          .panel(panelContainer).priority(4).build();
     }
 
     reset(true);
@@ -144,12 +124,12 @@ public class DudeWheresMyStuffPlugin extends Plugin {
   private void reset(boolean fullReset) {
     clientState = ClientState.LOGGED_OUT;
 
-    storageManagers.forEach(StorageManager::reset);
-      if (fullReset) {
-          panelContainer.reset();
-      } else {
-          panelContainer.panel.reset();
-      }
+    storageManagerManager.reset();
+    if (fullReset) {
+      panelContainer.reset();
+    } else {
+      panelContainer.panel.reset();
+    }
   }
 
   @Override
@@ -159,32 +139,32 @@ public class DudeWheresMyStuffPlugin extends Plugin {
 
   @Subscribe
   public void onActorDeath(ActorDeath actorDeath) {
-    storageManagers.forEach(storageManager -> storageManager.onActorDeath(actorDeath));
+    storageManagerManager.onActorDeath(actorDeath);
   }
 
   @Subscribe
   public void onGameStateChanged(GameStateChanged gameStateChanged) {
-    storageManagers.forEach(storageManager -> storageManager.onGameStateChanged(gameStateChanged));
+    storageManagerManager.onGameStateChanged(gameStateChanged);
 
     if (gameStateChanged.getGameState() == GameState.LOGIN_SCREEN) {
       reset(false);
     } else if (gameStateChanged.getGameState() == GameState.LOGGING_IN) {
       clientState = ClientState.LOGGING_IN;
     } else if (gameStateChanged.getGameState() == GameState.LOGGED_IN) {
-        if (clientState != ClientState.LOGGING_IN) {
-            return;
-        }
+      if (clientState != ClientState.LOGGING_IN) {
+        return;
+      }
 
-      storageManagers.forEach(StorageManager::load);
+      storageManagerManager.load();
       panelContainer.panel.update();
     }
   }
 
   @Subscribe
   private void onPlayerChanged(PlayerChanged ev) {
-      if (ev.getPlayer() != client.getLocalPlayer()) {
-          return;
-      }
+    if (ev.getPlayer() != client.getLocalPlayer()) {
+      return;
+    }
 
     panelContainer.panel.setDisplayName(ev.getPlayer().getName());
     panelContainer.panel.update();
@@ -192,9 +172,9 @@ public class DudeWheresMyStuffPlugin extends Plugin {
 
   @Subscribe
   public void onGameTick(GameTick gameTick) {
-      if (clientState == ClientState.LOGGED_OUT) {
-          return;
-      }
+    if (clientState == ClientState.LOGGED_OUT) {
+      return;
+    }
 
     if (clientState == ClientState.LOGGING_IN) {
       boolean isMember = client.getVar(VarClientInt.MEMBERSHIP_STATUS) == 1;
@@ -210,7 +190,7 @@ public class DudeWheresMyStuffPlugin extends Plugin {
       clientState = ClientState.LOGGED_IN;
 
       if (pluginStartedAlreadyLoggedIn) {
-        storageManagers.forEach(StorageManager::load);
+        storageManagerManager.load();
 
         for (ItemContainer itemContainer : client.getItemContainers()) {
           onItemContainerChanged(new ItemContainerChanged(itemContainer.getId(), itemContainer));
@@ -223,25 +203,12 @@ public class DudeWheresMyStuffPlugin extends Plugin {
 
       panelContainer.panel.update();
 
-      storageManagers.forEach(StorageManager::save);
+      storageManagerManager.save();
 
       return;
     }
 
-    AtomicBoolean isPanelDirty = new AtomicBoolean(false);
-
-    storageManagers.forEach(storageManager -> {
-      if (storageManager.onGameTick()) {
-        isPanelDirty.set(true);
-
-        // don't save before loading is complete, to avoid deleting save data
-          if (clientState == ClientState.LOGGED_IN) {
-              storageManager.save();
-          }
-      }
-    });
-
-    if (isPanelDirty.get()) {
+    if (storageManagerManager.onGameTick()) {
       panelContainer.panel.update();
       return;
     }
@@ -251,122 +218,57 @@ public class DudeWheresMyStuffPlugin extends Plugin {
 
   @Subscribe
   public void onWidgetLoaded(WidgetLoaded widgetLoaded) {
-      if (clientState == ClientState.LOGGED_OUT) {
-          return;
-      }
+    if (clientState == ClientState.LOGGED_OUT) {
+      return;
+    }
 
-    AtomicBoolean isPanelDirty = new AtomicBoolean(false);
-
-    storageManagers.forEach(storageManager -> {
-      if (storageManager.onWidgetLoaded(widgetLoaded)) {
-        isPanelDirty.set(true);
-
-        // don't save before loading is complete, to avoid deleting save data
-          if (clientState == ClientState.LOGGED_IN) {
-              storageManager.save();
-          }
-      }
-    });
-
-      if (isPanelDirty.get()) {
-          panelContainer.panel.update();
-      }
+    if (storageManagerManager.onWidgetLoaded(widgetLoaded)) {
+      panelContainer.panel.update();
+    }
   }
 
   @Subscribe
   public void onWidgetClosed(WidgetClosed widgetClosed) {
-      if (clientState == ClientState.LOGGED_OUT) {
-          return;
-      }
+    if (clientState == ClientState.LOGGED_OUT) {
+      return;
+    }
 
-    AtomicBoolean isPanelDirty = new AtomicBoolean(false);
-
-    storageManagers.forEach(storageManager -> {
-      if (storageManager.onWidgetClosed(widgetClosed)) {
-        isPanelDirty.set(true);
-
-        // don't save before loading is complete, to avoid deleting save data
-          if (clientState == ClientState.LOGGED_IN) {
-              storageManager.save();
-          }
-      }
-    });
-
-      if (isPanelDirty.get()) {
-          panelContainer.panel.update();
-      }
+    if (storageManagerManager.onWidgetClosed(widgetClosed)) {
+      panelContainer.panel.update();
+    }
   }
 
   @Subscribe
   public void onVarbitChanged(VarbitChanged varbitChanged) {
-      if (clientState == ClientState.LOGGED_OUT) {
-          return;
-      }
+    if (clientState == ClientState.LOGGED_OUT) {
+      return;
+    }
 
-    AtomicBoolean isPanelDirty = new AtomicBoolean(false);
-
-    storageManagers.forEach(storageManager -> {
-      if (storageManager.onVarbitChanged()) {
-        isPanelDirty.set(true);
-
-        // don't save before loading is complete, to avoid deleting save data
-          if (clientState == ClientState.LOGGED_IN) {
-              storageManager.save();
-          }
-      }
-    });
-
-      if (isPanelDirty.get()) {
-          panelContainer.panel.update();
-      }
+    if (storageManagerManager.onVarbitChanged()) {
+      panelContainer.panel.update();
+    }
   }
 
   @Subscribe
   public void onItemContainerChanged(ItemContainerChanged itemContainerChanged) {
-      if (clientState == ClientState.LOGGED_OUT) {
-          return;
-      }
+    if (clientState == ClientState.LOGGED_OUT) {
+      return;
+    }
 
-    AtomicBoolean isPanelDirty = new AtomicBoolean(false);
-
-    storageManagers.forEach(storageManager -> {
-      if (storageManager.onItemContainerChanged(itemContainerChanged)) {
-        isPanelDirty.set(true);
-
-        // don't save before loading is complete, to avoid deleting save data
-          if (clientState == ClientState.LOGGED_IN) {
-              storageManager.save();
-          }
-      }
-    });
-
-      if (isPanelDirty.get()) {
-          panelContainer.panel.update();
-      }
+    if (storageManagerManager.onItemContainerChanged(itemContainerChanged)) {
+      panelContainer.panel.update();
+    }
   }
 
   @Subscribe
   public void onItemDespawned(ItemDespawned itemDespawned) {
-      if (clientState == ClientState.LOGGED_OUT) {
-          return;
-      }
+    if (clientState == ClientState.LOGGED_OUT) {
+      return;
+    }
 
-    AtomicBoolean isPanelDirty = new AtomicBoolean(false);
-
-    storageManagers.forEach(storageManager -> {
-      if (storageManager.onItemDespawned(itemDespawned)) {
-        isPanelDirty.set(true);
-
-        // don't save before loading is complete, to avoid deleting save data
-          if (clientState == ClientState.LOGGED_IN) {
-              storageManager.save();
-          }
-      }
-    });
-
-      if (isPanelDirty.get()) {
-          panelContainer.panel.update();
-      }
+    if (storageManagerManager.onItemDespawned(itemDespawned)) {
+      panelContainer.panel.update();
+    }
   }
 
   @Provides
@@ -375,15 +277,13 @@ public class DudeWheresMyStuffPlugin extends Plugin {
   }
 
   void disablePreviewMode(boolean deleteData) {
-    previewStorageManagers.forEach(StorageManager::reset);
+    previewStorageManagerManager.reset();
 
     if (deleteData) {
       configManager.getRSProfileConfigurationKeys(DudeWheresMyStuffConfig.CONFIG_GROUP,
-              previewProfileKey, "")
-          .forEach(key -> {
-            configManager.unsetConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP,
-                previewProfileKey, key);
-          });
+          previewProfileKey, "").forEach(
+          key -> configManager.unsetConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP,
+              previewProfileKey, key));
     }
 
     panelContainer.previewPanel.logOut();
@@ -395,20 +295,31 @@ public class DudeWheresMyStuffPlugin extends Plugin {
   void enablePreviewMode(String profileKey, String displayName) {
     this.previewProfileKey = profileKey;
 
-    previewDeathStorageManager.startPlayedMinutes = configManager.getConfiguration(
-        DudeWheresMyStuffConfig.CONFIG_GROUP, profileKey, "minutesPlayed", int.class);
+    previewDeathStorageManager.setStartPlayedMinutes(
+        configManager.getConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP, profileKey,
+            "minutesPlayed", int.class));
     clientThread.invoke(() -> {
-      previewStorageManagers.forEach((storageManager -> storageManager.load(profileKey)));
+      previewStorageManagerManager.load(profileKey);
 
       panelContainer.previewPanel.logIn(
           configManager.getConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP, profileKey,
-              "isMember", boolean.class),
-          AccountType.values()[(int) configManager.getConfiguration(
+              "isMember", boolean.class), AccountType.values()[(int) configManager.getConfiguration(
               DudeWheresMyStuffConfig.CONFIG_GROUP, profileKey, "accountType", int.class)],
-          displayName
-      );
+          displayName);
 
       panelContainer.enablePreviewMode();
     });
+  }
+
+  public boolean isPreviewModeEnabled() {
+    return this.previewProfileKey != null;
+  }
+
+  public ClientState getClientState() {
+    return clientState;
+  }
+
+  public boolean isDeveloperModeEnabled() {
+    return developerMode;
   }
 }

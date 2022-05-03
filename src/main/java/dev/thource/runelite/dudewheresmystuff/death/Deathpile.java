@@ -1,9 +1,5 @@
 package dev.thource.runelite.dudewheresmystuff.death;
 
-import dev.thource.runelite.dudewheresmystuff.DeathStorage;
-import dev.thource.runelite.dudewheresmystuff.DeathStorageManager;
-import dev.thource.runelite.dudewheresmystuff.DeathStorageType;
-import dev.thource.runelite.dudewheresmystuff.DeathWorldMapPoint;
 import dev.thource.runelite.dudewheresmystuff.DurationFormatter;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
 import java.util.List;
@@ -17,7 +13,6 @@ public class Deathpile extends DeathStorage {
 
   private final int playedMinutesAtCreation;
   private final WorldPoint worldPoint;
-  public DeathWorldMapPoint worldMapPoint;
   private final DeathStorageManager deathStorageManager;
 
   public Deathpile(Client client, ItemManager itemManager, int playedMinutesAtCreation,
@@ -26,11 +21,12 @@ public class Deathpile extends DeathStorage {
     this.playedMinutesAtCreation = playedMinutesAtCreation;
     this.worldPoint = worldPoint;
     this.deathStorageManager = deathStorageManager;
-    this.items = deathItems;
+    this.items.addAll(deathItems);
   }
 
   @Override
   public void reset() {
+    // deathpiles get removed instead of reset
   }
 
   public String getExpireText(boolean previewMode) {

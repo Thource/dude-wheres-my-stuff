@@ -25,8 +25,15 @@
  */
 package dev.thource.runelite.dudewheresmystuff;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.google.common.collect.ImmutableMap;
+import dev.thource.runelite.dudewheresmystuff.carryable.CarryableStorageManager;
+import dev.thource.runelite.dudewheresmystuff.coins.CoinsStorageManager;
+import dev.thource.runelite.dudewheresmystuff.death.DeathStorageManager;
+import dev.thource.runelite.dudewheresmystuff.minigames.MinigamesStorageManager;
+import dev.thource.runelite.dudewheresmystuff.world.WorldStorageManager;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.runelite.api.ItemID;
@@ -44,21 +51,17 @@ public enum Tab {
   STASH_UNITS("Stash Units", ItemID.CLUE_SCROLL_MASTER),
   SEARCH("Search", -1);
 
-  public static final Map<Class<? extends StorageManager<?, ?>>, Tab> MANAGER_TAB_MAP = new HashMap<>();
-  public static final Tab[] TABS = {OVERVIEW, DEATH, COINS, CARRYABLE_STORAGE, WORLD, MINIGAMES,
-      SEARCH};
-
-  static {
-    MANAGER_TAB_MAP.put(DeathStorageManager.class, DEATH);
-    MANAGER_TAB_MAP.put(CoinsStorageManager.class, COINS);
-    MANAGER_TAB_MAP.put(CarryableStorageManager.class, CARRYABLE_STORAGE);
-    MANAGER_TAB_MAP.put(WorldStorageManager.class, WORLD);
-    MANAGER_TAB_MAP.put(MinigamesStorageManager.class, MINIGAMES);
-  }
+  public static final ImmutableMap<Class<? extends StorageManager<?, ?>>, Tab> MANAGER_TAB_MAP = ImmutableMap.<Class<? extends StorageManager<?, ?>>, Tab>builder()
+      .put(DeathStorageManager.class, DEATH).put(CoinsStorageManager.class, COINS)
+      .put(CarryableStorageManager.class, CARRYABLE_STORAGE).put(WorldStorageManager.class, WORLD)
+      .put(MinigamesStorageManager.class, MINIGAMES).build();
+  public static final List<Tab> TABS = Collections.unmodifiableList(
+      Arrays.asList(OVERVIEW, DEATH, COINS, CARRYABLE_STORAGE, WORLD, MINIGAMES, SEARCH));
 
   private final String name;
   private final int itemID;
   private final int itemQuantity;
+
   Tab(String name, int itemID) {
     this.name = name;
     this.itemID = itemID;

@@ -1,5 +1,6 @@
-package dev.thource.runelite.dudewheresmystuff;
+package dev.thource.runelite.dudewheresmystuff.minigames;
 
+import dev.thource.runelite.dudewheresmystuff.StorageType;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

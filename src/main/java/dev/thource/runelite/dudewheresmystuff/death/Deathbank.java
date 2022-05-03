@@ -1,21 +1,25 @@
 package dev.thource.runelite.dudewheresmystuff.death;
 
-import dev.thource.runelite.dudewheresmystuff.DeathStorage;
-import dev.thource.runelite.dudewheresmystuff.DeathStorageType;
-import dev.thource.runelite.dudewheresmystuff.DeathWorldMapPoint;
 import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.client.game.ItemManager;
 
+@Slf4j
 @Getter
+@Setter
 public class Deathbank extends DeathStorage {
 
-  public boolean locked = false;
-  public DeathWorldMapPoint worldMapPoint;
-  public long lostAt = -1L;
+  private boolean locked = false;
+  private long lostAt = -1L;
 
   public Deathbank(DeathStorageType deathStorageType, Client client, ItemManager itemManager) {
     super(deathStorageType, client, itemManager);
+  }
+
+  void setType(DeathStorageType type) {
+    this.type = type;
   }
 
   @Override

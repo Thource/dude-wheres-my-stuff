@@ -1,5 +1,7 @@
-package dev.thource.runelite.dudewheresmystuff;
+package dev.thource.runelite.dudewheresmystuff.carryable;
 
+import dev.thource.runelite.dudewheresmystuff.ItemStack;
+import dev.thource.runelite.dudewheresmystuff.Storage;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
@@ -37,7 +39,7 @@ public class CarryableStorage extends Storage<CarryableStorageType> {
       items.add(11, empty);
       items.add(15, empty);
 
-      items.forEach(itemStack -> itemStack.id = itemManager.canonicalize(itemStack.id));
+      items.forEach(itemStack -> itemStack.setId(itemManager.canonicalize(itemStack.getId())));
     }
 
     return updated;

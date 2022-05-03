@@ -1,5 +1,6 @@
-package dev.thource.runelite.dudewheresmystuff;
+package dev.thource.runelite.dudewheresmystuff.minigames;
 
+import dev.thource.runelite.dudewheresmystuff.Storage;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.client.game.ItemManager;

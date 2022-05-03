@@ -27,16 +27,22 @@
 
 package dev.thource.runelite.dudewheresmystuff;
 
+import dev.thource.runelite.dudewheresmystuff.carryable.CarryableStorageTabPanel;
+import dev.thource.runelite.dudewheresmystuff.coins.CoinsStorageTabPanel;
+import dev.thource.runelite.dudewheresmystuff.death.DeathStorageTabPanel;
+import dev.thource.runelite.dudewheresmystuff.minigames.MinigamesStorageTabPanel;
+import dev.thource.runelite.dudewheresmystuff.world.WorldStorageTabPanel;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.EnumMap;
+import java.util.Optional;
 import javax.annotation.Nullable;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import net.runelite.api.Client;
@@ -49,7 +55,7 @@ import net.runelite.client.ui.components.materialtabs.MaterialTabGroup;
 import net.runelite.client.util.AsyncBufferedImage;
 import net.runelite.client.util.ImageUtil;
 
-class DudeWheresMyStuffPanel extends JPanel {
+public class DudeWheresMyStuffPanel extends JPanel {
 
   private static final ImageIcon SEARCH_ICON;
 
@@ -58,30 +64,26 @@ class DudeWheresMyStuffPanel extends JPanel {
         "/net/runelite/client/ui/components/search.png"));
   }
 
-  final Map<Tab, MaterialTab> uiTabs = new HashMap<>();
-  final OverviewTabPanel overviewTab;
-  final Map<Tab, StorageTabPanel<?, ?, ?>> storageTabPanelMap = new HashMap<>();
-  private final ItemManager itemManager;
-  private final DudeWheresMyStuffConfig config;
+  private final EnumMap<Tab, MaterialTab> uiTabs = new EnumMap<>(Tab.class);
+  private final OverviewTabPanel overviewTab;
+  private final EnumMap<Tab, StorageTabPanel<?, ?, ?>> storageTabPanelMap = new EnumMap<>(
+      Tab.class);
+  private final transient ItemManager itemManager;
   /* This is the panel the tabs' respective panels will be displayed on. */
   private final JPanel display = new JPanel();
   private final MaterialTabGroup tabGroup = new MaterialTabGroup(display);
-  boolean previewMode;
+  private final boolean previewMode;
   boolean active;
   String displayName = "";
   @Nullable
   private TabContentPanel activeTabPanel = null;
 
   DudeWheresMyStuffPanel(DudeWheresMyStuffPlugin plugin, DudeWheresMyStuffConfig config,
-      ItemManager itemManager,
-      ConfigManager configManager, DeathStorageManager deathStorageManager,
-      CoinsStorageManager coinsStorageManager, CarryableStorageManager carryableStorageManager,
-      WorldStorageManager worldStorageManager, MinigamesStorageManager minigamesStorageManager,
-      boolean developerMode, boolean previewMode, Client client) {
+      ItemManager itemManager, ConfigManager configManager,
+      StorageManagerManager storageManagerManager, boolean previewMode, Client client) {
     super();
 
     this.itemManager = itemManager;
-    this.config = config;
     this.previewMode = previewMode;
 
     setLayout(new BorderLayout());
@@ -96,36 +98,29 @@ class DudeWheresMyStuffPanel extends JPanel {
     add(tabGroup, BorderLayout.NORTH);
     add(display, BorderLayout.CENTER);
 
-    overviewTab = new OverviewTabPanel(plugin, this, config, itemManager, configManager,
-        deathStorageManager, coinsStorageManager, carryableStorageManager, worldStorageManager,
-        developerMode);
+    overviewTab = new OverviewTabPanel(plugin, this, itemManager, configManager,
+        storageManagerManager, plugin.isDeveloperModeEnabled());
     addTab(Tab.OVERVIEW, overviewTab);
 
-    addTab(Tab.DEATH,
-        new DeathStorageTabPanel(itemManager, config, this, deathStorageManager, developerMode,
-            client));
-    addTab(Tab.COINS, new CoinsStorageTabPanel(itemManager, config, this, coinsStorageManager));
-    addTab(Tab.CARRYABLE_STORAGE,
-        new CarryableStorageTabPanel(itemManager, config, this, carryableStorageManager));
-    addTab(Tab.WORLD, new WorldStorageTabPanel(itemManager, config, this, worldStorageManager));
-    addTab(Tab.MINIGAMES,
-        new MinigamesStorageTabPanel(itemManager, config, this, minigamesStorageManager));
+    addTab(Tab.DEATH, new DeathStorageTabPanel(itemManager, config, this,
+        storageManagerManager.getDeathStorageManager(), plugin.isDeveloperModeEnabled(), client));
+    addTab(Tab.COINS, new CoinsStorageTabPanel(itemManager, config, this,
+        storageManagerManager.getCoinsStorageManager()));
+    addTab(Tab.CARRYABLE_STORAGE, new CarryableStorageTabPanel(itemManager, config, this,
+        storageManagerManager.getCarryableStorageManager()));
+    addTab(Tab.WORLD, new WorldStorageTabPanel(itemManager, config,
+        storageManagerManager.getWorldStorageManager()));
+    addTab(Tab.MINIGAMES, new MinigamesStorageTabPanel(itemManager, config,
+        storageManagerManager.getMinigamesStorageManager()));
 
-    addTab(Tab.SEARCH,
-        new SearchTabPanel(itemManager, config, this, deathStorageManager, coinsStorageManager,
-            carryableStorageManager, worldStorageManager));
+    addTab(Tab.SEARCH, new SearchTabPanel(itemManager, config, this, storageManagerManager));
 
     for (Tab tab : Tab.TABS) {
-        if (tab == Tab.OVERVIEW) {
-            continue;
-        }
+      if (tab == Tab.OVERVIEW) {
+        continue;
+      }
 
-      MaterialTab materialTab = uiTabs.get(tab);
-        if (materialTab == null) {
-            continue;
-        }
-
-      materialTab.setVisible(false);
+      Optional.ofNullable(uiTabs.get(tab)).ifPresent(materialTab -> materialTab.setVisible(false));
     }
   }
 
@@ -138,15 +133,15 @@ class DudeWheresMyStuffPanel extends JPanel {
     wrapped.add(tabContentPanel, BorderLayout.NORTH);
     wrapped.setBackground(ColorScheme.DARK_GRAY_COLOR);
 
-    JScrollPane scroller = new JScrollPane(new ScrollableContainer(wrapped));
-    scroller.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-    scroller.getVerticalScrollBar().setPreferredSize(new Dimension(16, 0));
-    scroller.getVerticalScrollBar().setBorder(new EmptyBorder(0, 9, 0, 0));
-    scroller.getVerticalScrollBar().setUnitIncrement(21);
-    scroller.setBackground(ColorScheme.DARK_GRAY_COLOR);
+    JScrollPane scrollPane = new JScrollPane(new ScrollableContainer(wrapped));
+    scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+    scrollPane.getVerticalScrollBar().setPreferredSize(new Dimension(16, 0));
+    scrollPane.getVerticalScrollBar().setBorder(new EmptyBorder(0, 9, 0, 0));
+    scrollPane.getVerticalScrollBar().setUnitIncrement(21);
+    scrollPane.setBackground(ColorScheme.DARK_GRAY_COLOR);
 
     // Use a placeholder icon until the async image gets loaded
-    MaterialTab materialTab = new MaterialTab(new ImageIcon(), tabGroup, scroller);
+    MaterialTab materialTab = new MaterialTab(new ImageIcon(), tabGroup, scrollPane);
     materialTab.setPreferredSize(new Dimension(30, 27));
     materialTab.setName(tab.getName());
     materialTab.setToolTipText(tab.getName());
@@ -155,8 +150,7 @@ class DudeWheresMyStuffPanel extends JPanel {
       materialTab.setIcon(SEARCH_ICON);
     } else {
       AsyncBufferedImage icon = itemManager.getImage(tab.getItemID(), tab.getItemQuantity(), false);
-      Runnable resize = () ->
-      {
+      Runnable resize = () -> {
         BufferedImage subIcon = icon.getSubimage(0, 0, 32, 32);
         materialTab.setIcon(new ImageIcon(subIcon.getScaledInstance(24, 24, Image.SCALE_SMOOTH)));
       };
@@ -164,8 +158,7 @@ class DudeWheresMyStuffPanel extends JPanel {
       resize.run();
     }
 
-    materialTab.setOnSelectEvent(() ->
-    {
+    materialTab.setOnSelectEvent(() -> {
       activeTabPanel = tabContentPanel;
 
       tabContentPanel.update();
@@ -185,17 +178,17 @@ class DudeWheresMyStuffPanel extends JPanel {
   }
 
   void update() {
-      if (!active || activeTabPanel == null) {
-          return;
-      }
+    if (!active || activeTabPanel == null) {
+      return;
+    }
 
     SwingUtilities.invokeLater(() -> activeTabPanel.update());
   }
 
   public void softUpdate() {
-      if (!active || activeTabPanel == null || !(activeTabPanel instanceof StorageTabPanel)) {
-          return;
-      }
+    if (!active || activeTabPanel == null || !(activeTabPanel instanceof StorageTabPanel)) {
+      return;
+    }
 
     ((StorageTabPanel<?, ?, ?>) activeTabPanel).softUpdate();
   }
@@ -211,34 +204,31 @@ class DudeWheresMyStuffPanel extends JPanel {
 
   void logOut() {
     uiTabs.forEach((tab, materialTab) -> {
-        if (tab == Tab.OVERVIEW) {
-            return;
-        }
+      if (tab == Tab.OVERVIEW) {
+        return;
+      }
 
       materialTab.setVisible(false);
     });
 
-    overviewTab.overviews.forEach((tab, overviewItemPanel) -> {
-        if (tab == Tab.OVERVIEW) {
-            return;
-        }
+    overviewTab.getOverviews().forEach((tab, overviewItemPanel) -> {
+      if (tab == Tab.OVERVIEW) {
+        return;
+      }
 
       overviewItemPanel.setVisible(false);
     });
 
     SwingUtilities.invokeLater(
-        () -> ((SearchTabPanel) storageTabPanelMap.get(Tab.SEARCH)).searchBar.setText(""));
+        () -> ((SearchTabPanel) storageTabPanelMap.get(Tab.SEARCH)).getSearchBar().setText(""));
     switchTab(Tab.OVERVIEW);
 
     setDisplayName("");
   }
 
   void logIn(boolean isMember, AccountType accountType, String displayName) {
-    ((DeathStorageTabPanel) storageTabPanelMap.get(Tab.DEATH)).accountType = accountType;
+    ((DeathStorageTabPanel) storageTabPanelMap.get(Tab.DEATH)).setAccountType(accountType);
     storageTabPanelMap.forEach((tab, storageTabPanel) -> {
-      MaterialTab materialTab = uiTabs.get(tab);
-      OverviewItemPanel overviewItemPanel = overviewTab.overviews.get(tab);
-
       StorageManager<?, ?> storageManager = storageTabPanel.storageManager;
       if (storageManager != null) {
         if (tab != Tab.DEATH && storageManager.isMembersOnly() && !isMember) {
@@ -246,21 +236,22 @@ class DudeWheresMyStuffPanel extends JPanel {
           return;
         }
 
-        for (Storage<?> storage : storageManager.storages) {
-            if (storage.getType().isMembersOnly() && !isMember) {
-                storage.disable();
-            }
+        for (Storage<?> storage : storageManager.getStorages()) {
+          if (storage.getType().isMembersOnly() && !isMember) {
+            storage.disable();
+          }
         }
       }
 
-        if (materialTab != null) {
-            materialTab.setVisible(true);
-        }
-        if (overviewItemPanel != null) {
-            overviewItemPanel.setVisible(true);
-        }
+      Optional.ofNullable(uiTabs.get(tab)).ifPresent(materialTab -> materialTab.setVisible(true));
+      Optional.ofNullable(overviewTab.getOverviews().get(tab))
+          .ifPresent(overviewItemPanel -> overviewItemPanel.setVisible(true));
     });
     uiTabs.get(Tab.SEARCH).setVisible(true);
     setDisplayName(displayName);
+  }
+
+  public boolean isPreviewPanel() {
+    return previewMode;
   }
 }

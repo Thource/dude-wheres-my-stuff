@@ -58,7 +58,7 @@ class OverviewItemPanel extends JPanel {
   private final JPanel textContainer;
   private final JLabel statusLabel;
   private final JLabel arrowLabel;
-  private final BooleanSupplier isSelectable;
+  private final transient BooleanSupplier isSelectable;
   private final JLabel titleLabel;
   private boolean isHighlighted;
 
@@ -122,7 +122,7 @@ class OverviewItemPanel extends JPanel {
     titleLabel.setFont(FontManager.getRunescapeSmallFont());
 
     statusLabel = new JLabel();
-    statusLabel.setForeground(Color.GRAY);
+    statusLabel.setForeground(Color.LIGHT_GRAY);
     statusLabel.setFont(FontManager.getRunescapeSmallFont());
 
     textContainer.add(titleLabel);
@@ -135,9 +135,8 @@ class OverviewItemPanel extends JPanel {
     add(arrowLabel, BorderLayout.EAST);
   }
 
-  void updateStatus(String text, Color color) {
+  void updateStatus(String text) {
     statusLabel.setText(text);
-    statusLabel.setForeground(color);
 
     arrowLabel.setVisible(isSelectable.getAsBoolean());
 

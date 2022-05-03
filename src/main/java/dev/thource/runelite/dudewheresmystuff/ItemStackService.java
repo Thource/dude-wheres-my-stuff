@@ -5,6 +5,9 @@ import java.util.List;
 
 public class ItemStackService {
 
+  private ItemStackService() {
+  }
+
   public static List<ItemStack> compound(List<ItemStack> itemStacks, boolean compoundUnstackables) {
     ArrayList<ItemStack> compoundedItemStacks = new ArrayList<>();
 

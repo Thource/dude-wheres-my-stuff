@@ -2,8 +2,6 @@ package dev.thource.runelite.dudewheresmystuff.minigames;
 
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffConfig;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
-import dev.thource.runelite.dudewheresmystuff.MinigamesStorage;
-import dev.thource.runelite.dudewheresmystuff.MinigamesStorageType;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.ItemID;
@@ -17,9 +15,9 @@ import org.apache.commons.lang3.math.NumberUtils;
 @Getter
 public class LastManStanding extends MinigamesStorage {
 
-  ItemStack points = new ItemStack(ItemID.SKULL, "Points", 0, 0, 0, true);
+  private final ItemStack points = new ItemStack(ItemID.SKULL, "Points", 0, 0, 0, true);
 
-  Widget shopWidget = null;
+  private Widget shopWidget = null;
 
   public LastManStanding(Client client, ItemManager itemManager) {
     super(MinigamesStorageType.LAST_MAN_STANDING, client, itemManager);
@@ -34,10 +32,6 @@ public class LastManStanding extends MinigamesStorage {
 
   @Override
   public boolean onWidgetLoaded(WidgetLoaded widgetLoaded) {
-    if (client.getLocalPlayer() == null) {
-      return false;
-    }
-
     if (widgetLoaded.getGroupId() == 645) {
       shopWidget = client.getWidget(645, 0);
     }
@@ -47,10 +41,6 @@ public class LastManStanding extends MinigamesStorage {
 
   @Override
   public boolean onWidgetClosed(WidgetClosed widgetClosed) {
-    if (client.getLocalPlayer() == null) {
-      return false;
-    }
-
     if (widgetClosed.getGroupId() == 645) {
       shopWidget = null;
     }
@@ -75,24 +65,16 @@ public class LastManStanding extends MinigamesStorage {
 
   @Override
   public void save(ConfigManager configManager, String managerConfigKey) {
-    String data = lastUpdated + ";"
-        + points.getQuantity();
+    String data = lastUpdated + ";" + points.getQuantity();
 
-    configManager.setRSProfileConfiguration(
-        DudeWheresMyStuffConfig.CONFIG_GROUP,
-        managerConfigKey + "." + type.getConfigKey(),
-        data
-    );
+    configManager.setRSProfileConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP,
+        managerConfigKey + "." + type.getConfigKey(), data);
   }
 
   @Override
   public void load(ConfigManager configManager, String managerConfigKey, String profileKey) {
-    String data = configManager.getConfiguration(
-        DudeWheresMyStuffConfig.CONFIG_GROUP,
-        profileKey,
-        managerConfigKey + "." + type.getConfigKey(),
-        String.class
-    );
+    String data = configManager.getConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP, profileKey,
+        managerConfigKey + "." + type.getConfigKey(), String.class);
     if (data == null) {
       return;
     }

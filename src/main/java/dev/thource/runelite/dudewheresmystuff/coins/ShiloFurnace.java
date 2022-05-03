@@ -1,7 +1,5 @@
 package dev.thource.runelite.dudewheresmystuff.coins;
 
-import dev.thource.runelite.dudewheresmystuff.CoinsStorage;
-import dev.thource.runelite.dudewheresmystuff.CoinsStorageType;
 import net.runelite.api.Client;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.game.ItemManager;

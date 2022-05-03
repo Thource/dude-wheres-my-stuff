@@ -25,10 +25,10 @@
  */
 package dev.thource.runelite.dudewheresmystuff;
 
-import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.ItemComposition;
 import net.runelite.client.callback.ClientThread;
@@ -37,15 +37,16 @@ import net.runelite.client.game.ItemManager;
 @AllArgsConstructor
 @Getter
 @EqualsAndHashCode
-public
-class ItemStack implements Serializable {
+public class ItemStack {
 
-  public int id;
-  String name;
-  long quantity;
-  int gePrice;
-  int haPrice;
-  boolean stackable;
+  @Setter
+  private int id;
+  private String name;
+  @Setter
+  private long quantity;
+  private int gePrice;
+  private int haPrice;
+  private boolean stackable;
 
   public ItemStack(int id, Client client, ClientThread clientThread, ItemManager itemManager) {
     this.id = id;
@@ -84,9 +85,5 @@ class ItemStack implements Serializable {
 
   long getTotalHaPrice() {
     return haPrice * quantity;
-  }
-
-  public void setQuantity(long quantity) {
-    this.quantity = quantity;
   }
 }

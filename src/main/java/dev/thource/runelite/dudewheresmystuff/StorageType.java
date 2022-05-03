@@ -1,6 +1,6 @@
 package dev.thource.runelite.dudewheresmystuff;
 
-interface StorageType {
+public interface StorageType {
 
   String getName();
 

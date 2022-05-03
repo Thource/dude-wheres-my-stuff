@@ -1,5 +1,6 @@
-package dev.thource.runelite.dudewheresmystuff;
+package dev.thource.runelite.dudewheresmystuff.coins;
 
+import dev.thource.runelite.dudewheresmystuff.StorageType;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.runelite.api.InventoryID;
@@ -24,6 +25,7 @@ public enum CoinsStorageType implements StorageType {
   private final String configKey;
   private final boolean membersOnly;
   private final int multiplier;
+
   CoinsStorageType(String name, int varbitId, int itemContainerId, boolean automatic,
       String configKey, boolean membersOnly) {
     this.name = name;

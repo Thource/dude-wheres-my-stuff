@@ -1,10 +1,10 @@
-package dev.thource.runelite.dudewheresmystuff;
+package dev.thource.runelite.dudewheresmystuff.coins;
 
 import com.google.inject.Inject;
-import dev.thource.runelite.dudewheresmystuff.coins.GrandExchange;
-import dev.thource.runelite.dudewheresmystuff.coins.LootingBag;
-import dev.thource.runelite.dudewheresmystuff.coins.ServantsMoneybag;
-import dev.thource.runelite.dudewheresmystuff.coins.ShiloFurnace;
+import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffConfig;
+import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
+import dev.thource.runelite.dudewheresmystuff.StorageManager;
+import dev.thource.runelite.dudewheresmystuff.Tab;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.client.Notifier;
@@ -20,10 +20,8 @@ public class CoinsStorageManager extends StorageManager<CoinsStorageType, CoinsS
     super(client, itemManager, configManager, config, notifier, plugin);
 
     for (CoinsStorageType type : CoinsStorageType.values()) {
-      if (type == CoinsStorageType.SERVANT_MONEYBAG
-          || type == CoinsStorageType.SHILO_FURNACE
-          || type == CoinsStorageType.GRAND_EXCHANGE
-          || type == CoinsStorageType.LOOTING_BAG) {
+      if (type == CoinsStorageType.SERVANT_MONEYBAG || type == CoinsStorageType.SHILO_FURNACE
+          || type == CoinsStorageType.GRAND_EXCHANGE || type == CoinsStorageType.LOOTING_BAG) {
         continue;
       }
 

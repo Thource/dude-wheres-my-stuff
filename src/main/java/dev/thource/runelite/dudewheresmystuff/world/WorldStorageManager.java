@@ -1,7 +1,10 @@
-package dev.thource.runelite.dudewheresmystuff;
+package dev.thource.runelite.dudewheresmystuff.world;
 
 import com.google.inject.Inject;
-import dev.thource.runelite.dudewheresmystuff.world.Leprechaun;
+import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffConfig;
+import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
+import dev.thource.runelite.dudewheresmystuff.StorageManager;
+import dev.thource.runelite.dudewheresmystuff.Tab;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.client.Notifier;

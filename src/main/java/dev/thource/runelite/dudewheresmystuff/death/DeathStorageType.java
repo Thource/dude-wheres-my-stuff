@@ -1,5 +1,7 @@
-package dev.thource.runelite.dudewheresmystuff;
+package dev.thource.runelite.dudewheresmystuff.death;
 
+import dev.thource.runelite.dudewheresmystuff.Region;
+import dev.thource.runelite.dudewheresmystuff.StorageType;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

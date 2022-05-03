@@ -1,5 +1,7 @@
-package dev.thource.runelite.dudewheresmystuff;
+package dev.thource.runelite.dudewheresmystuff.coins;
 
+import dev.thource.runelite.dudewheresmystuff.ItemStack;
+import dev.thource.runelite.dudewheresmystuff.Storage;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.ItemContainer;

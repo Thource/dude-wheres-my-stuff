@@ -38,6 +38,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.ToLongFunction;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import javax.annotation.Nullable;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -55,15 +57,16 @@ import net.runelite.client.util.AsyncBufferedImage;
 import net.runelite.client.util.QuantityFormatter;
 import net.runelite.client.util.Text;
 
-class ItemsBox extends JPanel {
+public class ItemsBox extends JPanel {
 
   private static final int ITEMS_PER_ROW = 4;
   private static final int TITLE_PADDING = 5;
+  private static final String UNKNOWN_TEXT = "Unknown";
 
   private final JPanel itemContainer = new JPanel();
   private final JLabel subTitleLabel = new JLabel();
   private final JPanel logTitle = new JPanel();
-  private final ItemManager itemManager;
+  private final transient ItemManager itemManager;
   @Getter(AccessLevel.PACKAGE)
   private final String id;
   @Getter(AccessLevel.PACKAGE)
@@ -71,24 +74,16 @@ class ItemsBox extends JPanel {
   @Getter
   private final List<ItemStack> items = new ArrayList<>();
   private JLabel priceLabel = null;
-  private JPanel lastUpdatedPanel = null;
   private JLabel lastUpdatedLabel = null;
-  private JPanel expiryPanel = null;
   private JLabel expiryLabel = null;
-  private Storage<?> storage = null;
+  private transient Storage<?> storage = null;
 
   private long totalPrice;
   private long expiryMs;
   private ItemSortMode itemSortMode = ItemSortMode.UNSORTED;
 
-  private ItemsBox(
-      final ItemManager itemManager,
-      final String name,
-      final boolean automatic,
-      @Nullable final String subtitle,
-      final boolean showAlchPrices,
-      boolean showPrice
-  ) {
+  private ItemsBox(final ItemManager itemManager, final String name, final boolean automatic,
+      @Nullable final String subtitle, final boolean showAlchPrices, boolean showPrice) {
     this.id = name;
     this.itemManager = itemManager;
     this.showAlchPrices = showAlchPrices;
@@ -132,13 +127,13 @@ class ItemsBox extends JPanel {
     add(itemContainer, BorderLayout.CENTER);
 
     if (!automatic) {
-      lastUpdatedPanel = new JPanel();
+      JPanel lastUpdatedPanel = new JPanel();
       lastUpdatedPanel.setLayout(new BoxLayout(lastUpdatedPanel, BoxLayout.X_AXIS));
       lastUpdatedPanel.setBorder(new EmptyBorder(7, 7, 7, 7));
       lastUpdatedPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
       lastUpdatedLabel = new JLabel();
-      lastUpdatedLabel.setText("Unknown");
+      lastUpdatedLabel.setText(UNKNOWN_TEXT);
       lastUpdatedLabel.setToolTipText("Open the relevant container or shop to update.");
       lastUpdatedLabel.setFont(FontManager.getRunescapeSmallFont());
       lastUpdatedLabel.setForeground(Color.WHITE);
@@ -150,28 +145,20 @@ class ItemsBox extends JPanel {
     }
   }
 
-  ItemsBox(
-      final ItemManager itemManager,
-      final String name,
-      @Nullable final String subtitle,
-      final boolean showAlchPrices,
-      boolean showPrice
-  ) {
+  public ItemsBox(final ItemManager itemManager, final String name, @Nullable final String subtitle,
+      final boolean showAlchPrices, boolean showPrice) {
     this(itemManager, name, true, subtitle, showAlchPrices, showPrice);
   }
 
-  ItemsBox(
-      final ItemManager itemManager,
-      final Storage<?> storage,
-      @Nullable final String subtitle,
-      final boolean showAlchPrices,
-      boolean showPrice
-  ) {
+  public ItemsBox(final ItemManager itemManager, final Storage<?> storage,
+      @Nullable final String subtitle, final boolean showAlchPrices, boolean showPrice) {
     this(itemManager, storage.getType().getName(), storage.getType().isAutomatic(), subtitle,
         showAlchPrices, showPrice);
     this.storage = storage;
   }
 
+  // Suppress string literal warnings, defining a constant for "</html>" is dumb
+  @SuppressWarnings("java:S1192")
   private static String buildToolTip(ItemStack item) {
     final String name = item.getName();
     final long quantity = item.getQuantity();
@@ -208,7 +195,7 @@ class ItemsBox extends JPanel {
     return sb.toString();
   }
 
-  void rebuild() {
+  public void rebuild() {
     buildItems();
 
     if (priceLabel != null) {
@@ -221,15 +208,15 @@ class ItemsBox extends JPanel {
     revalidate();
   }
 
-  void setSubTitle(String text) {
+  public void setSubTitle(String text) {
     subTitleLabel.setText(text);
     subTitleLabel.setToolTipText(text);
   }
 
-  void addExpiry(long expiryMs) {
+  public void addExpiry(long expiryMs) {
     this.expiryMs = expiryMs;
 
-    expiryPanel = new JPanel();
+    JPanel expiryPanel = new JPanel();
     expiryPanel.setLayout(new BoxLayout(expiryPanel, BoxLayout.X_AXIS));
     expiryPanel.setBorder(new EmptyBorder(7, 7, 7, 7));
     expiryPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
@@ -253,19 +240,19 @@ class ItemsBox extends JPanel {
   }
 
   private void updateLastUpdatedLabel() {
-      if (lastUpdatedLabel == null) {
-          return;
-      }
+    if (lastUpdatedLabel == null) {
+      return;
+    }
     if (storage instanceof Deathbank && ((Deathbank) storage).getLostAt() != -1L) {
       lastUpdatedLabel.setText("Lost " + DurationFormatter.format(
           System.currentTimeMillis() - ((Deathbank) storage).getLostAt()) + " ago");
       return;
     }
 
-    if (storage.lastUpdated == -1L) {
-        if (!Objects.equals(lastUpdatedLabel.getText(), "Unknown")) {
-            lastUpdatedLabel.setText("Unknown");
-        }
+    if (storage.getLastUpdated() == -1L) {
+      if (!Objects.equals(lastUpdatedLabel.getText(), UNKNOWN_TEXT)) {
+        lastUpdatedLabel.setText(UNKNOWN_TEXT);
+      }
 
       return;
     }
@@ -275,9 +262,9 @@ class ItemsBox extends JPanel {
   }
 
   private void updateExpiryLabel() {
-      if (expiryLabel == null) {
-          return;
-      }
+    if (expiryLabel == null) {
+      return;
+    }
 
     String expireText = "Expire";
     long timeUntilExpiry = expiryMs - System.currentTimeMillis();
@@ -298,9 +285,9 @@ class ItemsBox extends JPanel {
   }
 
   void expand() {
-      if (items.isEmpty()) {
-          return;
-      }
+    if (items.isEmpty()) {
+      return;
+    }
 
     if (isCollapsed()) {
       itemContainer.setVisible(true);
@@ -327,61 +314,61 @@ class ItemsBox extends JPanel {
   private void buildItems() {
     totalPrice = 0;
 
-    List<ItemStack> items = this.items;
+    List<ItemStack> newItems = this.items;
 
-    ToLongFunction<ItemStack> getPrice = showAlchPrices
-        ? ItemStack::getTotalHaPrice
-        : ItemStack::getTotalGePrice;
+    ToLongFunction<ItemStack> getPrice =
+        showAlchPrices ? ItemStack::getTotalHaPrice : ItemStack::getTotalGePrice;
 
-    totalPrice = items.stream()
-        .mapToLong(getPrice)
-        .sum();
+    totalPrice = newItems.stream().mapToLong(getPrice).sum();
 
     itemContainer.removeAll();
     itemContainer.setLayout(null);
 
-      if (itemSortMode == ItemSortMode.VALUE) {
-          items.sort(Comparator.comparingLong(getPrice).reversed());
-      }
+    if (itemSortMode == ItemSortMode.VALUE) {
+      newItems.sort(Comparator.comparingLong(getPrice).reversed());
+    }
 
-      if (itemSortMode != ItemSortMode.UNSORTED) {
-          items = ItemStackService.compound(items, true);
-      }
+    if (itemSortMode != ItemSortMode.UNSORTED) {
+      newItems = ItemStackService.compound(newItems, true);
+    }
 
-    if (items.stream().anyMatch(itemStack -> itemStack.getId() != -1)) {
+    if (newItems.stream().anyMatch(itemStack -> itemStack.getId() != -1)) {
       // Calculates how many rows need to be display to fit all items
       final int rowSize =
-          ((items.size() % ITEMS_PER_ROW == 0) ? 0 : 1) + items.size() / ITEMS_PER_ROW;
+          ((newItems.size() % ITEMS_PER_ROW == 0) ? 0 : 1) + newItems.size() / ITEMS_PER_ROW;
 
       itemContainer.setLayout(new GridLayout(rowSize, ITEMS_PER_ROW, 1, 1));
 
-      for (int i = 0; i < rowSize * ITEMS_PER_ROW; i++) {
-        final JPanel slotContainer = new JPanel();
-        slotContainer.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-
-        if (i < items.size()) {
-          final ItemStack item = items.get(i);
-
-          final JLabel imageLabel = new JLabel();
-          imageLabel.setToolTipText(buildToolTip(item));
-          imageLabel.setVerticalAlignment(SwingConstants.CENTER);
-          imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
-
-          if (item.getId() != -1) {
-            AsyncBufferedImage itemImage = itemManager.getImage(item.getId(),
-                (int) Math.min(item.getQuantity(), Integer.MAX_VALUE),
-                item.isStackable() || item.getQuantity() > 1);
-            itemImage.addTo(imageLabel);
-          }
-
-          slotContainer.add(imageLabel);
-        }
-
-        itemContainer.add(slotContainer);
-      }
+      createItemPanels(newItems, rowSize).forEach(itemContainer::add);
     }
 
     itemContainer.revalidate();
+  }
+
+  private List<JPanel> createItemPanels(List<ItemStack> newItems, int rowSize) {
+    return IntStream.range(0, rowSize * ITEMS_PER_ROW).mapToObj(i -> {
+      final JPanel slotContainer = new JPanel();
+      slotContainer.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+      if (i < newItems.size()) {
+        final ItemStack item = newItems.get(i);
+
+        final JLabel imageLabel = new JLabel();
+        imageLabel.setToolTipText(buildToolTip(item));
+        imageLabel.setVerticalAlignment(SwingConstants.CENTER);
+        imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
+
+        if (item.getId() != -1) {
+          AsyncBufferedImage itemImage = itemManager.getImage(item.getId(),
+              (int) Math.min(item.getQuantity(), Integer.MAX_VALUE),
+              item.isStackable() || item.getQuantity() > 1);
+          itemImage.addTo(imageLabel);
+        }
+
+        slotContainer.add(imageLabel);
+      }
+
+      return slotContainer;
+    }).collect(Collectors.toList());
   }
 
   public void setSortMode(ItemSortMode itemSortMode) {

@@ -1,7 +1,5 @@
 package dev.thource.runelite.dudewheresmystuff.carryable;
 
-import dev.thource.runelite.dudewheresmystuff.CarryableStorage;
-import dev.thource.runelite.dudewheresmystuff.CarryableStorageType;
 import java.util.Objects;
 import lombok.Getter;
 import net.runelite.api.Client;

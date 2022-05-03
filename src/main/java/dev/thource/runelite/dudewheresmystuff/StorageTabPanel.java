@@ -10,22 +10,24 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import lombok.Getter;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 
-abstract class StorageTabPanel<ST extends StorageType, S extends Storage<ST>, SM extends StorageManager<ST, S>> extends
+public abstract class StorageTabPanel<T extends StorageType, S extends Storage<T>, M extends StorageManager<T, S>> extends
     TabContentPanel {
 
-  protected final DudeWheresMyStuffConfig config;
-  protected final SM storageManager;
-  protected final ItemManager itemManager;
+  protected final transient DudeWheresMyStuffConfig config;
+  @Getter
+  protected final transient M storageManager;
+  protected final transient ItemManager itemManager;
   protected final JPanel itemsBoxContainer;
   protected final JComboBox<ItemSortMode> sortItemsDropdown;
-  final List<ItemsBox> itemsBoxes = new ArrayList<>();
+  protected final transient List<ItemsBox> itemsBoxes = new ArrayList<>();
 
-  StorageTabPanel(ItemManager itemManager, DudeWheresMyStuffConfig config,
-      DudeWheresMyStuffPanel pluginPanel, SM storageManager) {
+  protected StorageTabPanel(ItemManager itemManager, DudeWheresMyStuffConfig config,
+      M storageManager) {
     this.itemManager = itemManager;
     this.config = config;
     this.storageManager = storageManager;
@@ -50,7 +52,7 @@ abstract class StorageTabPanel<ST extends StorageType, S extends Storage<ST>, SM
     sortItemsDropdown.addItem(ItemSortMode.VALUE);
     sortItemsDropdown.addItem(ItemSortMode.UNSORTED);
     sortItemsDropdown.setSelectedItem(config.itemSortMode());
-    sortItemsDropdown.addItemListener((i) -> {
+    sortItemsDropdown.addItemListener(i -> {
       ItemSortMode newSortMode = (ItemSortMode) i.getItem();
       if (config.itemSortMode() == newSortMode) {
         return;
@@ -68,8 +70,7 @@ abstract class StorageTabPanel<ST extends StorageType, S extends Storage<ST>, SM
   }
 
   protected Comparator<S> getStorageSorter() {
-    return Comparator.comparingLong(S::getTotalValue)
-        .reversed()
+    return Comparator.comparingLong(S::getTotalValue).reversed()
         .thenComparing(s -> s.getType().getName());
   }
 
@@ -81,7 +82,7 @@ abstract class StorageTabPanel<ST extends StorageType, S extends Storage<ST>, SM
     itemsBoxContainer.removeAll();
 
     itemsBoxes.clear();
-    storageManager.storages.stream().sorted(getStorageSorter()).forEach((storage) -> {
+    storageManager.getStorages().stream().sorted(getStorageSorter()).forEach(storage -> {
       if (!storage.isEnabled()) {
         return;
       }
