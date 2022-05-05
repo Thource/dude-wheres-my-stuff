@@ -201,7 +201,7 @@ public class Leprechaun extends WorldStorage {
   }
 
   private boolean updateComposts() {
-    int quantity = client.getVarbitValue(1442);
+    int quantity = client.getVarbitValue(1442) + (client.getVarbitValue(6266) * 256);
 
     if (quantity == composts.getQuantity()) {
       return false;
@@ -212,7 +212,7 @@ public class Leprechaun extends WorldStorage {
   }
 
   private boolean updateSuperComposts() {
-    int quantity = client.getVarbitValue(1443);
+    int quantity = client.getVarbitValue(1443) + (client.getVarbitValue(6267) * 256);
 
     if (quantity == superComposts.getQuantity()) {
       return false;
