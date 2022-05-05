@@ -4,7 +4,6 @@ import dev.thource.runelite.dudewheresmystuff.ItemStack;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
-import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.ItemID;
 import net.runelite.client.callback.ClientThread;
@@ -12,7 +11,6 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 
 /** Leprechaun is responsible for tracking the player's leprechaun-stored farming equipment. */
-@Getter
 public class Leprechaun extends WorldStorage {
 
   private static final int[] WATERING_CAN_IDS = {
@@ -35,6 +33,7 @@ public class Leprechaun extends WorldStorage {
   private final ItemStack wateringCan;
   private final ItemStack trowels;
   private final ItemStack plantCures;
+  private int bottomlessBucketCharges;
   private final ItemStack bottomlessBucket;
   private final ItemStack buckets;
   private final ItemStack composts;
@@ -98,6 +97,9 @@ public class Leprechaun extends WorldStorage {
     if (updatePlantCures()) {
       updated.set(true);
     }
+    if (updateBottomlessBucket()) {
+      updated.set(true);
+    }
     if (updateBuckets()) {
       updated.set(true);
     }
@@ -112,6 +114,41 @@ public class Leprechaun extends WorldStorage {
     }
 
     return updated.get();
+  }
+
+  private boolean updateBottomlessBucket() {
+    int type = client.getVarbitValue(7915);
+
+    int charges = 0;
+    int itemId = ItemID.BOTTOMLESS_COMPOST_BUCKET;
+
+    if (type == 1) {
+      bottomlessBucket.setName("Bottomless compost bucket");
+    } else if (type != 0) {
+      itemId = ItemID.BOTTOMLESS_COMPOST_BUCKET_22997;
+      charges = client.getVarbitValue(7916);
+    }
+
+    if (charges == bottomlessBucketCharges && itemId == bottomlessBucket.getId()) {
+      return false;
+    }
+
+    bottomlessBucketCharges = charges;
+    bottomlessBucket.setId(itemId);
+    String name = "Bottomless compost bucket";
+    if (charges > 0) {
+      name += " (" + charges + " ";
+      if (type == 2) {
+        name += "compost)";
+      } else if (type == 3) {
+        name += "supercompost)";
+      } else if (type == 4) {
+        name += "ultracompost)";
+      }
+    }
+    bottomlessBucket.setName(name);
+    bottomlessBucket.setQuantity(type == 0 ? 0 : 1);
+    return true;
   }
 
   private boolean updateRakes() {
