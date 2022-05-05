@@ -17,6 +17,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import org.apache.commons.lang3.math.NumberUtils;
 
+/** Storage serves as a base class for all trackable data in the plugin. */
 @Getter
 public abstract class Storage<T extends StorageType> {
 
@@ -24,8 +25,7 @@ public abstract class Storage<T extends StorageType> {
   protected Client client;
   protected ItemManager itemManager;
   protected T type;
-  @Setter
-  protected long lastUpdated = -1L;
+  @Setter protected long lastUpdated = -1L;
   protected boolean enabled = true;
 
   protected Storage(T type, Client client, ItemManager itemManager) {
@@ -54,6 +54,13 @@ public abstract class Storage<T extends StorageType> {
     return false;
   }
 
+  /**
+   * tells the Storage that the onItemContainerChanged event was called and that it should update
+   * the player's trackable data.
+   *
+   * @param itemContainerChanged the ItemContainerChanged event
+   * @return whether the data changed
+   */
   public boolean onItemContainerChanged(ItemContainerChanged itemContainerChanged) {
     if (type.getItemContainerId() == -1
         || type.getItemContainerId() != itemContainerChanged.getContainerId()) {
@@ -73,9 +80,14 @@ public abstract class Storage<T extends StorageType> {
       }
 
       ItemComposition itemComposition = itemManager.getItemComposition(item.getId());
-      items.add(new ItemStack(item.getId(), itemComposition.getName(), item.getQuantity(),
-          itemManager.getItemPrice(item.getId()), itemComposition.getHaPrice(),
-          itemComposition.isStackable()));
+      items.add(
+          new ItemStack(
+              item.getId(),
+              itemComposition.getName(),
+              item.getQuantity(),
+              itemManager.getItemPrice(item.getId()),
+              itemComposition.getHaPrice(),
+              itemComposition.isStackable()));
     }
 
     lastUpdated = System.currentTimeMillis();
@@ -83,25 +95,37 @@ public abstract class Storage<T extends StorageType> {
     return true;
   }
 
+  /**
+   * resets the Storage back to it's initial state, useful for when the player logs out, for
+   * example.
+   */
   public void reset() {
     items.clear();
     lastUpdated = -1;
     enable();
   }
 
+  /** saves the Storage data to the player's RuneLite RS profile config. */
   public void save(ConfigManager configManager, String managerConfigKey) {
     String data =
-        lastUpdated + ";" + items.stream().map(item -> item.getId() + "," + item.getQuantity())
-            .collect(Collectors.joining("="));
+        lastUpdated
+            + ";"
+            + items.stream()
+                .map(item -> item.getId() + "," + item.getQuantity())
+                .collect(Collectors.joining("="));
 
-    configManager.setRSProfileConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP,
-        managerConfigKey + "." + type.getConfigKey(), data);
+    configManager.setRSProfileConfiguration(
+        DudeWheresMyStuffConfig.CONFIG_GROUP, managerConfigKey + "." + type.getConfigKey(), data);
   }
 
-  protected List<ItemStack> loadItems(ConfigManager configManager, String managerConfigKey,
-      String profileKey) {
-    String data = configManager.getConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP, profileKey,
-        managerConfigKey + "." + type.getConfigKey(), String.class);
+  protected List<ItemStack> loadItems(
+      ConfigManager configManager, String managerConfigKey, String profileKey) {
+    String data =
+        configManager.getConfiguration(
+            DudeWheresMyStuffConfig.CONFIG_GROUP,
+            profileKey,
+            managerConfigKey + "." + type.getConfigKey(),
+            String.class);
     if (data == null) {
       return Collections.emptyList();
     }
@@ -124,14 +148,20 @@ public abstract class Storage<T extends StorageType> {
       int itemQuantity = NumberUtils.toInt(itemStackData[1]);
 
       ItemComposition itemComposition = itemManager.getItemComposition(itemId);
-      loadedItems.add(new ItemStack(itemId, itemComposition.getName(), itemQuantity,
-          itemManager.getItemPrice(itemId), itemComposition.getHaPrice(),
-          itemComposition.isStackable()));
+      loadedItems.add(
+          new ItemStack(
+              itemId,
+              itemComposition.getName(),
+              itemQuantity,
+              itemManager.getItemPrice(itemId),
+              itemComposition.getHaPrice(),
+              itemComposition.isStackable()));
     }
 
     return loadedItems;
   }
 
+  /** loads the Storage data from the specified RuneLite RS profile config. */
   public void load(ConfigManager configManager, String managerConfigKey, String profileKey) {
     List<ItemStack> loadedItems = loadItems(configManager, managerConfigKey, profileKey);
     if (loadedItems == null || loadedItems.isEmpty()) {

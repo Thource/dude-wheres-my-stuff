@@ -10,12 +10,13 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import org.apache.commons.lang3.math.NumberUtils;
 
+/** TitheFarm is responsible for tracking the player's Tithe Farm points. */
 @Getter
 public class TitheFarm extends MinigamesStorage {
 
   private final ItemStack points = new ItemStack(ItemID.GRICOLLERS_CAN, "Points", 0, 0, 0, true);
 
-  public TitheFarm(Client client, ItemManager itemManager) {
+  TitheFarm(Client client, ItemManager itemManager) {
     super(MinigamesStorageType.TITHE_FARM, client, itemManager);
 
     items.add(points);
@@ -36,14 +37,18 @@ public class TitheFarm extends MinigamesStorage {
   public void save(ConfigManager configManager, String managerConfigKey) {
     String data = String.valueOf(points.getQuantity());
 
-    configManager.setRSProfileConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP,
-        managerConfigKey + "." + type.getConfigKey(), data);
+    configManager.setRSProfileConfiguration(
+        DudeWheresMyStuffConfig.CONFIG_GROUP, managerConfigKey + "." + type.getConfigKey(), data);
   }
 
   @Override
   public void load(ConfigManager configManager, String managerConfigKey, String profileKey) {
-    String data = configManager.getConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP, profileKey,
-        managerConfigKey + "." + type.getConfigKey(), String.class);
+    String data =
+        configManager.getConfiguration(
+            DudeWheresMyStuffConfig.CONFIG_GROUP,
+            profileKey,
+            managerConfigKey + "." + type.getConfigKey(),
+            String.class);
     if (data == null) {
       return;
     }

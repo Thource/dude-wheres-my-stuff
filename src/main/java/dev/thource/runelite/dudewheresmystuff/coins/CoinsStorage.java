@@ -9,6 +9,10 @@ import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 
+/**
+ * CoinsStorage is responsible for tracking storages that hold the players coins (coffers,
+ * inventory, etc).
+ */
 @Getter
 public class CoinsStorage extends Storage<CoinsStorageType> {
 

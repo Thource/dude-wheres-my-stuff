@@ -16,23 +16,24 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import org.apache.commons.lang3.math.NumberUtils;
 
+/** MageTrainingArena is responsible for tracking the player's Mage Training Arena points. */
 @Getter
 public class MageTrainingArena extends MinigamesStorage {
 
-  private final ItemStack telekineticPoints = new ItemStack(ItemID.LAW_RUNE, "Telekinetic Points",
-      0, 0, 0, true);
-  private final ItemStack graveyardPoints = new ItemStack(ItemID.PEACH, "Graveyard Points", 0, 0, 0,
-      true);
-  private final ItemStack enchantmentPoints = new ItemStack(ItemID.CYLINDER, "Enchantment Points",
-      0, 0, 0, true);
-  private final ItemStack alchemistPoints = new ItemStack(ItemID.COINS, "Alchemist Points", 0, 0, 0,
-      true);
+  private final ItemStack telekineticPoints =
+      new ItemStack(ItemID.LAW_RUNE, "Telekinetic Points", 0, 0, 0, true);
+  private final ItemStack graveyardPoints =
+      new ItemStack(ItemID.PEACH, "Graveyard Points", 0, 0, 0, true);
+  private final ItemStack enchantmentPoints =
+      new ItemStack(ItemID.CYLINDER, "Enchantment Points", 0, 0, 0, true);
+  private final ItemStack alchemistPoints =
+      new ItemStack(ItemID.COINS, "Alchemist Points", 0, 0, 0, true);
 
   private final Map<ItemStack, MageTrainingArenaPoint> pointData = new HashMap<>();
 
   private Widget shopWidget = null;
 
-  public MageTrainingArena(Client client, ItemManager itemManager) {
+  MageTrainingArena(Client client, ItemManager itemManager) {
     super(MinigamesStorageType.MAGE_TRAINING_ARENA, client, itemManager);
 
     items.add(telekineticPoints);
@@ -56,13 +57,14 @@ public class MageTrainingArena extends MinigamesStorage {
     if (widgetLoaded.getGroupId() == 197) {
       shopWidget = client.getWidget(197, 0);
     } else {
-      pointData.forEach((itemStack, pointDatum) -> {
-        if (widgetLoaded.getGroupId() != pointDatum.getWidgetId()) {
-          return;
-        }
+      pointData.forEach(
+          (itemStack, pointDatum) -> {
+            if (widgetLoaded.getGroupId() != pointDatum.getWidgetId()) {
+              return;
+            }
 
-        pointDatum.widget = client.getWidget(pointDatum.getWidgetId(), 6);
-      });
+            pointDatum.widget = client.getWidget(pointDatum.getWidgetId(), 6);
+          });
     }
 
     return updateFromWidgets();
@@ -73,13 +75,14 @@ public class MageTrainingArena extends MinigamesStorage {
     if (widgetClosed.getGroupId() == 197) {
       shopWidget = null;
     } else {
-      pointData.forEach((itemStack, pointDatum) -> {
-        if (widgetClosed.getGroupId() != pointDatum.getWidgetId()) {
-          return;
-        }
+      pointData.forEach(
+          (itemStack, pointDatum) -> {
+            if (widgetClosed.getGroupId() != pointDatum.getWidgetId()) {
+              return;
+            }
 
-        pointDatum.widget = null;
-      });
+            pointDatum.widget = null;
+          });
     }
 
     return false;
@@ -88,36 +91,38 @@ public class MageTrainingArena extends MinigamesStorage {
   boolean updateFromWidgets() {
     if (shopWidget != null) {
       lastUpdated = System.currentTimeMillis();
-      pointData.forEach((itemStack, pointDatum) -> {
-        int newPoints = client.getVarpValue(pointDatum.getVarpId());
-        if (newPoints == pointDatum.getLastVarpValue()) {
-          return;
-        }
+      pointData.forEach(
+          (itemStack, pointDatum) -> {
+            int newPoints = client.getVarpValue(pointDatum.getVarpId());
+            if (newPoints == pointDatum.getLastVarpValue()) {
+              return;
+            }
 
-        itemStack.setQuantity(newPoints);
-        pointDatum.lastVarpValue = newPoints;
-      });
+            itemStack.setQuantity(newPoints);
+            pointDatum.lastVarpValue = newPoints;
+          });
 
       return true;
     }
 
     AtomicBoolean updated = new AtomicBoolean(false);
 
-    pointData.forEach((itemStack, pointDatum) -> {
-      if (pointDatum.getWidget() == null) {
-        return;
-      }
+    pointData.forEach(
+        (itemStack, pointDatum) -> {
+          if (pointDatum.getWidget() == null) {
+            return;
+          }
 
-      updated.set(true);
-      lastUpdated = System.currentTimeMillis();
-      int newPoints = NumberUtils.toInt(pointDatum.getWidget().getText(), 0);
-      if (newPoints == pointDatum.getLastWidgetValue()) {
-        return;
-      }
+          updated.set(true);
+          lastUpdated = System.currentTimeMillis();
+          int newPoints = NumberUtils.toInt(pointDatum.getWidget().getText(), 0);
+          if (newPoints == pointDatum.getLastWidgetValue()) {
+            return;
+          }
 
-      itemStack.setQuantity(newPoints);
-      pointDatum.lastWidgetValue = newPoints;
-    });
+          itemStack.setQuantity(newPoints);
+          pointDatum.lastWidgetValue = newPoints;
+        });
 
     return updated.get();
   }
@@ -131,17 +136,23 @@ public class MageTrainingArena extends MinigamesStorage {
 
   @Override
   public void save(ConfigManager configManager, String managerConfigKey) {
-    String data = lastUpdated + ";" + items.stream().map(item -> "" + item.getQuantity())
-        .collect(Collectors.joining("="));
+    String data =
+        lastUpdated
+            + ";"
+            + items.stream().map(item -> "" + item.getQuantity()).collect(Collectors.joining("="));
 
-    configManager.setRSProfileConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP,
-        managerConfigKey + "." + type.getConfigKey(), data);
+    configManager.setRSProfileConfiguration(
+        DudeWheresMyStuffConfig.CONFIG_GROUP, managerConfigKey + "." + type.getConfigKey(), data);
   }
 
   @Override
   public void load(ConfigManager configManager, String managerConfigKey, String profileKey) {
-    String data = configManager.getConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP, profileKey,
-        managerConfigKey + "." + type.getConfigKey(), String.class);
+    String data =
+        configManager.getConfiguration(
+            DudeWheresMyStuffConfig.CONFIG_GROUP,
+            profileKey,
+            managerConfigKey + "." + type.getConfigKey(),
+            String.class);
     if (data == null) {
       return;
     }

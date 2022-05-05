@@ -6,6 +6,7 @@ import net.runelite.api.Client;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.game.ItemManager;
 
+/** LootingBag is responsible for tracking the player's items in their looting bag. */
 @Getter
 public class LootingBag extends CarryableStorage {
 

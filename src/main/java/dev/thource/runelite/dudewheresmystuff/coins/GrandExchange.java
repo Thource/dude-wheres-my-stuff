@@ -7,15 +7,19 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.client.game.ItemManager;
 import org.apache.commons.lang3.math.NumberUtils;
 
+/**
+ * GrandExchange is responsible for tracking how many coins the player has stored in the Grand
+ * Exchange.
+ */
 public class GrandExchange extends CoinsStorage {
 
-  public GrandExchange(Client client, ItemManager itemManager) {
+  GrandExchange(Client client, ItemManager itemManager) {
     super(CoinsStorageType.GRAND_EXCHANGE, client, itemManager);
   }
 
   @Override
   public boolean onGameTick() {
-    return updateFromGEWindow() || updateFromCollectWindow();
+    return updateFromGrandExchangeWindow() || updateFromCollectWindow();
   }
 
   private boolean updateFromCollectWindow() {
@@ -44,7 +48,7 @@ public class GrandExchange extends CoinsStorage {
     return itemWidget.getItemQuantity();
   }
 
-  private boolean updateFromGEWindow() {
+  private boolean updateFromGrandExchangeWindow() {
     if (client.getWidget(465, 1) == null) {
       return false;
     }
@@ -80,5 +84,3 @@ public class GrandExchange extends CoinsStorage {
     return NumberUtils.toInt(offerCoins.getText().replaceAll("\\D+", ""), 0);
   }
 }
-
-

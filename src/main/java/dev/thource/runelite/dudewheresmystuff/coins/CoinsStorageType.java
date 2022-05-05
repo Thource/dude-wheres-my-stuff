@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.runelite.api.InventoryID;
 
+/** CoinsStorageType is used to identify CoinsStorages. */
 @RequiredArgsConstructor
 @Getter
 public enum CoinsStorageType implements StorageType {
@@ -26,8 +27,13 @@ public enum CoinsStorageType implements StorageType {
   private final boolean membersOnly;
   private final int multiplier;
 
-  CoinsStorageType(String name, int varbitId, int itemContainerId, boolean automatic,
-      String configKey, boolean membersOnly) {
+  CoinsStorageType(
+      String name,
+      int varbitId,
+      int itemContainerId,
+      boolean automatic,
+      String configKey,
+      boolean membersOnly) {
     this.name = name;
     this.varbitId = varbitId;
     this.itemContainerId = itemContainerId;

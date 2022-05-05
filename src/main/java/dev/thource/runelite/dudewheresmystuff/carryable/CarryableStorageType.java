@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.runelite.api.InventoryID;
 
+/** CarryableStorageType is used to identify CarryableStorages. */
 @RequiredArgsConstructor
 @Getter
 public enum CarryableStorageType implements StorageType {

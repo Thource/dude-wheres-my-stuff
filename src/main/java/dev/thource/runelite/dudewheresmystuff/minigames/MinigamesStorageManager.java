@@ -11,13 +11,18 @@ import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 
+/** MinigamesStorageManager is responsible for managing all MinigameStorages. */
 @Slf4j
-public class MinigamesStorageManager extends
-    StorageManager<MinigamesStorageType, MinigamesStorage> {
+public class MinigamesStorageManager
+    extends StorageManager<MinigamesStorageType, MinigamesStorage> {
 
   @Inject
-  private MinigamesStorageManager(Client client, ItemManager itemManager,
-      ConfigManager configManager, DudeWheresMyStuffConfig config, Notifier notifier,
+  private MinigamesStorageManager(
+      Client client,
+      ItemManager itemManager,
+      ConfigManager configManager,
+      DudeWheresMyStuffConfig config,
+      Notifier notifier,
       DudeWheresMyStuffPlugin plugin) {
     super(client, itemManager, configManager, config, notifier, plugin);
 

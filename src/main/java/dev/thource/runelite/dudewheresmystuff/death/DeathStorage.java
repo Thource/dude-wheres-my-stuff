@@ -7,11 +7,14 @@ import net.runelite.api.Client;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 
+/**
+ * DeathStorage is responsible for tracking death storages that hold the players items (deathpiles,
+ * deathbanks).
+ */
 @Getter
 public class DeathStorage extends Storage<DeathStorageType> {
 
-  @Setter
-  protected DeathWorldMapPoint worldMapPoint;
+  @Setter protected DeathWorldMapPoint worldMapPoint;
 
   protected DeathStorage(DeathStorageType type, Client client, ItemManager itemManager) {
     super(type, client, itemManager);

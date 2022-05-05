@@ -14,6 +14,10 @@ import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 
+/**
+ * StorageManager manages Storages that are assigned to it, it passes on RuneLite events so that the
+ * Storages can do their jobs.
+ */
 public abstract class StorageManager<T extends StorageType, S extends Storage<T>> {
 
   protected final Client client;
@@ -22,14 +26,18 @@ public abstract class StorageManager<T extends StorageType, S extends Storage<T>
   protected final DudeWheresMyStuffConfig config;
   protected final Notifier notifier;
 
-  @Getter
-  protected final List<S> storages = new ArrayList<>();
+  @Getter protected final List<S> storages = new ArrayList<>();
 
   protected boolean enabled = true;
   protected DudeWheresMyStuffPlugin plugin;
 
-  protected StorageManager(Client client, ItemManager itemManager, ConfigManager configManager,
-      DudeWheresMyStuffConfig config, Notifier notifier, DudeWheresMyStuffPlugin plugin) {
+  protected StorageManager(
+      Client client,
+      ItemManager itemManager,
+      ConfigManager configManager,
+      DudeWheresMyStuffConfig config,
+      Notifier notifier,
+      DudeWheresMyStuffPlugin plugin) {
     this.client = client;
     this.itemManager = itemManager;
     this.configManager = configManager;
@@ -42,6 +50,11 @@ public abstract class StorageManager<T extends StorageType, S extends Storage<T>
     return storages.stream().mapToLong(Storage::getTotalValue).sum();
   }
 
+  /**
+   * Pass onGameTick through to enabled storages.
+   *
+   * @return true if any Storage's data was updated
+   */
   public boolean onGameTick() {
     if (!enabled) {
       return false;
@@ -62,6 +75,11 @@ public abstract class StorageManager<T extends StorageType, S extends Storage<T>
     return updated;
   }
 
+  /**
+   * Pass onWidgetLoaded through to enabled storages.
+   *
+   * @return true if any Storage's data was updated
+   */
   public boolean onWidgetLoaded(WidgetLoaded widgetLoaded) {
     if (!enabled) {
       return false;
@@ -82,6 +100,11 @@ public abstract class StorageManager<T extends StorageType, S extends Storage<T>
     return updated;
   }
 
+  /**
+   * Pass onWidgetClosed through to enabled storages.
+   *
+   * @return true if any Storage's data was updated
+   */
   public boolean onWidgetClosed(WidgetClosed widgetClosed) {
     if (!enabled) {
       return false;
@@ -102,6 +125,11 @@ public abstract class StorageManager<T extends StorageType, S extends Storage<T>
     return updated;
   }
 
+  /**
+   * Pass onVarbitChanged through to enabled storages.
+   *
+   * @return true if any Storage's data was updated
+   */
   public boolean onVarbitChanged() {
     if (!enabled) {
       return false;
@@ -122,6 +150,11 @@ public abstract class StorageManager<T extends StorageType, S extends Storage<T>
     return updated;
   }
 
+  /**
+   * Pass onItemContainerChanged through to enabled storages.
+   *
+   * @return true if any Storage's data was updated
+   */
   public boolean onItemContainerChanged(ItemContainerChanged itemContainerChanged) {
     if (!enabled) {
       return false;
@@ -142,11 +175,9 @@ public abstract class StorageManager<T extends StorageType, S extends Storage<T>
     return updated;
   }
 
-  public void onGameStateChanged(GameStateChanged gameStateChanged) {
-  }
+  public void onGameStateChanged(GameStateChanged gameStateChanged) {}
 
-  public void onActorDeath(ActorDeath actorDeath) {
-  }
+  public void onActorDeath(ActorDeath actorDeath) {}
 
   public void reset() {
     storages.forEach(Storage::reset);
@@ -155,6 +186,7 @@ public abstract class StorageManager<T extends StorageType, S extends Storage<T>
 
   public abstract String getConfigKey();
 
+  /** Save all Storages. */
   public void save() {
     if (!enabled) {
       return;
@@ -167,6 +199,7 @@ public abstract class StorageManager<T extends StorageType, S extends Storage<T>
     load(configManager.getRSProfileKey());
   }
 
+  /** Load all Storages. */
   public void load(String profileKey) {
     if (!enabled) {
       return;
@@ -175,6 +208,11 @@ public abstract class StorageManager<T extends StorageType, S extends Storage<T>
     storages.forEach(storage -> storage.load(configManager, getConfigKey(), profileKey));
   }
 
+  /**
+   * Check if all storages are members.
+   *
+   * @return true if all Storages are membersOnly
+   */
   public boolean isMembersOnly() {
     for (Storage<?> storage : storages) {
       if (!storage.getType().isMembersOnly()) {

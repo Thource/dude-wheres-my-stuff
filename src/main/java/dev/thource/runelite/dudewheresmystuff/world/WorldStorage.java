@@ -5,6 +5,10 @@ import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.client.game.ItemManager;
 
+/**
+ * WorldStorage is responsible for tracking storages in the world that hold the players items
+ * (leprechaun, fossil storage, stash units, etc).
+ */
 @Getter
 public class WorldStorage extends Storage<WorldStorageType> {
 

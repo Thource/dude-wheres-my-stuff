@@ -55,42 +55,44 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
 import org.apache.commons.lang3.math.NumberUtils;
 
+/** DeathStorageManager is responsible for managing all DeathStorages. */
 @Slf4j
 public class DeathStorageManager extends StorageManager<DeathStorageType, DeathStorage> {
 
-  private static final Set<Integer> RESPAWN_REGIONS = ImmutableSet.of(6457, // Kourend
-      12850, // Lumbridge
-      11828, // Falador
-      12342, // Edgeville
-      11062, // Camelot
-      13150, // Prifddinas (it's possible to spawn in 2 adjacent regions)
-      12894, // Prifddinas
-      14642, // ToB
-      12172, // Gauntlet
-      12633 // death's office
-  );
+  private static final Set<Integer> RESPAWN_REGIONS =
+      ImmutableSet.of(
+          6457, // Kourend
+          12850, // Lumbridge
+          11828, // Falador
+          12342, // Edgeville
+          11062, // Camelot
+          13150, // Prifddinas (it's possible to spawn in 2 adjacent regions)
+          12894, // Prifddinas
+          14642, // ToB
+          12172, // Gauntlet
+          12633 // death's office
+          );
 
-  @Getter
-  private final Deathbank deathbank;
+  @Getter private final Deathbank deathbank;
   long startMs = 0L;
-  @Setter
-  private CarryableStorageManager carryableStorageManager;
-  @Setter
-  private CoinsStorageManager coinsStorageManager;
-  @Inject
-  private ClientThread clientThread;
-  @Inject
-  private WorldMapPointManager worldMapPointManager;
-  @Setter
-  private int startPlayedMinutes = -1;
+  @Setter private CarryableStorageManager carryableStorageManager;
+  @Setter private CoinsStorageManager coinsStorageManager;
+  @Inject private ClientThread clientThread;
+  @Inject private WorldMapPointManager worldMapPointManager;
+  @Setter private int startPlayedMinutes = -1;
   private boolean dying;
   private WorldPoint deathLocation;
   private List<ItemStack> deathItems;
   private Item[] oldInventoryItems;
 
   @Inject
-  private DeathStorageManager(DudeWheresMyStuffPlugin plugin, DudeWheresMyStuffConfig config,
-      Client client, ItemManager itemManager, ConfigManager configManager, Notifier notifier) {
+  private DeathStorageManager(
+      DudeWheresMyStuffPlugin plugin,
+      DudeWheresMyStuffConfig config,
+      Client client,
+      ItemManager itemManager,
+      ConfigManager configManager,
+      Notifier notifier) {
     super(client, itemManager, configManager, config, notifier, plugin);
 
     deathbank = new Deathbank(DeathStorageType.UNKNOWN_DEATHBANK, client, itemManager);
@@ -99,10 +101,15 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
 
   @Override
   public long getTotalValue() {
-    return storages.stream().filter(s ->
-        (s.getType() == DeathStorageType.DEATHPILE && !((Deathpile) s).hasExpired(
-            plugin.isPreviewModeEnabled())) || (s.getType() != DeathStorageType.DEATHPILE
-            && ((Deathbank) s).getLostAt() == -1L)).mapToLong(Storage::getTotalValue).sum();
+    return storages.stream()
+        .filter(
+            s ->
+                (s.getType() == DeathStorageType.DEATHPILE
+                        && !((Deathpile) s).hasExpired(plugin.isPreviewModeEnabled()))
+                    || (s.getType() != DeathStorageType.DEATHPILE
+                        && ((Deathbank) s).getLostAt() == -1L))
+        .mapToLong(Storage::getTotalValue)
+        .sum();
   }
 
   @Override
@@ -123,10 +130,14 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
 
   private void updateDeathbankItems(Item[] items) {
     int deathbankVarp = client.getVarpValue(261);
-    DeathStorageType deathbankType = Arrays.stream(DeathStorageType.values()).filter(
-            s -> s.getDeathBankLockedState() == deathbankVarp
-                || s.getDeathBankUnlockedState() == deathbankVarp).findFirst()
-        .orElse(DeathStorageType.UNKNOWN_DEATHBANK);
+    DeathStorageType deathbankType =
+        Arrays.stream(DeathStorageType.values())
+            .filter(
+                s ->
+                    s.getDeathBankLockedState() == deathbankVarp
+                        || s.getDeathBankUnlockedState() == deathbankVarp)
+            .findFirst()
+            .orElse(DeathStorageType.UNKNOWN_DEATHBANK);
     deathbank.setType(deathbankType);
     deathbank.setLocked(deathbankType.getDeathBankLockedState() == deathbankVarp);
     deathbank.setLastUpdated(System.currentTimeMillis());
@@ -138,23 +149,31 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
       }
 
       ItemComposition itemComposition = itemManager.getItemComposition(item.getId());
-      deathbank.getItems().add(
-          new ItemStack(item.getId(), itemComposition.getName(), item.getQuantity(),
-              itemManager.getItemPrice(item.getId()), itemComposition.getHaPrice(),
-              itemComposition.isStackable()));
+      deathbank
+          .getItems()
+          .add(
+              new ItemStack(
+                  item.getId(),
+                  itemComposition.getName(),
+                  item.getQuantity(),
+                  itemManager.getItemPrice(item.getId()),
+                  itemComposition.getHaPrice(),
+                  itemComposition.isStackable()));
     }
   }
 
   private boolean updateInventoryItems(Item[] items) {
     boolean updated = false;
 
-    if (oldInventoryItems != null && client.getLocalPlayer() != null
+    if (oldInventoryItems != null
+        && client.getLocalPlayer() != null
         && deathbank.getType() == DeathStorageType.ZULRAH
         && Region.get(client.getLocalPlayer().getWorldLocation().getRegionID())
-        == Region.CITY_ZULANDRA) {
-      List<ItemStack> inventoryItemsList = Arrays.stream(items)
-          .map(i -> new ItemStack(i.getId(), "", i.getQuantity(), 0, 0, true))
-          .collect(Collectors.toList());
+            == Region.CITY_ZULANDRA) {
+      List<ItemStack> inventoryItemsList =
+          Arrays.stream(items)
+              .map(i -> new ItemStack(i.getId(), "", i.getQuantity(), 0, 0, true))
+              .collect(Collectors.toList());
       removeItemsFromList(inventoryItemsList, oldInventoryItems);
       removeItemsFromList(deathbank.getItems(), inventoryItemsList);
 
@@ -172,8 +191,8 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
     return updated;
   }
 
-  private void removeItemsFromList(List<ItemStack> listToRemoveFrom,
-      List<ItemStack> itemsToRemove) {
+  private void removeItemsFromList(
+      List<ItemStack> listToRemoveFrom, List<ItemStack> itemsToRemove) {
     for (ItemStack itemToRemove : itemsToRemove) {
       if (itemToRemove.getId() == -1) {
         continue;
@@ -263,11 +282,12 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
       return false;
     }
 
-    Integer savedPlayedMinutes = configManager.getRSProfileConfiguration(
-        DudeWheresMyStuffConfig.CONFIG_GROUP, "minutesPlayed", int.class);
+    Integer savedPlayedMinutes =
+        configManager.getRSProfileConfiguration(
+            DudeWheresMyStuffConfig.CONFIG_GROUP, "minutesPlayed", int.class);
     if (savedPlayedMinutes == null || savedPlayedMinutes != getPlayedMinutes()) {
-      configManager.setRSProfileConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP, "minutesPlayed",
-          getPlayedMinutes());
+      configManager.setRSProfileConfiguration(
+          DudeWheresMyStuffConfig.CONFIG_GROUP, "minutesPlayed", getPlayedMinutes());
     }
 
     if (deathbank.getLastUpdated() != -1L) {
@@ -283,28 +303,32 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
   }
 
   private void updateWorldMapPoints() {
-    if (storages.stream().filter(Deathpile.class::isInstance).map(Deathpile.class::cast)
-        .anyMatch(deathpile -> {
-          if (deathpile.worldMapPoint == null) {
-            return !deathpile.hasExpired(plugin.isPreviewModeEnabled());
-          }
-          if (deathpile.hasExpired(plugin.isPreviewModeEnabled())) {
-            return true;
-          }
-          if (deathpile.worldMapPoint.getTooltip() == null) {
-            return false;
-          }
+    if (storages.stream()
+        .filter(Deathpile.class::isInstance)
+        .map(Deathpile.class::cast)
+        .anyMatch(
+            deathpile -> {
+              if (deathpile.worldMapPoint == null) {
+                return !deathpile.hasExpired(plugin.isPreviewModeEnabled());
+              }
+              if (deathpile.hasExpired(plugin.isPreviewModeEnabled())) {
+                return true;
+              }
+              if (deathpile.worldMapPoint.getTooltip() == null) {
+                return false;
+              }
 
-          deathpile.worldMapPoint.setTooltip(
-              "Deathpile (" + deathpile.getExpireText(plugin.isPreviewModeEnabled()) + ")");
-          return false;
-        })) {
+              deathpile.worldMapPoint.setTooltip(
+                  "Deathpile (" + deathpile.getExpireText(plugin.isPreviewModeEnabled()) + ")");
+              return false;
+            })) {
       refreshMapPoints();
     }
   }
 
   private boolean processDeath() {
-    if (client.getLocalPlayer() == null || !dying
+    if (client.getLocalPlayer() == null
+        || !dying
         || client.getBoostedSkillLevel(Skill.HITPOINTS) < 10) {
       return false;
     }
@@ -319,8 +343,9 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
         return false;
       }
 
-      log.info("Died, but did not respawn in a known respawn location: " + client.getLocalPlayer()
-          .getWorldLocation().getRegionID());
+      log.info(
+          "Died, but did not respawn in a known respawn location: "
+              + client.getLocalPlayer().getWorldLocation().getRegionID());
     } else {
       updated = true;
       registerDeath(deathRegion);
@@ -341,14 +366,15 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
       return;
     }
 
-    Optional<DeathStorageType> deathbankType = getDeathbankType(deathRegion);
-
     coinsStorageManager.getStorages().stream()
         .filter(s -> s.getType() == CoinsStorageType.LOOTING_BAG)
         .forEach(s -> s.getCoinStack().setQuantity(0));
-    carryableStorageManager.getStorages().stream().filter(
-        s -> s.getType() == CarryableStorageType.LOOTING_BAG
-            || s.getType() == CarryableStorageType.SEED_BOX).forEach(s -> s.getItems().clear());
+    carryableStorageManager.getStorages().stream()
+        .filter(
+            s ->
+                s.getType() == CarryableStorageType.LOOTING_BAG
+                    || s.getType() == CarryableStorageType.SEED_BOX)
+        .forEach(s -> s.getItems().clear());
 
     ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
     if (inventory != null) {
@@ -360,6 +386,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
       removeItemsFromList(deathItems, equipment.getItems());
     }
 
+    Optional<DeathStorageType> deathbankType = getDeathbankType(deathRegion);
     if (deathbankType.isPresent()) {
       deathbank.setType(deathbankType.get());
       deathbank.setLastUpdated(System.currentTimeMillis());
@@ -368,8 +395,9 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
       deathbank.getItems().addAll(deathItems);
     } else {
       if (client.getAccountType() == AccountType.ULTIMATE_IRONMAN) {
-        storages.add(new Deathpile(client, itemManager, getPlayedMinutes(), deathLocation, this,
-            deathItems));
+        storages.add(
+            new Deathpile(
+                client, itemManager, getPlayedMinutes(), deathLocation, this, deathItems));
       }
     }
 
@@ -382,15 +410,18 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
     }
 
     if (deathRegion == Region.BOSS_VORKATH) {
-      return Optional.of(Quest.DRAGON_SLAYER_II.getState(client) == QuestState.IN_PROGRESS
-          ? DeathStorageType.QUEST_DS2 : DeathStorageType.VORKATH);
+      return Optional.of(
+          Quest.DRAGON_SLAYER_II.getState(client) == QuestState.IN_PROGRESS
+              ? DeathStorageType.QUEST_DS2
+              : DeathStorageType.VORKATH);
     } else if (deathRegion == Region.BOSS_NIGHTMARE) {
       // TODO: work out how to differentiate between nightmare and phosani's
       return Optional.of(DeathStorageType.NIGHTMARE);
     }
     // TODO: add quest checking
 
-    return Arrays.stream(DeathStorageType.values()).filter(s -> s.getRegion() == deathRegion)
+    return Arrays.stream(DeathStorageType.values())
+        .filter(s -> s.getRegion() == deathRegion)
         .findFirst();
   }
 
@@ -400,10 +431,12 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
       return;
     }
 
-    WorldPoint location = WorldPoint.fromLocalInstance(client,
-        client.getLocalPlayer().getLocalLocation());
-    List<ItemStack> items = getDeathItems().stream().filter(itemStack -> itemStack.getId() != -1)
-        .collect(Collectors.toList());
+    WorldPoint location =
+        WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation());
+    List<ItemStack> items =
+        getDeathItems().stream()
+            .filter(itemStack -> itemStack.getId() != -1)
+            .collect(Collectors.toList());
     if (items.isEmpty()) {
       return;
     }
@@ -424,30 +457,33 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
       quantityToRemove.set(Long.MAX_VALUE);
     }
 
-    storages.stream().filter(Deathpile.class::isInstance).map(Deathpile.class::cast)
+    storages.stream()
+        .filter(Deathpile.class::isInstance)
+        .map(Deathpile.class::cast)
         .filter(deathpile -> !deathpile.hasExpired(plugin.isPreviewModeEnabled()))
         .filter(deathpile -> deathpile.getWorldPoint().equals(worldPoint))
-        .forEach((Deathpile deathpile) -> {
-          if (quantityToRemove.get() == 0) {
-            return;
-          }
+        .forEach(
+            (Deathpile deathpile) -> {
+              if (quantityToRemove.get() == 0) {
+                return;
+              }
 
-          Iterator<ItemStack> listIterator = deathpile.getItems().iterator();
-          while (listIterator.hasNext() && quantityToRemove.get() > 0) {
-            ItemStack itemStack = listIterator.next();
-            if (itemStack.getId() != despawnedItem.getId()) {
-              continue;
-            }
+              Iterator<ItemStack> listIterator = deathpile.getItems().iterator();
+              while (listIterator.hasNext() && quantityToRemove.get() > 0) {
+                ItemStack itemStack = listIterator.next();
+                if (itemStack.getId() != despawnedItem.getId()) {
+                  continue;
+                }
 
-            updated.set(true);
-            long qtyToRemove = Math.min(quantityToRemove.get(), itemStack.getQuantity());
-            quantityToRemove.addAndGet(-qtyToRemove);
-            itemStack.setQuantity(itemStack.getQuantity() - qtyToRemove);
-            if (itemStack.getQuantity() <= 0) {
-              listIterator.remove();
-            }
-          }
-        });
+                updated.set(true);
+                long qtyToRemove = Math.min(quantityToRemove.get(), itemStack.getQuantity());
+                quantityToRemove.addAndGet(-qtyToRemove);
+                itemStack.setQuantity(itemStack.getQuantity() - qtyToRemove);
+                if (itemStack.getQuantity() <= 0) {
+                  listIterator.remove();
+                }
+              }
+            });
 
     return updated.get();
   }
@@ -462,7 +498,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
     return Tab.DEATH;
   }
 
-  public int getPlayedMinutes() {
+  int getPlayedMinutes() {
     if (plugin.isPreviewModeEnabled()) {
       return startPlayedMinutes;
     }
@@ -471,19 +507,27 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
   }
 
   List<ItemStack> getDeathItems() {
-    List<ItemStack> itemStacks = carryableStorageManager.getStorages().stream().filter(
-        s -> s.getType() != CarryableStorageType.SEED_BOX
-            && s.getType() != CarryableStorageType.LOOTING_BAG
-            && s.getType() != CarryableStorageType.RUNE_POUCH).sorted(Comparator.comparingInt(s -> {
-      if (s.getType() == CarryableStorageType.INVENTORY) {
-        return 0;
-      }
-      if (s.getType() == CarryableStorageType.EQUIPMENT) {
-        return 1;
-      }
+    List<ItemStack> itemStacks =
+        carryableStorageManager.getStorages().stream()
+            .filter(
+                s ->
+                    s.getType() != CarryableStorageType.SEED_BOX
+                        && s.getType() != CarryableStorageType.LOOTING_BAG
+                        && s.getType() != CarryableStorageType.RUNE_POUCH)
+            .sorted(
+                Comparator.comparingInt(
+                    s -> {
+                      if (s.getType() == CarryableStorageType.INVENTORY) {
+                        return 0;
+                      }
+                      if (s.getType() == CarryableStorageType.EQUIPMENT) {
+                        return 1;
+                      }
 
-      return Integer.MAX_VALUE;
-    })).flatMap(s -> s.getItems().stream()).collect(Collectors.toList());
+                      return Integer.MAX_VALUE;
+                    }))
+            .flatMap(s -> s.getItems().stream())
+            .collect(Collectors.toList());
 
     boolean lootingBagPresent = false;
 
@@ -493,11 +537,13 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
 
       if (itemStack.getId() == ItemID.SEED_BOX || itemStack.getId() == ItemID.OPEN_SEED_BOX) {
         carryableStorageManager.getStorages().stream()
-            .filter(s -> s.getType() == CarryableStorageType.SEED_BOX).findFirst()
+            .filter(s -> s.getType() == CarryableStorageType.SEED_BOX)
+            .findFirst()
             .ifPresent(seedBox -> seedBox.getItems().forEach(itemStacksIterator::add));
       } else if (itemStack.getId() == ItemID.RUNE_POUCH) {
         carryableStorageManager.getStorages().stream()
-            .filter(s -> s.getType() == CarryableStorageType.RUNE_POUCH).findFirst()
+            .filter(s -> s.getType() == CarryableStorageType.RUNE_POUCH)
+            .findFirst()
             .ifPresent(runePouch -> runePouch.getItems().forEach(itemStacksIterator::add));
       } else if (itemStack.getId() == ItemID.LOOTING_BAG
           || itemStack.getId() == ItemID.LOOTING_BAG_22586) {
@@ -508,7 +554,8 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
 
     if (lootingBagPresent) {
       carryableStorageManager.getStorages().stream()
-          .filter(s -> s.getType() == CarryableStorageType.LOOTING_BAG).findFirst()
+          .filter(s -> s.getType() == CarryableStorageType.LOOTING_BAG)
+          .findFirst()
           .ifPresent(lootingBag -> itemStacks.addAll(lootingBag.getItems()));
     }
 
@@ -527,34 +574,63 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
   }
 
   private void saveDeathbank() {
-    String data = deathbank.getType().getConfigKey() + ";" + deathbank.isLocked() + ";"
-        + deathbank.getLastUpdated() + ";" + deathbank.getItems().stream()
-        .map(i -> i.getId() + "," + i.getQuantity()).collect(Collectors.joining("="));
+    String data =
+        deathbank.getType().getConfigKey()
+            + ";"
+            + deathbank.isLocked()
+            + ";"
+            + deathbank.getLastUpdated()
+            + ";"
+            + deathbank.getItems().stream()
+                .map(i -> i.getId() + "," + i.getQuantity())
+                .collect(Collectors.joining("="));
 
-    configManager.setRSProfileConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP,
-        getConfigKey() + ".deathbank", data);
+    configManager.setRSProfileConfiguration(
+        DudeWheresMyStuffConfig.CONFIG_GROUP, getConfigKey() + ".deathbank", data);
   }
 
   private void saveDeathpiles() {
-    configManager.setRSProfileConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP,
+    configManager.setRSProfileConfiguration(
+        DudeWheresMyStuffConfig.CONFIG_GROUP,
         getConfigKey() + "." + DeathStorageType.DEATHPILE.getConfigKey(),
-        storages.stream().filter(Deathpile.class::isInstance).map(s -> {
-          Deathpile d = (Deathpile) s;
-          return d.getPlayedMinutesAtCreation() + ";" + d.getWorldPoint().getX() + ","
-              + d.getWorldPoint().getY() + "," + d.getWorldPoint().getPlane() + ";" + d.getItems()
-              .stream().map(i -> i.getId() + "," + i.getQuantity())
-              .collect(Collectors.joining("="));
-        }).collect(Collectors.joining("$")));
+        storages.stream()
+            .filter(Deathpile.class::isInstance)
+            .map(
+                s -> {
+                  Deathpile d = (Deathpile) s;
+                  return d.getPlayedMinutesAtCreation()
+                      + ";"
+                      + d.getWorldPoint().getX()
+                      + ","
+                      + d.getWorldPoint().getY()
+                      + ","
+                      + d.getWorldPoint().getPlane()
+                      + ";"
+                      + d.getItems().stream()
+                          .map(i -> i.getId() + "," + i.getQuantity())
+                          .collect(Collectors.joining("="));
+                })
+            .collect(Collectors.joining("$")));
   }
 
   private void saveLostDeathbanks() {
-    configManager.setRSProfileConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP,
+    configManager.setRSProfileConfiguration(
+        DudeWheresMyStuffConfig.CONFIG_GROUP,
         getConfigKey() + ".lostdeathbanks",
-        storages.stream().filter(s -> s instanceof Deathbank && s != deathbank).map(s -> {
-          Deathbank d = (Deathbank) s;
-          return d.getType().getConfigKey() + ";" + d.getLostAt() + ";" + d.getItems().stream()
-              .map(i -> i.getId() + "," + i.getQuantity()).collect(Collectors.joining("="));
-        }).collect(Collectors.joining("$")));
+        storages.stream()
+            .filter(s -> s instanceof Deathbank && s != deathbank)
+            .map(
+                s -> {
+                  Deathbank d = (Deathbank) s;
+                  return d.getType().getConfigKey()
+                      + ";"
+                      + d.getLostAt()
+                      + ";"
+                      + d.getItems().stream()
+                          .map(i -> i.getId() + "," + i.getQuantity())
+                          .collect(Collectors.joining("="));
+                })
+            .collect(Collectors.joining("$")));
   }
 
   @Override
@@ -571,8 +647,12 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
   private void loadDeathbank(String profileKey) {
     clearDeathbank(false);
 
-    String data = configManager.getConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP, profileKey,
-        getConfigKey() + ".deathbank", String.class);
+    String data =
+        configManager.getConfiguration(
+            DudeWheresMyStuffConfig.CONFIG_GROUP,
+            profileKey,
+            getConfigKey() + ".deathbank",
+            String.class);
     if (data == null) {
       return;
     }
@@ -583,13 +663,14 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
     }
 
     String deathbankKey = dataSplit[0];
-    DeathStorageType deathStorageType = Arrays.stream(DeathStorageType.values())
-        .filter(s -> Objects.equals(s.getConfigKey(), deathbankKey)).findFirst().orElse(null);
+    DeathStorageType deathStorageType =
+        Arrays.stream(DeathStorageType.values())
+            .filter(s -> Objects.equals(s.getConfigKey(), deathbankKey))
+            .findFirst()
+            .orElse(null);
     if (deathStorageType == null) {
       return;
     }
-
-    boolean locked = Objects.equals(dataSplit[1], "true");
 
     long lastUpdate = NumberUtils.toLong(dataSplit[2], 0);
     if (lastUpdate == 0) {
@@ -619,12 +700,16 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
     deathbank.setLastUpdated(lastUpdate);
     deathbank.getItems().clear();
     deathbank.getItems().addAll(items);
-    deathbank.setLocked(locked);
+    deathbank.setLocked(Objects.equals(dataSplit[1], "true"));
   }
 
   private void loadLostDeathbanks(String profileKey) {
-    String data = configManager.getConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP, profileKey,
-        getConfigKey() + ".lostdeathbanks", String.class);
+    String data =
+        configManager.getConfiguration(
+            DudeWheresMyStuffConfig.CONFIG_GROUP,
+            profileKey,
+            getConfigKey() + ".lostdeathbanks",
+            String.class);
     if (data == null) {
       return;
     }
@@ -642,8 +727,11 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
     }
 
     String deathbankKey = dataSplit[0];
-    DeathStorageType deathStorageType = Arrays.stream(DeathStorageType.values())
-        .filter(s -> Objects.equals(s.getConfigKey(), deathbankKey)).findFirst().orElse(null);
+    DeathStorageType deathStorageType =
+        Arrays.stream(DeathStorageType.values())
+            .filter(s -> Objects.equals(s.getConfigKey(), deathbankKey))
+            .findFirst()
+            .orElse(null);
     if (deathStorageType == null) {
       return;
     }
@@ -696,18 +784,26 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
     worldMapPointManager.removeIf(DeathWorldMapPoint.class::isInstance);
 
     AtomicInteger index = new AtomicInteger(1);
-    storages.stream().filter(Deathpile.class::isInstance).map(Deathpile.class::cast)
+    storages.stream()
+        .filter(Deathpile.class::isInstance)
+        .map(Deathpile.class::cast)
         .filter(deathpile -> !deathpile.hasExpired(plugin.isPreviewModeEnabled()))
-        .forEach(deathpile -> {
-          deathpile.worldMapPoint = new DeathWorldMapPoint(deathpile.getWorldPoint(), itemManager,
-              index.getAndIncrement());
-          worldMapPointManager.add(deathpile.getWorldMapPoint());
-        });
+        .forEach(
+            deathpile -> {
+              deathpile.worldMapPoint =
+                  new DeathWorldMapPoint(
+                      deathpile.getWorldPoint(), itemManager, index.getAndIncrement());
+              worldMapPointManager.add(deathpile.getWorldMapPoint());
+            });
   }
 
   private void loadDeathpiles(String profileKey) {
-    String data = configManager.getConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP, profileKey,
-        getConfigKey() + "." + DeathStorageType.DEATHPILE.getConfigKey(), String.class);
+    String data =
+        configManager.getConfiguration(
+            DudeWheresMyStuffConfig.CONFIG_GROUP,
+            profileKey,
+            getConfigKey() + "." + DeathStorageType.DEATHPILE.getConfigKey(),
+            String.class);
     if (data == null) {
       return;
     }
@@ -752,9 +848,16 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
       return;
     }
 
-    storages.add(new Deathpile(client, itemManager, NumberUtils.toInt(dataSplit[0], 0),
-        new WorldPoint(NumberUtils.toInt(worldPointSplit[0], 0),
-            NumberUtils.toInt(worldPointSplit[1], 0), NumberUtils.toInt(worldPointSplit[2], 0)),
-        this, items));
+    storages.add(
+        new Deathpile(
+            client,
+            itemManager,
+            NumberUtils.toInt(dataSplit[0], 0),
+            new WorldPoint(
+                NumberUtils.toInt(worldPointSplit[0], 0),
+                NumberUtils.toInt(worldPointSplit[1], 0),
+                NumberUtils.toInt(worldPointSplit[2], 0)),
+            this,
+            items));
   }
 }

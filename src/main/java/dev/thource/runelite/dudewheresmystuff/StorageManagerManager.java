@@ -19,7 +19,7 @@ import net.runelite.api.events.WidgetClosed;
 import net.runelite.api.events.WidgetLoaded;
 
 @Getter
-public class StorageManagerManager {
+class StorageManagerManager {
 
   private final CarryableStorageManager carryableStorageManager;
   private final CoinsStorageManager coinsStorageManager;
@@ -29,12 +29,16 @@ public class StorageManagerManager {
 
   @Getter(AccessLevel.NONE)
   private final List<StorageManager<?, ?>> storageManagers;
+
   @Getter(AccessLevel.NONE)
   private final DudeWheresMyStuffPlugin plugin;
 
-  StorageManagerManager(DudeWheresMyStuffPlugin plugin,
-      CarryableStorageManager carryableStorageManager, CoinsStorageManager coinsStorageManager,
-      DeathStorageManager deathStorageManager, MinigamesStorageManager minigamesStorageManager,
+  StorageManagerManager(
+      DudeWheresMyStuffPlugin plugin,
+      CarryableStorageManager carryableStorageManager,
+      CoinsStorageManager coinsStorageManager,
+      DeathStorageManager deathStorageManager,
+      MinigamesStorageManager minigamesStorageManager,
       WorldStorageManager worldStorageManager) {
     this.plugin = plugin;
     this.carryableStorageManager = carryableStorageManager;
@@ -43,8 +47,13 @@ public class StorageManagerManager {
     this.minigamesStorageManager = minigamesStorageManager;
     this.worldStorageManager = worldStorageManager;
 
-    storageManagers = Arrays.asList(carryableStorageManager, coinsStorageManager,
-        deathStorageManager, minigamesStorageManager, worldStorageManager);
+    storageManagers =
+        Arrays.asList(
+            carryableStorageManager,
+            coinsStorageManager,
+            deathStorageManager,
+            minigamesStorageManager,
+            worldStorageManager);
   }
 
   void reset() {
@@ -73,8 +82,8 @@ public class StorageManagerManager {
 
   // Run the predicate against all StorageManagers, save if true, return if any true
   private boolean anyMatch(Predicate<? super StorageManager<?, ?>> predicate) {
-    List<StorageManager<?, ?>> trueManagers = storageManagers.stream().filter(predicate)
-        .collect(Collectors.toList());
+    List<StorageManager<?, ?>> trueManagers =
+        storageManagers.stream().filter(predicate).collect(Collectors.toList());
 
     if (plugin.getClientState() == ClientState.LOGGED_IN) {
       trueManagers.forEach(StorageManager::save);

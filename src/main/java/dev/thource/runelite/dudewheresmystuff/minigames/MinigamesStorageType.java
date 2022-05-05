@@ -4,6 +4,7 @@ import dev.thource.runelite.dudewheresmystuff.StorageType;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+/** MinigamesStorageType is used to identify MinigameStorages. */
 @RequiredArgsConstructor
 @Getter
 public enum MinigamesStorageType implements StorageType {

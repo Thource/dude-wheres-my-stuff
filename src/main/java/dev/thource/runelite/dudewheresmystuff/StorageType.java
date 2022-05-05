@@ -1,5 +1,6 @@
 package dev.thource.runelite.dudewheresmystuff;
 
+/** StorageType is used to identify Storages. */
 public interface StorageType {
 
   String getName();

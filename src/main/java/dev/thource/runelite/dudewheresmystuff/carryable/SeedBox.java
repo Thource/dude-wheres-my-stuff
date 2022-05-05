@@ -6,10 +6,11 @@ import net.runelite.api.Client;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.game.ItemManager;
 
+/** SeedBox is responsible for tracking how many seeds the player has stored in their seed box. */
 @Getter
 public class SeedBox extends CarryableStorage {
 
-  public SeedBox(Client client, ItemManager itemManager) {
+  SeedBox(Client client, ItemManager itemManager) {
     super(CarryableStorageType.SEED_BOX, client, itemManager);
   }
 
@@ -21,8 +22,8 @@ public class SeedBox extends CarryableStorage {
     }
 
     Widget[] seedBoxItems = seedBoxWidget.getChildren();
-    if (seedBoxItems == null || Arrays.stream(seedBoxWidget.getChildren())
-        .anyMatch(w -> w.getItemId() != -1)) {
+    if (seedBoxItems == null
+        || Arrays.stream(seedBoxWidget.getChildren()).anyMatch(w -> w.getItemId() != -1)) {
       return false;
     }
 

@@ -1,18 +1,12 @@
 package dev.thource.runelite.dudewheresmystuff;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.LayoutManager;
-import javax.swing.BorderFactory;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.border.BevelBorder;
 
+/** InvisibleGridLayout works exactly like GridLayout, but it works with hidden children. */
 public class InvisibleGridLayout implements LayoutManager, java.io.Serializable {
 
   private static final String ZERO_ROW_COL_ERROR_TEXT = "rows and cols cannot both be zero";
@@ -25,6 +19,7 @@ public class InvisibleGridLayout implements LayoutManager, java.io.Serializable 
     this(rows, cols, 0, 0);
   }
 
+  /** A constructor. */
   public InvisibleGridLayout(int rows, int cols, int hgap, int vgap) {
     if ((rows == 0) && (cols == 0)) {
       throw new IllegalArgumentException(ZERO_ROW_COL_ERROR_TEXT);
@@ -35,42 +30,6 @@ public class InvisibleGridLayout implements LayoutManager, java.io.Serializable 
     this.vgap = vgap;
   }
 
-  public static void main(String[] args) {
-    final JPanel innerPane = new JPanel();
-    JScrollPane scr = new JScrollPane(innerPane);
-
-    innerPane.setLayout(new InvisibleGridLayout(0, 3));
-
-    for (int i = 0; i < 30; i++) {
-      JPanel ret = new JPanel();
-      JLabel lbl = new JLabel("This is  pane " + i);
-
-      ret.add(lbl);
-      ret.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-      ret.setBackground(Color.gray);
-
-      innerPane.add(ret);
-    }
-
-    JFrame frame = new JFrame();
-    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    frame.add(scr);
-    frame.setBounds(400, 0, 400, 700);
-    frame.setVisible(true);
-
-    javax.swing.Timer timer = new javax.swing.Timer(2000, e -> {
-      for (int i = 0; i < 30; i++) {
-        if (i % 2 == 0) {
-          innerPane.getComponent(i).setVisible(false);
-        }
-      }
-
-    });
-    timer.setRepeats(false);
-    timer.start();
-
-  }
-
   public void addLayoutComponent(String name, Component comp) {
     // empty because this file was copy-pasted and that's just the way it is
   }
@@ -79,6 +38,7 @@ public class InvisibleGridLayout implements LayoutManager, java.io.Serializable 
     // empty because this file was copy-pasted and that's just the way it is
   }
 
+  /** A method. */
   public Dimension preferredLayoutSize(Container parent) {
     synchronized (parent.getTreeLock()) {
       Insets insets = parent.getInsets();
@@ -109,11 +69,13 @@ public class InvisibleGridLayout implements LayoutManager, java.io.Serializable 
         }
       }
 
-      return new Dimension(insets.left + insets.right + ncols * w + (ncols - 1) * hgap,
+      return new Dimension(
+          insets.left + insets.right + ncols * w + (ncols - 1) * hgap,
           insets.top + insets.bottom + nrows * h + (nrows - 1) * vgap);
     }
   }
 
+  /** A method. */
   public Dimension minimumLayoutSize(Container parent) {
     synchronized (parent.getTreeLock()) {
       Insets insets = parent.getInsets();
@@ -144,11 +106,13 @@ public class InvisibleGridLayout implements LayoutManager, java.io.Serializable 
         }
       }
 
-      return new Dimension(insets.left + insets.right + ncols * w + (ncols - 1) * hgap,
+      return new Dimension(
+          insets.left + insets.right + ncols * w + (ncols - 1) * hgap,
           insets.top + insets.bottom + nrows * h + (nrows - 1) * vgap);
     }
   }
 
+  /** A method. */
   @SuppressWarnings("java:S3776")
   public void layoutContainer(Container parent) {
     synchronized (parent.getTreeLock()) {
@@ -156,7 +120,6 @@ public class InvisibleGridLayout implements LayoutManager, java.io.Serializable 
       int ncomponents = getVisibleComponents(parent);
       int nrows = rows;
       int ncols = cols;
-      boolean ltr = parent.getComponentOrientation().isLeftToRight();
 
       if (ncomponents == 0) {
         return;
@@ -174,6 +137,7 @@ public class InvisibleGridLayout implements LayoutManager, java.io.Serializable 
 
       int i = 0;
 
+      boolean ltr = parent.getComponentOrientation().isLeftToRight();
       if (ltr) {
         for (int r = 0, y = insets.top; r < nrows; r++, y += h + vgap) {
           int c = 0;
@@ -196,7 +160,6 @@ public class InvisibleGridLayout implements LayoutManager, java.io.Serializable 
           }
         }
       }
-
     }
   }
 
@@ -212,8 +175,17 @@ public class InvisibleGridLayout implements LayoutManager, java.io.Serializable 
     return visible;
   }
 
+  /** A method. */
   public String toString() {
-    return getClass().getName() + "[hgap=" + hgap + ",vgap=" + vgap + ",rows=" + rows + ",cols="
-        + cols + "]";
+    return getClass().getName()
+        + "[hgap="
+        + hgap
+        + ",vgap="
+        + vgap
+        + ",rows="
+        + rows
+        + ",cols="
+        + cols
+        + "]";
   }
 }

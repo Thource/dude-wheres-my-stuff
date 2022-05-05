@@ -23,6 +23,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 package dev.thource.runelite.dudewheresmystuff;
 
 import lombok.AllArgsConstructor;
@@ -34,20 +35,27 @@ import net.runelite.api.ItemComposition;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.game.ItemManager;
 
+/** ItemStack represents an OSRS item with a quantity. */
 @AllArgsConstructor
 @Getter
 @EqualsAndHashCode
 public class ItemStack {
 
-  @Setter
-  private int id;
+  @Setter private int id;
   private String name;
-  @Setter
-  private long quantity;
+  @Setter private long quantity;
   private int gePrice;
   private int haPrice;
   private boolean stackable;
 
+  /**
+   * A constructor.
+   *
+   * @param id OSRS item ID
+   * @param client client
+   * @param clientThread clientThread
+   * @param itemManager itemManager
+   */
   public ItemStack(int id, Client client, ClientThread clientThread, ItemManager itemManager) {
     this.id = id;
     this.name = "Loading";
@@ -62,6 +70,11 @@ public class ItemStack {
     clientThread.invoke(() -> this.populateFromComposition(itemManager));
   }
 
+  /**
+   * A constructor.
+   *
+   * @param itemStack itemStack to clone
+   */
   public ItemStack(ItemStack itemStack) {
     this.id = itemStack.getId();
     this.name = itemStack.getName();
@@ -71,6 +84,11 @@ public class ItemStack {
     this.stackable = itemStack.isStackable();
   }
 
+  /**
+   * Populates an item's data from the item id.
+   *
+   * @param itemManager itemManager
+   */
   public void populateFromComposition(ItemManager itemManager) {
     ItemComposition composition = itemManager.getItemComposition(id);
     this.name = composition.getName();

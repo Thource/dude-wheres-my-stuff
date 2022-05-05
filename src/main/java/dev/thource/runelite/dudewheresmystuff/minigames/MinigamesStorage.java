@@ -6,7 +6,7 @@ import net.runelite.api.Client;
 import net.runelite.client.game.ItemManager;
 
 @Getter
-public abstract class MinigamesStorage extends Storage<MinigamesStorageType> {
+abstract class MinigamesStorage extends Storage<MinigamesStorageType> {
 
   protected MinigamesStorage(MinigamesStorageType type, Client client, ItemManager itemManager) {
     super(type, client, itemManager);

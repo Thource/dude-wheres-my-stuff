@@ -5,9 +5,13 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.client.game.ItemManager;
 import org.apache.commons.lang3.math.NumberUtils;
 
+/**
+ * ShiloFurnace is responsible for tracking how many coins the player has stored in the shilo
+ * village furnace coffer.
+ */
 public class ShiloFurnace extends CoinsStorage {
 
-  public ShiloFurnace(Client client, ItemManager itemManager) {
+  ShiloFurnace(Client client, ItemManager itemManager) {
     super(CoinsStorageType.SHILO_FURNACE, client, itemManager);
   }
 
@@ -32,5 +36,3 @@ public class ShiloFurnace extends CoinsStorage {
     return true;
   }
 }
-
-

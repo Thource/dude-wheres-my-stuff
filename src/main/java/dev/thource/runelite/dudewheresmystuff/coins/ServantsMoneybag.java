@@ -5,9 +5,13 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.client.game.ItemManager;
 import org.apache.commons.lang3.math.NumberUtils;
 
+/**
+ * ServantsMoneybag is responsible for tracking how many coins the player has stored in their
+ * servant's moneybag.
+ */
 public class ServantsMoneybag extends CoinsStorage {
 
-  public ServantsMoneybag(Client client, ItemManager itemManager) {
+  ServantsMoneybag(Client client, ItemManager itemManager) {
     super(CoinsStorageType.SERVANT_MONEYBAG, client, itemManager);
   }
 
@@ -27,5 +31,3 @@ public class ServantsMoneybag extends CoinsStorage {
     return true;
   }
 }
-
-

@@ -35,7 +35,7 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPoint;
 import net.runelite.client.util.ImageUtil;
 
-public class DeathWorldMapPoint extends WorldMapPoint {
+class DeathWorldMapPoint extends WorldMapPoint {
 
   private final ItemManager itemManager;
   private final BufferedImage worldmapHintArrow;
@@ -46,13 +46,14 @@ public class DeathWorldMapPoint extends WorldMapPoint {
     super(worldPoint, null);
     this.itemManager = itemManager;
 
-    worldmapHintArrow = new BufferedImage(getMapArrow().getWidth(), getMapArrow().getHeight(),
-        BufferedImage.TYPE_INT_ARGB);
+    worldmapHintArrow =
+        new BufferedImage(
+            getMapArrow().getWidth(), getMapArrow().getHeight(), BufferedImage.TYPE_INT_ARGB);
     Graphics graphics = worldmapHintArrow.getGraphics();
     graphics.drawImage(getMapArrow(), 0, 0, null);
     graphics.drawImage(itemManager.getImage(ItemID.BONES), 0, 0, null);
-    worldmapHintArrowPoint = new Point(worldmapHintArrow.getWidth() / 2,
-        worldmapHintArrow.getHeight());
+    worldmapHintArrowPoint =
+        new Point(worldmapHintArrow.getWidth() / 2, worldmapHintArrow.getHeight());
 
     this.setSnapToEdge(true);
     this.setJumpOnClick(true);

@@ -12,6 +12,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import org.apache.commons.lang3.math.NumberUtils;
 
+/** LastManStanding is responsible for tracking the player's Last Man Standing points. */
 @Getter
 public class LastManStanding extends MinigamesStorage {
 
@@ -19,7 +20,7 @@ public class LastManStanding extends MinigamesStorage {
 
   private Widget shopWidget = null;
 
-  public LastManStanding(Client client, ItemManager itemManager) {
+  LastManStanding(Client client, ItemManager itemManager) {
     super(MinigamesStorageType.LAST_MAN_STANDING, client, itemManager);
 
     items.add(points);
@@ -67,14 +68,18 @@ public class LastManStanding extends MinigamesStorage {
   public void save(ConfigManager configManager, String managerConfigKey) {
     String data = lastUpdated + ";" + points.getQuantity();
 
-    configManager.setRSProfileConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP,
-        managerConfigKey + "." + type.getConfigKey(), data);
+    configManager.setRSProfileConfiguration(
+        DudeWheresMyStuffConfig.CONFIG_GROUP, managerConfigKey + "." + type.getConfigKey(), data);
   }
 
   @Override
   public void load(ConfigManager configManager, String managerConfigKey, String profileKey) {
-    String data = configManager.getConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP, profileKey,
-        managerConfigKey + "." + type.getConfigKey(), String.class);
+    String data =
+        configManager.getConfiguration(
+            DudeWheresMyStuffConfig.CONFIG_GROUP,
+            profileKey,
+            managerConfigKey + "." + type.getConfigKey(),
+            String.class);
     if (data == null) {
       return;
     }

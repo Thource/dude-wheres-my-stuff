@@ -11,12 +11,13 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import org.apache.commons.lang3.math.NumberUtils;
 
+/** NightmareZone is responsible for tracking the player's Nightmare Zone points. */
 @Getter
 public class NightmareZone extends MinigamesStorage {
 
   private final ItemStack points = new ItemStack(ItemID.DREAM_POTION, "Points", 0, 0, 0, true);
 
-  public NightmareZone(Client client, ItemManager itemManager) {
+  NightmareZone(Client client, ItemManager itemManager) {
     super(MinigamesStorageType.NIGHTMARE_ZONE, client, itemManager);
 
     items.add(points);
@@ -38,14 +39,18 @@ public class NightmareZone extends MinigamesStorage {
   public void save(ConfigManager configManager, String managerConfigKey) {
     String data = String.valueOf(points.getQuantity());
 
-    configManager.setRSProfileConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP,
-        managerConfigKey + "." + type.getConfigKey(), data);
+    configManager.setRSProfileConfiguration(
+        DudeWheresMyStuffConfig.CONFIG_GROUP, managerConfigKey + "." + type.getConfigKey(), data);
   }
 
   @Override
   public void load(ConfigManager configManager, String managerConfigKey, String profileKey) {
-    String data = configManager.getConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP, profileKey,
-        managerConfigKey + "." + type.getConfigKey(), String.class);
+    String data =
+        configManager.getConfiguration(
+            DudeWheresMyStuffConfig.CONFIG_GROUP,
+            profileKey,
+            managerConfigKey + "." + type.getConfigKey(),
+            String.class);
     if (data == null) {
       return;
     }

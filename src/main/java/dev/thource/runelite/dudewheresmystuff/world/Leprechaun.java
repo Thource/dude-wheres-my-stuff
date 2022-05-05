@@ -11,12 +11,23 @@ import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 
+/** Leprechaun is responsible for tracking the player's leprechaun-stored farming equipment. */
 @Getter
 public class Leprechaun extends WorldStorage {
 
-  private static final int[] WATERING_CAN_IDS = {-1, ItemID.WATERING_CAN, ItemID.WATERING_CAN1,
-      ItemID.WATERING_CAN2, ItemID.WATERING_CAN3, ItemID.WATERING_CAN4, ItemID.WATERING_CAN5,
-      ItemID.WATERING_CAN6, ItemID.WATERING_CAN7, ItemID.WATERING_CAN8, ItemID.GRICOLLERS_CAN};
+  private static final int[] WATERING_CAN_IDS = {
+    -1,
+    ItemID.WATERING_CAN,
+    ItemID.WATERING_CAN1,
+    ItemID.WATERING_CAN2,
+    ItemID.WATERING_CAN3,
+    ItemID.WATERING_CAN4,
+    ItemID.WATERING_CAN5,
+    ItemID.WATERING_CAN6,
+    ItemID.WATERING_CAN7,
+    ItemID.WATERING_CAN8,
+    ItemID.GRICOLLERS_CAN
+  };
   private final ItemStack rakes;
   private final ItemStack seedDibbers;
   private final ItemStack spades;
@@ -30,6 +41,7 @@ public class Leprechaun extends WorldStorage {
   private final ItemStack superComposts;
   private final ItemStack ultraComposts;
 
+  /** A constructor. */
   public Leprechaun(Client client, ClientThread clientThread, ItemManager itemManager) {
     super(WorldStorageType.LEPRECHAUN, client, itemManager);
 
@@ -40,8 +52,8 @@ public class Leprechaun extends WorldStorage {
     wateringCan = new ItemStack(ItemID.WATERING_CAN, client, clientThread, itemManager);
     trowels = new ItemStack(ItemID.GARDENING_TROWEL, client, clientThread, itemManager);
     plantCures = new ItemStack(ItemID.PLANT_CURE, client, clientThread, itemManager);
-    bottomlessBucket = new ItemStack(ItemID.BOTTOMLESS_COMPOST_BUCKET, client, clientThread,
-        itemManager);
+    bottomlessBucket =
+        new ItemStack(ItemID.BOTTOMLESS_COMPOST_BUCKET, client, clientThread, itemManager);
     buckets = new ItemStack(ItemID.EMPTY_BUCKET, client, clientThread, itemManager);
     composts = new ItemStack(ItemID.COMPOST, client, clientThread, itemManager);
     superComposts = new ItemStack(ItemID.SUPERCOMPOST, client, clientThread, itemManager);
@@ -175,8 +187,10 @@ public class Leprechaun extends WorldStorage {
   }
 
   private boolean updateBuckets() {
-    int quantity = client.getVarbitValue(1441) + (client.getVarbitValue(4731) * 32) + (
-        client.getVarbitValue(6265) * 256);
+    int quantity =
+        client.getVarbitValue(1441)
+            + (client.getVarbitValue(4731) * 32)
+            + (client.getVarbitValue(6265) * 256);
 
     if (quantity == buckets.getQuantity()) {
       return false;
@@ -261,27 +275,31 @@ public class Leprechaun extends WorldStorage {
       return;
     }
 
-    loadedItems.stream().filter(i -> i.getId() != -1).forEach(loadedItem -> {
-      if (Arrays.stream(WATERING_CAN_IDS).anyMatch(i -> i == loadedItem.getId())) {
-        wateringCan.setId(loadedItem.getId());
-        wateringCan.setQuantity(loadedItem.getQuantity());
-        wateringCan.populateFromComposition(itemManager);
-        return;
-      }
+    loadedItems.stream()
+        .filter(i -> i.getId() != -1)
+        .forEach(
+            loadedItem -> {
+              if (Arrays.stream(WATERING_CAN_IDS).anyMatch(i -> i == loadedItem.getId())) {
+                wateringCan.setId(loadedItem.getId());
+                wateringCan.setQuantity(loadedItem.getQuantity());
+                wateringCan.populateFromComposition(itemManager);
+                return;
+              }
 
-      if (loadedItem.getId() == ItemID.MAGIC_SECATEURS || loadedItem.getId() == ItemID.SECATEURS) {
-        secateurs.setId(loadedItem.getId());
-        secateurs.setQuantity(loadedItem.getQuantity());
-        secateurs.populateFromComposition(itemManager);
-        return;
-      }
+              if (loadedItem.getId() == ItemID.MAGIC_SECATEURS
+                  || loadedItem.getId() == ItemID.SECATEURS) {
+                secateurs.setId(loadedItem.getId());
+                secateurs.setQuantity(loadedItem.getQuantity());
+                secateurs.populateFromComposition(itemManager);
+                return;
+              }
 
-      for (ItemStack item : items) {
-        if (loadedItem.getId() == item.getId()) {
-          item.setQuantity(loadedItem.getQuantity());
-          break;
-        }
-      }
-    });
+              for (ItemStack item : items) {
+                if (loadedItem.getId() == item.getId()) {
+                  item.setQuantity(loadedItem.getQuantity());
+                  break;
+                }
+              }
+            });
   }
 }

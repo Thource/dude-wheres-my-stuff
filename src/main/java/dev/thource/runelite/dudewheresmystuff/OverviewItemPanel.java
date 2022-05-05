@@ -23,6 +23,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 package dev.thource.runelite.dudewheresmystuff;
 
 import java.awt.BorderLayout;
@@ -51,8 +52,9 @@ class OverviewItemPanel extends JPanel {
   private static final Color HOVER_COLOR = ColorScheme.DARKER_GRAY_HOVER_COLOR;
 
   static {
-    ARROW_RIGHT_ICON = new ImageIcon(
-        ImageUtil.loadImageResource(DudeWheresMyStuffPlugin.class, "/util/arrow_right.png"));
+    ARROW_RIGHT_ICON =
+        new ImageIcon(
+            ImageUtil.loadImageResource(DudeWheresMyStuffPlugin.class, "/util/arrow_right.png"));
   }
 
   private final JPanel textContainer;
@@ -62,25 +64,38 @@ class OverviewItemPanel extends JPanel {
   private final JLabel titleLabel;
   private boolean isHighlighted;
 
-  OverviewItemPanel(ItemManager itemManager, DudeWheresMyStuffPanel pluginPanel, @Nullable Tab tab,
+  OverviewItemPanel(
+      ItemManager itemManager,
+      DudeWheresMyStuffPanel pluginPanel,
+      @Nullable Tab tab,
       String title) {
-    this(itemManager, () -> pluginPanel.switchTab(tab), () -> true,
-        tab != null ? tab.getItemID() : -1, tab != null ? tab.getItemQuantity() : -1, title);
+    this(
+        itemManager,
+        () -> pluginPanel.switchTab(tab),
+        () -> true,
+        tab != null ? tab.getItemId() : -1,
+        tab != null ? tab.getItemQuantity() : -1,
+        title);
   }
 
-  OverviewItemPanel(ItemManager itemManager, @Nullable Runnable onTabSwitched,
-      BooleanSupplier isSelectable, int iconItemID, int iconItemQuantity, String title) {
+  OverviewItemPanel(
+      ItemManager itemManager,
+      @Nullable Runnable onTabSwitched,
+      BooleanSupplier isSelectable,
+      int iconItemId,
+      int iconItemQuantity,
+      String title) {
     this.isSelectable = isSelectable;
 
     setBackground(ColorScheme.DARKER_GRAY_COLOR);
     setLayout(new BorderLayout());
     setBorder(new EmptyBorder(7, 7, 7, 7));
 
-    if (iconItemID != -1) {
+    if (iconItemId != -1) {
       JLabel iconLabel = new JLabel();
       iconLabel.setMinimumSize(
           new Dimension(Constants.ITEM_SPRITE_WIDTH, Constants.ITEM_SPRITE_HEIGHT));
-      itemManager.getImage(iconItemID, iconItemQuantity, false).addTo(iconLabel);
+      itemManager.getImage(iconItemId, iconItemQuantity, false).addTo(iconLabel);
       add(iconLabel, BorderLayout.WEST);
     }
 
@@ -90,31 +105,32 @@ class OverviewItemPanel extends JPanel {
     textContainer.setBorder(new EmptyBorder(5, 7, 5, 7));
 
     if (isSelectable.getAsBoolean()) {
-      addMouseListener(new MouseAdapter() {
-        @Override
-        public void mousePressed(MouseEvent mouseEvent) {
-          if (onTabSwitched != null) {
-            onTabSwitched.run();
-          }
+      addMouseListener(
+          new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent mouseEvent) {
+              if (onTabSwitched != null) {
+                onTabSwitched.run();
+              }
 
-          setHighlighted(false);
-        }
+              setHighlighted(false);
+            }
 
-        @Override
-        public void mouseReleased(MouseEvent e) {
-          setHighlighted(true);
-        }
+            @Override
+            public void mouseReleased(MouseEvent e) {
+              setHighlighted(true);
+            }
 
-        @Override
-        public void mouseEntered(MouseEvent e) {
-          setHighlighted(true);
-        }
+            @Override
+            public void mouseEntered(MouseEvent e) {
+              setHighlighted(true);
+            }
 
-        @Override
-        public void mouseExited(MouseEvent e) {
-          setHighlighted(false);
-        }
-      });
+            @Override
+            public void mouseExited(MouseEvent e) {
+              setHighlighted(false);
+            }
+          });
     }
 
     titleLabel = new JLabel(title);
@@ -151,8 +167,11 @@ class OverviewItemPanel extends JPanel {
     }
 
     setBackground(highlighted ? HOVER_COLOR : ColorScheme.DARKER_GRAY_COLOR);
-    setCursor(new Cursor(highlighted && getMousePosition(true) != null ? Cursor.HAND_CURSOR
-        : Cursor.DEFAULT_CURSOR));
+    setCursor(
+        new Cursor(
+            highlighted && getMousePosition(true) != null
+                ? Cursor.HAND_CURSOR
+                : Cursor.DEFAULT_CURSOR));
     textContainer.setBackground(highlighted ? HOVER_COLOR : ColorScheme.DARKER_GRAY_COLOR);
 
     isHighlighted = highlighted;

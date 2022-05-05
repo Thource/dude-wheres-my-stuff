@@ -23,15 +23,16 @@ class ScrollableContainer extends JPanel implements Scrollable {
   public Dimension getPreferredScrollableViewportSize() {
     Dimension preferredSize = content.getPreferredSize();
     if (getParent() instanceof JViewport) {
-      preferredSize.width += ((JScrollPane) getParent().getParent()).getVerticalScrollBar()
-          .getPreferredSize().width;
+      preferredSize.width +=
+          ((JScrollPane) getParent().getParent()).getVerticalScrollBar().getPreferredSize().width;
     }
     return preferredSize;
   }
 
   @Override
   public int getScrollableBlockIncrement(Rectangle visibleRect, int orientation, int direction) {
-    return orientation == SwingConstants.HORIZONTAL ? Math.max(visibleRect.width * 9 / 10, 1)
+    return orientation == SwingConstants.HORIZONTAL
+        ? Math.max(visibleRect.width * 9 / 10, 1)
         : Math.max(visibleRect.height * 9 / 10, 1);
   }
 
@@ -51,7 +52,8 @@ class ScrollableContainer extends JPanel implements Scrollable {
 
   @Override
   public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction) {
-    return orientation == SwingConstants.HORIZONTAL ? Math.max(visibleRect.width / 10, 1)
+    return orientation == SwingConstants.HORIZONTAL
+        ? Math.max(visibleRect.width / 10, 1)
         : Math.max(visibleRect.height / 10, 1);
   }
 }

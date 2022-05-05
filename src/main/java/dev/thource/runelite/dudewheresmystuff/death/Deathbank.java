@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.client.game.ItemManager;
 
+/** Deathbank is responsible for tracking the player's deathbanked items. */
 @Slf4j
 @Getter
 @Setter
@@ -14,7 +15,7 @@ public class Deathbank extends DeathStorage {
   private boolean locked = false;
   private long lostAt = -1L;
 
-  public Deathbank(DeathStorageType deathStorageType, Client client, ItemManager itemManager) {
+  Deathbank(DeathStorageType deathStorageType, Client client, ItemManager itemManager) {
     super(deathStorageType, client, itemManager);
   }
 

@@ -4,6 +4,7 @@ import dev.thource.runelite.dudewheresmystuff.StorageType;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+/** WorldStorageType is used to identify WorldStorages. */
 @RequiredArgsConstructor
 @Getter
 public enum WorldStorageType implements StorageType {

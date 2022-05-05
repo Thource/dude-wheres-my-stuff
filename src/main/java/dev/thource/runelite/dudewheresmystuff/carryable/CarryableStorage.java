@@ -8,6 +8,10 @@ import net.runelite.api.EquipmentInventorySlot;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.client.game.ItemManager;
 
+/**
+ * CarryableStorage is responsible for tracking storages that the player can carry (looting bag,
+ * rune pouch, etc).
+ */
 @Getter
 public class CarryableStorage extends Storage<CarryableStorageType> {
 

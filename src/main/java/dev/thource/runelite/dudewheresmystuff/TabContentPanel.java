@@ -23,13 +23,14 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 package dev.thource.runelite.dudewheresmystuff;
 
 import javax.swing.JPanel;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public abstract class TabContentPanel extends JPanel {
+abstract class TabContentPanel extends JPanel {
 
   public abstract void update();
 }

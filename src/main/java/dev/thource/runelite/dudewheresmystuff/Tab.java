@@ -23,6 +23,7 @@
  *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 package dev.thource.runelite.dudewheresmystuff;
 
 import com.google.common.collect.ImmutableMap;
@@ -38,6 +39,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.runelite.api.ItemID;
 
+/** Tab is used to define tabs that the user can click to swap panels. */
 @RequiredArgsConstructor
 @Getter
 public enum Tab {
@@ -51,20 +53,25 @@ public enum Tab {
   STASH_UNITS("Stash Units", ItemID.CLUE_SCROLL_MASTER),
   SEARCH("Search", -1);
 
-  public static final ImmutableMap<Class<? extends StorageManager<?, ?>>, Tab> MANAGER_TAB_MAP = ImmutableMap.<Class<? extends StorageManager<?, ?>>, Tab>builder()
-      .put(DeathStorageManager.class, DEATH).put(CoinsStorageManager.class, COINS)
-      .put(CarryableStorageManager.class, CARRYABLE_STORAGE).put(WorldStorageManager.class, WORLD)
-      .put(MinigamesStorageManager.class, MINIGAMES).build();
-  public static final List<Tab> TABS = Collections.unmodifiableList(
-      Arrays.asList(OVERVIEW, DEATH, COINS, CARRYABLE_STORAGE, WORLD, MINIGAMES, SEARCH));
+  public static final ImmutableMap<Class<? extends StorageManager<?, ?>>, Tab> MANAGER_TAB_MAP =
+      ImmutableMap.<Class<? extends StorageManager<?, ?>>, Tab>builder()
+          .put(DeathStorageManager.class, DEATH)
+          .put(CoinsStorageManager.class, COINS)
+          .put(CarryableStorageManager.class, CARRYABLE_STORAGE)
+          .put(WorldStorageManager.class, WORLD)
+          .put(MinigamesStorageManager.class, MINIGAMES)
+          .build();
+  public static final List<Tab> TABS =
+      Collections.unmodifiableList(
+          Arrays.asList(OVERVIEW, DEATH, COINS, CARRYABLE_STORAGE, WORLD, MINIGAMES, SEARCH));
 
   private final String name;
-  private final int itemID;
+  private final int itemId;
   private final int itemQuantity;
 
-  Tab(String name, int itemID) {
+  Tab(String name, int itemId) {
     this.name = name;
-    this.itemID = itemID;
+    this.itemId = itemId;
     this.itemQuantity = 1;
   }
 }

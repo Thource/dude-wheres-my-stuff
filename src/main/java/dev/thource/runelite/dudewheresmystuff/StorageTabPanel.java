@@ -15,19 +15,20 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 
-public abstract class StorageTabPanel<T extends StorageType, S extends Storage<T>, M extends StorageManager<T, S>> extends
-    TabContentPanel {
+/** StorageTabPanel is a base class that shows the player their data. */
+public abstract class StorageTabPanel<
+        T extends StorageType, S extends Storage<T>, M extends StorageManager<T, S>>
+    extends TabContentPanel {
 
   protected final transient DudeWheresMyStuffConfig config;
-  @Getter
-  protected final transient M storageManager;
+  @Getter protected final transient M storageManager;
   protected final transient ItemManager itemManager;
   protected final JPanel itemsBoxContainer;
   protected final JComboBox<ItemSortMode> sortItemsDropdown;
   protected final transient List<ItemsBox> itemsBoxes = new ArrayList<>();
 
-  protected StorageTabPanel(ItemManager itemManager, DudeWheresMyStuffConfig config,
-      M storageManager) {
+  protected StorageTabPanel(
+      ItemManager itemManager, DudeWheresMyStuffConfig config, M storageManager) {
     this.itemManager = itemManager;
     this.config = config;
     this.storageManager = storageManager;
@@ -52,15 +53,16 @@ public abstract class StorageTabPanel<T extends StorageType, S extends Storage<T
     sortItemsDropdown.addItem(ItemSortMode.VALUE);
     sortItemsDropdown.addItem(ItemSortMode.UNSORTED);
     sortItemsDropdown.setSelectedItem(config.itemSortMode());
-    sortItemsDropdown.addItemListener(i -> {
-      ItemSortMode newSortMode = (ItemSortMode) i.getItem();
-      if (config.itemSortMode() == newSortMode) {
-        return;
-      }
+    sortItemsDropdown.addItemListener(
+        i -> {
+          ItemSortMode newSortMode = (ItemSortMode) i.getItem();
+          if (config.itemSortMode() == newSortMode) {
+            return;
+          }
 
-      config.setItemSortMode((ItemSortMode) i.getItem());
-      update();
-    });
+          config.setItemSortMode((ItemSortMode) i.getItem());
+          update();
+        });
     sortItemsDropdown.setPreferredSize(new Dimension(-1, 30));
     sortItemsContainer.add(sortItemsDropdown);
 
@@ -70,7 +72,8 @@ public abstract class StorageTabPanel<T extends StorageType, S extends Storage<T
   }
 
   protected Comparator<S> getStorageSorter() {
-    return Comparator.comparingLong(S::getTotalValue).reversed()
+    return Comparator.comparingLong(S::getTotalValue)
+        .reversed()
         .thenComparing(s -> s.getType().getName());
   }
 
@@ -82,22 +85,25 @@ public abstract class StorageTabPanel<T extends StorageType, S extends Storage<T
     itemsBoxContainer.removeAll();
 
     itemsBoxes.clear();
-    storageManager.getStorages().stream().sorted(getStorageSorter()).forEach(storage -> {
-      if (!storage.isEnabled()) {
-        return;
-      }
+    storageManager.getStorages().stream()
+        .sorted(getStorageSorter())
+        .forEach(
+            storage -> {
+              if (!storage.isEnabled()) {
+                return;
+              }
 
-      ItemsBox itemsBox = new ItemsBox(itemManager, storage, null, false, showPrice());
-      for (ItemStack itemStack : storage.getItems()) {
-        if (itemStack.getQuantity() > 0) {
-          itemsBox.getItems().add(itemStack);
-        }
-      }
-      itemsBox.setSortMode(config.itemSortMode());
-      itemsBox.rebuild();
-      itemsBoxes.add(itemsBox);
-      itemsBoxContainer.add(itemsBox);
-    });
+              ItemsBox itemsBox = new ItemsBox(itemManager, storage, null, false, showPrice());
+              for (ItemStack itemStack : storage.getItems()) {
+                if (itemStack.getQuantity() > 0) {
+                  itemsBox.getItems().add(itemStack);
+                }
+              }
+              itemsBox.setSortMode(config.itemSortMode());
+              itemsBox.rebuild();
+              itemsBoxes.add(itemsBox);
+              itemsBoxContainer.add(itemsBox);
+            });
 
     revalidate();
   }

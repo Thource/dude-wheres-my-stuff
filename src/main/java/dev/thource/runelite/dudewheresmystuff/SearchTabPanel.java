@@ -24,18 +24,20 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.components.IconTextField;
 
-class SearchTabPanel extends
-    StorageTabPanel<StorageType, Storage<StorageType>, StorageManager<StorageType, Storage<StorageType>>> {
+class SearchTabPanel
+    extends StorageTabPanel<
+        StorageType, Storage<StorageType>, StorageManager<StorageType, Storage<StorageType>>> {
 
-  @Getter
-  private final IconTextField searchBar;
+  @Getter private final IconTextField searchBar;
   private final DudeWheresMyStuffPanel pluginPanel;
   private final transient StorageManagerManager storageManagerManager;
-  @Setter
-  private AccountType accountType;
+  @Setter private AccountType accountType;
 
-  SearchTabPanel(ItemManager itemManager, DudeWheresMyStuffConfig config,
-      DudeWheresMyStuffPanel pluginPanel, StorageManagerManager storageManagerManager) {
+  SearchTabPanel(
+      ItemManager itemManager,
+      DudeWheresMyStuffConfig config,
+      DudeWheresMyStuffPanel pluginPanel,
+      StorageManagerManager storageManagerManager) {
     super(itemManager, config, null);
     this.pluginPanel = pluginPanel;
     this.storageManagerManager = storageManagerManager;
@@ -50,22 +52,25 @@ class SearchTabPanel extends
     searchBar.setPreferredSize(new Dimension(getWidth(), 30));
     searchBar.setBackground(ColorScheme.DARKER_GRAY_COLOR);
     searchBar.setHoverBackgroundColor(ColorScheme.DARK_GRAY_HOVER_COLOR);
-    searchBar.getDocument().addDocumentListener(new DocumentListener() {
-      @Override
-      public void insertUpdate(DocumentEvent e) {
-        onSearchBarChanged();
-      }
+    searchBar
+        .getDocument()
+        .addDocumentListener(
+            new DocumentListener() {
+              @Override
+              public void insertUpdate(DocumentEvent e) {
+                onSearchBarChanged();
+              }
 
-      @Override
-      public void removeUpdate(DocumentEvent e) {
-        onSearchBarChanged();
-      }
+              @Override
+              public void removeUpdate(DocumentEvent e) {
+                onSearchBarChanged();
+              }
 
-      @Override
-      public void changedUpdate(DocumentEvent e) {
-        onSearchBarChanged();
-      }
-    });
+              @Override
+              public void changedUpdate(DocumentEvent e) {
+                onSearchBarChanged();
+              }
+            });
     searchBarContainer.add(searchBar);
   }
 
@@ -82,20 +87,27 @@ class SearchTabPanel extends
   protected void rebuildList() {
     itemsBoxContainer.removeAll();
     itemsBoxes.clear();
-    createItemsBoxes().forEach(itemsBox -> {
-      itemsBoxContainer.add(itemsBox);
-      itemsBoxes.add(itemsBox);
-    });
+    createItemsBoxes()
+        .forEach(
+            itemsBox -> {
+              itemsBoxContainer.add(itemsBox);
+              itemsBoxes.add(itemsBox);
+            });
 
     revalidate();
   }
 
   private Optional<ItemsBox> createItemsBox(Storage<?> storage) {
     String searchText = searchBar.getText().toLowerCase(Locale.ROOT);
-    List<ItemStack> items = storage.getItems().stream().filter(
-            i -> i.getId() != -1 && i.getQuantity() > 0 && (Objects.equals(searchText, "")
-                || i.getName().toLowerCase(Locale.ROOT).contains(searchText)))
-        .collect(Collectors.toList());
+    List<ItemStack> items =
+        storage.getItems().stream()
+            .filter(
+                i ->
+                    i.getId() != -1
+                        && i.getQuantity() > 0
+                        && (Objects.equals(searchText, "")
+                            || i.getName().toLowerCase(Locale.ROOT).contains(searchText)))
+            .collect(Collectors.toList());
     if (items.isEmpty()) {
       return Optional.empty();
     }
@@ -115,8 +127,9 @@ class SearchTabPanel extends
 
   private void decorateItemsBox(Storage<?> storage, ItemsBox itemsBox) {
     if (storage instanceof Deathbank) {
-      if (((Deathbank) storage).getLostAt() == -1L && (accountType != AccountType.ULTIMATE_IRONMAN
-          || storage.getType() != DeathStorageType.ZULRAH)) {
+      if (((Deathbank) storage).getLostAt() == -1L
+          && (accountType != AccountType.ULTIMATE_IRONMAN
+              || storage.getType() != DeathStorageType.ZULRAH)) {
         itemsBox.setSubTitle(((Deathbank) storage).isLocked() ? "Locked" : "Unlocked");
       }
     } else if (storage instanceof Deathpile) {
@@ -134,20 +147,31 @@ class SearchTabPanel extends
   }
 
   private List<ItemsBox> createItemsBoxes() {
-    return getStorages().filter(Storage::isEnabled)
-        .sorted(Comparator.comparing(s -> s.getType().getName())).map(this::createItemsBox)
-        .filter(Optional::isPresent).map(Optional::get).collect(Collectors.toList());
+    return getStorages()
+        .filter(Storage::isEnabled)
+        .sorted(Comparator.comparing(s -> s.getType().getName()))
+        .map(this::createItemsBox)
+        .filter(Optional::isPresent)
+        .map(Optional::get)
+        .collect(Collectors.toList());
   }
 
   private Stream<? extends Storage<? extends Enum<? extends Enum<?>>>> getStorages() {
-    return Stream.of(storageManagerManager.getDeathStorageManager().storages.stream().filter(s ->
-            (s.getType() == DeathStorageType.DEATHPILE && !((Deathpile) s).hasExpired(
-                pluginPanel.isPreviewPanel())) || (s.getType() != DeathStorageType.DEATHPILE
-                && ((Deathbank) s).getLostAt() == -1L)),
-        storageManagerManager.getCoinsStorageManager().storages.stream().filter(
-            storage -> storage.getType() != CoinsStorageType.INVENTORY
-                && storage.getType() != CoinsStorageType.LOOTING_BAG),
-        storageManagerManager.getCarryableStorageManager().storages.stream(),
-        storageManagerManager.getWorldStorageManager().storages.stream()).flatMap(i -> i);
+    return Stream.of(
+            storageManagerManager.getDeathStorageManager().storages.stream()
+                .filter(
+                    s ->
+                        (s.getType() == DeathStorageType.DEATHPILE
+                                && !((Deathpile) s).hasExpired(pluginPanel.isPreviewPanel()))
+                            || (s.getType() != DeathStorageType.DEATHPILE
+                                && ((Deathbank) s).getLostAt() == -1L)),
+            storageManagerManager.getCoinsStorageManager().storages.stream()
+                .filter(
+                    storage ->
+                        storage.getType() != CoinsStorageType.INVENTORY
+                            && storage.getType() != CoinsStorageType.LOOTING_BAG),
+            storageManagerManager.getCarryableStorageManager().storages.stream(),
+            storageManagerManager.getWorldStorageManager().storages.stream())
+        .flatMap(i -> i);
   }
 }

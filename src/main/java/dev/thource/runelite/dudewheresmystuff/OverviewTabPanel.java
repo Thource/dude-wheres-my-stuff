@@ -23,6 +23,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 package dev.thource.runelite.dudewheresmystuff;
 
 import com.google.common.collect.ImmutableMap;
@@ -56,18 +57,23 @@ class OverviewTabPanel extends TabContentPanel {
 
   private static final String LOGGED_OUT_SUMMARY = "Log in to find your stuff!";
   private static final String GP_TOTAL = "%,d gp";
+  private static final String DELETE_SAVE_WARNING =
+      "Are you sure you want to delete your save data?\nThis cannot be undone.";
 
-  @Getter
-  private final Map<Tab, OverviewItemPanel> overviews;
+  @Getter private final Map<Tab, OverviewItemPanel> overviews;
   private final OverviewItemPanel summaryOverview;
   private final DudeWheresMyStuffPanel pluginPanel;
   private final transient DudeWheresMyStuffPlugin plugin;
-  private final StorageManagerManager storageManagerManager;
+  private final transient StorageManagerManager storageManagerManager;
   private final transient ConfigManager configManager;
 
-  OverviewTabPanel(DudeWheresMyStuffPlugin plugin, DudeWheresMyStuffPanel pluginPanel,
-      ItemManager itemManager, ConfigManager configManager,
-      StorageManagerManager storageManagerManager, boolean developerMode) {
+  OverviewTabPanel(
+      DudeWheresMyStuffPlugin plugin,
+      DudeWheresMyStuffPanel pluginPanel,
+      ItemManager itemManager,
+      ConfigManager configManager,
+      StorageManagerManager storageManagerManager,
+      boolean developerMode) {
     this.configManager = configManager;
     this.pluginPanel = pluginPanel;
     this.plugin = plugin;
@@ -76,72 +82,94 @@ class OverviewTabPanel extends TabContentPanel {
     setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
     setBackground(ColorScheme.DARK_GRAY_COLOR);
 
-    summaryOverview = new OverviewItemPanel(itemManager, null, () -> false, ItemID.NOTES, 1,
-        LOGGED_OUT_SUMMARY);
+    summaryOverview =
+        new OverviewItemPanel(itemManager, null, () -> false, ItemID.NOTES, 1, LOGGED_OUT_SUMMARY);
     add(summaryOverview);
     add(Box.createVerticalStrut(8));
     if (developerMode) {
-      summaryOverview.addMouseListener(new MouseAdapter() {
-        int clicks;
-        long lastClick;
+      summaryOverview.addMouseListener(
+          new MouseAdapter() {
+            int clicks;
+            long lastClick;
 
-        @Override
-        public void mouseClicked(MouseEvent e) {
-          if (System.currentTimeMillis() - lastClick < 500) {
-            if (++clicks == 5) {
-              clicks = 0;
-              FakeDataService.createData(configManager);
-              log.info("Created fake data!");
-              resetSummaryContextMenu();
+            @Override
+            public void mouseClicked(MouseEvent e) {
+              if (System.currentTimeMillis() - lastClick < 500) {
+                if (++clicks == 5) {
+                  clicks = 0;
+                  FakeDataService.createData(configManager);
+                  log.info("Created fake data!");
+                  resetSummaryContextMenu();
+                }
+              } else {
+                clicks = 1;
+              }
+
+              lastClick = System.currentTimeMillis();
             }
-          } else {
-            clicks = 1;
-          }
-
-          lastClick = System.currentTimeMillis();
-        }
-      });
+          });
     }
     resetSummaryContextMenu();
 
     //noinspection UnstableApiUsage
-    overviews = Tab.TABS.stream().filter(v -> v != Tab.OVERVIEW && v != Tab.SEARCH)
-        .collect(ImmutableMap.toImmutableMap(Function.identity(), t -> {
-          OverviewItemPanel p = new OverviewItemPanel(itemManager, pluginPanel, t, t.getName());
-          add(p);
-          add(Box.createVerticalStrut(8));
-          p.setVisible(false);
-          return p;
-        }));
+    overviews =
+        Tab.TABS.stream()
+            .filter(v -> v != Tab.OVERVIEW && v != Tab.SEARCH)
+            .collect(
+                ImmutableMap.toImmutableMap(
+                    Function.identity(),
+                    t -> {
+                      OverviewItemPanel p =
+                          new OverviewItemPanel(itemManager, pluginPanel, t, t.getName());
+                      add(p);
+                      add(Box.createVerticalStrut(8));
+                      p.setVisible(false);
+                      return p;
+                    }));
   }
 
   @Override
   public void update() {
     resetSummaryContextMenu();
 
-    if (Objects.equals(pluginPanel.displayName, "")) {
+    if (Objects.equals(pluginPanel.getDisplayName(), "")) {
       summaryOverview.setTitle(LOGGED_OUT_SUMMARY);
       summaryOverview.updateStatus("Right-click to preview data.");
     } else {
-      summaryOverview.setTitle(pluginPanel.displayName);
+      summaryOverview.setTitle(pluginPanel.getDisplayName());
 
-      if (pluginPanel.isPreviewPanel() && !Objects.equals(pluginPanel.displayName, "Thource")) {
-        summaryOverview.updateStatus(String.format(
-            "<html><body style=\"margin: 0; padding: 0;\">%,d gp<br>Right-click to exit preview.</body></html>",
-            getTotalValue()));
+      if (pluginPanel.isPreviewPanel()
+          && !Objects.equals(pluginPanel.getDisplayName(), "Thource")) {
+        summaryOverview.updateStatus(
+            String.format(
+                "<html><body style=\"margin: 0; padding: 0;\">%,d gp<br>Right-click to exit preview"
+                    + ".</body></html>",
+                getTotalValue()));
       } else {
         summaryOverview.updateStatus(String.format(GP_TOTAL, getTotalValue()));
       }
     }
 
-    overviews.get(Tab.DEATH).updateStatus(
-        String.format(GP_TOTAL, storageManagerManager.getDeathStorageManager().getTotalValue()));
-    overviews.get(Tab.COINS).updateStatus(
-        String.format(GP_TOTAL, storageManagerManager.getCoinsStorageManager().getTotalValue()));
-    overviews.get(Tab.CARRYABLE_STORAGE).updateStatus(String.format(GP_TOTAL,
-        storageManagerManager.getCarryableStorageManager().getTotalValue()));
-    overviews.get(Tab.WORLD).updateStatus(
-        String.format(GP_TOTAL, storageManagerManager.getWorldStorageManager().getTotalValue()));
+    overviews
+        .get(Tab.DEATH)
+        .updateStatus(
+            String.format(
+                GP_TOTAL, storageManagerManager.getDeathStorageManager().getTotalValue()));
+    overviews
+        .get(Tab.COINS)
+        .updateStatus(
+            String.format(
+                GP_TOTAL, storageManagerManager.getCoinsStorageManager().getTotalValue()));
+    overviews
+        .get(Tab.CARRYABLE_STORAGE)
+        .updateStatus(
+            String.format(
+                GP_TOTAL, storageManagerManager.getCarryableStorageManager().getTotalValue()));
+    overviews
+        .get(Tab.WORLD)
+        .updateStatus(
+            String.format(
+                GP_TOTAL, storageManagerManager.getWorldStorageManager().getTotalValue()));
   }
 
   private long getTotalValue() {
@@ -151,8 +179,8 @@ class OverviewTabPanel extends TabContentPanel {
   private List<ItemStack> getAllItems() {
     List<ItemStack> items = new ArrayList<>();
 
-    for (CarryableStorage storage : storageManagerManager.getCarryableStorageManager()
-        .getStorages()) {
+    for (CarryableStorage storage :
+        storageManagerManager.getCarryableStorageManager().getStorages()) {
       items.addAll(storage.getItems());
     }
 
@@ -173,47 +201,58 @@ class OverviewTabPanel extends TabContentPanel {
   }
 
   void resetSummaryContextMenu() {
-    SwingUtilities.invokeLater(() -> {
-      final JPopupMenu popupMenu = new JPopupMenu();
-      popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
-      summaryOverview.setComponentPopupMenu(popupMenu);
+    SwingUtilities.invokeLater(
+        () -> {
+          final JPopupMenu popupMenu = new JPopupMenu();
+          popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
+          summaryOverview.setComponentPopupMenu(popupMenu);
 
-      if (pluginPanel.isPreviewPanel()) {
-        final JMenuItem clearDeathbank = new JMenuItem("Delete data");
-        clearDeathbank.addActionListener(e -> {
-          int result = JOptionPane.OK_OPTION;
+          if (pluginPanel.isPreviewPanel()) {
+            final JMenuItem clearDeathbank = new JMenuItem("Delete data");
+            clearDeathbank.addActionListener(
+                e -> {
+                  int result = JOptionPane.OK_OPTION;
 
-          try {
-            result = JOptionPane.showConfirmDialog(this,
-                "Are you sure you want to delete your save data?\nThis cannot be undone.",
-                "Confirm deletion", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
-          } catch (Exception err) {
-            log.warn("Unexpected exception occurred while check for confirm required", err);
-          }
+                  try {
+                    result =
+                        JOptionPane.showConfirmDialog(
+                            this,
+                            DELETE_SAVE_WARNING,
+                            "Confirm deletion",
+                            JOptionPane.OK_CANCEL_OPTION,
+                            JOptionPane.WARNING_MESSAGE);
+                  } catch (Exception err) {
+                    log.warn("Unexpected exception occurred while check for confirm required", err);
+                  }
 
-          if (result == JOptionPane.OK_OPTION) {
-            plugin.disablePreviewMode(true);
-            resetSummaryContextMenu();
+                  if (result == JOptionPane.OK_OPTION) {
+                    plugin.disablePreviewMode(true);
+                    resetSummaryContextMenu();
+                  }
+                });
+            popupMenu.add(clearDeathbank);
+
+            final JMenuItem exitPreviewMode = new JMenuItem("Exit preview mode");
+            exitPreviewMode.addActionListener(e -> plugin.disablePreviewMode(false));
+            popupMenu.add(exitPreviewMode);
+          } else {
+            configManager
+                .getRSProfiles()
+                .forEach(
+                    profile -> {
+                      if (configManager.getConfiguration(
+                              DudeWheresMyStuffConfig.CONFIG_GROUP, profile.getKey(), "isMember")
+                          == null) {
+                        return;
+                      }
+
+                      final JMenuItem previewItem = new JMenuItem(profile.getDisplayName());
+                      previewItem.addActionListener(
+                          e ->
+                              plugin.enablePreviewMode(profile.getKey(), profile.getDisplayName()));
+                      popupMenu.add(previewItem);
+                    });
           }
         });
-        popupMenu.add(clearDeathbank);
-
-        final JMenuItem exitPreviewMode = new JMenuItem("Exit preview mode");
-        exitPreviewMode.addActionListener(e -> plugin.disablePreviewMode(false));
-        popupMenu.add(exitPreviewMode);
-      } else {
-        configManager.getRSProfiles().forEach(profile -> {
-          if (configManager.getConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP, profile.getKey(),
-              "isMember") == null) {
-            return;
-          }
-
-          final JMenuItem previewItem = new JMenuItem(profile.getDisplayName());
-          previewItem.addActionListener(
-              e -> plugin.enablePreviewMode(profile.getKey(), profile.getDisplayName()));
-          popupMenu.add(previewItem);
-        });
-      }
-    });
   }
 }

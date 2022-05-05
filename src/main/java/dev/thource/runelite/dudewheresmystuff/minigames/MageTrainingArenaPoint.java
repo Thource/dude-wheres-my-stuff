@@ -6,7 +6,7 @@ import net.runelite.api.widgets.Widget;
 
 @RequiredArgsConstructor
 @Getter
-public class MageTrainingArenaPoint {
+class MageTrainingArenaPoint {
 
   final int widgetId;
   final int varpId;

@@ -1,17 +1,22 @@
 package dev.thource.runelite.dudewheresmystuff;
 
 import javax.swing.border.EmptyBorder;
+import lombok.Getter;
 import net.runelite.client.ui.PluginPanel;
 
+/**
+ * DudeWheresMyStuffPanelContainer hosts 2 DudeWheresMyStuffPanels, one for active data and one for
+ * preview.
+ */
 public class DudeWheresMyStuffPanelContainer extends PluginPanel {
 
-  final DudeWheresMyStuffPanel panel;
-  final DudeWheresMyStuffPanel previewPanel;
+  @Getter private final DudeWheresMyStuffPanel panel;
+  @Getter private final DudeWheresMyStuffPanel previewPanel;
   private boolean previewing;
   private boolean active;
 
-  DudeWheresMyStuffPanelContainer(DudeWheresMyStuffPanel panel,
-      DudeWheresMyStuffPanel previewPanel) {
+  DudeWheresMyStuffPanelContainer(
+      DudeWheresMyStuffPanel panel, DudeWheresMyStuffPanel previewPanel) {
     super(false);
 
     this.panel = panel;
@@ -35,10 +40,10 @@ public class DudeWheresMyStuffPanelContainer extends PluginPanel {
 
   void disablePreviewMode() {
     panel.setVisible(true);
-    panel.active = active;
+    panel.setActive(active);
 
     previewPanel.setVisible(false);
-    previewPanel.active = false;
+    previewPanel.setActive(false);
 
     previewing = false;
     update();
@@ -46,18 +51,16 @@ public class DudeWheresMyStuffPanelContainer extends PluginPanel {
 
   void enablePreviewMode() {
     panel.setVisible(false);
-    panel.active = false;
+    panel.setActive(false);
 
     previewPanel.setVisible(true);
-    previewPanel.active = active;
+    previewPanel.setActive(active);
 
     previewing = true;
     update();
   }
 
-  /**
-   * Updates the active tab panel, if this plugin panel is displayed.
-   */
+  /** Updates the active tab panel, if this plugin panel is displayed. */
   void update() {
     if (!active) {
       return;
@@ -81,9 +84,9 @@ public class DudeWheresMyStuffPanelContainer extends PluginPanel {
     active = true;
 
     if (previewing) {
-      previewPanel.active = true;
+      previewPanel.setActive(true);
     } else {
-      panel.active = true;
+      panel.setActive(true);
     }
 
     update();
@@ -93,7 +96,7 @@ public class DudeWheresMyStuffPanelContainer extends PluginPanel {
   public void onDeactivate() {
     active = false;
 
-    previewPanel.active = false;
-    panel.active = false;
+    previewPanel.setActive(false);
+    panel.setActive(false);
   }
 }

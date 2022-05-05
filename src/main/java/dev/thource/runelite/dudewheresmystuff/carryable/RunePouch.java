@@ -8,6 +8,9 @@ import net.runelite.api.Varbits;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.RunepouchRune;
 
+/**
+ * RunePouch is responsible for tracking how many runes the player has stored in their rune pouch.
+ */
 @Getter
 public class RunePouch extends CarryableStorage {
 
@@ -21,7 +24,7 @@ public class RunePouch extends CarryableStorage {
   private int rune2Quantity;
   private int rune3Quantity;
 
-  public RunePouch(Client client, ItemManager itemManager) {
+  RunePouch(Client client, ItemManager itemManager) {
     super(CarryableStorageType.RUNE_POUCH, client, itemManager);
   }
 
@@ -34,8 +37,11 @@ public class RunePouch extends CarryableStorage {
     int newRune2Quantity = client.getVarbitValue(Varbits.RUNE_POUCH_AMOUNT2);
     int newRune3Quantity = client.getVarbitValue(Varbits.RUNE_POUCH_AMOUNT3);
 
-    if (newRune1Type == rune1Type && newRune2Type == rune2Type && newRune3Type == rune3Type
-        && newRune1Quantity == rune1Quantity && newRune2Quantity == rune2Quantity
+    if (newRune1Type == rune1Type
+        && newRune2Type == rune2Type
+        && newRune3Type == rune3Type
+        && newRune1Quantity == rune1Quantity
+        && newRune2Quantity == rune2Quantity
         && newRune3Quantity == rune3Quantity) {
       return false;
     }
@@ -62,24 +68,42 @@ public class RunePouch extends CarryableStorage {
 
     if (rune1 != null) {
       ItemComposition itemComposition = itemManager.getItemComposition(rune1.getItemId());
-      items.add(new ItemStack(rune1.getItemId(), itemComposition.getName(), rune1Quantity,
-          itemManager.getItemPrice(rune1.getItemId()), itemComposition.getHaPrice(), true));
+      items.add(
+          new ItemStack(
+              rune1.getItemId(),
+              itemComposition.getName(),
+              rune1Quantity,
+              itemManager.getItemPrice(rune1.getItemId()),
+              itemComposition.getHaPrice(),
+              true));
     } else {
       items.add(new ItemStack(-1, EMPTY, 1, 0, 0, false));
     }
 
     if (rune2 != null) {
       ItemComposition itemComposition = itemManager.getItemComposition(rune2.getItemId());
-      items.add(new ItemStack(rune2.getItemId(), itemComposition.getName(), rune2Quantity,
-          itemManager.getItemPrice(rune2.getItemId()), itemComposition.getHaPrice(), true));
+      items.add(
+          new ItemStack(
+              rune2.getItemId(),
+              itemComposition.getName(),
+              rune2Quantity,
+              itemManager.getItemPrice(rune2.getItemId()),
+              itemComposition.getHaPrice(),
+              true));
     } else {
       items.add(new ItemStack(-1, EMPTY, 1, 0, 0, false));
     }
 
     if (rune3 != null) {
       ItemComposition itemComposition = itemManager.getItemComposition(rune3.getItemId());
-      items.add(new ItemStack(rune3.getItemId(), itemComposition.getName(), rune3Quantity,
-          itemManager.getItemPrice(rune3.getItemId()), itemComposition.getHaPrice(), true));
+      items.add(
+          new ItemStack(
+              rune3.getItemId(),
+              itemComposition.getName(),
+              rune3Quantity,
+              itemManager.getItemPrice(rune3.getItemId()),
+              itemComposition.getHaPrice(),
+              true));
     } else {
       items.add(new ItemStack(-1, EMPTY, 1, 0, 0, false));
     }

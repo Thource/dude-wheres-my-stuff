@@ -11,17 +11,25 @@ import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 
+/** CoinsStorageManager is responsible for managing all CoinsStorages. */
 @Slf4j
 public class CoinsStorageManager extends StorageManager<CoinsStorageType, CoinsStorage> {
 
   @Inject
-  CoinsStorageManager(Client client, ItemManager itemManager, ConfigManager configManager,
-      DudeWheresMyStuffConfig config, Notifier notifier, DudeWheresMyStuffPlugin plugin) {
+  CoinsStorageManager(
+      Client client,
+      ItemManager itemManager,
+      ConfigManager configManager,
+      DudeWheresMyStuffConfig config,
+      Notifier notifier,
+      DudeWheresMyStuffPlugin plugin) {
     super(client, itemManager, configManager, config, notifier, plugin);
 
     for (CoinsStorageType type : CoinsStorageType.values()) {
-      if (type == CoinsStorageType.SERVANT_MONEYBAG || type == CoinsStorageType.SHILO_FURNACE
-          || type == CoinsStorageType.GRAND_EXCHANGE || type == CoinsStorageType.LOOTING_BAG) {
+      if (type == CoinsStorageType.SERVANT_MONEYBAG
+          || type == CoinsStorageType.SHILO_FURNACE
+          || type == CoinsStorageType.GRAND_EXCHANGE
+          || type == CoinsStorageType.LOOTING_BAG) {
         continue;
       }
 
