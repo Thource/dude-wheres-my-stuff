@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.events.ActorDeath;
+import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.ItemDespawned;
@@ -114,5 +115,9 @@ class StorageManagerManager {
 
   public boolean onItemDespawned(ItemDespawned itemDespawned) {
     return anyMatch(storageManager -> storageManager.onItemDespawned(itemDespawned));
+  }
+
+  public boolean onChatMessage(ChatMessage chatMessage) {
+    return anyMatch(storageManager -> storageManager.onChatMessage(chatMessage));
   }
 }

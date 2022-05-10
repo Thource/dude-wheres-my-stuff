@@ -5,6 +5,7 @@ import java.util.List;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.events.ActorDeath;
+import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.ItemDespawned;
@@ -235,5 +236,31 @@ public abstract class StorageManager<T extends StorageType, S extends Storage<T>
 
   public boolean onItemDespawned(ItemDespawned itemDespawned) {
     return false;
+  }
+
+
+  /**
+   * Pass onChatMessage through to enabled storages.
+   *
+   * @return true if any Storage's data was updated
+   */
+  public boolean onChatMessage(ChatMessage chatMessage) {
+    if (!enabled) {
+      return false;
+    }
+
+    boolean updated = false;
+
+    for (S storage : storages) {
+      if (!storage.isEnabled()) {
+        continue;
+      }
+
+      if (storage.onChatMessage(chatMessage)) {
+        updated = true;
+      }
+    }
+
+    return updated;
   }
 }

@@ -5,6 +5,7 @@ import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffConfig;
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.StorageManager;
 import dev.thource.runelite.dudewheresmystuff.Tab;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.client.Notifier;
@@ -15,6 +16,9 @@ import net.runelite.client.game.ItemManager;
 /** WorldStorageManager is responsible for managing all WorldStorages. */
 @Slf4j
 public class WorldStorageManager extends StorageManager<WorldStorageType, WorldStorage> {
+
+  @Getter
+  private final Leprechaun leprechaun;
 
   @Inject
   private WorldStorageManager(
@@ -27,7 +31,9 @@ public class WorldStorageManager extends StorageManager<WorldStorageType, WorldS
       DudeWheresMyStuffPlugin plugin) {
     super(client, itemManager, configManager, config, notifier, plugin);
 
-    storages.add(new Leprechaun(client, clientThread, itemManager));
+    leprechaun = new Leprechaun(client, clientThread, itemManager);
+
+    storages.add(leprechaun);
   }
 
   @Override

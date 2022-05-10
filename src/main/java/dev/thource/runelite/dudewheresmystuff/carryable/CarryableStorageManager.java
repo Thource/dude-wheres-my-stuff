@@ -5,6 +5,7 @@ import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffConfig;
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.StorageManager;
 import dev.thource.runelite.dudewheresmystuff.Tab;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.client.Notifier;
@@ -15,6 +16,9 @@ import net.runelite.client.game.ItemManager;
 @Slf4j
 public class CarryableStorageManager
     extends StorageManager<CarryableStorageType, CarryableStorage> {
+
+  @Getter
+  private final BottomlessBucket bottomlessBucket;
 
   @Inject
   private CarryableStorageManager(
@@ -29,16 +33,20 @@ public class CarryableStorageManager
     for (CarryableStorageType type : CarryableStorageType.values()) {
       if (type == CarryableStorageType.RUNE_POUCH
           || type == CarryableStorageType.LOOTING_BAG
-          || type == CarryableStorageType.SEED_BOX) {
+          || type == CarryableStorageType.SEED_BOX
+          || type == CarryableStorageType.BOTTOMLESS_BUCKET) {
         continue;
       }
 
       storages.add(new CarryableStorage(type, client, itemManager));
     }
 
+    bottomlessBucket = new BottomlessBucket(client, itemManager);
+
     storages.add(new RunePouch(client, itemManager));
     storages.add(new LootingBag(client, itemManager));
     storages.add(new SeedBox(client, itemManager));
+    storages.add(bottomlessBucket);
   }
 
   @Override

@@ -1,9 +1,11 @@
 package dev.thource.runelite.dudewheresmystuff.world;
 
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
+import dev.thource.runelite.dudewheresmystuff.carryable.BottomlessBucket;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
+import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.ItemID;
 import net.runelite.client.callback.ClientThread;
@@ -39,6 +41,7 @@ public class Leprechaun extends WorldStorage {
   private final ItemStack composts;
   private final ItemStack superComposts;
   private final ItemStack ultraComposts;
+  @Setter private BottomlessBucket bottomlessBucketStorage;
 
   /** A constructor. */
   public Leprechaun(Client client, ClientThread clientThread, ItemManager itemManager) {
@@ -148,6 +151,9 @@ public class Leprechaun extends WorldStorage {
     }
     bottomlessBucket.setName(name);
     bottomlessBucket.setQuantity(type == 0 ? 0 : 1);
+    if (bottomlessBucketStorage != null) {
+      bottomlessBucketStorage.updateCompost(type, charges);
+    }
     return true;
   }
 

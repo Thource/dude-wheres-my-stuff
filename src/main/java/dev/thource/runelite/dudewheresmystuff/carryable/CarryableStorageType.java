@@ -13,7 +13,8 @@ public enum CarryableStorageType implements StorageType {
   EQUIPMENT("Equipment", InventoryID.EQUIPMENT.getId(), true, "equipment", false),
   LOOTING_BAG("Looting Bag", 516, false, "lootingbag", true),
   SEED_BOX("Seed Box", 573, false, "seedbox", true),
-  RUNE_POUCH("Rune Pouch", -1, true, "runepouch", true);
+  RUNE_POUCH("Rune Pouch", -1, true, "runepouch", true),
+  BOTTOMLESS_BUCKET("Bottomless Compost Bucket", -1, false, "bottomlessbucket", true);
 
   private final String name;
   private final int itemContainerId;

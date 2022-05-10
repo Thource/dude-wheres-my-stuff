@@ -42,7 +42,7 @@ import net.runelite.client.game.ItemManager;
 public class ItemStack {
 
   @Setter private int id;
-  private String name;
+  @Setter private String name;
   @Setter private long quantity;
   private int gePrice;
   private int haPrice;

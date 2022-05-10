@@ -16,6 +16,7 @@ import net.runelite.api.GameState;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.VarClientInt;
 import net.runelite.api.events.ActorDeath;
+import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
@@ -77,6 +78,9 @@ public class DudeWheresMyStuffPlugin extends Plugin {
     if (panelContainer == null) {
       deathStorageManager.setCarryableStorageManager(carryableStorageManager);
       deathStorageManager.setCoinsStorageManager(coinsStorageManager);
+      worldStorageManager
+          .getLeprechaun()
+          .setBottomlessBucketStorage(carryableStorageManager.getBottomlessBucket());
       storageManagerManager =
           new StorageManagerManager(
               this,
@@ -88,6 +92,9 @@ public class DudeWheresMyStuffPlugin extends Plugin {
 
       previewDeathStorageManager.setCarryableStorageManager(previewCarryableStorageManager);
       previewDeathStorageManager.setCoinsStorageManager(previewCoinsStorageManager);
+      previewWorldStorageManager
+          .getLeprechaun()
+          .setBottomlessBucketStorage(previewCarryableStorageManager.getBottomlessBucket());
       previewStorageManagerManager =
           new StorageManagerManager(
               this,
@@ -152,6 +159,17 @@ public class DudeWheresMyStuffPlugin extends Plugin {
   @Subscribe
   void onActorDeath(ActorDeath actorDeath) {
     storageManagerManager.onActorDeath(actorDeath);
+  }
+
+  @Subscribe
+  void onChatMessage(ChatMessage chatMessage) {
+    if (clientState == ClientState.LOGGED_OUT) {
+      return;
+    }
+
+    if (storageManagerManager.onChatMessage(chatMessage)) {
+      panelContainer.getPanel().update();
+    }
   }
 
   @Subscribe
