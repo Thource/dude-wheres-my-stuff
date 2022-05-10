@@ -87,12 +87,18 @@ public abstract class StorageTabPanel<
     itemsBoxes.clear();
     storageManager.getStorages().stream()
         .sorted(getStorageSorter())
-        .forEach(
+        .filter(Storage::isEnabled)
+        .filter(
             storage -> {
-              if (!storage.isEnabled()) {
-                return;
+              if (config.showEmptyStorages()) {
+                return true;
               }
 
+              return storage.getItems().stream()
+                  .anyMatch(itemStack -> itemStack.getId() != -1 && itemStack.getQuantity() > 0);
+            })
+        .forEach(
+            storage -> {
               ItemsBox itemsBox = new ItemsBox(itemManager, storage, null, false, showPrice());
               for (ItemStack itemStack : storage.getItems()) {
                 if (itemStack.getQuantity() > 0) {

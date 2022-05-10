@@ -77,41 +77,20 @@ public class DeathStorageTabPanel
     itemsBoxes.clear();
 
     if (developerMode && !pluginPanel.isPreviewPanel()) {
-      ItemsBox debugDeathBox =
-          new ItemsBox(itemManager, "Death items debug", null, false, showPrice());
-      for (ItemStack itemStack : storageManager.getDeathItems()) {
-        if (itemStack.getQuantity() > 0) {
-          debugDeathBox.getItems().add(itemStack);
-        }
-      }
-      debugDeathBox.rebuild();
-      itemsBoxes.add(debugDeathBox);
-      itemsBoxContainer.add(debugDeathBox);
-
-      final JPopupMenu popupMenu = new JPopupMenu();
-      popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
-      debugDeathBox.setComponentPopupMenu(popupMenu);
-
-      final JMenuItem createDeathpile = new JMenuItem("Create Deathpile");
-      createDeathpile.addActionListener(
-          e ->
-              storageManager
-                  .getStorages()
-                  .add(
-                      new Deathpile(
-                          client,
-                          itemManager,
-                          storageManager.getPlayedMinutes(),
-                          WorldPoint.fromLocalInstance(
-                              client,
-                              Objects.requireNonNull(client.getLocalPlayer()).getLocalLocation()),
-                          storageManager,
-                          storageManager.getDeathItems())));
-      popupMenu.add(createDeathpile);
+      addDebugDeathBox();
     }
 
     storageManager.getStorages().stream()
         .filter(Storage::isEnabled)
+        .filter(
+            storage -> {
+              if (config.showEmptyStorages()) {
+                return true;
+              }
+
+              return storage.getItems().stream()
+                  .anyMatch(itemStack -> itemStack.getId() != -1 && itemStack.getQuantity() > 0);
+            })
         .sorted(getStorageSorter())
         .forEach(
             storage -> {
@@ -134,6 +113,40 @@ public class DeathStorageTabPanel
             });
 
     revalidate();
+  }
+
+  private void addDebugDeathBox() {
+    ItemsBox debugDeathBox =
+        new ItemsBox(itemManager, "Death items debug", null, false, showPrice());
+    for (ItemStack itemStack : storageManager.getDeathItems()) {
+      if (itemStack.getQuantity() > 0) {
+        debugDeathBox.getItems().add(itemStack);
+      }
+    }
+    debugDeathBox.rebuild();
+    itemsBoxes.add(debugDeathBox);
+    itemsBoxContainer.add(debugDeathBox);
+
+    final JPopupMenu popupMenu = new JPopupMenu();
+    popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
+    debugDeathBox.setComponentPopupMenu(popupMenu);
+
+    final JMenuItem createDeathpile = new JMenuItem("Create Deathpile");
+    createDeathpile.addActionListener(
+        e ->
+            storageManager
+                .getStorages()
+                .add(
+                    new Deathpile(
+                        client,
+                        itemManager,
+                        storageManager.getPlayedMinutes(),
+                        WorldPoint.fromLocalInstance(
+                            client,
+                            Objects.requireNonNull(client.getLocalPlayer()).getLocalLocation()),
+                        storageManager,
+                        storageManager.getDeathItems())));
+    popupMenu.add(createDeathpile);
   }
 
   private void decorateItemsBox(Storage<?> storage, ItemsBox itemsBox) {

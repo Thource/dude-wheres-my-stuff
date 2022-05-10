@@ -34,6 +34,15 @@ public class MinigamesStorageTabPanel
     itemsBoxes.clear();
     storageManager.getStorages().stream()
         .filter(Storage::isEnabled)
+        .filter(
+            storage -> {
+              if (config.showEmptyStorages()) {
+                return true;
+              }
+
+              return storage.getItems().stream()
+                  .anyMatch(itemStack -> itemStack.getId() != -1 && itemStack.getQuantity() > 0);
+            })
         .sorted(getStorageSorter())
         .forEach(
             storage -> {

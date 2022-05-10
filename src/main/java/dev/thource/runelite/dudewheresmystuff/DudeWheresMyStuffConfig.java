@@ -11,6 +11,14 @@ public interface DudeWheresMyStuffConfig extends Config {
   String CONFIG_GROUP = "dudewheresmystuff";
 
   @ConfigItem(
+      keyName = "showEmptyStorages",
+      name = "Show empty storages",
+      description = "Whether storages with no items should be shown")
+  default boolean showEmptyStorages() {
+    return true;
+  }
+
+  @ConfigItem(
       keyName = "itemSortMode",
       name = "Item Sort Mode",
       description = "Which mode to use when sorting items",
