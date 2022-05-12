@@ -2,13 +2,18 @@ package dev.thource.runelite.dudewheresmystuff;
 
 import dev.thource.runelite.dudewheresmystuff.carryable.CarryableStorageManager;
 import dev.thource.runelite.dudewheresmystuff.coins.CoinsStorageManager;
+import dev.thource.runelite.dudewheresmystuff.coins.CoinsStorageType;
 import dev.thource.runelite.dudewheresmystuff.death.DeathStorageManager;
+import dev.thource.runelite.dudewheresmystuff.death.DeathStorageType;
+import dev.thource.runelite.dudewheresmystuff.death.Deathbank;
+import dev.thource.runelite.dudewheresmystuff.death.Deathpile;
 import dev.thource.runelite.dudewheresmystuff.minigames.MinigamesStorageManager;
 import dev.thource.runelite.dudewheresmystuff.world.WorldStorageManager;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.events.ActorDeath;
@@ -119,5 +124,30 @@ class StorageManagerManager {
 
   public boolean onChatMessage(ChatMessage chatMessage) {
     return anyMatch(storageManager -> storageManager.onChatMessage(chatMessage));
+  }
+
+  @SuppressWarnings("java:S1452")
+  public Stream<? extends Storage<? extends Enum<? extends Enum<?>>>> getStorages() {
+    return Stream.of(
+            getDeathStorageManager().storages.stream()
+                .filter(
+                    s ->
+                        (s.getType() == DeathStorageType.DEATHPILE
+                                && !((Deathpile) s)
+                                    .hasExpired(getDeathStorageManager().isPreviewManager))
+                            || (s.getType() != DeathStorageType.DEATHPILE
+                                && ((Deathbank) s).getLostAt() == -1L)),
+            getCoinsStorageManager().storages.stream()
+                .filter(
+                    storage ->
+                        storage.getType() != CoinsStorageType.INVENTORY
+                            && storage.getType() != CoinsStorageType.LOOTING_BAG),
+            getCarryableStorageManager().storages.stream(),
+            getWorldStorageManager().storages.stream())
+        .flatMap(i -> i);
+  }
+
+  public List<ItemStack> getItems() {
+    return getStorages().map(Storage::getItems).flatMap(List::stream).collect(Collectors.toList());
   }
 }

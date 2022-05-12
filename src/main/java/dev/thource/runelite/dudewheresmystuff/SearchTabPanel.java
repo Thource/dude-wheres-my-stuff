@@ -1,6 +1,5 @@
 package dev.thource.runelite.dudewheresmystuff;
 
-import dev.thource.runelite.dudewheresmystuff.coins.CoinsStorageType;
 import dev.thource.runelite.dudewheresmystuff.death.DeathStorageType;
 import dev.thource.runelite.dudewheresmystuff.death.Deathbank;
 import dev.thource.runelite.dudewheresmystuff.death.Deathpile;
@@ -11,7 +10,6 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -147,31 +145,13 @@ class SearchTabPanel
   }
 
   private List<ItemsBox> createItemsBoxes() {
-    return getStorages()
+    return storageManagerManager
+        .getStorages()
         .filter(Storage::isEnabled)
         .sorted(Comparator.comparing(s -> s.getType().getName()))
         .map(this::createItemsBox)
         .filter(Optional::isPresent)
         .map(Optional::get)
         .collect(Collectors.toList());
-  }
-
-  private Stream<? extends Storage<? extends Enum<? extends Enum<?>>>> getStorages() {
-    return Stream.of(
-            storageManagerManager.getDeathStorageManager().storages.stream()
-                .filter(
-                    s ->
-                        (s.getType() == DeathStorageType.DEATHPILE
-                                && !((Deathpile) s).hasExpired(pluginPanel.isPreviewPanel()))
-                            || (s.getType() != DeathStorageType.DEATHPILE
-                                && ((Deathbank) s).getLostAt() == -1L)),
-            storageManagerManager.getCoinsStorageManager().storages.stream()
-                .filter(
-                    storage ->
-                        storage.getType() != CoinsStorageType.INVENTORY
-                            && storage.getType() != CoinsStorageType.LOOTING_BAG),
-            storageManagerManager.getCarryableStorageManager().storages.stream(),
-            storageManagerManager.getWorldStorageManager().storages.stream())
-        .flatMap(i -> i);
   }
 }

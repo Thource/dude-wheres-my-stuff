@@ -27,14 +27,8 @@
 package dev.thource.runelite.dudewheresmystuff;
 
 import com.google.common.collect.ImmutableMap;
-import dev.thource.runelite.dudewheresmystuff.carryable.CarryableStorage;
-import dev.thource.runelite.dudewheresmystuff.coins.CoinsStorage;
-import dev.thource.runelite.dudewheresmystuff.coins.CoinsStorageType;
-import dev.thource.runelite.dudewheresmystuff.world.WorldStorage;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
@@ -173,31 +167,7 @@ class OverviewTabPanel extends TabContentPanel {
   }
 
   private long getTotalValue() {
-    return getAllItems().stream().mapToLong(ItemStack::getTotalGePrice).sum();
-  }
-
-  private List<ItemStack> getAllItems() {
-    List<ItemStack> items = new ArrayList<>();
-
-    for (CarryableStorage storage :
-        storageManagerManager.getCarryableStorageManager().getStorages()) {
-      items.addAll(storage.getItems());
-    }
-
-    for (CoinsStorage storage : storageManagerManager.getCoinsStorageManager().getStorages()) {
-      if (storage.getType() == CoinsStorageType.INVENTORY
-          || storage.getType() == CoinsStorageType.LOOTING_BAG) {
-        continue;
-      }
-
-      items.addAll(storage.getItems());
-    }
-
-    for (WorldStorage storage : storageManagerManager.getWorldStorageManager().getStorages()) {
-      items.addAll(storage.getItems());
-    }
-
-    return items;
+    return storageManagerManager.getItems().stream().mapToLong(ItemStack::getTotalGePrice).sum();
   }
 
   void resetSummaryContextMenu() {
