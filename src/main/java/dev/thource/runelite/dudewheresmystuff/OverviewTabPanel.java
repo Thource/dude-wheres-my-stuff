@@ -225,7 +225,13 @@ class OverviewTabPanel extends TabContentPanel {
 
               final JMenuItem previewItem = new JMenuItem(profile.getDisplayName());
               previewItem.addActionListener(
-                  e -> plugin.enablePreviewMode(profile.getKey(), profile.getDisplayName()));
+                  e -> {
+                    if (Objects.equals(pluginPanel.getDisplayName(), profile.getDisplayName())) {
+                      return;
+                    }
+
+                    plugin.enablePreviewMode(profile.getKey(), profile.getDisplayName());
+                  });
               popupMenu.add(previewItem);
             });
   }

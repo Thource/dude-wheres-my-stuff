@@ -204,6 +204,11 @@ public class DudeWheresMyStuffPlugin extends Plugin {
 
     panelContainer.getPanel().setDisplayName(ev.getPlayer().getName());
     panelContainer.getPanel().update();
+
+    if (Objects.equals(
+        ev.getPlayer().getName(), panelContainer.getPreviewPanel().getDisplayName())) {
+      disablePreviewMode(false);
+    }
   }
 
   @Subscribe
