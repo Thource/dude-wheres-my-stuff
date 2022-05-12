@@ -206,23 +206,27 @@ class OverviewTabPanel extends TabContentPanel {
             exitPreviewMode.addActionListener(e -> plugin.disablePreviewMode(false));
             popupMenu.add(exitPreviewMode);
           } else {
-            configManager
-                .getRSProfiles()
-                .forEach(
-                    profile -> {
-                      if (configManager.getConfiguration(
-                              DudeWheresMyStuffConfig.CONFIG_GROUP, profile.getKey(), "isMember")
-                          == null) {
-                        return;
-                      }
-
-                      final JMenuItem previewItem = new JMenuItem(profile.getDisplayName());
-                      previewItem.addActionListener(
-                          e ->
-                              plugin.enablePreviewMode(profile.getKey(), profile.getDisplayName()));
-                      popupMenu.add(previewItem);
-                    });
+            populatePopupMenuWithProfiles(popupMenu);
           }
         });
+  }
+
+  private void populatePopupMenuWithProfiles(JPopupMenu popupMenu) {
+    configManager
+        .getRSProfiles()
+        .forEach(
+            profile -> {
+              if (Objects.equals(pluginPanel.getDisplayName(), profile.getDisplayName())
+                  || configManager.getConfiguration(
+                          DudeWheresMyStuffConfig.CONFIG_GROUP, profile.getKey(), "isMember")
+                      == null) {
+                return;
+              }
+
+              final JMenuItem previewItem = new JMenuItem(profile.getDisplayName());
+              previewItem.addActionListener(
+                  e -> plugin.enablePreviewMode(profile.getKey(), profile.getDisplayName()));
+              popupMenu.add(previewItem);
+            });
   }
 }
