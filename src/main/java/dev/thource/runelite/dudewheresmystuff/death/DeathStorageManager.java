@@ -106,7 +106,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
         .filter(
             s ->
                 (s.getType() == DeathStorageType.DEATHPILE
-                        && !((Deathpile) s).hasExpired(plugin.isPreviewModeEnabled()))
+                        && !((Deathpile) s).hasExpired(isPreviewManager))
                     || (s.getType() != DeathStorageType.DEATHPILE
                         && ((Deathbank) s).getLostAt() == -1L))
         .mapToLong(Storage::getTotalValue)
@@ -271,9 +271,9 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
         .anyMatch(
             deathpile -> {
               if (deathpile.worldMapPoint == null) {
-                return !deathpile.hasExpired(plugin.isPreviewModeEnabled());
+                return !deathpile.hasExpired(isPreviewManager);
               }
-              if (deathpile.hasExpired(plugin.isPreviewModeEnabled())) {
+              if (deathpile.hasExpired(isPreviewManager)) {
                 return true;
               }
               if (deathpile.worldMapPoint.getTooltip() == null) {
@@ -281,7 +281,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
               }
 
               deathpile.worldMapPoint.setTooltip(
-                  "Deathpile (" + deathpile.getExpireText(plugin.isPreviewModeEnabled()) + ")");
+                  "Deathpile (" + deathpile.getExpireText(isPreviewManager) + ")");
               return false;
             })) {
       refreshMapPoints();
@@ -428,7 +428,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
     storages.stream()
         .filter(Deathpile.class::isInstance)
         .map(Deathpile.class::cast)
-        .filter(deathpile -> !deathpile.hasExpired(plugin.isPreviewModeEnabled()))
+        .filter(deathpile -> !deathpile.hasExpired(isPreviewManager))
         .filter(deathpile -> deathpile.getWorldPoint().equals(worldPoint))
         .forEach(
             (Deathpile deathpile) -> {
@@ -467,7 +467,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
   }
 
   int getPlayedMinutes() {
-    if (plugin.isPreviewModeEnabled()) {
+    if (isPreviewManager) {
       return startPlayedMinutes;
     }
 
@@ -745,7 +745,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
   }
 
   void refreshMapPoints() {
-    if (worldMapPointManager == null || plugin.isPreviewModeEnabled()) {
+    if (worldMapPointManager == null || isPreviewManager) {
       return;
     }
 
@@ -755,7 +755,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
     storages.stream()
         .filter(Deathpile.class::isInstance)
         .map(Deathpile.class::cast)
-        .filter(deathpile -> !deathpile.hasExpired(plugin.isPreviewModeEnabled()))
+        .filter(deathpile -> !deathpile.hasExpired(isPreviewManager))
         .forEach(
             deathpile -> {
               deathpile.worldMapPoint =

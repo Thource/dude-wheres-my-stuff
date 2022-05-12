@@ -3,6 +3,7 @@ package dev.thource.runelite.dudewheresmystuff;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
+import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.events.ActorDeath;
 import net.runelite.api.events.ChatMessage;
@@ -30,6 +31,8 @@ public abstract class StorageManager<T extends StorageType, S extends Storage<T>
   @Getter protected final List<S> storages = new ArrayList<>();
 
   protected boolean enabled = true;
+  @Setter
+  protected boolean isPreviewManager = false;
   protected DudeWheresMyStuffPlugin plugin;
 
   protected StorageManager(

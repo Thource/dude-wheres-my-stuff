@@ -90,6 +90,12 @@ public class DudeWheresMyStuffPlugin extends Plugin {
               minigamesStorageManager,
               worldStorageManager);
 
+      previewCarryableStorageManager.setPreviewManager(true);
+      previewCoinsStorageManager.setPreviewManager(true);
+      previewDeathStorageManager.setPreviewManager(true);
+      previewMinigamesStorageManager.setPreviewManager(true);
+      previewWorldStorageManager.setPreviewManager(true);
+
       previewDeathStorageManager.setCarryableStorageManager(previewCarryableStorageManager);
       previewDeathStorageManager.setCoinsStorageManager(previewCoinsStorageManager);
       previewWorldStorageManager
