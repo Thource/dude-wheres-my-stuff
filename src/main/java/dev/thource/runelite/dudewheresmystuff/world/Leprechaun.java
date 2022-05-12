@@ -35,17 +35,17 @@ public class Leprechaun extends WorldStorage {
   private final ItemStack wateringCan;
   private final ItemStack trowels;
   private final ItemStack plantCures;
-  private int bottomlessBucketCharges;
   private final ItemStack bottomlessBucket;
   private final ItemStack buckets;
   private final ItemStack composts;
   private final ItemStack superComposts;
   private final ItemStack ultraComposts;
+  private int bottomlessBucketCharges;
   @Setter private BottomlessBucket bottomlessBucketStorage;
 
   /** A constructor. */
   public Leprechaun(Client client, ClientThread clientThread, ItemManager itemManager) {
-    super(WorldStorageType.LEPRECHAUN, client, itemManager);
+    super(WorldStorageType.LEPRECHAUN, client, clientThread, itemManager);
 
     rakes = new ItemStack(ItemID.RAKE, client, clientThread, itemManager);
     seedDibbers = new ItemStack(ItemID.SEED_DIBBER, client, clientThread, itemManager);

@@ -238,7 +238,6 @@ public abstract class StorageManager<T extends StorageType, S extends Storage<T>
     return false;
   }
 
-
   /**
    * Pass onChatMessage through to enabled storages.
    *

@@ -73,6 +73,22 @@ public class ItemStack {
   /**
    * A constructor.
    *
+   * @param id OSRS item ID
+   * @param quantity quantity
+   * @param client client
+   * @param clientThread clientThread
+   * @param itemManager itemManager
+   */
+  public ItemStack(
+      int id, long quantity, Client client, ClientThread clientThread, ItemManager itemManager) {
+    this(id, client, clientThread, itemManager);
+
+    this.quantity = quantity;
+  }
+
+  /**
+   * A constructor.
+   *
    * @param itemStack itemStack to clone
    */
   public ItemStack(ItemStack itemStack) {

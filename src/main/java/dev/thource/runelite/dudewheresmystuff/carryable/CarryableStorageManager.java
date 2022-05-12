@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.client.Notifier;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 
@@ -17,12 +18,12 @@ import net.runelite.client.game.ItemManager;
 public class CarryableStorageManager
     extends StorageManager<CarryableStorageType, CarryableStorage> {
 
-  @Getter
-  private final BottomlessBucket bottomlessBucket;
+  @Getter private final BottomlessBucket bottomlessBucket;
 
   @Inject
   private CarryableStorageManager(
       Client client,
+      ClientThread clientThread,
       ItemManager itemManager,
       ConfigManager configManager,
       DudeWheresMyStuffConfig config,
@@ -38,14 +39,14 @@ public class CarryableStorageManager
         continue;
       }
 
-      storages.add(new CarryableStorage(type, client, itemManager));
+      storages.add(new CarryableStorage(type, client, clientThread, itemManager));
     }
 
-    bottomlessBucket = new BottomlessBucket(client, itemManager);
+    bottomlessBucket = new BottomlessBucket(client, clientThread, itemManager);
 
-    storages.add(new RunePouch(client, itemManager));
-    storages.add(new LootingBag(client, itemManager));
-    storages.add(new SeedBox(client, itemManager));
+    storages.add(new RunePouch(client, clientThread, itemManager));
+    storages.add(new LootingBag(client, clientThread, itemManager));
+    storages.add(new SeedBox(client, clientThread, itemManager));
     storages.add(bottomlessBucket);
   }
 

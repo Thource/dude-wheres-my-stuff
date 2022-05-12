@@ -7,6 +7,7 @@ import net.runelite.api.Client;
 import net.runelite.api.ItemID;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -17,8 +18,8 @@ public class NightmareZone extends MinigamesStorage {
 
   private final ItemStack points = new ItemStack(ItemID.DREAM_POTION, "Points", 0, 0, 0, true);
 
-  NightmareZone(Client client, ItemManager itemManager) {
-    super(MinigamesStorageType.NIGHTMARE_ZONE, client, itemManager);
+  NightmareZone(Client client, ClientThread clientThread, ItemManager itemManager) {
+    super(MinigamesStorageType.NIGHTMARE_ZONE, client, clientThread, itemManager);
 
     items.add(points);
   }

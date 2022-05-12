@@ -5,7 +5,7 @@ import com.google.inject.Inject;
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffConfig;
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
-import dev.thource.runelite.dudewheresmystuff.ItemStackService;
+import dev.thource.runelite.dudewheresmystuff.ItemStackUtils;
 import dev.thource.runelite.dudewheresmystuff.Region;
 import dev.thource.runelite.dudewheresmystuff.Storage;
 import dev.thource.runelite.dudewheresmystuff.StorageManager;
@@ -95,7 +95,8 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
       Notifier notifier) {
     super(client, itemManager, configManager, config, notifier, plugin);
 
-    deathbank = new Deathbank(DeathStorageType.UNKNOWN_DEATHBANK, client, itemManager);
+    deathbank =
+        new Deathbank(DeathStorageType.UNKNOWN_DEATHBANK, client, clientThread, itemManager);
     storages.add(deathbank);
   }
 
@@ -194,59 +195,20 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
   private void removeItemsFromList(
       List<ItemStack> listToRemoveFrom, List<ItemStack> itemsToRemove) {
     for (ItemStack itemToRemove : itemsToRemove) {
-      if (itemToRemove.getId() == -1) {
-        continue;
-      }
-
-      long quantityToRemove = itemToRemove.getQuantity();
-
-      Iterator<ItemStack> listIterator = listToRemoveFrom.iterator();
-      while (listIterator.hasNext() && quantityToRemove > 0) {
-        ItemStack inventoryItem = listIterator.next();
-
-        if (inventoryItem.getId() != itemToRemove.getId()) {
-          continue;
-        }
-
-        long qtyToRemove = Math.min(quantityToRemove, inventoryItem.getQuantity());
-        quantityToRemove -= qtyToRemove;
-        inventoryItem.setQuantity(inventoryItem.getQuantity() - qtyToRemove);
-        if (inventoryItem.getQuantity() == 0) {
-          listIterator.remove();
-        }
-      }
+      ItemStackUtils.removeItemStack(listToRemoveFrom, itemToRemove);
     }
   }
 
   private void removeItemsFromList(List<ItemStack> listToRemoveFrom, Item[] itemsToRemove) {
-    for (Item itemToRemove : itemsToRemove) {
-      if (itemToRemove.getId() == -1) {
-        continue;
-      }
-
-      long quantityToRemove = itemToRemove.getQuantity();
-
-      Iterator<ItemStack> listIterator = listToRemoveFrom.iterator();
-      while (listIterator.hasNext() && quantityToRemove > 0) {
-        ItemStack inventoryItem = listIterator.next();
-
-        if (inventoryItem.getId() != itemToRemove.getId()) {
-          continue;
-        }
-
-        long qtyToRemove = Math.min(quantityToRemove, inventoryItem.getQuantity());
-        quantityToRemove -= qtyToRemove;
-        inventoryItem.setQuantity(inventoryItem.getQuantity() - qtyToRemove);
-        if (inventoryItem.getQuantity() == 0) {
-          listIterator.remove();
-        }
-      }
+    for (Item item : itemsToRemove) {
+      ItemStackUtils.removeItemStack(
+          listToRemoveFrom, new ItemStack(item.getId(), "", item.getQuantity(), 0, 0, true));
     }
   }
 
   void clearDeathbank(boolean wasLost) {
     if (wasLost && !deathbank.getItems().isEmpty()) {
-      Deathbank db = new Deathbank(deathbank.getType(), client, itemManager);
+      Deathbank db = new Deathbank(deathbank.getType(), client, clientThread, itemManager);
       db.setLostAt(System.currentTimeMillis());
       db.getItems().addAll(deathbank.getItems());
       storages.add(db);
@@ -397,7 +359,13 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
       if (client.getAccountType() == AccountType.ULTIMATE_IRONMAN) {
         storages.add(
             new Deathpile(
-                client, itemManager, getPlayedMinutes(), deathLocation, this, deathItems));
+                client,
+                clientThread,
+                itemManager,
+                getPlayedMinutes(),
+                deathLocation,
+                this,
+                deathItems));
       }
     }
 
@@ -559,7 +527,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
           .ifPresent(lootingBag -> itemStacks.addAll(lootingBag.getItems()));
     }
 
-    return ItemStackService.compound(itemStacks, false);
+    return ItemStackUtils.compound(itemStacks, false);
   }
 
   @Override
@@ -760,7 +728,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
       return;
     }
 
-    Deathbank loadedDeathbank = new Deathbank(deathStorageType, client, itemManager);
+    Deathbank loadedDeathbank = new Deathbank(deathStorageType, client, clientThread, itemManager);
     loadedDeathbank.setLostAt(lostAt);
     loadedDeathbank.getItems().addAll(items);
     storages.add(loadedDeathbank);
@@ -851,6 +819,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
     storages.add(
         new Deathpile(
             client,
+            clientThread,
             itemManager,
             NumberUtils.toInt(dataSplit[0], 0),
             new WorldPoint(

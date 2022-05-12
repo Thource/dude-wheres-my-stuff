@@ -8,6 +8,7 @@ import dev.thource.runelite.dudewheresmystuff.Tab;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.client.Notifier;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 
@@ -19,6 +20,7 @@ public class MinigamesStorageManager
   @Inject
   private MinigamesStorageManager(
       Client client,
+      ClientThread clientThread,
       ItemManager itemManager,
       ConfigManager configManager,
       DudeWheresMyStuffConfig config,
@@ -26,11 +28,11 @@ public class MinigamesStorageManager
       DudeWheresMyStuffPlugin plugin) {
     super(client, itemManager, configManager, config, notifier, plugin);
 
-    storages.add(new MageTrainingArena(client, itemManager));
-    storages.add(new TitheFarm(client, itemManager));
-    storages.add(new LastManStanding(client, itemManager));
-    storages.add(new BarbarianAssault(client, itemManager));
-    storages.add(new NightmareZone(client, itemManager));
+    storages.add(new MageTrainingArena(client, clientThread, itemManager));
+    storages.add(new TitheFarm(client, clientThread, itemManager));
+    storages.add(new LastManStanding(client, clientThread, itemManager));
+    storages.add(new BarbarianAssault(client, clientThread, itemManager));
+    storages.add(new NightmareZone(client, clientThread, itemManager));
   }
 
   @Override

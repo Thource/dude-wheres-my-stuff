@@ -17,8 +17,7 @@ import net.runelite.client.game.ItemManager;
 @Slf4j
 public class WorldStorageManager extends StorageManager<WorldStorageType, WorldStorage> {
 
-  @Getter
-  private final Leprechaun leprechaun;
+  @Getter private final Leprechaun leprechaun;
 
   @Inject
   private WorldStorageManager(

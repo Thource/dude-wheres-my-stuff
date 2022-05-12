@@ -14,6 +14,7 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.WidgetClosed;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -24,14 +25,16 @@ public abstract class Storage<T extends StorageType> {
 
   protected final List<ItemStack> items = new ArrayList<>();
   protected Client client;
+  protected ClientThread clientThread;
   protected ItemManager itemManager;
   protected T type;
   @Setter protected long lastUpdated = -1L;
   protected boolean enabled = true;
 
-  protected Storage(T type, Client client, ItemManager itemManager) {
+  protected Storage(T type, Client client, ClientThread clientThread, ItemManager itemManager) {
     this.type = type;
     this.client = client;
+    this.clientThread = clientThread;
     this.itemManager = itemManager;
   }
 

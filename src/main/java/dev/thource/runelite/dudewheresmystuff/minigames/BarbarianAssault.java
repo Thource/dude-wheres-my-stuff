@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.ItemID;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -28,8 +29,8 @@ public class BarbarianAssault extends MinigamesStorage {
 
   private final Map<Integer, ItemStack> varbits = new HashMap<>();
 
-  BarbarianAssault(Client client, ItemManager itemManager) {
-    super(MinigamesStorageType.BARBARIAN_ASSAULT, client, itemManager);
+  BarbarianAssault(Client client, ClientThread clientThread, ItemManager itemManager) {
+    super(MinigamesStorageType.BARBARIAN_ASSAULT, client, clientThread, itemManager);
 
     items.add(attackerPoints);
     items.add(collectorPoints);

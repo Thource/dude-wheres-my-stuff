@@ -11,6 +11,7 @@ import net.runelite.api.Client;
 import net.runelite.api.ItemID;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.widgets.Widget;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -28,8 +29,8 @@ public class BottomlessBucket extends CarryableStorage {
   private final ItemStack supercompostStack;
   private final ItemStack ultracompostStack;
 
-  BottomlessBucket(Client client, ItemManager itemManager) {
-    super(CarryableStorageType.BOTTOMLESS_BUCKET, client, itemManager);
+  BottomlessBucket(Client client, ClientThread clientThread, ItemManager itemManager) {
+    super(CarryableStorageType.BOTTOMLESS_BUCKET, client, clientThread, itemManager);
 
     compostStack = new ItemStack(ItemID.COMPOST, "Compost", 0, 0, 0, true);
     supercompostStack = new ItemStack(ItemID.COMPOST, "Supercompost", 0, 0, 0, true);

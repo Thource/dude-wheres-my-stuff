@@ -8,6 +8,7 @@ import net.runelite.api.ItemID;
 import net.runelite.api.events.WidgetClosed;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -20,8 +21,8 @@ public class LastManStanding extends MinigamesStorage {
 
   private Widget shopWidget = null;
 
-  LastManStanding(Client client, ItemManager itemManager) {
-    super(MinigamesStorageType.LAST_MAN_STANDING, client, itemManager);
+  LastManStanding(Client client, ClientThread clientThread, ItemManager itemManager) {
+    super(MinigamesStorageType.LAST_MAN_STANDING, client, clientThread, itemManager);
 
     items.add(points);
   }

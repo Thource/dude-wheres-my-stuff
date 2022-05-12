@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.game.ItemManager;
 
 /** Deathbank is responsible for tracking the player's deathbanked items. */
@@ -15,8 +16,12 @@ public class Deathbank extends DeathStorage {
   private boolean locked = false;
   private long lostAt = -1L;
 
-  Deathbank(DeathStorageType deathStorageType, Client client, ItemManager itemManager) {
-    super(deathStorageType, client, itemManager);
+  Deathbank(
+      DeathStorageType deathStorageType,
+      Client client,
+      ClientThread clientThread,
+      ItemManager itemManager) {
+    super(deathStorageType, client, clientThread, itemManager);
   }
 
   void setType(DeathStorageType type) {

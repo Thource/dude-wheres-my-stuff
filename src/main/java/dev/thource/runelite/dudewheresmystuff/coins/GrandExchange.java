@@ -4,6 +4,7 @@ import java.util.Objects;
 import java.util.stream.IntStream;
 import net.runelite.api.Client;
 import net.runelite.api.widgets.Widget;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.game.ItemManager;
 import org.apache.commons.lang3.math.NumberUtils;
 
@@ -13,8 +14,8 @@ import org.apache.commons.lang3.math.NumberUtils;
  */
 public class GrandExchange extends CoinsStorage {
 
-  GrandExchange(Client client, ItemManager itemManager) {
-    super(CoinsStorageType.GRAND_EXCHANGE, client, itemManager);
+  GrandExchange(Client client, ClientThread clientThread, ItemManager itemManager) {
+    super(CoinsStorageType.GRAND_EXCHANGE, client, clientThread, itemManager);
   }
 
   @Override

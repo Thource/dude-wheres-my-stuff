@@ -6,6 +6,7 @@ import java.util.List;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.game.ItemManager;
 
 /** Deathpile is responsible for tracking the player's deathpiled items. */
@@ -18,12 +19,13 @@ public class Deathpile extends DeathStorage {
 
   Deathpile(
       Client client,
+      ClientThread clientThread,
       ItemManager itemManager,
       int playedMinutesAtCreation,
       WorldPoint worldPoint,
       DeathStorageManager deathStorageManager,
       List<ItemStack> deathItems) {
-    super(DeathStorageType.DEATHPILE, client, itemManager);
+    super(DeathStorageType.DEATHPILE, client, clientThread, itemManager);
     this.playedMinutesAtCreation = playedMinutesAtCreation;
     this.worldPoint = worldPoint;
     this.deathStorageManager = deathStorageManager;

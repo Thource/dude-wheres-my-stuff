@@ -12,6 +12,7 @@ import net.runelite.api.ItemID;
 import net.runelite.api.events.WidgetClosed;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -33,8 +34,8 @@ public class MageTrainingArena extends MinigamesStorage {
 
   private Widget shopWidget = null;
 
-  MageTrainingArena(Client client, ItemManager itemManager) {
-    super(MinigamesStorageType.MAGE_TRAINING_ARENA, client, itemManager);
+  MageTrainingArena(Client client, ClientThread clientThread, ItemManager itemManager) {
+    super(MinigamesStorageType.MAGE_TRAINING_ARENA, client, clientThread, itemManager);
 
     items.add(telekineticPoints);
     items.add(graveyardPoints);

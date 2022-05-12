@@ -5,6 +5,7 @@ import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.Varbits;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.RunepouchRune;
 
@@ -24,8 +25,8 @@ public class RunePouch extends CarryableStorage {
   private int rune2Quantity;
   private int rune3Quantity;
 
-  RunePouch(Client client, ItemManager itemManager) {
-    super(CarryableStorageType.RUNE_POUCH, client, itemManager);
+  RunePouch(Client client, ClientThread clientThread, ItemManager itemManager) {
+    super(CarryableStorageType.RUNE_POUCH, client, clientThread, itemManager);
   }
 
   @Override

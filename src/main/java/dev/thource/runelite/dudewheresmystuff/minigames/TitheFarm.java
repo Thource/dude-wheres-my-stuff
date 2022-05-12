@@ -6,6 +6,7 @@ import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.ItemID;
 import net.runelite.api.Varbits;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -16,8 +17,8 @@ public class TitheFarm extends MinigamesStorage {
 
   private final ItemStack points = new ItemStack(ItemID.GRICOLLERS_CAN, "Points", 0, 0, 0, true);
 
-  TitheFarm(Client client, ItemManager itemManager) {
-    super(MinigamesStorageType.TITHE_FARM, client, itemManager);
+  TitheFarm(Client client, ClientThread clientThread, ItemManager itemManager) {
+    super(MinigamesStorageType.TITHE_FARM, client, clientThread, itemManager);
 
     items.add(points);
   }

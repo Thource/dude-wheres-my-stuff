@@ -139,6 +139,7 @@ public class DeathStorageTabPanel
                 .add(
                     new Deathpile(
                         client,
+                        null,
                         itemManager,
                         storageManager.getPlayedMinutes(),
                         WorldPoint.fromLocalInstance(

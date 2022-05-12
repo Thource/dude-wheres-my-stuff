@@ -8,6 +8,7 @@ import dev.thource.runelite.dudewheresmystuff.Tab;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.client.Notifier;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 
@@ -18,6 +19,7 @@ public class CoinsStorageManager extends StorageManager<CoinsStorageType, CoinsS
   @Inject
   CoinsStorageManager(
       Client client,
+      ClientThread clientThread,
       ItemManager itemManager,
       ConfigManager configManager,
       DudeWheresMyStuffConfig config,
@@ -33,13 +35,13 @@ public class CoinsStorageManager extends StorageManager<CoinsStorageType, CoinsS
         continue;
       }
 
-      storages.add(new CoinsStorage(type, client, itemManager));
+      storages.add(new CoinsStorage(type, client, clientThread, itemManager));
     }
 
-    storages.add(new ServantsMoneybag(client, itemManager));
-    storages.add(new ShiloFurnace(client, itemManager));
-    storages.add(new GrandExchange(client, itemManager));
-    storages.add(new LootingBag(client, itemManager));
+    storages.add(new ServantsMoneybag(client, clientThread, itemManager));
+    storages.add(new ShiloFurnace(client, clientThread, itemManager));
+    storages.add(new GrandExchange(client, clientThread, itemManager));
+    storages.add(new LootingBag(client, clientThread, itemManager));
   }
 
   @Override

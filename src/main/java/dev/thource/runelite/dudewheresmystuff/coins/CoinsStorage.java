@@ -6,6 +6,7 @@ import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 
@@ -18,8 +19,9 @@ public class CoinsStorage extends Storage<CoinsStorageType> {
 
   protected ItemStack coinStack = new ItemStack(995, "Coins", 0, 1, 0, true);
 
-  protected CoinsStorage(CoinsStorageType type, Client client, ItemManager itemManager) {
-    super(type, client, itemManager);
+  protected CoinsStorage(
+      CoinsStorageType type, Client client, ClientThread clientThread, ItemManager itemManager) {
+    super(type, client, clientThread, itemManager);
 
     items.add(coinStack);
   }

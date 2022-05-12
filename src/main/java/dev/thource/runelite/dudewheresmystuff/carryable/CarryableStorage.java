@@ -6,6 +6,7 @@ import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
 import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.game.ItemManager;
 
 /**
@@ -15,8 +16,12 @@ import net.runelite.client.game.ItemManager;
 @Getter
 public class CarryableStorage extends Storage<CarryableStorageType> {
 
-  protected CarryableStorage(CarryableStorageType type, Client client, ItemManager itemManager) {
-    super(type, client, itemManager);
+  protected CarryableStorage(
+      CarryableStorageType type,
+      Client client,
+      ClientThread clientThread,
+      ItemManager itemManager) {
+    super(type, client, clientThread, itemManager);
   }
 
   @Override

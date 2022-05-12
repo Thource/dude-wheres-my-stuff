@@ -2,6 +2,7 @@ package dev.thource.runelite.dudewheresmystuff.coins;
 
 import net.runelite.api.Client;
 import net.runelite.api.widgets.Widget;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.game.ItemManager;
 import org.apache.commons.lang3.math.NumberUtils;
 
@@ -11,8 +12,8 @@ import org.apache.commons.lang3.math.NumberUtils;
  */
 public class ServantsMoneybag extends CoinsStorage {
 
-  ServantsMoneybag(Client client, ItemManager itemManager) {
-    super(CoinsStorageType.SERVANT_MONEYBAG, client, itemManager);
+  ServantsMoneybag(Client client, ClientThread clientThread, ItemManager itemManager) {
+    super(CoinsStorageType.SERVANT_MONEYBAG, client, clientThread, itemManager);
   }
 
   @Override
