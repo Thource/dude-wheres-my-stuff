@@ -33,6 +33,7 @@ public class MinigamesStorageManager
     storages.add(new LastManStanding(client, clientThread, itemManager));
     storages.add(new BarbarianAssault(client, clientThread, itemManager));
     storages.add(new NightmareZone(client, clientThread, itemManager));
+    storages.add(new GuardiansOfTheRift(client, clientThread, itemManager));
   }
 
   @Override

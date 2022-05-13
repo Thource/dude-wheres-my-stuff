@@ -14,7 +14,7 @@ public enum MinigamesStorageType implements StorageType {
   NIGHTMARE_ZONE("Nightmare Zone", -1, true, "nightmarezone"),
   PEST_CONTROL("Pest Control", -1, true, "pestcontrol"),
   BARBARIAN_ASSAULT("Barbarian Assault", -1, true, "barbarianassault"),
-  GUARDIANS_OF_THE_RIFT("Guardians of the Rift", -1, true, "guardiansoftherift"),
+  GUARDIANS_OF_THE_RIFT("Guardians of the Rift", -1, false, "guardiansoftherift"),
   TEMPOROSS("Tempoross", -1, true, "tempoross"),
   SLAYER("Slayer", -1, true, "slayer"),
   SOUL_WARS("Soul Wars", -1, true, "soulwars"),
