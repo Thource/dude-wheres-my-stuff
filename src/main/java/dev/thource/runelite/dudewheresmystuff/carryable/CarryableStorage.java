@@ -31,13 +31,16 @@ public class CarryableStorage extends Storage<CarryableStorageType> {
     if (type == CarryableStorageType.EQUIPMENT && updated) {
       ItemStack empty = new ItemStack(-1, "empty", 1, 0, 0, false);
 
-      if (items.size() > 13) {
-        // move ammo into the correct place if the slot exists
-        ItemStack ammo = items.remove(EquipmentInventorySlot.AMMO.getSlotIdx());
-        items.add(3, ammo);
-      } else {
-        items.add(3, empty);
+      if (items.size() < 14) {
+        for (int i = items.size(); i < 14; i++) {
+          items.add(empty);
+        }
       }
+
+      // move ammo into the correct place if the slot exists
+      ItemStack ammo = items.remove(EquipmentInventorySlot.AMMO.getSlotIdx());
+      items.add(3, ammo);
+
       items.remove(12); // remove empty space between boots and ring
 
       // pad it out to fit the 4 wide grid
