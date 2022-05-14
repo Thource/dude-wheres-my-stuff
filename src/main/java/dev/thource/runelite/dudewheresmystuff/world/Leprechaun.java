@@ -337,6 +337,14 @@ public class Leprechaun extends WorldStorage {
                 return;
               }
 
+              if (loadedItem.getId() == ItemID.BOTTOMLESS_COMPOST_BUCKET
+                  || loadedItem.getId() == ItemID.BOTTOMLESS_COMPOST_BUCKET_22997) {
+                bottomlessBucket.setId(loadedItem.getId());
+                bottomlessBucket.setQuantity(loadedItem.getQuantity());
+                bottomlessBucket.populateFromComposition(itemManager);
+                return;
+              }
+
               for (ItemStack item : items) {
                 if (loadedItem.getId() == item.getId()) {
                   item.setQuantity(loadedItem.getQuantity());
