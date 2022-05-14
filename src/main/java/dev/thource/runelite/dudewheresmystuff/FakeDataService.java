@@ -121,6 +121,11 @@ class FakeDataService {
         PROFILE,
         "carryable.runepouch",
         "-1;563,580=4696,853=554,429");
+    configManager.setConfiguration(
+        DudeWheresMyStuffConfig.CONFIG_GROUP,
+        PROFILE,
+        "carryable.bottomlessbucket",
+        System.currentTimeMillis() - (1000 * 60 * 60 * 2) + ";0;0;1423");
   }
 
   private static void createWorldData(ConfigManager configManager) {
@@ -128,8 +133,8 @@ class FakeDataService {
         DudeWheresMyStuffConfig.CONFIG_GROUP,
         PROFILE,
         "world.leprechaun",
-        "-1;5341,10=5343,19=952,15=7409,1=13353,1=5325,5=6036,8=1925,940=6032,65=6034,17=21483,"
-            + "647");
+        "-1;5341,10=5343,19=952,15=7409,1=13353,1=5325,5=6036,8=1925,940=22997,1=3727,10="
+            + "6032,65=6034,17=21483,647");
   }
 
   private static void createMinigamesData(ConfigManager configManager) {
