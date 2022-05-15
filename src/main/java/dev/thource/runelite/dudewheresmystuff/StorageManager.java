@@ -31,8 +31,7 @@ public abstract class StorageManager<T extends StorageType, S extends Storage<T>
   @Getter protected final List<S> storages = new ArrayList<>();
 
   protected boolean enabled = true;
-  @Setter
-  protected boolean isPreviewManager = false;
+  @Setter protected boolean isPreviewManager = false;
   protected DudeWheresMyStuffPlugin plugin;
 
   protected StorageManager(

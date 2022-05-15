@@ -86,8 +86,10 @@ public class ItemStackUtils {
    *
    * @param items ItemStacks to remove from
    * @param itemToRemove ItemStack to remove
+   * @param replaceWithEmpty whether fully removed items should be replaced by an "empty" item
    */
-  public static void removeItemStack(List<ItemStack> items, ItemStack itemToRemove) {
+  public static void removeItemStack(
+      List<ItemStack> items, ItemStack itemToRemove, boolean replaceWithEmpty) {
     if (itemToRemove.getId() == -1) {
       return;
     }
@@ -106,8 +108,16 @@ public class ItemStackUtils {
       quantityToRemove -= qtyToRemove;
       inventoryItem.setQuantity(inventoryItem.getQuantity() - qtyToRemove);
       if (inventoryItem.getQuantity() == 0) {
-        listIterator.set(new ItemStack(-1, "empty", 1, 0, 0, false));
+        if (replaceWithEmpty) {
+          listIterator.set(new ItemStack(-1, "empty", 1, 0, 0, false));
+        } else {
+          listIterator.remove();
+        }
       }
     }
+  }
+
+  public static void removeItemStack(List<ItemStack> items, ItemStack itemToRemove) {
+    removeItemStack(items, itemToRemove, true);
   }
 }

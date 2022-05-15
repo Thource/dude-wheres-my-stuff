@@ -67,7 +67,7 @@ public class ItemsBox extends JPanel {
 
   private final JPanel itemContainer = new JPanel();
   private final JLabel subTitleLabel = new JLabel();
-  private final JPanel logTitle = new JPanel();
+  @Getter private final JPanel logTitle = new JPanel();
   private final transient ItemManager itemManager;
 
   @Getter(AccessLevel.PACKAGE)
@@ -80,7 +80,7 @@ public class ItemsBox extends JPanel {
   private JLabel priceLabel = null;
   private JLabel lastUpdatedLabel = null;
   private JLabel expiryLabel = null;
-  private transient Storage<?> storage = null;
+  @Getter private transient Storage<?> storage = null;
 
   private long totalPrice;
   private long expiryMs;
@@ -172,7 +172,7 @@ public class ItemsBox extends JPanel {
       boolean showPrice) {
     this(
         itemManager,
-        storage.getType().getName(),
+        storage.getName(),
         storage.getType().isAutomatic(),
         subtitle,
         showAlchPrices,
@@ -181,7 +181,6 @@ public class ItemsBox extends JPanel {
   }
 
   // Suppress string literal warnings, defining a constant for "</html>" is dumb
-  @SuppressWarnings("java:S1192")
   private static String buildToolTip(ItemStack item) {
     final String name = item.getName();
     final long quantity = item.getQuantity();

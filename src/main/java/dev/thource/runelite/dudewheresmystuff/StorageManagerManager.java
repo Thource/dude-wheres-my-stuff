@@ -8,6 +8,7 @@ import dev.thource.runelite.dudewheresmystuff.death.DeathStorageType;
 import dev.thource.runelite.dudewheresmystuff.death.Deathbank;
 import dev.thource.runelite.dudewheresmystuff.death.Deathpile;
 import dev.thource.runelite.dudewheresmystuff.minigames.MinigamesStorageManager;
+import dev.thource.runelite.dudewheresmystuff.stash.StashStorageManager;
 import dev.thource.runelite.dudewheresmystuff.world.WorldStorageManager;
 import java.util.Arrays;
 import java.util.List;
@@ -31,6 +32,7 @@ class StorageManagerManager {
   private final CoinsStorageManager coinsStorageManager;
   private final DeathStorageManager deathStorageManager;
   private final MinigamesStorageManager minigamesStorageManager;
+  private final StashStorageManager stashStorageManager;
   private final WorldStorageManager worldStorageManager;
 
   @Getter(AccessLevel.NONE)
@@ -45,12 +47,14 @@ class StorageManagerManager {
       CoinsStorageManager coinsStorageManager,
       DeathStorageManager deathStorageManager,
       MinigamesStorageManager minigamesStorageManager,
+      StashStorageManager stashStorageManager,
       WorldStorageManager worldStorageManager) {
     this.plugin = plugin;
     this.carryableStorageManager = carryableStorageManager;
     this.coinsStorageManager = coinsStorageManager;
     this.deathStorageManager = deathStorageManager;
     this.minigamesStorageManager = minigamesStorageManager;
+    this.stashStorageManager = stashStorageManager;
     this.worldStorageManager = worldStorageManager;
 
     storageManagers =
@@ -59,6 +63,7 @@ class StorageManagerManager {
             coinsStorageManager,
             deathStorageManager,
             minigamesStorageManager,
+            stashStorageManager,
             worldStorageManager);
   }
 
@@ -143,6 +148,7 @@ class StorageManagerManager {
                         storage.getType() != CoinsStorageType.INVENTORY
                             && storage.getType() != CoinsStorageType.LOOTING_BAG),
             getCarryableStorageManager().storages.stream(),
+            getStashStorageManager().storages.stream(),
             getWorldStorageManager().storages.stream())
         .flatMap(i -> i);
   }

@@ -1,5 +1,6 @@
 package dev.thource.runelite.dudewheresmystuff;
 
+import dev.thource.runelite.dudewheresmystuff.stash.StashUnit;
 import net.runelite.api.vars.AccountType;
 import net.runelite.client.config.ConfigManager;
 
@@ -27,6 +28,22 @@ class FakeDataService {
     createCarryableData(configManager);
     createWorldData(configManager);
     createMinigamesData(configManager);
+    createStashData(configManager);
+  }
+
+  private static void createStashData(ConfigManager configManager) {
+    for (StashUnit stashUnit : StashUnit.values()) {
+      StringBuilder itemsBuilder = new StringBuilder();
+      for (int itemId : stashUnit.getDefaultItemIds()) {
+        itemsBuilder.append(itemId).append(",1=");
+      }
+
+      configManager.setConfiguration(
+          DudeWheresMyStuffConfig.CONFIG_GROUP,
+          PROFILE,
+          "stash." + stashUnit.getStashUnitData().getObjectId(),
+          (System.currentTimeMillis() - (1000 * 60 * 9)) + ";" + itemsBuilder);
+    }
   }
 
   private static void createDeathData(ConfigManager configManager) {

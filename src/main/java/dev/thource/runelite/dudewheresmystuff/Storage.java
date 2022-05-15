@@ -123,7 +123,11 @@ public abstract class Storage<T extends StorageType> {
                 .collect(Collectors.joining("="));
 
     configManager.setRSProfileConfiguration(
-        DudeWheresMyStuffConfig.CONFIG_GROUP, managerConfigKey + "." + type.getConfigKey(), data);
+        DudeWheresMyStuffConfig.CONFIG_GROUP, getConfigKey(managerConfigKey), data);
+  }
+
+  protected String getConfigKey(String managerConfigKey) {
+    return managerConfigKey + "." + type.getConfigKey();
   }
 
   protected List<ItemStack> loadItems(
@@ -132,18 +136,21 @@ public abstract class Storage<T extends StorageType> {
         configManager.getConfiguration(
             DudeWheresMyStuffConfig.CONFIG_GROUP,
             profileKey,
-            managerConfigKey + "." + type.getConfigKey(),
+            getConfigKey(managerConfigKey),
             String.class);
     if (data == null) {
       return Collections.emptyList();
     }
 
     String[] dataSplit = data.split(";");
-    if (dataSplit.length != 2) {
+    if (dataSplit.length < 1) {
       return Collections.emptyList();
     }
 
     this.lastUpdated = NumberUtils.toLong(dataSplit[0], -1);
+    if (dataSplit.length != 2) {
+      return Collections.emptyList();
+    }
 
     List<ItemStack> loadedItems = new ArrayList<>();
     for (String itemStackString : dataSplit[1].split("=")) {
@@ -186,5 +193,9 @@ public abstract class Storage<T extends StorageType> {
 
   public void enable() {
     enabled = true;
+  }
+
+  public String getName() {
+    return type.getName();
   }
 }

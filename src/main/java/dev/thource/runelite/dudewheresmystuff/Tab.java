@@ -31,6 +31,7 @@ import dev.thource.runelite.dudewheresmystuff.carryable.CarryableStorageManager;
 import dev.thource.runelite.dudewheresmystuff.coins.CoinsStorageManager;
 import dev.thource.runelite.dudewheresmystuff.death.DeathStorageManager;
 import dev.thource.runelite.dudewheresmystuff.minigames.MinigamesStorageManager;
+import dev.thource.runelite.dudewheresmystuff.stash.StashStorageManager;
 import dev.thource.runelite.dudewheresmystuff.world.WorldStorageManager;
 import java.util.Arrays;
 import java.util.Collections;
@@ -50,7 +51,7 @@ public enum Tab {
   MINIGAMES("Minigames", ItemID.PROGRESS_HAT),
   DEATH("Death Storage", ItemID.SKULL),
   POH_STORAGE("POH Storage", ItemID.EXIT_PORTAL),
-  STASH_UNITS("Stash Units", ItemID.CLUE_SCROLL_MASTER),
+  STASH_UNITS("STASH Units", ItemID.STASH_CHART),
   SEARCH("Search", -1);
 
   public static final ImmutableMap<Class<? extends StorageManager<?, ?>>, Tab> MANAGER_TAB_MAP =
@@ -59,11 +60,13 @@ public enum Tab {
           .put(CoinsStorageManager.class, COINS)
           .put(CarryableStorageManager.class, CARRYABLE_STORAGE)
           .put(WorldStorageManager.class, WORLD)
+          .put(StashStorageManager.class, STASH_UNITS)
           .put(MinigamesStorageManager.class, MINIGAMES)
           .build();
   public static final List<Tab> TABS =
       Collections.unmodifiableList(
-          Arrays.asList(OVERVIEW, DEATH, COINS, CARRYABLE_STORAGE, WORLD, MINIGAMES, SEARCH));
+          Arrays.asList(
+              OVERVIEW, DEATH, COINS, CARRYABLE_STORAGE, STASH_UNITS, WORLD, MINIGAMES, SEARCH));
 
   private final String name;
   private final int itemId;
