@@ -52,7 +52,7 @@ public class GuardiansOfTheRift extends MinigamesStorage {
       return false;
     }
 
-    Matcher matcher = widgetPattern.matcher(widget.getText());
+    Matcher matcher = widgetPattern.matcher(widget.getText().replace(",", ""));
     if (!matcher.find()) {
       return false;
     }
@@ -90,7 +90,7 @@ public class GuardiansOfTheRift extends MinigamesStorage {
       return true;
     }
 
-    Matcher matcher = chatPointsPattern.matcher(chatMessage.getMessage());
+    Matcher matcher = chatPointsPattern.matcher(chatMessage.getMessage().replace(",", ""));
     if (!matcher.matches()) {
       return false;
     }
