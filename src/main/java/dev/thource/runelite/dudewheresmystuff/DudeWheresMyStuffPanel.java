@@ -268,8 +268,10 @@ public class DudeWheresMyStuffPanel extends JPanel {
             });
 
     SwingUtilities.invokeLater(
-        () -> ((SearchTabPanel) storageTabPanelMap.get(Tab.SEARCH)).getSearchBar().setText(""));
-    switchTab(Tab.OVERVIEW);
+        () -> {
+          ((SearchTabPanel) storageTabPanelMap.get(Tab.SEARCH)).getSearchBar().setText("");
+          switchTab(Tab.OVERVIEW);
+        });
 
     setDisplayName("");
   }
