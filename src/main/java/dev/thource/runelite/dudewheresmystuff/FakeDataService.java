@@ -201,5 +201,10 @@ class FakeDataService {
         PROFILE,
         "minigames.barbarianassault",
         "194=294=40=64");
+    configManager.setConfiguration(
+        DudeWheresMyStuffConfig.CONFIG_GROUP,
+        PROFILE,
+        "minigames.guardiansoftherift",
+        System.currentTimeMillis() - (1000 * 60 * 60) + ";1200=1200");
   }
 }
