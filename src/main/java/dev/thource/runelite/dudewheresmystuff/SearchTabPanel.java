@@ -12,6 +12,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -21,6 +22,7 @@ import net.runelite.api.vars.AccountType;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.components.IconTextField;
+import net.runelite.client.util.SwingUtil;
 
 class SearchTabPanel
     extends StorageTabPanel<
@@ -73,7 +75,7 @@ class SearchTabPanel
   }
 
   private void onSearchBarChanged() {
-    rebuildList();
+    SwingUtilities.invokeLater(this::rebuildList);
   }
 
   @Override
@@ -83,7 +85,7 @@ class SearchTabPanel
 
   @Override
   protected void rebuildList() {
-    itemsBoxContainer.removeAll();
+    SwingUtil.fastRemoveAll(itemsBoxContainer);
     itemsBoxes.clear();
     createItemsBoxes()
         .forEach(

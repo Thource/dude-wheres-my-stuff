@@ -56,6 +56,7 @@ import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.util.AsyncBufferedImage;
 import net.runelite.client.util.QuantityFormatter;
+import net.runelite.client.util.SwingUtil;
 import net.runelite.client.util.Text;
 
 /** ItemsBox is responsible for displaying items to the player. */
@@ -356,7 +357,7 @@ public class ItemsBox extends JPanel {
 
     totalPrice = newItems.stream().mapToLong(getPrice).sum();
 
-    itemContainer.removeAll();
+    SwingUtil.fastRemoveAll(itemContainer);
     itemContainer.setLayout(null);
 
     if (itemSortMode == ItemSortMode.VALUE) {

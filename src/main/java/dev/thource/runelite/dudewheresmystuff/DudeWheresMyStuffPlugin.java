@@ -6,6 +6,7 @@ import dev.thource.runelite.dudewheresmystuff.carryable.CarryableStorageManager;
 import dev.thource.runelite.dudewheresmystuff.coins.CoinsStorageManager;
 import dev.thource.runelite.dudewheresmystuff.death.DeathStorageManager;
 import dev.thource.runelite.dudewheresmystuff.minigames.MinigamesStorageManager;
+import dev.thource.runelite.dudewheresmystuff.playerownedhouse.PlayerOwnedHouseStorageManager;
 import dev.thource.runelite.dudewheresmystuff.stash.StashStorageManager;
 import dev.thource.runelite.dudewheresmystuff.world.WorldStorageManager;
 import java.awt.image.BufferedImage;
@@ -61,6 +62,7 @@ public class DudeWheresMyStuffPlugin extends Plugin {
   @Inject private CarryableStorageManager carryableStorageManager;
   @Inject private WorldStorageManager worldStorageManager;
   @Inject private StashStorageManager stashStorageManager;
+  @Inject private PlayerOwnedHouseStorageManager playerOwnedHouseStorageManager;
   @Inject private MinigamesStorageManager minigamesStorageManager;
   private StorageManagerManager storageManagerManager;
   @Inject private DeathStorageManager previewDeathStorageManager;
@@ -68,6 +70,7 @@ public class DudeWheresMyStuffPlugin extends Plugin {
   @Inject private CarryableStorageManager previewCarryableStorageManager;
   @Inject private WorldStorageManager previewWorldStorageManager;
   @Inject private StashStorageManager previewStashStorageManager;
+  @Inject private PlayerOwnedHouseStorageManager previewPlayerOwnedHouseStorageManager;
   @Inject private MinigamesStorageManager previewMinigamesStorageManager;
   private StorageManagerManager previewStorageManagerManager;
   private NavigationButton navButton;
@@ -92,6 +95,7 @@ public class DudeWheresMyStuffPlugin extends Plugin {
               deathStorageManager,
               minigamesStorageManager,
               stashStorageManager,
+              playerOwnedHouseStorageManager,
               worldStorageManager);
 
       previewCarryableStorageManager.setPreviewManager(true);
@@ -99,6 +103,7 @@ public class DudeWheresMyStuffPlugin extends Plugin {
       previewDeathStorageManager.setPreviewManager(true);
       previewMinigamesStorageManager.setPreviewManager(true);
       previewStashStorageManager.setPreviewManager(true);
+      previewPlayerOwnedHouseStorageManager.setPreviewManager(true);
       previewWorldStorageManager.setPreviewManager(true);
 
       previewDeathStorageManager.setCarryableStorageManager(previewCarryableStorageManager);
@@ -114,6 +119,7 @@ public class DudeWheresMyStuffPlugin extends Plugin {
               previewDeathStorageManager,
               previewMinigamesStorageManager,
               previewStashStorageManager,
+              playerOwnedHouseStorageManager,
               previewWorldStorageManager);
 
       panelContainer =

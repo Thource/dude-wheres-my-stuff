@@ -165,6 +165,12 @@ class OverviewTabPanel extends TabContentPanel {
             String.format(
                 GP_TOTAL, storageManagerManager.getStashStorageManager().getTotalValue()));
     overviews
+        .get(Tab.POH_STORAGE)
+        .updateStatus(
+            String.format(
+                GP_TOTAL,
+                storageManagerManager.getPlayerOwnedHouseStorageManager().getTotalValue()));
+    overviews
         .get(Tab.WORLD)
         .updateStatus(
             String.format(

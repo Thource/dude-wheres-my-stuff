@@ -31,6 +31,7 @@ import dev.thource.runelite.dudewheresmystuff.carryable.CarryableStorageManager;
 import dev.thource.runelite.dudewheresmystuff.coins.CoinsStorageManager;
 import dev.thource.runelite.dudewheresmystuff.death.DeathStorageManager;
 import dev.thource.runelite.dudewheresmystuff.minigames.MinigamesStorageManager;
+import dev.thource.runelite.dudewheresmystuff.playerownedhouse.PlayerOwnedHouseStorageManager;
 import dev.thource.runelite.dudewheresmystuff.stash.StashStorageManager;
 import dev.thource.runelite.dudewheresmystuff.world.WorldStorageManager;
 import java.util.Arrays;
@@ -50,7 +51,7 @@ public enum Tab {
   WORLD("World Storage", ItemID.ROGUES_EQUIPMENT_CRATE),
   MINIGAMES("Minigames", ItemID.PROGRESS_HAT),
   DEATH("Death Storage", ItemID.SKULL),
-  POH_STORAGE("POH Storage", ItemID.EXIT_PORTAL),
+  POH_STORAGE("POH Storage", ItemID.MAHOGANY_ARMOUR_CASE),
   STASH_UNITS("STASH Units", ItemID.STASH_CHART),
   SEARCH("Search", -1);
 
@@ -61,12 +62,21 @@ public enum Tab {
           .put(CarryableStorageManager.class, CARRYABLE_STORAGE)
           .put(WorldStorageManager.class, WORLD)
           .put(StashStorageManager.class, STASH_UNITS)
+          .put(PlayerOwnedHouseStorageManager.class, POH_STORAGE)
           .put(MinigamesStorageManager.class, MINIGAMES)
           .build();
   public static final List<Tab> TABS =
       Collections.unmodifiableList(
           Arrays.asList(
-              OVERVIEW, DEATH, COINS, CARRYABLE_STORAGE, STASH_UNITS, WORLD, MINIGAMES, SEARCH));
+              OVERVIEW,
+              DEATH,
+              COINS,
+              CARRYABLE_STORAGE,
+              STASH_UNITS,
+              POH_STORAGE,
+              WORLD,
+              MINIGAMES,
+              SEARCH));
 
   private final String name;
   private final int itemId;

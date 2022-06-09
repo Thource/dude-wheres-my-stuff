@@ -19,6 +19,7 @@ import net.runelite.api.Client;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.vars.AccountType;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.util.SwingUtil;
 
 /** DeathStorageTabPanel is responsible for displaying death storage data to the player. */
 @Slf4j
@@ -72,7 +73,7 @@ public class DeathStorageTabPanel
 
   @Override
   protected void rebuildList() {
-    itemsBoxContainer.removeAll();
+    SwingUtil.fastRemoveAll(itemsBoxContainer);
 
     itemsBoxes.clear();
 

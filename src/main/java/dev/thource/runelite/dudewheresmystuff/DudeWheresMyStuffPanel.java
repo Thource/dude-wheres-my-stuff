@@ -31,6 +31,7 @@ import dev.thource.runelite.dudewheresmystuff.carryable.CarryableStorageTabPanel
 import dev.thource.runelite.dudewheresmystuff.coins.CoinsStorageTabPanel;
 import dev.thource.runelite.dudewheresmystuff.death.DeathStorageTabPanel;
 import dev.thource.runelite.dudewheresmystuff.minigames.MinigamesStorageTabPanel;
+import dev.thource.runelite.dudewheresmystuff.playerownedhouse.PlayerOwnedHouseStorageTabPanel;
 import dev.thource.runelite.dudewheresmystuff.stash.StashStorageTabPanel;
 import dev.thource.runelite.dudewheresmystuff.world.WorldStorageTabPanel;
 import java.awt.BorderLayout;
@@ -53,8 +54,6 @@ import net.runelite.api.vars.AccountType;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.ColorScheme;
-import net.runelite.client.ui.components.materialtabs.MaterialTab;
-import net.runelite.client.ui.components.materialtabs.MaterialTabGroup;
 import net.runelite.client.util.AsyncBufferedImage;
 import net.runelite.client.util.ImageUtil;
 
@@ -73,14 +72,14 @@ public class DudeWheresMyStuffPanel extends JPanel {
                 DudeWheresMyStuffPlugin.class, "/net/runelite/client/ui/components/search.png"));
   }
 
-  private final EnumMap<Tab, MaterialTab> uiTabs = new EnumMap<>(Tab.class);
+  private final EnumMap<Tab, FasterMaterialTab> uiTabs = new EnumMap<>(Tab.class);
   private final OverviewTabPanel overviewTab;
   private final EnumMap<Tab, StorageTabPanel<?, ?, ?>> storageTabPanelMap =
       new EnumMap<>(Tab.class);
   private final transient ItemManager itemManager;
   /* This is the panel the tabs' respective panels will be displayed on. */
   private final JPanel display = new JPanel();
-  private final MaterialTabGroup tabGroup = new MaterialTabGroup(display);
+  private final FasterMaterialTabGroup tabGroup = new FasterMaterialTabGroup(display);
   private final boolean previewMode;
   @Setter private boolean active;
   @Getter private String displayName = "";
@@ -143,6 +142,10 @@ public class DudeWheresMyStuffPanel extends JPanel {
         new StashStorageTabPanel(
             itemManager, config, storageManagerManager.getStashStorageManager()));
     addTab(
+        Tab.POH_STORAGE,
+        new PlayerOwnedHouseStorageTabPanel(
+            itemManager, config, storageManagerManager.getPlayerOwnedHouseStorageManager()));
+    addTab(
         Tab.WORLD,
         new WorldStorageTabPanel(
             itemManager, config, storageManagerManager.getWorldStorageManager()));
@@ -179,7 +182,7 @@ public class DudeWheresMyStuffPanel extends JPanel {
     scrollPane.setBackground(ColorScheme.DARK_GRAY_COLOR);
 
     // Use a placeholder icon until the async image gets loaded
-    MaterialTab materialTab = new MaterialTab(new ImageIcon(), tabGroup, scrollPane);
+    FasterMaterialTab materialTab = new FasterMaterialTab(new ImageIcon(), tabGroup, scrollPane);
     materialTab.setPreferredSize(new Dimension(30, 27));
     materialTab.setName(tab.getName());
     materialTab.setToolTipText(tab.getName());

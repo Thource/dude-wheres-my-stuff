@@ -8,6 +8,7 @@ import dev.thource.runelite.dudewheresmystuff.death.DeathStorageType;
 import dev.thource.runelite.dudewheresmystuff.death.Deathbank;
 import dev.thource.runelite.dudewheresmystuff.death.Deathpile;
 import dev.thource.runelite.dudewheresmystuff.minigames.MinigamesStorageManager;
+import dev.thource.runelite.dudewheresmystuff.playerownedhouse.PlayerOwnedHouseStorageManager;
 import dev.thource.runelite.dudewheresmystuff.stash.StashStorageManager;
 import dev.thource.runelite.dudewheresmystuff.world.WorldStorageManager;
 import java.util.Arrays;
@@ -33,6 +34,7 @@ class StorageManagerManager {
   private final DeathStorageManager deathStorageManager;
   private final MinigamesStorageManager minigamesStorageManager;
   private final StashStorageManager stashStorageManager;
+  private final PlayerOwnedHouseStorageManager playerOwnedHouseStorageManager;
   private final WorldStorageManager worldStorageManager;
 
   @Getter(AccessLevel.NONE)
@@ -41,6 +43,8 @@ class StorageManagerManager {
   @Getter(AccessLevel.NONE)
   private final DudeWheresMyStuffPlugin plugin;
 
+
+  @SuppressWarnings("java:S107")
   StorageManagerManager(
       DudeWheresMyStuffPlugin plugin,
       CarryableStorageManager carryableStorageManager,
@@ -48,6 +52,7 @@ class StorageManagerManager {
       DeathStorageManager deathStorageManager,
       MinigamesStorageManager minigamesStorageManager,
       StashStorageManager stashStorageManager,
+      PlayerOwnedHouseStorageManager playerOwnedHouseStorageManager,
       WorldStorageManager worldStorageManager) {
     this.plugin = plugin;
     this.carryableStorageManager = carryableStorageManager;
@@ -55,6 +60,7 @@ class StorageManagerManager {
     this.deathStorageManager = deathStorageManager;
     this.minigamesStorageManager = minigamesStorageManager;
     this.stashStorageManager = stashStorageManager;
+    this.playerOwnedHouseStorageManager = playerOwnedHouseStorageManager;
     this.worldStorageManager = worldStorageManager;
 
     storageManagers =
@@ -64,6 +70,7 @@ class StorageManagerManager {
             deathStorageManager,
             minigamesStorageManager,
             stashStorageManager,
+            playerOwnedHouseStorageManager,
             worldStorageManager);
   }
 
@@ -149,6 +156,7 @@ class StorageManagerManager {
                             && storage.getType() != CoinsStorageType.LOOTING_BAG),
             getCarryableStorageManager().storages.stream(),
             getStashStorageManager().storages.stream(),
+            getPlayerOwnedHouseStorageManager().storages.stream(),
             getWorldStorageManager().storages.stream())
         .flatMap(i -> i);
   }

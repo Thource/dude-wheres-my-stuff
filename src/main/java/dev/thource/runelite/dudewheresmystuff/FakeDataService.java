@@ -1,6 +1,8 @@
 package dev.thource.runelite.dudewheresmystuff;
 
+import dev.thource.runelite.dudewheresmystuff.playerownedhouse.PlayerOwnedHouseStorageType;
 import dev.thource.runelite.dudewheresmystuff.stash.StashUnit;
+import java.util.stream.Collectors;
 import net.runelite.api.vars.AccountType;
 import net.runelite.client.config.ConfigManager;
 
@@ -29,6 +31,31 @@ class FakeDataService {
     createWorldData(configManager);
     createMinigamesData(configManager);
     createStashData(configManager);
+    createPlayerOwnedHouseData(configManager);
+  }
+
+  private static void createPlayerOwnedHouseData(ConfigManager configManager) {
+    for (PlayerOwnedHouseStorageType type : PlayerOwnedHouseStorageType.values()) {
+      if (type.getStorableItemIds() == null) {
+        if (type == PlayerOwnedHouseStorageType.MENAGERIE) {
+          configManager.setConfiguration(
+              DudeWheresMyStuffConfig.CONFIG_GROUP,
+              PROFILE,
+              "poh." + type.getConfigKey(),
+              (System.currentTimeMillis() - (1000 * 60 * 4)) + ";6555,1=20663,1=12921,1=12652,1");
+        }
+      } else {
+        configManager.setConfiguration(
+            DudeWheresMyStuffConfig.CONFIG_GROUP,
+            PROFILE,
+            "poh." + type.getConfigKey(),
+            (System.currentTimeMillis() - (1000 * 60 * 4))
+                + ";"
+                + type.getStorableItemIds().stream()
+                    .map(id -> id + "," + 1)
+                    .collect(Collectors.joining("=")));
+      }
+    }
   }
 
   private static void createStashData(ConfigManager configManager) {

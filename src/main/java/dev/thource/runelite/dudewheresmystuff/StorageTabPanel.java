@@ -14,6 +14,7 @@ import lombok.Getter;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
+import net.runelite.client.util.SwingUtil;
 
 /** StorageTabPanel is a base class that shows the player their data. */
 public abstract class StorageTabPanel<
@@ -74,6 +75,7 @@ public abstract class StorageTabPanel<
   protected Comparator<S> getStorageSorter() {
     return Comparator.comparingLong(S::getTotalValue)
         .reversed()
+        .thenComparingInt(s -> -s.getItems().size())
         .thenComparing(s -> s.getType().getName());
   }
 
@@ -82,7 +84,7 @@ public abstract class StorageTabPanel<
   }
 
   protected void rebuildList() {
-    itemsBoxContainer.removeAll();
+    SwingUtil.fastRemoveAll(itemsBoxContainer);
 
     itemsBoxes.clear();
     storageManager.getStorages().stream()
