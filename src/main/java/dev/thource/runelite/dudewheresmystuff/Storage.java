@@ -30,6 +30,7 @@ public abstract class Storage<T extends StorageType> {
   protected T type;
   @Setter protected long lastUpdated = -1L;
   protected boolean enabled = true;
+  @Setter protected boolean collapsed = false;
 
   protected Storage(T type, Client client, ClientThread clientThread, ItemManager itemManager) {
     this.type = type;

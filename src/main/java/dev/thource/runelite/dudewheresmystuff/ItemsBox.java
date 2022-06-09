@@ -34,6 +34,8 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -126,10 +128,23 @@ public class ItemsBox extends JPanel {
     logTitle.add(Box.createHorizontalGlue());
     logTitle.add(Box.createRigidArea(new Dimension(TITLE_PADDING, 0)));
 
+    MouseAdapter toggleListener =
+        new MouseAdapter() {
+          @Override
+          public void mouseClicked(MouseEvent e) {
+            if (e.getButton() == 1) {
+              toggle();
+            }
+          }
+        };
+    logTitle.addMouseListener(toggleListener);
+    subTitleLabel.addMouseListener(toggleListener);
+
     if (showPrice) {
       priceLabel = new JLabel();
       priceLabel.setFont(FontManager.getRunescapeSmallFont());
       priceLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
+      priceLabel.addMouseListener(toggleListener);
       logTitle.add(priceLabel);
     }
 
@@ -179,6 +194,10 @@ public class ItemsBox extends JPanel {
         showAlchPrices,
         showPrice);
     this.storage = storage;
+
+    if (storage.isCollapsed()) {
+      collapse();
+    }
   }
 
   // Suppress string literal warnings, defining a constant for "</html>" is dumb
@@ -313,10 +332,22 @@ public class ItemsBox extends JPanel {
     expiryLabel.setText(expireText);
   }
 
+  void toggle() {
+    if (isCollapsed()) {
+      expand();
+    } else {
+      collapse();
+    }
+  }
+
   void collapse() {
     if (!isCollapsed()) {
       itemContainer.setVisible(false);
       applyDimmer(false, logTitle);
+
+      if (storage != null) {
+        storage.setCollapsed(true);
+      }
     }
   }
 
@@ -328,6 +359,10 @@ public class ItemsBox extends JPanel {
     if (isCollapsed()) {
       itemContainer.setVisible(true);
       applyDimmer(true, logTitle);
+
+      if (storage != null) {
+        storage.setCollapsed(false);
+      }
     }
   }
 
