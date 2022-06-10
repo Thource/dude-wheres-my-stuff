@@ -53,7 +53,11 @@ import javax.swing.border.EmptyBorder;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.ItemID;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.plugins.PluginManager;
+import net.runelite.client.plugins.itemidentification.ItemIdentificationConfig;
+import net.runelite.client.plugins.itemidentification.ItemIdentificationPlugin;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.util.AsyncBufferedImage;
@@ -80,22 +84,33 @@ public class ItemsBox extends JPanel {
   private final boolean showAlchPrices;
 
   @Getter private final List<ItemStack> items = new ArrayList<>();
+  private final transient PluginManager pluginManager;
+  private final transient ItemIdentificationPlugin itemIdentificationPlugin;
+  private final transient ItemIdentificationConfig itemIdentificationConfig;
+  private final transient ClientThread clientThread;
   private JLabel priceLabel = null;
   private JLabel lastUpdatedLabel = null;
   private JLabel expiryLabel = null;
   @Getter private transient Storage<?> storage = null;
-
   private long totalPrice;
   private long expiryMs;
   private ItemSortMode itemSortMode = ItemSortMode.UNSORTED;
 
   private ItemsBox(
       final ItemManager itemManager,
+      PluginManager pluginManager,
+      ItemIdentificationPlugin itemIdentificationPlugin,
+      ItemIdentificationConfig itemIdentificationConfig,
+      ClientThread clientThread,
       final String name,
       final boolean automatic,
       @Nullable final String subtitle,
       final boolean showAlchPrices,
       boolean showPrice) {
+    this.pluginManager = pluginManager;
+    this.itemIdentificationPlugin = itemIdentificationPlugin;
+    this.itemIdentificationConfig = itemIdentificationConfig;
+    this.clientThread = clientThread;
     this.id = name;
     this.itemManager = itemManager;
     this.showAlchPrices = showAlchPrices;
@@ -172,22 +187,44 @@ public class ItemsBox extends JPanel {
 
   public ItemsBox(
       final ItemManager itemManager,
+      PluginManager pluginManager,
+      ItemIdentificationPlugin itemIdentificationPlugin,
+      ItemIdentificationConfig itemIdentificationConfig,
+      ClientThread clientThread,
       final String name,
       @Nullable final String subtitle,
       final boolean showAlchPrices,
       boolean showPrice) {
-    this(itemManager, name, true, subtitle, showAlchPrices, showPrice);
+    this(
+        itemManager,
+        pluginManager,
+        itemIdentificationPlugin,
+        itemIdentificationConfig,
+        clientThread,
+        name,
+        true,
+        subtitle,
+        showAlchPrices,
+        showPrice);
   }
 
   /** A constructor. */
   public ItemsBox(
       final ItemManager itemManager,
+      PluginManager pluginManager,
+      ItemIdentificationPlugin itemIdentificationPlugin,
+      ItemIdentificationConfig itemIdentificationConfig,
+      ClientThread clientThread,
       final Storage<?> storage,
       @Nullable final String subtitle,
       final boolean showAlchPrices,
       boolean showPrice) {
     this(
         itemManager,
+        pluginManager,
+        itemIdentificationPlugin,
+        itemIdentificationConfig,
+        clientThread,
         storage.getName(),
         storage.getType().isAutomatic(),
         subtitle,
@@ -425,7 +462,7 @@ public class ItemsBox extends JPanel {
               if (i < newItems.size()) {
                 final ItemStack item = newItems.get(i);
 
-                final JLabel imageLabel = new JLabel();
+                final ItemImageLabel imageLabel = new ItemImageLabel(itemIdentificationConfig);
                 imageLabel.setToolTipText(buildToolTip(item));
                 imageLabel.setVerticalAlignment(SwingConstants.CENTER);
                 imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -436,6 +473,8 @@ public class ItemsBox extends JPanel {
                           item.getId(),
                           (int) Math.min(item.getQuantity(), Integer.MAX_VALUE),
                           item.isStackable() || item.getQuantity() > 1);
+                  clientThread.invoke(
+                      () -> imageLabel.setItemIdentification(getItemIdentification(item.getId())));
                   itemImage.addTo(imageLabel);
                 }
 
@@ -445,6 +484,20 @@ public class ItemsBox extends JPanel {
               return slotContainer;
             })
         .collect(Collectors.toList());
+  }
+
+  private ItemIdentification getItemIdentification(int id) {
+    if (!pluginManager.isPluginEnabled(itemIdentificationPlugin)) {
+      return null;
+    }
+
+    ItemIdentification itemIdentification = ItemIdentification.get(itemManager.canonicalize(id));
+    if (itemIdentification == null
+        || !itemIdentification.type.enabled.test(itemIdentificationConfig)) {
+      return null;
+    }
+
+    return itemIdentification;
   }
 
   public void setSortMode(ItemSortMode itemSortMode) {

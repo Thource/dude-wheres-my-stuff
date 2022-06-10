@@ -95,7 +95,17 @@ public class DeathStorageTabPanel
         .sorted(getStorageSorter())
         .forEach(
             storage -> {
-              ItemsBox itemsBox = new ItemsBox(itemManager, storage, null, false, showPrice());
+              ItemsBox itemsBox =
+                  new ItemsBox(
+                      itemManager,
+                      storageManager.getPluginManager(),
+                      storageManager.getItemIdentificationPlugin(),
+                      storageManager.getItemIdentificationConfig(),
+                      storageManager.getClientThread(),
+                      storage,
+                      null,
+                      false,
+                      showPrice());
               for (ItemStack itemStack : storage.getItems()) {
                 if (itemStack.getQuantity() > 0) {
                   itemsBox.getItems().add(itemStack);
@@ -118,7 +128,16 @@ public class DeathStorageTabPanel
 
   private void addDebugDeathBox() {
     ItemsBox debugDeathBox =
-        new ItemsBox(itemManager, "Death items debug", null, false, showPrice());
+        new ItemsBox(
+            itemManager,
+            storageManager.getPluginManager(),
+            storageManager.getItemIdentificationPlugin(),
+            storageManager.getItemIdentificationConfig(),
+            storageManager.getClientThread(),
+            "Death items debug",
+            null,
+            false,
+            showPrice());
     for (ItemStack itemStack : storageManager.getDeathItems()) {
       if (itemStack.getQuantity() > 0) {
         debugDeathBox.getItems().add(itemStack);

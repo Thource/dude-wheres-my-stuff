@@ -101,7 +101,17 @@ public abstract class StorageTabPanel<
             })
         .forEach(
             storage -> {
-              ItemsBox itemsBox = new ItemsBox(itemManager, storage, null, false, showPrice());
+              ItemsBox itemsBox =
+                  new ItemsBox(
+                      itemManager,
+                      storageManager.getPluginManager(),
+                      storageManager.getItemIdentificationPlugin(),
+                      storageManager.getItemIdentificationConfig(),
+                      storageManager.getClientThread(),
+                      storage,
+                      null,
+                      false,
+                      showPrice());
               for (ItemStack itemStack : storage.getItems()) {
                 if (itemStack.getQuantity() > 0) {
                   itemsBox.getItems().add(itemStack);

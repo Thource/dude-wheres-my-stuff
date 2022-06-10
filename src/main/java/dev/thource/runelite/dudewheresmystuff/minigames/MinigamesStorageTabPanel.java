@@ -46,7 +46,17 @@ public class MinigamesStorageTabPanel
         .sorted(getStorageSorter())
         .forEach(
             storage -> {
-              ItemsBox itemsBox = new ItemsBox(itemManager, storage, null, false, showPrice());
+              ItemsBox itemsBox =
+                  new ItemsBox(
+                      itemManager,
+                      storageManager.getPluginManager(),
+                      storageManager.getItemIdentificationPlugin(),
+                      storageManager.getItemIdentificationConfig(),
+                      storageManager.getClientThread(),
+                      storage,
+                      null,
+                      false,
+                      showPrice());
               for (ItemStack itemStack : storage.getItems()) {
                 if (storage.getType().isAutomatic()
                     || storage.getLastUpdated() != -1L

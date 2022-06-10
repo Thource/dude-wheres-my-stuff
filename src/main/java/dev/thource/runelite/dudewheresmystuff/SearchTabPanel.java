@@ -112,7 +112,17 @@ class SearchTabPanel
       return Optional.empty();
     }
 
-    ItemsBox itemsBox = new ItemsBox(itemManager, storage, null, false, showPrice());
+    ItemsBox itemsBox =
+        new ItemsBox(
+            itemManager,
+            storageManagerManager.getCarryableStorageManager().getPluginManager(),
+            storageManagerManager.getCarryableStorageManager().getItemIdentificationPlugin(),
+            storageManagerManager.getCarryableStorageManager().getItemIdentificationConfig(),
+            storageManagerManager.getCarryableStorageManager().getClientThread(),
+            storage,
+            null,
+            false,
+            showPrice());
     for (ItemStack itemStack : items) {
       if (itemStack.getQuantity() > 0) {
         itemsBox.getItems().add(itemStack);

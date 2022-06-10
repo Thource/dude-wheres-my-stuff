@@ -1,5 +1,6 @@
 package dev.thource.runelite.dudewheresmystuff;
 
+import com.google.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
@@ -13,8 +14,12 @@ import net.runelite.api.events.ItemDespawned;
 import net.runelite.api.events.WidgetClosed;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.client.Notifier;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.plugins.PluginManager;
+import net.runelite.client.plugins.itemidentification.ItemIdentificationConfig;
+import net.runelite.client.plugins.itemidentification.ItemIdentificationPlugin;
 
 /**
  * StorageManager manages Storages that are assigned to it, it passes on RuneLite events so that the
@@ -24,7 +29,7 @@ public abstract class StorageManager<T extends StorageType, S extends Storage<T>
 
   protected final Client client;
   protected final ItemManager itemManager;
-  protected final ConfigManager configManager;
+  @Getter protected final ConfigManager configManager;
   protected final DudeWheresMyStuffConfig config;
   protected final Notifier notifier;
 
@@ -33,6 +38,11 @@ public abstract class StorageManager<T extends StorageType, S extends Storage<T>
   protected boolean enabled = true;
   @Setter protected boolean isPreviewManager = false;
   protected DudeWheresMyStuffPlugin plugin;
+
+  @Getter @Inject protected PluginManager pluginManager;
+  @Getter @Inject protected ItemIdentificationPlugin itemIdentificationPlugin;
+  @Getter @Inject protected ItemIdentificationConfig itemIdentificationConfig;
+  @Getter @Inject protected ClientThread clientThread;
 
   protected StorageManager(
       Client client,
