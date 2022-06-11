@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import javax.swing.JLabel;
+import javax.swing.SwingUtilities;
 import net.runelite.client.plugins.itemidentification.ItemIdentificationConfig;
 import net.runelite.client.plugins.itemidentification.ItemIdentificationMode;
 import net.runelite.client.ui.FontManager;
@@ -22,7 +23,7 @@ public class ItemImageLabel extends JLabel {
     this.itemIdentification = itemIdentification;
 
     if (itemIdentification != null) {
-      repaint();
+      SwingUtilities.invokeLater(this::repaint);
     }
   }
 
