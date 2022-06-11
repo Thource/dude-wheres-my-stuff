@@ -122,7 +122,7 @@ public class DudeWheresMyStuffPlugin extends Plugin {
               previewDeathStorageManager,
               previewMinigamesStorageManager,
               previewStashStorageManager,
-              playerOwnedHouseStorageManager,
+              previewPlayerOwnedHouseStorageManager,
               previewWorldStorageManager);
 
       panelContainer =
