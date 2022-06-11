@@ -14,6 +14,7 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.WidgetClosed;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.vars.AccountType;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
@@ -89,14 +90,16 @@ public abstract class Storage<T extends StorageType> {
       }
 
       ItemComposition itemComposition = itemManager.getItemComposition(item.getId());
-      items.add(
-          new ItemStack(
-              item.getId(),
-              itemComposition.getName(),
-              item.getQuantity(),
-              itemManager.getItemPrice(item.getId()),
-              itemComposition.getHaPrice(),
-              itemComposition.isStackable()));
+      if (itemComposition.getPlaceholderTemplateId() == -1) {
+        items.add(
+            new ItemStack(
+                item.getId(),
+                itemComposition.getName(),
+                item.getQuantity(),
+                itemManager.getItemPrice(item.getId()),
+                itemComposition.getHaPrice(),
+                itemComposition.isStackable()));
+      }
     }
 
     lastUpdated = System.currentTimeMillis();
@@ -190,6 +193,14 @@ public abstract class Storage<T extends StorageType> {
 
   public void disable() {
     enabled = false;
+  }
+
+  public void disable(boolean isMember, AccountType accountType) {
+    if ((type.isMembersOnly() && !isMember)
+        || (type.getAccountTypeBlacklist() != null
+            && type.getAccountTypeBlacklist().contains(accountType))) {
+      disable();
+    }
   }
 
   public void enable() {

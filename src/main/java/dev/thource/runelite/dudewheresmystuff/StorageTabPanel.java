@@ -110,7 +110,6 @@ public abstract class StorageTabPanel<
                       storageManager.getClientThread(),
                       storage,
                       null,
-                      false,
                       showPrice());
               for (ItemStack itemStack : storage.getItems()) {
                 if (itemStack.getQuantity() > 0) {

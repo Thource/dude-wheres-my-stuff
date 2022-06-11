@@ -104,7 +104,6 @@ public class DeathStorageTabPanel
                       storageManager.getClientThread(),
                       storage,
                       null,
-                      false,
                       showPrice());
               for (ItemStack itemStack : storage.getItems()) {
                 if (itemStack.getQuantity() > 0) {
@@ -136,7 +135,6 @@ public class DeathStorageTabPanel
             storageManager.getClientThread(),
             "Death items debug",
             null,
-            false,
             showPrice());
     for (ItemStack itemStack : storageManager.getDeathItems()) {
       if (itemStack.getQuantity() > 0) {

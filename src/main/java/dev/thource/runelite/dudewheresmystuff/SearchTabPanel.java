@@ -121,7 +121,6 @@ class SearchTabPanel
             storageManagerManager.getCarryableStorageManager().getClientThread(),
             storage,
             null,
-            false,
             showPrice());
     for (ItemStack itemStack : items) {
       if (itemStack.getQuantity() > 0) {

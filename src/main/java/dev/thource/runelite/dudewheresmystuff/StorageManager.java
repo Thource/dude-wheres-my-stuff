@@ -221,21 +221,6 @@ public abstract class StorageManager<T extends StorageType, S extends Storage<T>
     storages.forEach(storage -> storage.load(configManager, getConfigKey(), profileKey));
   }
 
-  /**
-   * Check if all storages are members.
-   *
-   * @return true if all Storages are membersOnly
-   */
-  public boolean isMembersOnly() {
-    for (Storage<?> storage : storages) {
-      if (!storage.getType().isMembersOnly()) {
-        return false;
-      }
-    }
-
-    return true;
-  }
-
   public void disable() {
     enabled = false;
   }

@@ -55,7 +55,6 @@ public class MinigamesStorageTabPanel
                       storageManager.getClientThread(),
                       storage,
                       null,
-                      false,
                       showPrice());
               for (ItemStack itemStack : storage.getItems()) {
                 if (storage.getType().isAutomatic()

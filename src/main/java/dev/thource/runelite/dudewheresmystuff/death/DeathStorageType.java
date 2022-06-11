@@ -2,8 +2,10 @@ package dev.thource.runelite.dudewheresmystuff.death;
 
 import dev.thource.runelite.dudewheresmystuff.Region;
 import dev.thource.runelite.dudewheresmystuff.StorageType;
+import java.util.List;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import net.runelite.api.vars.AccountType;
 
 /** DeathStorageType is used to identify DeathStorages. */
 @RequiredArgsConstructor
@@ -72,4 +74,5 @@ public enum DeathStorageType implements StorageType {
   private final int deathBankLockedState;
   private final int deathBankUnlockedState;
   private final Region region;
+  private final List<AccountType> accountTypeBlacklist = null;
 }

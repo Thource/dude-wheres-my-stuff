@@ -281,16 +281,12 @@ public class DudeWheresMyStuffPanel extends JPanel {
     storageTabPanelMap.forEach(
         (tab, storageTabPanel) -> {
           StorageManager<?, ?> storageManager = storageTabPanel.storageManager;
-          if (storageManager != null) {
-            if (tab != Tab.DEATH && storageManager.isMembersOnly() && !isMember) {
+          if (storageManager != null && tab != Tab.DEATH) {
+            storageManager.getStorages().forEach(storage -> storage.disable(isMember, accountType));
+
+            if (storageManager.getStorages().stream().noneMatch(Storage::isEnabled)) {
               storageManager.disable();
               return;
-            }
-
-            for (Storage<?> storage : storageManager.getStorages()) {
-              if (storage.getType().isMembersOnly() && !isMember) {
-                storage.disable();
-              }
             }
           }
 

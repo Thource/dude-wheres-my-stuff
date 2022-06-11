@@ -1,8 +1,10 @@
 package dev.thource.runelite.dudewheresmystuff.stash;
 
 import dev.thource.runelite.dudewheresmystuff.StorageType;
+import java.util.List;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import net.runelite.api.vars.AccountType;
 
 /** StashStorageType is used to identify StashStorages. */
 @RequiredArgsConstructor
@@ -16,4 +18,5 @@ public enum StashStorageType implements StorageType {
   private final boolean automatic;
   private final String configKey;
   private final boolean membersOnly;
+  private final List<AccountType> accountTypeBlacklist = null;
 }

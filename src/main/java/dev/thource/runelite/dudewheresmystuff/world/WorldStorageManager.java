@@ -33,6 +33,7 @@ public class WorldStorageManager extends StorageManager<WorldStorageType, WorldS
     leprechaun = new Leprechaun(client, clientThread, itemManager);
 
     storages.add(leprechaun);
+    storages.add(new WorldStorage(WorldStorageType.BANK, client, clientThread, itemManager));
   }
 
   @Override

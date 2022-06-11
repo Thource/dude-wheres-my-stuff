@@ -1,14 +1,25 @@
 package dev.thource.runelite.dudewheresmystuff.world;
 
 import dev.thource.runelite.dudewheresmystuff.StorageType;
+import java.util.Collections;
+import java.util.List;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import net.runelite.api.InventoryID;
+import net.runelite.api.vars.AccountType;
 
 /** WorldStorageType is used to identify WorldStorages. */
 @RequiredArgsConstructor
 @Getter
 public enum WorldStorageType implements StorageType {
-  LEPRECHAUN("Tool Leprechaun", -1, true, "leprechaun", true);
+  LEPRECHAUN("Tool Leprechaun", -1, true, "leprechaun", true, null),
+  BANK(
+      "Bank",
+      InventoryID.BANK.getId(),
+      false,
+      "bank",
+      false,
+      Collections.singletonList(AccountType.ULTIMATE_IRONMAN));
 
   private final String name;
   private final int itemContainerId;
@@ -16,4 +27,5 @@ public enum WorldStorageType implements StorageType {
   private final boolean automatic;
   private final String configKey;
   private final boolean membersOnly;
+  private final List<AccountType> accountTypeBlacklist;
 }

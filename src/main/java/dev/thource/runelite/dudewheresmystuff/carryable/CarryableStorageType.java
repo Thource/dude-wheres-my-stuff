@@ -1,9 +1,11 @@
 package dev.thource.runelite.dudewheresmystuff.carryable;
 
 import dev.thource.runelite.dudewheresmystuff.StorageType;
+import java.util.List;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.runelite.api.InventoryID;
+import net.runelite.api.vars.AccountType;
 
 /** CarryableStorageType is used to identify CarryableStorages. */
 @RequiredArgsConstructor
@@ -22,4 +24,5 @@ public enum CarryableStorageType implements StorageType {
   private final boolean automatic;
   private final String configKey;
   private final boolean membersOnly;
+  private final List<AccountType> accountTypeBlacklist = null;
 }

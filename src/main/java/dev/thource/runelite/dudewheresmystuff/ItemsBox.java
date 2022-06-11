@@ -40,7 +40,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.ToLongFunction;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import javax.annotation.Nullable;
@@ -80,9 +79,6 @@ public class ItemsBox extends JPanel {
   @Getter(AccessLevel.PACKAGE)
   private final String id;
 
-  @Getter(AccessLevel.PACKAGE)
-  private final boolean showAlchPrices;
-
   @Getter private final List<ItemStack> items = new ArrayList<>();
   private final transient PluginManager pluginManager;
   private final transient ItemIdentificationPlugin itemIdentificationPlugin;
@@ -105,7 +101,6 @@ public class ItemsBox extends JPanel {
       final String name,
       final boolean automatic,
       @Nullable final String subtitle,
-      final boolean showAlchPrices,
       boolean showPrice) {
     this.pluginManager = pluginManager;
     this.itemIdentificationPlugin = itemIdentificationPlugin;
@@ -113,7 +108,6 @@ public class ItemsBox extends JPanel {
     this.clientThread = clientThread;
     this.id = name;
     this.itemManager = itemManager;
-    this.showAlchPrices = showAlchPrices;
 
     setLayout(new BorderLayout(0, 1));
     setBorder(new EmptyBorder(5, 0, 0, 0));
@@ -193,7 +187,6 @@ public class ItemsBox extends JPanel {
       ClientThread clientThread,
       final String name,
       @Nullable final String subtitle,
-      final boolean showAlchPrices,
       boolean showPrice) {
     this(
         itemManager,
@@ -204,7 +197,6 @@ public class ItemsBox extends JPanel {
         name,
         true,
         subtitle,
-        showAlchPrices,
         showPrice);
   }
 
@@ -217,7 +209,6 @@ public class ItemsBox extends JPanel {
       ClientThread clientThread,
       final Storage<?> storage,
       @Nullable final String subtitle,
-      final boolean showAlchPrices,
       boolean showPrice) {
     this(
         itemManager,
@@ -228,7 +219,6 @@ public class ItemsBox extends JPanel {
         storage.getName(),
         storage.getType().isAutomatic(),
         subtitle,
-        showAlchPrices,
         showPrice);
     this.storage = storage;
 
@@ -424,16 +414,16 @@ public class ItemsBox extends JPanel {
 
     List<ItemStack> newItems = this.items;
 
-    ToLongFunction<ItemStack> getPrice =
-        showAlchPrices ? ItemStack::getTotalHaPrice : ItemStack::getTotalGePrice;
-
-    totalPrice = newItems.stream().mapToLong(getPrice).sum();
+    totalPrice = newItems.stream().mapToLong(ItemStack::getTotalGePrice).sum();
 
     SwingUtil.fastRemoveAll(itemContainer);
     itemContainer.setLayout(null);
 
     if (itemSortMode == ItemSortMode.VALUE) {
-      newItems.sort(Comparator.comparingLong(getPrice).reversed());
+      newItems.sort(
+          Comparator.comparingLong(ItemStack::getTotalGePrice)
+              .thenComparing(ItemStack::getTotalHaPrice)
+              .reversed());
     }
 
     if (itemSortMode != ItemSortMode.UNSORTED) {
