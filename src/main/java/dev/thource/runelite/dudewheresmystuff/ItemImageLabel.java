@@ -4,7 +4,9 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import javax.swing.JLabel;
-import javax.swing.SwingUtilities;
+import lombok.Setter;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.plugins.itemidentification.ItemIdentificationConfig;
 import net.runelite.client.plugins.itemidentification.ItemIdentificationMode;
 import net.runelite.client.ui.FontManager;
@@ -12,25 +14,27 @@ import net.runelite.client.ui.overlay.components.TextComponent;
 
 public class ItemImageLabel extends JLabel {
   private final transient ItemIdentificationConfig itemIdentificationConfig;
-  private ItemIdentification itemIdentification;
+  private final transient PluginManager pluginManager;
+  private final transient Plugin itemIdentificationPlugin;
+  @Setter private transient ItemStack itemStack;
 
-  public ItemImageLabel(ItemIdentificationConfig itemIdentificationConfig) {
+  public ItemImageLabel(
+      ItemIdentificationConfig itemIdentificationConfig,
+      PluginManager pluginManager,
+      Plugin itemIdentificationPlugin) {
     super();
     this.itemIdentificationConfig = itemIdentificationConfig;
-  }
-
-  public void setItemIdentification(ItemIdentification itemIdentification) {
-    this.itemIdentification = itemIdentification;
-
-    if (itemIdentification != null) {
-      SwingUtilities.invokeLater(this::repaint);
-    }
+    this.pluginManager = pluginManager;
+    this.itemIdentificationPlugin = itemIdentificationPlugin;
   }
 
   @Override
   protected void paintComponent(Graphics g) {
     super.paintComponent(g);
-    if (itemIdentification == null) {
+    if (itemStack == null
+        || itemStack.getItemIdentification() == null
+        || !pluginManager.isPluginEnabled(itemIdentificationPlugin)
+        || !itemStack.getItemIdentification().type.enabled.test(itemIdentificationConfig)) {
       return;
     }
 
@@ -40,9 +44,9 @@ public class ItemImageLabel extends JLabel {
     textComponent.setColor(itemIdentificationConfig.textColor());
     ItemIdentificationMode itemIdentificationMode = itemIdentificationConfig.identificationType();
     if (itemIdentificationMode == ItemIdentificationMode.SHORT) {
-      textComponent.setText(itemIdentification.shortName);
+      textComponent.setText(itemStack.getItemIdentification().shortName);
     } else if (itemIdentificationMode == ItemIdentificationMode.MEDIUM) {
-      textComponent.setText(itemIdentification.medName);
+      textComponent.setText(itemStack.getItemIdentification().medName);
     }
     textComponent.render((Graphics2D) g);
   }

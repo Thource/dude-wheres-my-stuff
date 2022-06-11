@@ -34,7 +34,6 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
-import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.Quest;
@@ -77,7 +76,6 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
   long startMs = 0L;
   @Setter private CarryableStorageManager carryableStorageManager;
   @Setter private CoinsStorageManager coinsStorageManager;
-  @Inject private ClientThread clientThread;
   @Inject private WorldMapPointManager worldMapPointManager;
   @Setter private int startPlayedMinutes = -1;
   private boolean dying;
@@ -149,17 +147,9 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
         continue;
       }
 
-      ItemComposition itemComposition = itemManager.getItemComposition(item.getId());
       deathbank
           .getItems()
-          .add(
-              new ItemStack(
-                  item.getId(),
-                  itemComposition.getName(),
-                  item.getQuantity(),
-                  itemManager.getItemPrice(item.getId()),
-                  itemComposition.getHaPrice(),
-                  itemComposition.isStackable()));
+          .add(new ItemStack(item.getId(), item.getQuantity(), clientThread, itemManager));
     }
   }
 
@@ -655,7 +645,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
       int itemId = NumberUtils.toInt(itemDataSplit[0], 0);
       int quantity = NumberUtils.toInt(itemDataSplit[1], 0);
       if (itemId != 0 && quantity != 0) {
-        ItemStack item = new ItemStack(itemId, client, clientThread, itemManager);
+        ItemStack item = new ItemStack(itemId, clientThread, itemManager);
         item.setQuantity(quantity);
         items.add(item);
       }
@@ -719,7 +709,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
       int itemId = NumberUtils.toInt(itemDataSplit[0], 0);
       int quantity = NumberUtils.toInt(itemDataSplit[1], 0);
       if (itemId != 0 && quantity != 0) {
-        ItemStack item = new ItemStack(itemId, client, clientThread, itemManager);
+        ItemStack item = new ItemStack(itemId, clientThread, itemManager);
         item.setQuantity(quantity);
         items.add(item);
       }
@@ -807,7 +797,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
       int itemId = NumberUtils.toInt(itemDataSplit[0], 0);
       int quantity = NumberUtils.toInt(itemDataSplit[1], 0);
       if (itemId != 0 && quantity != 0) {
-        ItemStack item = new ItemStack(itemId, client, clientThread, itemManager);
+        ItemStack item = new ItemStack(itemId, clientThread, itemManager);
         item.setQuantity(quantity);
         items.add(item);
       }

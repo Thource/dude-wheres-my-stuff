@@ -52,7 +52,6 @@ import javax.swing.border.EmptyBorder;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.ItemID;
-import net.runelite.client.callback.ClientThread;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.plugins.itemidentification.ItemIdentificationConfig;
@@ -83,7 +82,6 @@ public class ItemsBox extends JPanel {
   private final transient PluginManager pluginManager;
   private final transient ItemIdentificationPlugin itemIdentificationPlugin;
   private final transient ItemIdentificationConfig itemIdentificationConfig;
-  private final transient ClientThread clientThread;
   private JLabel priceLabel = null;
   private JLabel lastUpdatedLabel = null;
   private JLabel expiryLabel = null;
@@ -97,7 +95,6 @@ public class ItemsBox extends JPanel {
       PluginManager pluginManager,
       ItemIdentificationPlugin itemIdentificationPlugin,
       ItemIdentificationConfig itemIdentificationConfig,
-      ClientThread clientThread,
       final String name,
       final boolean automatic,
       @Nullable final String subtitle,
@@ -105,7 +102,6 @@ public class ItemsBox extends JPanel {
     this.pluginManager = pluginManager;
     this.itemIdentificationPlugin = itemIdentificationPlugin;
     this.itemIdentificationConfig = itemIdentificationConfig;
-    this.clientThread = clientThread;
     this.id = name;
     this.itemManager = itemManager;
 
@@ -184,7 +180,6 @@ public class ItemsBox extends JPanel {
       PluginManager pluginManager,
       ItemIdentificationPlugin itemIdentificationPlugin,
       ItemIdentificationConfig itemIdentificationConfig,
-      ClientThread clientThread,
       final String name,
       @Nullable final String subtitle,
       boolean showPrice) {
@@ -193,7 +188,6 @@ public class ItemsBox extends JPanel {
         pluginManager,
         itemIdentificationPlugin,
         itemIdentificationConfig,
-        clientThread,
         name,
         true,
         subtitle,
@@ -206,7 +200,6 @@ public class ItemsBox extends JPanel {
       PluginManager pluginManager,
       ItemIdentificationPlugin itemIdentificationPlugin,
       ItemIdentificationConfig itemIdentificationConfig,
-      ClientThread clientThread,
       final Storage<?> storage,
       @Nullable final String subtitle,
       boolean showPrice) {
@@ -215,7 +208,6 @@ public class ItemsBox extends JPanel {
         pluginManager,
         itemIdentificationPlugin,
         itemIdentificationConfig,
-        clientThread,
         storage.getName(),
         storage.getType().isAutomatic(),
         subtitle,
@@ -452,19 +444,20 @@ public class ItemsBox extends JPanel {
               if (i < newItems.size()) {
                 final ItemStack item = newItems.get(i);
 
-                final ItemImageLabel imageLabel = new ItemImageLabel(itemIdentificationConfig);
+                final ItemImageLabel imageLabel =
+                    new ItemImageLabel(
+                        itemIdentificationConfig, pluginManager, itemIdentificationPlugin);
                 imageLabel.setToolTipText(buildToolTip(item));
                 imageLabel.setVerticalAlignment(SwingConstants.CENTER);
                 imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
                 if (item.getId() != -1) {
+                  imageLabel.setItemStack(item);
                   AsyncBufferedImage itemImage =
                       itemManager.getImage(
                           item.getId(),
                           (int) Math.min(item.getQuantity(), Integer.MAX_VALUE),
                           item.isStackable() || item.getQuantity() > 1);
-                  clientThread.invoke(
-                      () -> imageLabel.setItemIdentification(getItemIdentification(item.getId())));
                   itemImage.addTo(imageLabel);
                 }
 
@@ -474,20 +467,6 @@ public class ItemsBox extends JPanel {
               return slotContainer;
             })
         .collect(Collectors.toList());
-  }
-
-  private ItemIdentification getItemIdentification(int id) {
-    if (!pluginManager.isPluginEnabled(itemIdentificationPlugin)) {
-      return null;
-    }
-
-    ItemIdentification itemIdentification = ItemIdentification.get(itemManager.canonicalize(id));
-    if (itemIdentification == null
-        || !itemIdentification.type.enabled.test(itemIdentificationConfig)) {
-      return null;
-    }
-
-    return itemIdentification;
   }
 
   public void setSortMode(ItemSortMode itemSortMode) {

@@ -26,48 +26,39 @@
 
 package dev.thource.runelite.dudewheresmystuff;
 
-import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import net.runelite.api.Client;
 import net.runelite.api.ItemComposition;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.game.ItemManager;
 
 /** ItemStack represents an OSRS item with a quantity. */
-@AllArgsConstructor
 @Getter
 @EqualsAndHashCode
 public class ItemStack {
 
-  @Setter private int id;
+  private int id;
   @Setter private String name;
   @Setter private long quantity;
   private int gePrice;
   private int haPrice;
   private boolean stackable;
+  private ItemIdentification itemIdentification;
 
   /**
    * A constructor.
    *
    * @param id OSRS item ID
-   * @param client client
    * @param clientThread clientThread
    * @param itemManager itemManager
    */
-  public ItemStack(int id, Client client, ClientThread clientThread, ItemManager itemManager) {
+  public ItemStack(int id, ClientThread clientThread, ItemManager itemManager) {
     this.id = id;
     this.name = "Loading";
     this.quantity = 0L;
 
-    if (client.isClientThread()) {
-      populateFromComposition(itemManager);
-
-      return;
-    }
-
-    clientThread.invoke(() -> this.populateFromComposition(itemManager));
+    clientThread.invoke(() -> populateFromComposition(itemManager));
   }
 
   /**
@@ -75,13 +66,11 @@ public class ItemStack {
    *
    * @param id OSRS item ID
    * @param quantity quantity
-   * @param client client
    * @param clientThread clientThread
    * @param itemManager itemManager
    */
-  public ItemStack(
-      int id, long quantity, Client client, ClientThread clientThread, ItemManager itemManager) {
-    this(id, client, clientThread, itemManager);
+  public ItemStack(int id, long quantity, ClientThread clientThread, ItemManager itemManager) {
+    this(id, clientThread, itemManager);
 
     this.quantity = quantity;
   }
@@ -92,12 +81,27 @@ public class ItemStack {
    * @param itemStack itemStack to clone
    */
   public ItemStack(ItemStack itemStack) {
-    this.id = itemStack.getId();
-    this.name = itemStack.getName();
-    this.quantity = itemStack.getQuantity();
-    this.gePrice = itemStack.getGePrice();
-    this.haPrice = itemStack.getHaPrice();
-    this.stackable = itemStack.isStackable();
+    this(
+        itemStack.getId(),
+        itemStack.getName(),
+        itemStack.getQuantity(),
+        itemStack.getGePrice(),
+        itemStack.getHaPrice(),
+        itemStack.isStackable());
+
+    this.itemIdentification = itemStack.getItemIdentification();
+  }
+
+  // WARNING: ItemStacks created using this constructor will not have an ItemIdentification
+  // attached.
+  public ItemStack(
+      int id, String name, long quantity, int gePrice, int haPrice, boolean stackable) {
+    this.id = id;
+    this.name = name;
+    this.quantity = quantity;
+    this.gePrice = gePrice;
+    this.haPrice = haPrice;
+    this.stackable = stackable;
   }
 
   /**
@@ -105,12 +109,13 @@ public class ItemStack {
    *
    * @param itemManager itemManager
    */
-  public void populateFromComposition(ItemManager itemManager) {
+  private void populateFromComposition(ItemManager itemManager) {
     ItemComposition composition = itemManager.getItemComposition(id);
-    this.name = composition.getName();
-    this.gePrice = itemManager.getItemPrice(id);
-    this.haPrice = composition.getHaPrice();
-    this.stackable = composition.isStackable();
+    name = composition.getName();
+    gePrice = itemManager.getItemPrice(id);
+    haPrice = composition.getHaPrice();
+    stackable = composition.isStackable();
+    itemIdentification = ItemIdentification.get(itemManager.canonicalize(id));
   }
 
   long getTotalGePrice() {
@@ -119,5 +124,19 @@ public class ItemStack {
 
   long getTotalHaPrice() {
     return haPrice * quantity;
+  }
+
+  public void setId(int id) {
+    this.id = id;
+  }
+
+  public void setId(int id, ItemManager itemManager) {
+    this.id = id;
+    populateFromComposition(itemManager);
+  }
+
+  public void stripPrices() {
+    haPrice = 0;
+    gePrice = 0;
   }
 }

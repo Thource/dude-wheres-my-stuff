@@ -37,15 +37,17 @@ public class SeedBox extends CarryableStorage {
 
   @Override
   public boolean onGameTick() {
+    boolean didUpdate = super.onGameTick();
+
     Widget seedBoxWidget = client.getWidget(128, 11);
     if (seedBoxWidget == null) {
-      return false;
+      return didUpdate;
     }
 
     Widget[] seedBoxItems = seedBoxWidget.getChildren();
     if (seedBoxItems == null
         || Arrays.stream(seedBoxWidget.getChildren()).anyMatch(w -> w.getItemId() != -1)) {
-      return false;
+      return didUpdate;
     }
 
     items.clear();
@@ -85,8 +87,7 @@ public class SeedBox extends CarryableStorage {
 
       ItemStackUtils.addItemStack(
           items,
-          new ItemStack(
-              optionalSeed.get().getItemId(), quantity, client, clientThread, itemManager));
+          new ItemStack(optionalSeed.get().getItemId(), quantity, clientThread, itemManager));
       this.lastUpdated = System.currentTimeMillis();
       return true;
     }
@@ -109,8 +110,7 @@ public class SeedBox extends CarryableStorage {
 
       ItemStackUtils.removeItemStack(
           items,
-          new ItemStack(
-              optionalSeed.get().getItemId(), quantity, client, clientThread, itemManager));
+          new ItemStack(optionalSeed.get().getItemId(), quantity, clientThread, itemManager));
       this.lastUpdated = System.currentTimeMillis();
       return true;
     }

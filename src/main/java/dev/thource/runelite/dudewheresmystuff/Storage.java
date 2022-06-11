@@ -25,6 +25,7 @@ import org.apache.commons.lang3.math.NumberUtils;
 public abstract class Storage<T extends StorageType> {
 
   protected final List<ItemStack> items = new ArrayList<>();
+  protected final ItemContainerWatcher itemContainerWatcher;
   protected Client client;
   protected ClientThread clientThread;
   protected ItemManager itemManager;
@@ -38,6 +39,8 @@ public abstract class Storage<T extends StorageType> {
     this.client = client;
     this.clientThread = clientThread;
     this.itemManager = itemManager;
+
+    itemContainerWatcher = ItemContainerWatcher.getWatcher(type.getItemContainerId());
   }
 
   public long getTotalValue() {
@@ -45,6 +48,14 @@ public abstract class Storage<T extends StorageType> {
   }
 
   public boolean onGameTick() {
+    if (itemContainerWatcher != null && itemContainerWatcher.wasJustUpdated()) {
+      items.clear();
+      items.addAll(itemContainerWatcher.getItems());
+      lastUpdated = System.currentTimeMillis();
+
+      return true;
+    }
+
     return false;
   }
 
@@ -72,7 +83,8 @@ public abstract class Storage<T extends StorageType> {
    * @return whether the data changed
    */
   public boolean onItemContainerChanged(ItemContainerChanged itemContainerChanged) {
-    if (type.getItemContainerId() == -1
+    if (itemContainerWatcher != null
+        || type.getItemContainerId() == -1
         || type.getItemContainerId() != itemContainerChanged.getContainerId()) {
       return false;
     }
@@ -91,14 +103,7 @@ public abstract class Storage<T extends StorageType> {
 
       ItemComposition itemComposition = itemManager.getItemComposition(item.getId());
       if (itemComposition.getPlaceholderTemplateId() == -1) {
-        items.add(
-            new ItemStack(
-                item.getId(),
-                itemComposition.getName(),
-                item.getQuantity(),
-                itemManager.getItemPrice(item.getId()),
-                itemComposition.getHaPrice(),
-                itemComposition.isStackable()));
+        items.add(new ItemStack(item.getId(), item.getQuantity(), clientThread, itemManager));
       }
     }
 
@@ -166,15 +171,7 @@ public abstract class Storage<T extends StorageType> {
       int itemId = NumberUtils.toInt(itemStackData[0]);
       int itemQuantity = NumberUtils.toInt(itemStackData[1]);
 
-      ItemComposition itemComposition = itemManager.getItemComposition(itemId);
-      loadedItems.add(
-          new ItemStack(
-              itemId,
-              itemComposition.getName(),
-              itemQuantity,
-              itemManager.getItemPrice(itemId),
-              itemComposition.getHaPrice(),
-              itemComposition.isStackable()));
+      loadedItems.add(new ItemStack(itemId, itemQuantity, clientThread, itemManager));
     }
 
     return loadedItems;

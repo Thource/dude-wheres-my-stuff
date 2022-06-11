@@ -47,19 +47,18 @@ public class Leprechaun extends WorldStorage {
   public Leprechaun(Client client, ClientThread clientThread, ItemManager itemManager) {
     super(WorldStorageType.LEPRECHAUN, client, clientThread, itemManager);
 
-    rakes = new ItemStack(ItemID.RAKE, client, clientThread, itemManager);
-    seedDibbers = new ItemStack(ItemID.SEED_DIBBER, client, clientThread, itemManager);
-    spades = new ItemStack(ItemID.SPADE, client, clientThread, itemManager);
-    secateurs = new ItemStack(ItemID.SECATEURS, client, clientThread, itemManager);
-    wateringCan = new ItemStack(ItemID.WATERING_CAN, client, clientThread, itemManager);
-    trowels = new ItemStack(ItemID.GARDENING_TROWEL, client, clientThread, itemManager);
-    plantCures = new ItemStack(ItemID.PLANT_CURE, client, clientThread, itemManager);
-    bottomlessBucket =
-        new ItemStack(ItemID.BOTTOMLESS_COMPOST_BUCKET, client, clientThread, itemManager);
-    buckets = new ItemStack(ItemID.EMPTY_BUCKET, client, clientThread, itemManager);
-    composts = new ItemStack(ItemID.COMPOST, client, clientThread, itemManager);
-    superComposts = new ItemStack(ItemID.SUPERCOMPOST, client, clientThread, itemManager);
-    ultraComposts = new ItemStack(ItemID.ULTRACOMPOST, client, clientThread, itemManager);
+    rakes = new ItemStack(ItemID.RAKE, clientThread, itemManager);
+    seedDibbers = new ItemStack(ItemID.SEED_DIBBER, clientThread, itemManager);
+    spades = new ItemStack(ItemID.SPADE, clientThread, itemManager);
+    secateurs = new ItemStack(ItemID.SECATEURS, clientThread, itemManager);
+    wateringCan = new ItemStack(ItemID.WATERING_CAN, clientThread, itemManager);
+    trowels = new ItemStack(ItemID.GARDENING_TROWEL, clientThread, itemManager);
+    plantCures = new ItemStack(ItemID.PLANT_CURE, clientThread, itemManager);
+    bottomlessBucket = new ItemStack(ItemID.BOTTOMLESS_COMPOST_BUCKET, clientThread, itemManager);
+    buckets = new ItemStack(ItemID.EMPTY_BUCKET, clientThread, itemManager);
+    composts = new ItemStack(ItemID.COMPOST, clientThread, itemManager);
+    superComposts = new ItemStack(ItemID.SUPERCOMPOST, clientThread, itemManager);
+    ultraComposts = new ItemStack(ItemID.ULTRACOMPOST, clientThread, itemManager);
 
     items.add(rakes);
     items.add(seedDibbers);
@@ -199,8 +198,7 @@ public class Leprechaun extends WorldStorage {
     }
 
     if (secateurs.getId() != secateursId) {
-      secateurs.setId(secateursId);
-      secateurs.populateFromComposition(itemManager);
+      secateurs.setId(secateursId, itemManager);
     }
 
     secateurs.setQuantity(quantity);
@@ -296,9 +294,8 @@ public class Leprechaun extends WorldStorage {
       return false;
     }
 
-    wateringCan.setId(wateringCanId);
+    wateringCan.setId(wateringCanId, itemManager);
     wateringCan.setQuantity(1);
-    wateringCan.populateFromComposition(itemManager);
     return true;
   }
 
@@ -323,25 +320,22 @@ public class Leprechaun extends WorldStorage {
         .forEach(
             loadedItem -> {
               if (Arrays.stream(WATERING_CAN_IDS).anyMatch(i -> i == loadedItem.getId())) {
-                wateringCan.setId(loadedItem.getId());
+                wateringCan.setId(loadedItem.getId(), itemManager);
                 wateringCan.setQuantity(loadedItem.getQuantity());
-                wateringCan.populateFromComposition(itemManager);
                 return;
               }
 
               if (loadedItem.getId() == ItemID.MAGIC_SECATEURS
                   || loadedItem.getId() == ItemID.SECATEURS) {
-                secateurs.setId(loadedItem.getId());
+                secateurs.setId(loadedItem.getId(), itemManager);
                 secateurs.setQuantity(loadedItem.getQuantity());
-                secateurs.populateFromComposition(itemManager);
                 return;
               }
 
               if (loadedItem.getId() == ItemID.BOTTOMLESS_COMPOST_BUCKET
                   || loadedItem.getId() == ItemID.BOTTOMLESS_COMPOST_BUCKET_22997) {
-                bottomlessBucket.setId(loadedItem.getId());
+                bottomlessBucket.setId(loadedItem.getId(), itemManager);
                 bottomlessBucket.setQuantity(loadedItem.getQuantity());
-                bottomlessBucket.populateFromComposition(itemManager);
                 return;
               }
 

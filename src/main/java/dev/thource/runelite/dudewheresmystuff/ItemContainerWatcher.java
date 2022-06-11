@@ -1,8 +1,11 @@
 package dev.thource.runelite.dudewheresmystuff;
 
+import com.google.common.collect.ImmutableMap;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.Getter;
 import net.runelite.api.Client;
@@ -14,26 +17,27 @@ import net.runelite.client.game.ItemManager;
 /** ItemContainerWatcher makes it easy to detect changes to ItemContainers. */
 public class ItemContainerWatcher {
 
+  private static final Map<Integer, ItemContainerWatcher> watcherMap;
+
   @Getter
   static ItemContainerWatcher inventoryWatcher =
       new ItemContainerWatcher(InventoryID.INVENTORY.getId());
 
-  @Getter
-  static ItemContainerWatcher equipmentWatcher =
-      new ItemContainerWatcher(InventoryID.EQUIPMENT.getId());
-
   @Getter static ItemContainerWatcher lootingBagWatcher = new ItemContainerWatcher(516);
   @Getter static ItemContainerWatcher seedBoxWatcher = new ItemContainerWatcher(573);
-  @Getter static ItemContainerWatcher deathbankWatcher = new ItemContainerWatcher(525);
-
   private static final ItemContainerWatcher[] all =
-      new ItemContainerWatcher[] {
-        inventoryWatcher, equipmentWatcher, lootingBagWatcher, seedBoxWatcher, deathbankWatcher
-      };
-
+      new ItemContainerWatcher[] {inventoryWatcher, lootingBagWatcher, seedBoxWatcher};
   private static Client client;
   private static ClientThread clientThread;
   private static ItemManager itemManager;
+
+  static {
+    ImmutableMap.Builder<Integer, ItemContainerWatcher> mapBuilder = new ImmutableMap.Builder<>();
+    for (ItemContainerWatcher itemContainerWatcher : all) {
+      mapBuilder.put(itemContainerWatcher.itemContainerId, itemContainerWatcher);
+    }
+    watcherMap = mapBuilder.build();
+  }
 
   private final int itemContainerId;
   private final List<ItemStack> itemsLastTick = new ArrayList<>();
@@ -64,6 +68,10 @@ public class ItemContainerWatcher {
     }
   }
 
+  public static ItemContainerWatcher getWatcher(int itemContainerId) {
+    return watcherMap.get(itemContainerId);
+  }
+
   public boolean wasJustUpdated() {
     return justUpdated;
   }
@@ -83,9 +91,22 @@ public class ItemContainerWatcher {
     items.addAll(
         Arrays.stream(itemContainer.getItems())
             .map(
-                item ->
-                    new ItemStack(
-                        item.getId(), item.getQuantity(), client, clientThread, itemManager))
+                item -> {
+                  if (item.getId() == -1) {
+                    return new ItemStack(-1, "empty", 1, 0, 0, false);
+                  }
+
+                  Optional<ItemStack> oldItem =
+                      itemsLastTick.stream().filter(o -> o.getId() == item.getId()).findFirst();
+                  if (oldItem.isPresent()) {
+                    ItemStack newItem = new ItemStack(oldItem.get());
+                    newItem.setQuantity(item.getQuantity());
+
+                    return newItem;
+                  }
+
+                  return new ItemStack(item.getId(), item.getQuantity(), clientThread, itemManager);
+                })
             .collect(Collectors.toList()));
   }
 

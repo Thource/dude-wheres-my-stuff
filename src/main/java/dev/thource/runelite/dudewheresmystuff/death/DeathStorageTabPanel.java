@@ -100,9 +100,7 @@ public class DeathStorageTabPanel
                       itemManager,
                       storageManager.getPluginManager(),
                       storageManager.getItemIdentificationPlugin(),
-                      storageManager.getItemIdentificationConfig(),
-                      storageManager.getClientThread(),
-                      storage,
+                      storageManager.getItemIdentificationConfig(), storage,
                       null,
                       showPrice());
               for (ItemStack itemStack : storage.getItems()) {
@@ -131,9 +129,7 @@ public class DeathStorageTabPanel
             itemManager,
             storageManager.getPluginManager(),
             storageManager.getItemIdentificationPlugin(),
-            storageManager.getItemIdentificationConfig(),
-            storageManager.getClientThread(),
-            "Death items debug",
+            storageManager.getItemIdentificationConfig(), "Death items debug",
             null,
             showPrice());
     for (ItemStack itemStack : storageManager.getDeathItems()) {

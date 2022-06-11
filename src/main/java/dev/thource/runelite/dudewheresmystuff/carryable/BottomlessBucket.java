@@ -32,9 +32,12 @@ public class BottomlessBucket extends CarryableStorage {
   BottomlessBucket(Client client, ClientThread clientThread, ItemManager itemManager) {
     super(CarryableStorageType.BOTTOMLESS_BUCKET, client, clientThread, itemManager);
 
-    compostStack = new ItemStack(ItemID.COMPOST, "Compost", 0, 0, 0, true);
-    supercompostStack = new ItemStack(ItemID.COMPOST, "Supercompost", 0, 0, 0, true);
-    ultracompostStack = new ItemStack(ItemID.COMPOST, "Ultracompost", 0, 0, 0, true);
+    compostStack = new ItemStack(ItemID.COMPOST, clientThread, itemManager);
+    clientThread.invoke(compostStack::stripPrices);
+    supercompostStack = new ItemStack(ItemID.SUPERCOMPOST, clientThread, itemManager);
+    clientThread.invoke(supercompostStack::stripPrices);
+    ultracompostStack = new ItemStack(ItemID.ULTRACOMPOST, clientThread, itemManager);
+    clientThread.invoke(ultracompostStack::stripPrices);
 
     items.add(compostStack);
     items.add(supercompostStack);

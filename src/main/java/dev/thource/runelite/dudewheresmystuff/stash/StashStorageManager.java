@@ -20,8 +20,6 @@ import net.runelite.client.game.ItemManager;
 @Slf4j
 public class StashStorageManager extends StorageManager<StashStorageType, StashStorage> {
 
-  private final ClientThread clientThread;
-
   @Inject
   private StashStorageManager(
       Client client,
@@ -32,8 +30,6 @@ public class StashStorageManager extends StorageManager<StashStorageType, StashS
       Notifier notifier,
       DudeWheresMyStuffPlugin plugin) {
     super(client, itemManager, configManager, config, notifier, plugin);
-
-    this.clientThread = clientThread;
 
     for (StashUnit stashUnit : StashUnit.values()) {
       storages.add(new StashStorage(client, clientThread, itemManager, stashUnit));
@@ -144,9 +140,7 @@ public class StashStorageManager extends StorageManager<StashStorageType, StashS
 
     if (filled && stashStorage.getItems().isEmpty()) {
       for (int defaultItemId : stashStorage.getStashUnit().getDefaultItemIds()) {
-        stashStorage
-            .getItems()
-            .add(new ItemStack(defaultItemId, 1, client, clientThread, itemManager));
+        stashStorage.getItems().add(new ItemStack(defaultItemId, 1, clientThread, itemManager));
       }
     } else if (!filled && !stashStorage.getItems().isEmpty()) {
       stashStorage.getItems().clear();

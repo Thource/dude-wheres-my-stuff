@@ -118,7 +118,6 @@ class SearchTabPanel
             storageManagerManager.getCarryableStorageManager().getPluginManager(),
             storageManagerManager.getCarryableStorageManager().getItemIdentificationPlugin(),
             storageManagerManager.getCarryableStorageManager().getItemIdentificationConfig(),
-            storageManagerManager.getCarryableStorageManager().getClientThread(),
             storage,
             null,
             showPrice());

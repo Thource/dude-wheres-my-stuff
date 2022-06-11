@@ -31,7 +31,7 @@ public class PlayerOwnedHouseStorage extends Storage<PlayerOwnedHouseStorageType
     items.clear();
     for (Item item : itemContainerChanged.getItemContainer().getItems()) {
       if (type.getStorableItemIds() == null || type.getStorableItemIds().contains(item.getId())) {
-        items.add(new ItemStack(item.getId(), 1, client, clientThread, itemManager));
+        items.add(new ItemStack(item.getId(), 1, clientThread, itemManager));
       }
     }
 

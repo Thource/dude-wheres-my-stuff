@@ -51,9 +51,7 @@ public class MinigamesStorageTabPanel
                       itemManager,
                       storageManager.getPluginManager(),
                       storageManager.getItemIdentificationPlugin(),
-                      storageManager.getItemIdentificationConfig(),
-                      storageManager.getClientThread(),
-                      storage,
+                      storageManager.getItemIdentificationConfig(), storage,
                       null,
                       showPrice());
               for (ItemStack itemStack : storage.getItems()) {

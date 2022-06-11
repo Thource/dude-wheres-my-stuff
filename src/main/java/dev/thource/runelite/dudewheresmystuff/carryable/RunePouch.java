@@ -3,7 +3,6 @@ package dev.thource.runelite.dudewheresmystuff.carryable;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
 import lombok.Getter;
 import net.runelite.api.Client;
-import net.runelite.api.ItemComposition;
 import net.runelite.api.Varbits;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.game.ItemManager;
@@ -68,43 +67,19 @@ public class RunePouch extends CarryableStorage {
     RunepouchRune rune3 = RunepouchRune.getRune(rune3Type);
 
     if (rune1 != null) {
-      ItemComposition itemComposition = itemManager.getItemComposition(rune1.getItemId());
-      items.add(
-          new ItemStack(
-              rune1.getItemId(),
-              itemComposition.getName(),
-              rune1Quantity,
-              itemManager.getItemPrice(rune1.getItemId()),
-              itemComposition.getHaPrice(),
-              true));
+      items.add(new ItemStack(rune1.getItemId(), rune1Quantity, clientThread, itemManager));
     } else {
       items.add(new ItemStack(-1, EMPTY, 1, 0, 0, false));
     }
 
     if (rune2 != null) {
-      ItemComposition itemComposition = itemManager.getItemComposition(rune2.getItemId());
-      items.add(
-          new ItemStack(
-              rune2.getItemId(),
-              itemComposition.getName(),
-              rune2Quantity,
-              itemManager.getItemPrice(rune2.getItemId()),
-              itemComposition.getHaPrice(),
-              true));
+      items.add(new ItemStack(rune2.getItemId(), rune2Quantity, clientThread, itemManager));
     } else {
       items.add(new ItemStack(-1, EMPTY, 1, 0, 0, false));
     }
 
     if (rune3 != null) {
-      ItemComposition itemComposition = itemManager.getItemComposition(rune3.getItemId());
-      items.add(
-          new ItemStack(
-              rune3.getItemId(),
-              itemComposition.getName(),
-              rune3Quantity,
-              itemManager.getItemPrice(rune3.getItemId()),
-              itemComposition.getHaPrice(),
-              true));
+      items.add(new ItemStack(rune3.getItemId(), rune3Quantity, clientThread, itemManager));
     } else {
       items.add(new ItemStack(-1, EMPTY, 1, 0, 0, false));
     }
