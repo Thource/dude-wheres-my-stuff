@@ -1,7 +1,9 @@
 package dev.thource.runelite.dudewheresmystuff.coins;
 
+import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffConfig;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
 import dev.thource.runelite.dudewheresmystuff.Storage;
+import java.util.Optional;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.ItemContainer;
@@ -9,6 +11,7 @@ import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
+import org.apache.commons.lang3.math.NumberUtils;
 
 /**
  * CoinsStorage is responsible for tracking storages that hold the players coins (coffers,
@@ -24,6 +27,21 @@ public class CoinsStorage extends Storage<CoinsStorageType> {
     super(type, client, clientThread, itemManager);
 
     items.add(coinStack);
+  }
+
+  @Override
+  public boolean onGameTick() {
+    if (itemContainerWatcher != null && itemContainerWatcher.wasJustUpdated()) {
+      Optional<ItemStack> coinsItem =
+          itemContainerWatcher.getItems().stream().filter(i -> i.getId() == 995).findFirst();
+      coinStack.setQuantity(coinsItem.map(ItemStack::getQuantity).orElse(0L));
+
+      lastUpdated = System.currentTimeMillis();
+
+      return true;
+    }
+
+    return false;
   }
 
   @Override
@@ -43,7 +61,8 @@ public class CoinsStorage extends Storage<CoinsStorageType> {
 
   @Override
   public boolean onItemContainerChanged(ItemContainerChanged itemContainerChanged) {
-    if (type.getItemContainerId() == -1
+    if (itemContainerWatcher != null
+        || type.getItemContainerId() == -1
         || type.getItemContainerId() != itemContainerChanged.getContainerId()) {
       return false;
     }
@@ -71,11 +90,31 @@ public class CoinsStorage extends Storage<CoinsStorageType> {
   }
 
   @Override
-  public void load(ConfigManager configManager, String managerConfigKey, String profileKey) {
-    super.load(configManager, managerConfigKey, profileKey);
+  public void save(ConfigManager configManager, String managerConfigKey) {
+    String data = lastUpdated + ";" + coinStack.getQuantity();
 
-    if (!items.isEmpty()) {
-      this.coinStack = items.get(0);
+    configManager.setRSProfileConfiguration(
+        DudeWheresMyStuffConfig.CONFIG_GROUP, managerConfigKey + "." + type.getConfigKey(), data);
+  }
+
+  @Override
+  public void load(ConfigManager configManager, String managerConfigKey, String profileKey) {
+    String data =
+        configManager.getConfiguration(
+            DudeWheresMyStuffConfig.CONFIG_GROUP,
+            profileKey,
+            managerConfigKey + "." + type.getConfigKey(),
+            String.class);
+    if (data == null) {
+      return;
     }
+
+    String[] dataSplit = data.split(";");
+    if (dataSplit.length != 2) {
+      return;
+    }
+
+    this.lastUpdated = NumberUtils.toLong(dataSplit[0], -1);
+    coinStack.setQuantity(NumberUtils.toInt(dataSplit[1], 0));
   }
 }
