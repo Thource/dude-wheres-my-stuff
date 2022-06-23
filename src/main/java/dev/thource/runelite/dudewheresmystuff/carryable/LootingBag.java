@@ -1,25 +1,23 @@
 package dev.thource.runelite.dudewheresmystuff.carryable;
 
+import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import java.util.Objects;
 import lombok.Getter;
-import net.runelite.api.Client;
 import net.runelite.api.widgets.Widget;
-import net.runelite.client.callback.ClientThread;
-import net.runelite.client.game.ItemManager;
 
 /** LootingBag is responsible for tracking the player's items in their looting bag. */
 @Getter
 public class LootingBag extends CarryableStorage {
 
-  public LootingBag(Client client, ClientThread clientThread, ItemManager itemManager) {
-    super(CarryableStorageType.LOOTING_BAG, client, clientThread, itemManager);
+  public LootingBag(DudeWheresMyStuffPlugin plugin) {
+    super(CarryableStorageType.LOOTING_BAG, plugin);
   }
 
   @Override
   public boolean onGameTick() {
     boolean didUpdate = super.onGameTick();
 
-    Widget lootingBagWidget = client.getWidget(81, 5);
+    Widget lootingBagWidget = plugin.getClient().getWidget(81, 5);
     if (lootingBagWidget == null) {
       return didUpdate;
     }

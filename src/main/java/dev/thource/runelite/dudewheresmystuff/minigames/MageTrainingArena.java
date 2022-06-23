@@ -1,20 +1,18 @@
 package dev.thource.runelite.dudewheresmystuff.minigames;
 
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffConfig;
+import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 import lombok.Getter;
-import net.runelite.api.Client;
 import net.runelite.api.ItemID;
 import net.runelite.api.events.WidgetClosed;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
-import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.game.ItemManager;
 import org.apache.commons.lang3.math.NumberUtils;
 
 /** MageTrainingArena is responsible for tracking the player's Mage Training Arena points. */
@@ -34,8 +32,8 @@ public class MageTrainingArena extends MinigamesStorage {
 
   private Widget shopWidget = null;
 
-  MageTrainingArena(Client client, ClientThread clientThread, ItemManager itemManager) {
-    super(MinigamesStorageType.MAGE_TRAINING_ARENA, client, clientThread, itemManager);
+  MageTrainingArena(DudeWheresMyStuffPlugin plugin) {
+    super(MinigamesStorageType.MAGE_TRAINING_ARENA, plugin);
 
     items.add(telekineticPoints);
     items.add(graveyardPoints);
@@ -56,7 +54,7 @@ public class MageTrainingArena extends MinigamesStorage {
   @Override
   public boolean onWidgetLoaded(WidgetLoaded widgetLoaded) {
     if (widgetLoaded.getGroupId() == 197) {
-      shopWidget = client.getWidget(197, 0);
+      shopWidget = plugin.getClient().getWidget(197, 0);
     } else {
       pointData.forEach(
           (itemStack, pointDatum) -> {
@@ -64,7 +62,7 @@ public class MageTrainingArena extends MinigamesStorage {
               return;
             }
 
-            pointDatum.widget = client.getWidget(pointDatum.getWidgetId(), 6);
+            pointDatum.widget = plugin.getClient().getWidget(pointDatum.getWidgetId(), 6);
           });
     }
 
@@ -94,7 +92,7 @@ public class MageTrainingArena extends MinigamesStorage {
       lastUpdated = System.currentTimeMillis();
       pointData.forEach(
           (itemStack, pointDatum) -> {
-            int newPoints = client.getVarpValue(pointDatum.getVarpId());
+            int newPoints = plugin.getClient().getVarpValue(pointDatum.getVarpId());
             if (newPoints == pointDatum.getLastVarpValue()) {
               return;
             }

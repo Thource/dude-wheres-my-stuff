@@ -1,16 +1,22 @@
 package dev.thource.runelite.dudewheresmystuff.death;
 
+import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.DurationFormatter;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
+import dev.thource.runelite.dudewheresmystuff.Region;
+import dev.thource.runelite.dudewheresmystuff.StoragePanel;
 import java.util.List;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
+import javax.swing.border.EmptyBorder;
 import lombok.Getter;
-import net.runelite.api.Client;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.client.callback.ClientThread;
-import net.runelite.client.game.ItemManager;
 
 /** Deathpile is responsible for tracking the player's deathpiled items. */
 @Getter
+@Slf4j
 public class Deathpile extends DeathStorage {
 
   private final int playedMinutesAtCreation;
@@ -18,14 +24,12 @@ public class Deathpile extends DeathStorage {
   private final DeathStorageManager deathStorageManager;
 
   Deathpile(
-      Client client,
-      ClientThread clientThread,
-      ItemManager itemManager,
+      DudeWheresMyStuffPlugin plugin,
       int playedMinutesAtCreation,
       WorldPoint worldPoint,
       DeathStorageManager deathStorageManager,
       List<ItemStack> deathItems) {
-    super(DeathStorageType.DEATHPILE, client, clientThread, itemManager);
+    super(DeathStorageType.DEATHPILE, plugin);
     this.playedMinutesAtCreation = playedMinutesAtCreation;
     this.worldPoint = worldPoint;
     this.deathStorageManager = deathStorageManager;
@@ -33,13 +37,59 @@ public class Deathpile extends DeathStorage {
   }
 
   @Override
+  protected StoragePanel createStoragePanel() {
+    StoragePanel panel = super.createStoragePanel();
+
+    Region region = Region.get(worldPoint.getRegionID());
+    if (region == null) {
+      panel.setSubTitle("Unknown");
+    } else {
+      panel.setSubTitle(region.getName());
+    }
+
+    if (!deathStorageManager.isPreviewManager()) {
+      final JPopupMenu popupMenu = new JPopupMenu();
+      popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
+      panel.setComponentPopupMenu(popupMenu);
+
+      final JMenuItem deleteDeathpile = new JMenuItem("Delete Deathpile");
+      deleteDeathpile.addActionListener(
+          e -> {
+            int result = JOptionPane.OK_OPTION;
+
+            try {
+              result =
+                  JOptionPane.showConfirmDialog(
+                      panel,
+                      "Are you sure you want to delete this deathpile?\nThis cannot be undone.",
+                      "Confirm deletion",
+                      JOptionPane.OK_CANCEL_OPTION,
+                      JOptionPane.WARNING_MESSAGE);
+            } catch (Exception err) {
+              log.warn("Unexpected exception occurred while check for confirm required", err);
+            }
+
+            if (result == JOptionPane.OK_OPTION) {
+              deathStorageManager.getStorages().remove(this);
+              deathStorageManager.refreshMapPoints();
+              deathStorageManager.getStorageTabPanel().reorderStoragePanels();
+              deathStorageManager.save();
+            }
+          });
+      popupMenu.add(deleteDeathpile);
+    }
+
+    return panel;
+  }
+
+  @Override
   public void reset() {
     // deathpiles get removed instead of reset
   }
 
-  String getExpireText(boolean previewMode) {
+  String getExpireText() {
     String expireText = "Expire";
-    long timeUntilExpiry = getExpiryMs(previewMode) - System.currentTimeMillis();
+    long timeUntilExpiry = getExpiryMs() - System.currentTimeMillis();
     if (timeUntilExpiry < 0) {
       expireText += "d " + DurationFormatter.format(Math.abs(timeUntilExpiry)) + " ago";
     } else {
@@ -53,12 +103,11 @@ public class Deathpile extends DeathStorage {
    *
    * <p>If previewMode is true, this will change so that it is static when displayed.
    *
-   * @param previewMode whether preview mode is enabled
    * @return Unix timestamp of the expiry
    */
-  public long getExpiryMs(boolean previewMode) {
+  public long getExpiryMs() {
     int minutesLeft = playedMinutesAtCreation + 59 - deathStorageManager.getPlayedMinutes();
-    if (previewMode) {
+    if (deathStorageManager.isPreviewManager()) {
       return System.currentTimeMillis() + (minutesLeft * 60000L);
     }
 
@@ -67,7 +116,12 @@ public class Deathpile extends DeathStorage {
         - ((System.currentTimeMillis() - deathStorageManager.startMs) % 60000);
   }
 
-  public boolean hasExpired(boolean previewMode) {
-    return getExpiryMs(previewMode) < System.currentTimeMillis();
+  public boolean hasExpired() {
+    return getExpiryMs() < System.currentTimeMillis();
+  }
+
+  @Override
+  public void softUpdate() {
+    storagePanel.setFooterText(getExpireText());
   }
 }

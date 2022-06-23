@@ -1,9 +1,7 @@
 package dev.thource.runelite.dudewheresmystuff.coins;
 
-import net.runelite.api.Client;
+import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import net.runelite.api.widgets.Widget;
-import net.runelite.client.callback.ClientThread;
-import net.runelite.client.game.ItemManager;
 import org.apache.commons.lang3.math.NumberUtils;
 
 /**
@@ -12,13 +10,13 @@ import org.apache.commons.lang3.math.NumberUtils;
  */
 public class ShiloFurnace extends CoinsStorage {
 
-  ShiloFurnace(Client client, ClientThread clientThread, ItemManager itemManager) {
-    super(CoinsStorageType.SHILO_FURNACE, client, clientThread, itemManager);
+  ShiloFurnace(DudeWheresMyStuffPlugin plugin) {
+    super(CoinsStorageType.SHILO_FURNACE, plugin);
   }
 
   @Override
   public boolean onGameTick() {
-    Widget widget = client.getWidget(219, 1);
+    Widget widget = plugin.getClient().getWidget(219, 1);
     if (widget == null) {
       return false;
     }

@@ -1,7 +1,6 @@
 package dev.thource.runelite.dudewheresmystuff.stash;
 
 import com.google.inject.Inject;
-import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffConfig;
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
 import dev.thource.runelite.dudewheresmystuff.StorageManager;
@@ -9,40 +8,28 @@ import dev.thource.runelite.dudewheresmystuff.Tab;
 import java.util.Objects;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.Client;
 import net.runelite.api.widgets.Widget;
-import net.runelite.client.Notifier;
-import net.runelite.client.callback.ClientThread;
-import net.runelite.client.config.ConfigManager;
-import net.runelite.client.game.ItemManager;
 
 /** StashStorageManager is responsible for managing all StashStorages. */
 @Slf4j
 public class StashStorageManager extends StorageManager<StashStorageType, StashStorage> {
 
   @Inject
-  private StashStorageManager(
-      Client client,
-      ClientThread clientThread,
-      ItemManager itemManager,
-      ConfigManager configManager,
-      DudeWheresMyStuffConfig config,
-      Notifier notifier,
-      DudeWheresMyStuffPlugin plugin) {
-    super(client, itemManager, configManager, config, notifier, plugin);
+  private StashStorageManager(DudeWheresMyStuffPlugin plugin) {
+    super(plugin);
 
     for (StashUnit stashUnit : StashUnit.values()) {
-      storages.add(new StashStorage(client, clientThread, itemManager, stashUnit));
+      storages.add(new StashStorage(plugin, stashUnit));
     }
   }
 
   @Override
-  public boolean onGameTick() {
+  public void onGameTick() {
     super.onGameTick();
 
     Widget stashChartWidget = client.getWidget(493, 2);
     if (stashChartWidget == null) {
-      return false;
+      return;
     }
 
     boolean updated = updateBeginnerStashChartItems();
@@ -62,7 +49,9 @@ public class StashStorageManager extends StorageManager<StashStorageType, StashS
       updated = true;
     }
 
-    return updated;
+    if (updated) {
+      updateStorages(storages);
+    }
   }
 
   private boolean updateBeginnerStashChartItems() {
@@ -140,7 +129,7 @@ public class StashStorageManager extends StorageManager<StashStorageType, StashS
 
     if (filled && stashStorage.getItems().isEmpty()) {
       for (int defaultItemId : stashStorage.getStashUnit().getDefaultItemIds()) {
-        stashStorage.getItems().add(new ItemStack(defaultItemId, 1, clientThread, itemManager));
+        stashStorage.getItems().add(new ItemStack(defaultItemId, 1, plugin));
       }
     } else if (!filled && !stashStorage.getItems().isEmpty()) {
       stashStorage.getItems().clear();

@@ -1,5 +1,6 @@
 package dev.thource.runelite.dudewheresmystuff.carryable;
 
+import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
 import dev.thource.runelite.dudewheresmystuff.ItemStackUtils;
 import dev.thource.runelite.dudewheresmystuff.Seed;
@@ -9,11 +10,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import lombok.Getter;
 import net.runelite.api.ChatMessageType;
-import net.runelite.api.Client;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.widgets.Widget;
-import net.runelite.client.callback.ClientThread;
-import net.runelite.client.game.ItemManager;
 import org.apache.commons.lang3.math.NumberUtils;
 
 /** SeedBox is responsible for tracking how many seeds the player has stored in their seed box. */
@@ -31,15 +29,15 @@ public class SeedBox extends CarryableStorage {
     Pattern.compile("Emptied (?<count>\\d+) x (?<seed>.+) to your inventory\\."),
   };
 
-  SeedBox(Client client, ClientThread clientThread, ItemManager itemManager) {
-    super(CarryableStorageType.SEED_BOX, client, clientThread, itemManager);
+  SeedBox(DudeWheresMyStuffPlugin plugin) {
+    super(CarryableStorageType.SEED_BOX, plugin);
   }
 
   @Override
   public boolean onGameTick() {
     boolean didUpdate = super.onGameTick();
 
-    Widget seedBoxWidget = client.getWidget(128, 11);
+    Widget seedBoxWidget = plugin.getClient().getWidget(128, 11);
     if (seedBoxWidget == null) {
       return didUpdate;
     }
@@ -86,8 +84,7 @@ public class SeedBox extends CarryableStorage {
       }
 
       ItemStackUtils.addItemStack(
-          items,
-          new ItemStack(optionalSeed.get().getItemId(), quantity, clientThread, itemManager));
+          items, new ItemStack(optionalSeed.get().getItemId(), quantity, plugin));
       this.lastUpdated = System.currentTimeMillis();
       return true;
     }
@@ -109,8 +106,7 @@ public class SeedBox extends CarryableStorage {
       }
 
       ItemStackUtils.removeItemStack(
-          items,
-          new ItemStack(optionalSeed.get().getItemId(), quantity, clientThread, itemManager));
+          items, new ItemStack(optionalSeed.get().getItemId(), quantity, plugin));
       this.lastUpdated = System.currentTimeMillis();
       return true;
     }

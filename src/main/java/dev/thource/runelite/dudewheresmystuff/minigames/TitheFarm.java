@@ -1,14 +1,12 @@
 package dev.thource.runelite.dudewheresmystuff.minigames;
 
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffConfig;
+import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
 import lombok.Getter;
-import net.runelite.api.Client;
 import net.runelite.api.ItemID;
 import net.runelite.api.Varbits;
-import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.game.ItemManager;
 import org.apache.commons.lang3.math.NumberUtils;
 
 /** TitheFarm is responsible for tracking the player's Tithe Farm points. */
@@ -17,15 +15,15 @@ public class TitheFarm extends MinigamesStorage {
 
   private final ItemStack points = new ItemStack(ItemID.GRICOLLERS_CAN, "Points", 0, 0, 0, true);
 
-  TitheFarm(Client client, ClientThread clientThread, ItemManager itemManager) {
-    super(MinigamesStorageType.TITHE_FARM, client, clientThread, itemManager);
+  TitheFarm(DudeWheresMyStuffPlugin plugin) {
+    super(MinigamesStorageType.TITHE_FARM, plugin);
 
     items.add(points);
   }
 
   @Override
   public boolean onVarbitChanged() {
-    int newPoints = client.getVarbitValue(Varbits.TITHE_FARM_POINTS);
+    int newPoints = plugin.getClient().getVarbitValue(Varbits.TITHE_FARM_POINTS);
     if (newPoints == points.getQuantity()) {
       return false;
     }

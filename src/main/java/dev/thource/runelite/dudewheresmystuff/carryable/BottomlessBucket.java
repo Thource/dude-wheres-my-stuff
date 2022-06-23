@@ -1,19 +1,17 @@
 package dev.thource.runelite.dudewheresmystuff.carryable;
 
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffConfig;
+import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
-import net.runelite.api.Client;
 import net.runelite.api.ItemID;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.widgets.Widget;
-import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.game.ItemManager;
 import org.apache.commons.lang3.math.NumberUtils;
 
 /**
@@ -29,15 +27,15 @@ public class BottomlessBucket extends CarryableStorage {
   private final ItemStack supercompostStack;
   private final ItemStack ultracompostStack;
 
-  BottomlessBucket(Client client, ClientThread clientThread, ItemManager itemManager) {
-    super(CarryableStorageType.BOTTOMLESS_BUCKET, client, clientThread, itemManager);
+  BottomlessBucket(DudeWheresMyStuffPlugin plugin) {
+    super(CarryableStorageType.BOTTOMLESS_BUCKET, plugin);
 
-    compostStack = new ItemStack(ItemID.COMPOST, clientThread, itemManager);
-    clientThread.invoke(compostStack::stripPrices);
-    supercompostStack = new ItemStack(ItemID.SUPERCOMPOST, clientThread, itemManager);
-    clientThread.invoke(supercompostStack::stripPrices);
-    ultracompostStack = new ItemStack(ItemID.ULTRACOMPOST, clientThread, itemManager);
-    clientThread.invoke(ultracompostStack::stripPrices);
+    compostStack = new ItemStack(ItemID.COMPOST, plugin);
+    plugin.getClientThread().invoke(compostStack::stripPrices);
+    supercompostStack = new ItemStack(ItemID.SUPERCOMPOST, plugin);
+    plugin.getClientThread().invoke(supercompostStack::stripPrices);
+    ultracompostStack = new ItemStack(ItemID.ULTRACOMPOST, plugin);
+    plugin.getClientThread().invoke(ultracompostStack::stripPrices);
 
     items.add(compostStack);
     items.add(supercompostStack);
@@ -46,7 +44,7 @@ public class BottomlessBucket extends CarryableStorage {
 
   @Override
   public boolean onGameTick() {
-    Widget widget = client.getWidget(193, 2);
+    Widget widget = plugin.getClient().getWidget(193, 2);
     if (widget == null) {
       return false;
     }

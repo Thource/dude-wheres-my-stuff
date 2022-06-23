@@ -1,17 +1,15 @@
 package dev.thource.runelite.dudewheresmystuff.minigames;
 
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffConfig;
+import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 import lombok.Getter;
-import net.runelite.api.Client;
 import net.runelite.api.ItemID;
-import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.game.ItemManager;
 import org.apache.commons.lang3.math.NumberUtils;
 
 /** BarbarianAssault is responsible for tracking the player's Barbarian Assault points. */
@@ -29,8 +27,8 @@ public class BarbarianAssault extends MinigamesStorage {
 
   private final Map<Integer, ItemStack> varbits = new HashMap<>();
 
-  BarbarianAssault(Client client, ClientThread clientThread, ItemManager itemManager) {
-    super(MinigamesStorageType.BARBARIAN_ASSAULT, client, clientThread, itemManager);
+  BarbarianAssault(DudeWheresMyStuffPlugin plugin) {
+    super(MinigamesStorageType.BARBARIAN_ASSAULT, plugin);
 
     items.add(attackerPoints);
     items.add(collectorPoints);
@@ -49,7 +47,7 @@ public class BarbarianAssault extends MinigamesStorage {
 
     varbits.forEach(
         (varbit, itemStack) -> {
-          int newPoints = client.getVarbitValue(varbit);
+          int newPoints = plugin.getClient().getVarbitValue(varbit);
           if (newPoints == itemStack.getQuantity()) {
             return;
           }

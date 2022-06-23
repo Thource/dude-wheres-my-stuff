@@ -11,6 +11,7 @@ import net.runelite.api.vars.AccountType;
 @RequiredArgsConstructor
 @Getter
 public enum DeathStorageType implements StorageType {
+  DEATH_ITEMS("Death Items", -1, true, "", false, -100, -100, null),
   DEATHPILE("Deathpile", -1, true, "deathpiles", false, -100, -100, null),
   UNKNOWN_DEATHBANK("Unknown Deathbank", -1, false, "unknown", true, -100, -100, null),
   HYDRA("Alchemical Hydra", -1, false, "hydra", true, 13, 14, Region.BOSS_HYDRA), // confirmed

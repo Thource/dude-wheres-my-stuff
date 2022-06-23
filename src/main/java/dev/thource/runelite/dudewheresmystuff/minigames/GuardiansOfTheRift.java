@@ -1,6 +1,7 @@
 package dev.thource.runelite.dudewheresmystuff.minigames;
 
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffConfig;
+import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
 import dev.thource.runelite.dudewheresmystuff.Region;
 import java.util.Objects;
@@ -9,14 +10,11 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import lombok.Getter;
 import net.runelite.api.ChatMessageType;
-import net.runelite.api.Client;
 import net.runelite.api.ItemID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.widgets.Widget;
-import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.game.ItemManager;
 import org.apache.commons.lang3.math.NumberUtils;
 
 /**
@@ -38,8 +36,8 @@ public class GuardiansOfTheRift extends MinigamesStorage {
   private final Pattern widgetPattern =
       Pattern.compile("You have (\\d+) catalytic energy and (\\d+) elemental energy\\.");
 
-  GuardiansOfTheRift(Client client, ClientThread clientThread, ItemManager itemManager) {
-    super(MinigamesStorageType.GUARDIANS_OF_THE_RIFT, client, clientThread, itemManager);
+  GuardiansOfTheRift(DudeWheresMyStuffPlugin plugin) {
+    super(MinigamesStorageType.GUARDIANS_OF_THE_RIFT, plugin);
 
     items.add(elementalEnergy);
     items.add(catalyticEnergy);
@@ -47,7 +45,7 @@ public class GuardiansOfTheRift extends MinigamesStorage {
 
   @Override
   public boolean onGameTick() {
-    Widget widget = client.getWidget(229, 1);
+    Widget widget = plugin.getClient().getWidget(229, 1);
     if (widget == null) {
       return false;
     }
@@ -77,7 +75,9 @@ public class GuardiansOfTheRift extends MinigamesStorage {
     if (chatMessage.getMessage().startsWith("You found some loot:")) {
       if (Region.get(
               WorldPoint.fromLocalInstance(
-                      client, Objects.requireNonNull(client.getLocalPlayer()).getLocalLocation())
+                      plugin.getClient(),
+                      Objects.requireNonNull(plugin.getClient().getLocalPlayer())
+                          .getLocalLocation())
                   .getRegionID())
           != Region.MG_GUARDIANS_OF_THE_RIFT) {
         return false;

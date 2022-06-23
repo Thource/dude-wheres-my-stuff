@@ -3,6 +3,8 @@ package dev.thource.runelite.dudewheresmystuff;
 import com.google.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import javax.swing.SwingUtilities;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
@@ -13,7 +15,6 @@ import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.ItemDespawned;
 import net.runelite.api.events.WidgetClosed;
 import net.runelite.api.events.WidgetLoaded;
-import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
@@ -27,35 +28,20 @@ import net.runelite.client.plugins.itemidentification.ItemIdentificationPlugin;
  */
 public abstract class StorageManager<T extends StorageType, S extends Storage<T>> {
 
-  protected final Client client;
-  protected final ItemManager itemManager;
-  @Getter protected final ConfigManager configManager;
-  protected final DudeWheresMyStuffConfig config;
-  protected final Notifier notifier;
-
   @Getter protected final List<S> storages = new ArrayList<>();
-
-  protected boolean enabled = true;
-  @Setter protected boolean isPreviewManager = false;
-  protected DudeWheresMyStuffPlugin plugin;
-
+  protected final DudeWheresMyStuffPlugin plugin;
+  @Inject protected Client client;
+  @Inject protected ItemManager itemManager;
+  @Getter @Inject protected ConfigManager configManager;
   @Getter @Inject protected PluginManager pluginManager;
   @Getter @Inject protected ItemIdentificationPlugin itemIdentificationPlugin;
   @Getter @Inject protected ItemIdentificationConfig itemIdentificationConfig;
   @Getter @Inject protected ClientThread clientThread;
+  protected boolean enabled = true;
+  @Getter protected boolean isPreviewManager = false;
+  @Getter @Setter protected StorageTabPanel<T, S, ? extends StorageManager<?, ?>> storageTabPanel;
 
-  protected StorageManager(
-      Client client,
-      ItemManager itemManager,
-      ConfigManager configManager,
-      DudeWheresMyStuffConfig config,
-      Notifier notifier,
-      DudeWheresMyStuffPlugin plugin) {
-    this.client = client;
-    this.itemManager = itemManager;
-    this.configManager = configManager;
-    this.config = config;
-    this.notifier = notifier;
+  protected StorageManager(DudeWheresMyStuffPlugin plugin) {
     this.plugin = plugin;
   }
 
@@ -63,129 +49,68 @@ public abstract class StorageManager<T extends StorageType, S extends Storage<T>
     return storages.stream().mapToLong(Storage::getTotalValue).sum();
   }
 
-  /**
-   * Pass onGameTick through to enabled storages.
-   *
-   * @return true if any Storage's data was updated
-   */
-  public boolean onGameTick() {
-    if (!enabled) {
-      return false;
+  protected void updateStorages(List<? extends S> storages) {
+    if (!storages.isEmpty()) {
+      storages.forEach(
+          storage -> {
+            storage.save(configManager, getConfigKey());
+            SwingUtilities.invokeLater(storage.getStoragePanel()::update);
+          });
+
+      SwingUtilities.invokeLater(storageTabPanel::reorderStoragePanels);
     }
-
-    boolean updated = false;
-
-    for (S storage : storages) {
-      if (!storage.isEnabled()) {
-        continue;
-      }
-
-      if (storage.onGameTick()) {
-        updated = true;
-      }
-    }
-
-    return updated;
   }
 
-  /**
-   * Pass onWidgetLoaded through to enabled storages.
-   *
-   * @return true if any Storage's data was updated
-   */
-  public boolean onWidgetLoaded(WidgetLoaded widgetLoaded) {
-    if (!enabled) {
-      return false;
+  /** Pass onGameTick through to enabled storages. */
+  public void onGameTick() {
+    if (enabled) {
+      updateStorages(
+          storages.stream()
+              .filter(storage -> storage.isEnabled() && storage.onGameTick())
+              .collect(Collectors.toList()));
     }
-
-    boolean updated = false;
-
-    for (S storage : storages) {
-      if (!storage.isEnabled()) {
-        continue;
-      }
-
-      if (storage.onWidgetLoaded(widgetLoaded)) {
-        updated = true;
-      }
-    }
-
-    return updated;
   }
 
-  /**
-   * Pass onWidgetClosed through to enabled storages.
-   *
-   * @return true if any Storage's data was updated
-   */
-  public boolean onWidgetClosed(WidgetClosed widgetClosed) {
-    if (!enabled) {
-      return false;
+  /** Pass onWidgetLoaded through to enabled storages. */
+  public void onWidgetLoaded(WidgetLoaded widgetLoaded) {
+    if (enabled) {
+      updateStorages(
+          storages.stream()
+              .filter(storage -> storage.isEnabled() && storage.onWidgetLoaded(widgetLoaded))
+              .collect(Collectors.toList()));
     }
-
-    boolean updated = false;
-
-    for (S storage : storages) {
-      if (!storage.isEnabled()) {
-        continue;
-      }
-
-      if (storage.onWidgetClosed(widgetClosed)) {
-        updated = true;
-      }
-    }
-
-    return updated;
   }
 
-  /**
-   * Pass onVarbitChanged through to enabled storages.
-   *
-   * @return true if any Storage's data was updated
-   */
-  public boolean onVarbitChanged() {
-    if (!enabled) {
-      return false;
+  /** Pass onWidgetClosed through to enabled storages. */
+  public void onWidgetClosed(WidgetClosed widgetClosed) {
+    if (enabled) {
+      updateStorages(
+          storages.stream()
+              .filter(storage -> storage.isEnabled() && storage.onWidgetClosed(widgetClosed))
+              .collect(Collectors.toList()));
     }
-
-    boolean updated = false;
-
-    for (S storage : storages) {
-      if (!storage.isEnabled()) {
-        continue;
-      }
-
-      if (storage.onVarbitChanged()) {
-        updated = true;
-      }
-    }
-
-    return updated;
   }
 
-  /**
-   * Pass onItemContainerChanged through to enabled storages.
-   *
-   * @return true if any Storage's data was updated
-   */
-  public boolean onItemContainerChanged(ItemContainerChanged itemContainerChanged) {
-    if (!enabled) {
-      return false;
+  /** Pass onVarbitChanged through to enabled storages. */
+  public void onVarbitChanged() {
+    if (enabled) {
+      updateStorages(
+          storages.stream()
+              .filter(storage -> storage.isEnabled() && storage.onVarbitChanged())
+              .collect(Collectors.toList()));
     }
+  }
 
-    boolean updated = false;
-
-    for (S storage : storages) {
-      if (!storage.isEnabled()) {
-        continue;
-      }
-
-      if (storage.onItemContainerChanged(itemContainerChanged)) {
-        updated = true;
-      }
+  /** Pass onItemContainerChanged through to enabled storages. */
+  public void onItemContainerChanged(ItemContainerChanged itemContainerChanged) {
+    if (enabled) {
+      updateStorages(
+          storages.stream()
+              .filter(
+                  storage ->
+                      storage.isEnabled() && storage.onItemContainerChanged(itemContainerChanged))
+              .collect(Collectors.toList()));
     }
-
-    return updated;
   }
 
   public void onGameStateChanged(GameStateChanged gameStateChanged) {}
@@ -231,32 +156,21 @@ public abstract class StorageManager<T extends StorageType, S extends Storage<T>
 
   public abstract Tab getTab();
 
-  public boolean onItemDespawned(ItemDespawned itemDespawned) {
-    return false;
+  public void onItemDespawned(ItemDespawned itemDespawned) {}
+
+  /** Pass onChatMessage through to enabled storages. */
+  public void onChatMessage(ChatMessage chatMessage) {
+    if (enabled) {
+      updateStorages(
+          storages.stream()
+              .filter(storage -> storage.isEnabled() && storage.onChatMessage(chatMessage))
+              .collect(Collectors.toList()));
+    }
   }
 
-  /**
-   * Pass onChatMessage through to enabled storages.
-   *
-   * @return true if any Storage's data was updated
-   */
-  public boolean onChatMessage(ChatMessage chatMessage) {
-    if (!enabled) {
-      return false;
-    }
+  public void setPreviewManager(boolean isPreviewManager) {
+    this.isPreviewManager = isPreviewManager;
 
-    boolean updated = false;
-
-    for (S storage : storages) {
-      if (!storage.isEnabled()) {
-        continue;
-      }
-
-      if (storage.onChatMessage(chatMessage)) {
-        updated = true;
-      }
-    }
-
-    return updated;
+    storages.forEach(storage -> storage.storagePanel = storage.createStoragePanel());
   }
 }

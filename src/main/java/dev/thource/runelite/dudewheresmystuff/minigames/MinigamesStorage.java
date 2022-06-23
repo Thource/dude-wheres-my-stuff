@@ -1,20 +1,20 @@
 package dev.thource.runelite.dudewheresmystuff.minigames;
 
+import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.Storage;
+import dev.thource.runelite.dudewheresmystuff.StoragePanel;
 import lombok.Getter;
-import net.runelite.api.Client;
-import net.runelite.client.callback.ClientThread;
-import net.runelite.client.game.ItemManager;
 
 @Getter
 abstract class MinigamesStorage extends Storage<MinigamesStorageType> {
 
-  protected MinigamesStorage(
-      MinigamesStorageType type,
-      Client client,
-      ClientThread clientThread,
-      ItemManager itemManager) {
-    super(type, client, clientThread, itemManager);
+  protected MinigamesStorage(MinigamesStorageType type, DudeWheresMyStuffPlugin plugin) {
+    super(type, plugin);
+  }
+
+  @Override
+  protected StoragePanel createStoragePanel() {
+    return new StoragePanel(plugin, this, false, true);
   }
 
   @Override
