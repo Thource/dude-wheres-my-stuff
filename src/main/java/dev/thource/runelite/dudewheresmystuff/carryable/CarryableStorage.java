@@ -1,13 +1,11 @@
 package dev.thource.runelite.dudewheresmystuff.carryable;
 
+import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
 import dev.thource.runelite.dudewheresmystuff.Storage;
 import lombok.Getter;
-import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
 import net.runelite.api.events.ItemContainerChanged;
-import net.runelite.client.callback.ClientThread;
-import net.runelite.client.game.ItemManager;
 
 /**
  * CarryableStorage is responsible for tracking storages that the player can carry (looting bag,
@@ -16,12 +14,8 @@ import net.runelite.client.game.ItemManager;
 @Getter
 public class CarryableStorage extends Storage<CarryableStorageType> {
 
-  protected CarryableStorage(
-      CarryableStorageType type,
-      Client client,
-      ClientThread clientThread,
-      ItemManager itemManager) {
-    super(type, client, clientThread, itemManager);
+  protected CarryableStorage(CarryableStorageType type, DudeWheresMyStuffPlugin plugin) {
+    super(type, plugin);
   }
 
   @Override
@@ -51,7 +45,8 @@ public class CarryableStorage extends Storage<CarryableStorageType> {
       items.add(11, empty);
       items.add(15, empty);
 
-      items.forEach(itemStack -> itemStack.setId(itemManager.canonicalize(itemStack.getId())));
+      items.forEach(
+          itemStack -> itemStack.setId(plugin.getItemManager().canonicalize(itemStack.getId())));
     }
 
     return updated;

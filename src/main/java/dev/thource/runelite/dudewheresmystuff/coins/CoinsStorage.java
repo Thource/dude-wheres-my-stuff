@@ -1,16 +1,14 @@
 package dev.thource.runelite.dudewheresmystuff.coins;
 
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffConfig;
+import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
 import dev.thource.runelite.dudewheresmystuff.Storage;
 import java.util.Optional;
 import lombok.Getter;
-import net.runelite.api.Client;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.events.ItemContainerChanged;
-import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.game.ItemManager;
 import org.apache.commons.lang3.math.NumberUtils;
 
 /**
@@ -20,11 +18,10 @@ import org.apache.commons.lang3.math.NumberUtils;
 @Getter
 public class CoinsStorage extends Storage<CoinsStorageType> {
 
-  protected ItemStack coinStack = new ItemStack(995, "Coins", 0, 1, 0, true);
+  protected final ItemStack coinStack = new ItemStack(995, "Coins", 0, 1, 0, true);
 
-  protected CoinsStorage(
-      CoinsStorageType type, Client client, ClientThread clientThread, ItemManager itemManager) {
-    super(type, client, clientThread, itemManager);
+  protected CoinsStorage(CoinsStorageType type, DudeWheresMyStuffPlugin plugin) {
+    super(type, plugin);
 
     items.add(coinStack);
   }
@@ -50,7 +47,7 @@ public class CoinsStorage extends Storage<CoinsStorageType> {
       return false;
     }
 
-    int coins = client.getVarbitValue(type.getVarbitId()) * type.getMultiplier();
+    int coins = plugin.getClient().getVarbitValue(type.getVarbitId()) * type.getMultiplier();
     if (coinStack.getQuantity() == coins) {
       return false;
     }
@@ -67,7 +64,7 @@ public class CoinsStorage extends Storage<CoinsStorageType> {
       return false;
     }
 
-    ItemContainer itemContainer = client.getItemContainer(type.getItemContainerId());
+    ItemContainer itemContainer = plugin.getClient().getItemContainer(type.getItemContainerId());
     if (itemContainer == null) {
       return false;
     }

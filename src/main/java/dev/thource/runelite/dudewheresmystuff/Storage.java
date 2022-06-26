@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.swing.SwingUtilities;
 import lombok.Getter;
 import lombok.Setter;
-import net.runelite.api.Client;
 import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
@@ -15,9 +15,7 @@ import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.WidgetClosed;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.vars.AccountType;
-import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.game.ItemManager;
 import org.apache.commons.lang3.math.NumberUtils;
 
 /** Storage serves as a base class for all trackable data in the plugin. */
@@ -26,24 +24,30 @@ public abstract class Storage<T extends StorageType> {
 
   protected final List<ItemStack> items = new ArrayList<>();
   protected final ItemContainerWatcher itemContainerWatcher;
-  protected Client client;
-  protected ClientThread clientThread;
-  protected ItemManager itemManager;
+  protected final DudeWheresMyStuffPlugin plugin;
   protected T type;
   @Setter protected long lastUpdated = -1L;
   protected boolean enabled = true;
-  @Setter protected boolean collapsed = false;
+  protected StoragePanel storagePanel;
 
-  protected Storage(T type, Client client, ClientThread clientThread, ItemManager itemManager) {
+  protected Storage(T type, DudeWheresMyStuffPlugin plugin) {
     this.type = type;
-    this.client = client;
-    this.clientThread = clientThread;
-    this.itemManager = itemManager;
+    this.plugin = plugin;
+
+    SwingUtilities.invokeLater(() -> this.storagePanel = createStoragePanel());
 
     itemContainerWatcher = ItemContainerWatcher.getWatcher(type.getItemContainerId());
   }
 
+  protected StoragePanel createStoragePanel() {
+    return new StoragePanel(plugin, this, true, false);
+  }
+
   public long getTotalValue() {
+    if (items.isEmpty()) { // avoids a NPE from .sum() on empty stream
+      return 0;
+    }
+
     return items.stream().mapToLong(ItemStack::getTotalGePrice).sum();
   }
 
@@ -89,7 +93,7 @@ public abstract class Storage<T extends StorageType> {
       return false;
     }
 
-    ItemContainer itemContainer = client.getItemContainer(type.getItemContainerId());
+    ItemContainer itemContainer = plugin.getClient().getItemContainer(type.getItemContainerId());
     if (itemContainer == null) {
       return false;
     }
@@ -101,9 +105,9 @@ public abstract class Storage<T extends StorageType> {
         continue;
       }
 
-      ItemComposition itemComposition = itemManager.getItemComposition(item.getId());
+      ItemComposition itemComposition = plugin.getItemManager().getItemComposition(item.getId());
       if (itemComposition.getPlaceholderTemplateId() == -1) {
-        items.add(new ItemStack(item.getId(), item.getQuantity(), clientThread, itemManager));
+        items.add(new ItemStack(item.getId(), item.getQuantity(), plugin));
       }
     }
 
@@ -171,7 +175,7 @@ public abstract class Storage<T extends StorageType> {
       int itemId = NumberUtils.toInt(itemStackData[0]);
       int itemQuantity = NumberUtils.toInt(itemStackData[1]);
 
-      loadedItems.add(new ItemStack(itemId, itemQuantity, clientThread, itemManager));
+      loadedItems.add(new ItemStack(itemId, itemQuantity, plugin));
     }
 
     return loadedItems;
@@ -190,6 +194,10 @@ public abstract class Storage<T extends StorageType> {
 
   public void disable() {
     enabled = false;
+
+    if (storagePanel != null) {
+      SwingUtilities.invokeLater(() -> storagePanel.setVisible(false));
+    }
   }
 
   public void disable(boolean isMember, AccountType accountType) {
@@ -202,9 +210,25 @@ public abstract class Storage<T extends StorageType> {
 
   public void enable() {
     enabled = true;
+
+    if (storagePanel != null) {
+      SwingUtilities.invokeLater(() -> storagePanel.setVisible(true));
+    }
   }
 
   public String getName() {
     return type.getName();
+  }
+
+  public void softUpdate() {
+    if (!type.isAutomatic()) {
+      if (lastUpdated == -1) {
+        storagePanel.setFooterText("No data");
+      } else {
+        long timeSinceLastUpdate = System.currentTimeMillis() - lastUpdated;
+        storagePanel.setFooterText(
+            "Updated " + DurationFormatter.format(Math.abs(timeSinceLastUpdate)) + " ago");
+      }
+    }
   }
 }

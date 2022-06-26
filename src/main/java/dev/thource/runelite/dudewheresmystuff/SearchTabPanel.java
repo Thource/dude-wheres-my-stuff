@@ -1,51 +1,42 @@
 package dev.thource.runelite.dudewheresmystuff;
 
-import dev.thource.runelite.dudewheresmystuff.death.DeathStorageType;
-import dev.thource.runelite.dudewheresmystuff.death.Deathbank;
-import dev.thource.runelite.dudewheresmystuff.death.Deathpile;
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.ListIterator;
 import java.util.stream.Collectors;
 import javax.swing.BoxLayout;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.vars.AccountType;
-import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.ColorScheme;
+import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.components.IconTextField;
-import net.runelite.client.util.SwingUtil;
 
 class SearchTabPanel
     extends StorageTabPanel<
         StorageType, Storage<StorageType>, StorageManager<StorageType, Storage<StorageType>>> {
 
+  private static final String EMPTY_SEARCH_TEXT =
+      "<html>Type at least 3 characters in the search bar to find your stuff</html>";
+  private static final String NO_RESULTS_TEXT =
+      "<html>No items found for your search criteria</html>";
   @Getter private final IconTextField searchBar;
-  private final DudeWheresMyStuffPanel pluginPanel;
   private final transient StorageManagerManager storageManagerManager;
+  private final JLabel searchStatusLabel;
+  private final JPanel searchStatusPanel;
   @Setter private AccountType accountType;
 
-  SearchTabPanel(
-      ItemManager itemManager,
-      DudeWheresMyStuffConfig config,
-      DudeWheresMyStuffPanel pluginPanel,
-      StorageManagerManager storageManagerManager) {
-    super(itemManager, config, null);
-    this.pluginPanel = pluginPanel;
+  SearchTabPanel(DudeWheresMyStuffPlugin plugin, StorageManagerManager storageManagerManager) {
+    super(plugin, new SearchStorageManager(plugin));
     this.storageManagerManager = storageManagerManager;
-
-    JPanel searchBarContainer = new JPanel();
-    searchBarContainer.setLayout(new BoxLayout(searchBarContainer, BoxLayout.Y_AXIS));
-    searchBarContainer.setBorder(new EmptyBorder(6, 0, 2, 0));
-    add(searchBarContainer, 1);
 
     searchBar = new IconTextField();
     searchBar.setIcon(IconTextField.Icon.SEARCH);
@@ -71,97 +62,103 @@ class SearchTabPanel
                 onSearchBarChanged();
               }
             });
+
+    JPanel searchBarContainer = new JPanel();
+    searchBarContainer.setLayout(new BoxLayout(searchBarContainer, BoxLayout.Y_AXIS));
+    searchBarContainer.setBorder(new EmptyBorder(6, 0, 2, 0));
     searchBarContainer.add(searchBar);
+
+    searchStatusLabel = new JLabel(EMPTY_SEARCH_TEXT);
+    searchStatusLabel.setFont(FontManager.getRunescapeFont());
+    searchStatusLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
+    searchStatusLabel.setVerticalAlignment(SwingConstants.CENTER);
+    searchStatusLabel.setHorizontalAlignment(SwingConstants.CENTER);
+
+    searchStatusPanel = new JPanel(new BorderLayout());
+    searchStatusPanel.setBorder(new EmptyBorder(7, 7, 7, 7));
+    searchStatusPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+    searchStatusPanel.add(searchStatusLabel);
+
+    add(searchBarContainer, 1);
+    add(searchStatusPanel, 2);
   }
 
   private void onSearchBarChanged() {
-    SwingUtilities.invokeLater(this::rebuildList);
+    if (searchBar.getText().length() >= 3) {
+      searchStatusPanel.setVisible(false);
+
+      storagePanels.forEach(
+          panel -> {
+            ((SearchStoragePanel) panel).setSearchText(searchBar.getText());
+            panel.update();
+          });
+      reorderStoragePanels();
+
+      if (storagePanelContainer.getComponentCount() == 0) {
+        searchStatusLabel.setText(NO_RESULTS_TEXT);
+        searchStatusPanel.setVisible(true);
+      }
+    } else {
+      searchStatusLabel.setText(EMPTY_SEARCH_TEXT);
+      searchStatusPanel.setVisible(true);
+
+      EnhancedSwingUtilities.fastRemoveAll(storagePanelContainer);
+      storagePanelContainer.revalidate();
+    }
+
+    softUpdate();
   }
 
   @Override
-  protected boolean showPrice() {
-    return false;
+  public void reorderStoragePanels() {
+    EnhancedSwingUtilities.fastRemoveAll(storagePanelContainer);
+    storagePanels.stream()
+        .filter(panel -> !panel.getItemBoxes().isEmpty())
+        .sorted(Comparator.comparing(panel -> panel.getStorage().getName()))
+        .forEach(storagePanelContainer::add);
+
+    storagePanelContainer.revalidate();
   }
 
   @Override
-  protected void rebuildList() {
-    SwingUtil.fastRemoveAll(itemsBoxContainer);
-    itemsBoxes.clear();
-    createItemsBoxes()
+  protected Comparator<Storage<StorageType>> getStorageSorter() {
+    return Comparator.comparing(Storage::getName);
+  }
+
+  @Override
+  public void softUpdate() {
+    List<? extends Storage<? extends Enum<? extends Enum<?>>>> storages =
+        storageManagerManager.getStorages().collect(Collectors.toList());
+
+    storages.forEach(
+        storage -> {
+          if (storagePanels.stream().noneMatch(panel -> panel.getStorage() == storage)) {
+            storagePanels.add(new SearchStoragePanel(plugin, storage));
+          }
+        });
+
+    ListIterator<StoragePanel> iterator = storagePanels.listIterator();
+    while (iterator.hasNext()) {
+      Storage<?> storage = iterator.next().getStorage();
+
+      if (!storages.contains(storage)) {
+        iterator.remove();
+      }
+    }
+
+    storagePanels.stream()
+        .filter(panel -> panel.getParent() != null)
         .forEach(
-            itemsBox -> {
-              itemsBoxContainer.add(itemsBox);
-              itemsBoxes.add(itemsBox);
+            panel -> {
+              panel.getStorage().softUpdate();
+
+              StoragePanel sourcePanel = panel.getStorage().getStoragePanel();
+              panel.setTitle(sourcePanel.getTitle());
+              panel.setTitleToolTip(sourcePanel.getTitleToolTip());
+              panel.setSubTitle(sourcePanel.getSubTitle());
+              panel.setFooterText(sourcePanel.getFooterText());
             });
 
-    revalidate();
-  }
-
-  private Optional<ItemsBox> createItemsBox(Storage<?> storage) {
-    String searchText = searchBar.getText().toLowerCase(Locale.ROOT);
-    List<ItemStack> items =
-        storage.getItems().stream()
-            .filter(
-                i ->
-                    i.getId() != -1
-                        && i.getQuantity() > 0
-                        && (Objects.equals(searchText, "")
-                            || i.getName().toLowerCase(Locale.ROOT).contains(searchText)))
-            .collect(Collectors.toList());
-    if (items.isEmpty()) {
-      return Optional.empty();
-    }
-
-    ItemsBox itemsBox =
-        new ItemsBox(
-            itemManager,
-            storageManagerManager.getCarryableStorageManager().getPluginManager(),
-            storageManagerManager.getCarryableStorageManager().getItemIdentificationPlugin(),
-            storageManagerManager.getCarryableStorageManager().getItemIdentificationConfig(),
-            storage,
-            null,
-            showPrice());
-    for (ItemStack itemStack : items) {
-      if (itemStack.getQuantity() > 0) {
-        itemsBox.getItems().add(itemStack);
-      }
-    }
-    itemsBox.setSortMode(config.itemSortMode());
-    itemsBox.rebuild();
-    decorateItemsBox(storage, itemsBox);
-
-    return Optional.of(itemsBox);
-  }
-
-  private void decorateItemsBox(Storage<?> storage, ItemsBox itemsBox) {
-    if (storage instanceof Deathbank) {
-      if (((Deathbank) storage).getLostAt() == -1L
-          && (accountType != AccountType.ULTIMATE_IRONMAN
-              || storage.getType() != DeathStorageType.ZULRAH)) {
-        itemsBox.setSubTitle(((Deathbank) storage).isLocked() ? "Locked" : "Unlocked");
-      }
-    } else if (storage instanceof Deathpile) {
-      Deathpile deathpile = (Deathpile) storage;
-      itemsBox.addExpiry(deathpile.getExpiryMs(pluginPanel.isPreviewPanel()));
-
-      Region region = Region.get(deathpile.getWorldPoint().getRegionID());
-
-      if (region == null) {
-        itemsBox.setSubTitle("Unknown");
-      } else {
-        itemsBox.setSubTitle(region.getName());
-      }
-    }
-  }
-
-  private List<ItemsBox> createItemsBoxes() {
-    return storageManagerManager
-        .getStorages()
-        .filter(Storage::isEnabled)
-        .sorted(Comparator.comparing(s -> s.getType().getName()))
-        .map(this::createItemsBox)
-        .filter(Optional::isPresent)
-        .map(Optional::get)
-        .collect(Collectors.toList());
+    super.softUpdate();
   }
 }

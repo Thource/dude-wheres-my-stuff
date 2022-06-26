@@ -39,26 +39,25 @@ import net.runelite.client.game.ItemManager;
 public class ItemStack {
 
   private int id;
-  @Setter private String name;
   @Setter private long quantity;
-  private int gePrice;
-  private int haPrice;
-  private boolean stackable;
-  private ItemIdentification itemIdentification;
+  @EqualsAndHashCode.Exclude @Setter private String name;
+  @EqualsAndHashCode.Exclude private int gePrice;
+  @EqualsAndHashCode.Exclude private int haPrice;
+  @EqualsAndHashCode.Exclude private boolean stackable;
+  @EqualsAndHashCode.Exclude private ItemIdentification itemIdentification;
 
   /**
    * A constructor.
    *
    * @param id OSRS item ID
-   * @param clientThread clientThread
-   * @param itemManager itemManager
+   * @param plugin plugin
    */
-  public ItemStack(int id, ClientThread clientThread, ItemManager itemManager) {
+  public ItemStack(int id, DudeWheresMyStuffPlugin plugin) {
     this.id = id;
     this.name = "Loading";
     this.quantity = 0L;
 
-    clientThread.invoke(() -> populateFromComposition(itemManager));
+    plugin.getClientThread().invoke(() -> populateFromComposition(plugin.getItemManager()));
   }
 
   /**
@@ -66,11 +65,10 @@ public class ItemStack {
    *
    * @param id OSRS item ID
    * @param quantity quantity
-   * @param clientThread clientThread
-   * @param itemManager itemManager
+   * @param plugin plugin
    */
-  public ItemStack(int id, long quantity, ClientThread clientThread, ItemManager itemManager) {
-    this(id, clientThread, itemManager);
+  public ItemStack(int id, long quantity, DudeWheresMyStuffPlugin plugin) {
+    this(id, plugin);
 
     this.quantity = quantity;
   }

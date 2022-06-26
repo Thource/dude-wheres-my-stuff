@@ -1,16 +1,14 @@
 package dev.thource.runelite.dudewheresmystuff.minigames;
 
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffConfig;
+import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
 import lombok.Getter;
-import net.runelite.api.Client;
 import net.runelite.api.ItemID;
 import net.runelite.api.events.WidgetClosed;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
-import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.game.ItemManager;
 import org.apache.commons.lang3.math.NumberUtils;
 
 /** LastManStanding is responsible for tracking the player's Last Man Standing points. */
@@ -21,8 +19,8 @@ public class LastManStanding extends MinigamesStorage {
 
   private Widget shopWidget = null;
 
-  LastManStanding(Client client, ClientThread clientThread, ItemManager itemManager) {
-    super(MinigamesStorageType.LAST_MAN_STANDING, client, clientThread, itemManager);
+  LastManStanding(DudeWheresMyStuffPlugin plugin) {
+    super(MinigamesStorageType.LAST_MAN_STANDING, plugin);
 
     items.add(points);
   }
@@ -35,7 +33,7 @@ public class LastManStanding extends MinigamesStorage {
   @Override
   public boolean onWidgetLoaded(WidgetLoaded widgetLoaded) {
     if (widgetLoaded.getGroupId() == 645) {
-      shopWidget = client.getWidget(645, 0);
+      shopWidget = plugin.getClient().getWidget(645, 0);
     }
 
     return updateFromWidgets();
@@ -56,7 +54,7 @@ public class LastManStanding extends MinigamesStorage {
     }
 
     lastUpdated = System.currentTimeMillis();
-    int newPoints = client.getVarpValue(261);
+    int newPoints = plugin.getClient().getVarpValue(261);
     if (newPoints == points.getQuantity()) {
       return !this.getType().isAutomatic();
     }

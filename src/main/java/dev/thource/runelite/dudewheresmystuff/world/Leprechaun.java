@@ -1,16 +1,14 @@
 package dev.thource.runelite.dudewheresmystuff.world;
 
+import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
 import dev.thource.runelite.dudewheresmystuff.carryable.BottomlessBucket;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import lombok.Setter;
-import net.runelite.api.Client;
 import net.runelite.api.ItemID;
-import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.game.ItemManager;
 
 /** Leprechaun is responsible for tracking the player's leprechaun-stored farming equipment. */
 public class Leprechaun extends WorldStorage {
@@ -44,21 +42,21 @@ public class Leprechaun extends WorldStorage {
   @Setter private BottomlessBucket bottomlessBucketStorage;
 
   /** A constructor. */
-  public Leprechaun(Client client, ClientThread clientThread, ItemManager itemManager) {
-    super(WorldStorageType.LEPRECHAUN, client, clientThread, itemManager);
+  public Leprechaun(DudeWheresMyStuffPlugin plugin) {
+    super(WorldStorageType.LEPRECHAUN, plugin);
 
-    rakes = new ItemStack(ItemID.RAKE, clientThread, itemManager);
-    seedDibbers = new ItemStack(ItemID.SEED_DIBBER, clientThread, itemManager);
-    spades = new ItemStack(ItemID.SPADE, clientThread, itemManager);
-    secateurs = new ItemStack(ItemID.SECATEURS, clientThread, itemManager);
-    wateringCan = new ItemStack(ItemID.WATERING_CAN, clientThread, itemManager);
-    trowels = new ItemStack(ItemID.GARDENING_TROWEL, clientThread, itemManager);
-    plantCures = new ItemStack(ItemID.PLANT_CURE, clientThread, itemManager);
-    bottomlessBucket = new ItemStack(ItemID.BOTTOMLESS_COMPOST_BUCKET, clientThread, itemManager);
-    buckets = new ItemStack(ItemID.EMPTY_BUCKET, clientThread, itemManager);
-    composts = new ItemStack(ItemID.COMPOST, clientThread, itemManager);
-    superComposts = new ItemStack(ItemID.SUPERCOMPOST, clientThread, itemManager);
-    ultraComposts = new ItemStack(ItemID.ULTRACOMPOST, clientThread, itemManager);
+    rakes = new ItemStack(ItemID.RAKE, plugin);
+    seedDibbers = new ItemStack(ItemID.SEED_DIBBER, plugin);
+    spades = new ItemStack(ItemID.SPADE, plugin);
+    secateurs = new ItemStack(ItemID.SECATEURS, plugin);
+    wateringCan = new ItemStack(ItemID.WATERING_CAN, plugin);
+    trowels = new ItemStack(ItemID.GARDENING_TROWEL, plugin);
+    plantCures = new ItemStack(ItemID.PLANT_CURE, plugin);
+    bottomlessBucket = new ItemStack(ItemID.BOTTOMLESS_COMPOST_BUCKET, plugin);
+    buckets = new ItemStack(ItemID.EMPTY_BUCKET, plugin);
+    composts = new ItemStack(ItemID.COMPOST, plugin);
+    superComposts = new ItemStack(ItemID.SUPERCOMPOST, plugin);
+    ultraComposts = new ItemStack(ItemID.ULTRACOMPOST, plugin);
 
     items.add(rakes);
     items.add(seedDibbers);
@@ -119,7 +117,7 @@ public class Leprechaun extends WorldStorage {
   }
 
   private boolean updateBottomlessBucket() {
-    int type = client.getVarbitValue(7915);
+    int type = plugin.getClient().getVarbitValue(7915);
 
     int charges = 0;
     int itemId = ItemID.BOTTOMLESS_COMPOST_BUCKET;
@@ -128,7 +126,7 @@ public class Leprechaun extends WorldStorage {
       bottomlessBucket.setName("Bottomless compost bucket");
     } else if (type != 0) {
       itemId = ItemID.BOTTOMLESS_COMPOST_BUCKET_22997;
-      charges = client.getVarbitValue(7916);
+      charges = plugin.getClient().getVarbitValue(7916);
     }
 
     if (charges == bottomlessBucketCharges && itemId == bottomlessBucket.getId()) {
@@ -157,7 +155,8 @@ public class Leprechaun extends WorldStorage {
   }
 
   private boolean updateRakes() {
-    int quantity = client.getVarbitValue(1435) + (client.getVarbitValue(8357) * 2);
+    int quantity =
+        plugin.getClient().getVarbitValue(1435) + (plugin.getClient().getVarbitValue(8357) * 2);
 
     if (quantity == rakes.getQuantity()) {
       return false;
@@ -168,7 +167,8 @@ public class Leprechaun extends WorldStorage {
   }
 
   private boolean updateSeedDibbers() {
-    int quantity = client.getVarbitValue(1436) + (client.getVarbitValue(8358) * 2);
+    int quantity =
+        plugin.getClient().getVarbitValue(1436) + (plugin.getClient().getVarbitValue(8358) * 2);
 
     if (quantity == seedDibbers.getQuantity()) {
       return false;
@@ -179,7 +179,8 @@ public class Leprechaun extends WorldStorage {
   }
 
   private boolean updateSpades() {
-    int quantity = client.getVarbitValue(1437) + (client.getVarbitValue(8361) * 2);
+    int quantity =
+        plugin.getClient().getVarbitValue(1437) + (plugin.getClient().getVarbitValue(8361) * 2);
 
     if (quantity == spades.getQuantity()) {
       return false;
@@ -190,15 +191,17 @@ public class Leprechaun extends WorldStorage {
   }
 
   private boolean updateSecateurs() {
-    int secateursId = client.getVarbitValue(1848) == 1 ? ItemID.MAGIC_SECATEURS : ItemID.SECATEURS;
-    int quantity = client.getVarbitValue(1438) + (client.getVarbitValue(8359) * 2);
+    int secateursId =
+        plugin.getClient().getVarbitValue(1848) == 1 ? ItemID.MAGIC_SECATEURS : ItemID.SECATEURS;
+    int quantity =
+        plugin.getClient().getVarbitValue(1438) + (plugin.getClient().getVarbitValue(8359) * 2);
 
     if (quantity == secateurs.getQuantity() && secateurs.getId() == secateursId) {
       return false;
     }
 
     if (secateurs.getId() != secateursId) {
-      secateurs.setId(secateursId, itemManager);
+      secateurs.setId(secateursId, plugin.getItemManager());
     }
 
     secateurs.setQuantity(quantity);
@@ -206,7 +209,8 @@ public class Leprechaun extends WorldStorage {
   }
 
   private boolean updateTrowels() {
-    int quantity = client.getVarbitValue(1440) + (client.getVarbitValue(8360) * 2);
+    int quantity =
+        plugin.getClient().getVarbitValue(1440) + (plugin.getClient().getVarbitValue(8360) * 2);
 
     if (quantity == trowels.getQuantity()) {
       return false;
@@ -217,7 +221,7 @@ public class Leprechaun extends WorldStorage {
   }
 
   private boolean updatePlantCures() {
-    int quantity = client.getVarbitValue(6268);
+    int quantity = plugin.getClient().getVarbitValue(6268);
 
     if (quantity == plantCures.getQuantity()) {
       return false;
@@ -229,9 +233,9 @@ public class Leprechaun extends WorldStorage {
 
   private boolean updateBuckets() {
     int quantity =
-        client.getVarbitValue(1441)
-            + (client.getVarbitValue(4731) * 32)
-            + (client.getVarbitValue(6265) * 256);
+        plugin.getClient().getVarbitValue(1441)
+            + (plugin.getClient().getVarbitValue(4731) * 32)
+            + (plugin.getClient().getVarbitValue(6265) * 256);
 
     if (quantity == buckets.getQuantity()) {
       return false;
@@ -242,7 +246,8 @@ public class Leprechaun extends WorldStorage {
   }
 
   private boolean updateComposts() {
-    int quantity = client.getVarbitValue(1442) + (client.getVarbitValue(6266) * 256);
+    int quantity =
+        plugin.getClient().getVarbitValue(1442) + (plugin.getClient().getVarbitValue(6266) * 256);
 
     if (quantity == composts.getQuantity()) {
       return false;
@@ -253,7 +258,8 @@ public class Leprechaun extends WorldStorage {
   }
 
   private boolean updateSuperComposts() {
-    int quantity = client.getVarbitValue(1443) + (client.getVarbitValue(6267) * 256);
+    int quantity =
+        plugin.getClient().getVarbitValue(1443) + (plugin.getClient().getVarbitValue(6267) * 256);
 
     if (quantity == superComposts.getQuantity()) {
       return false;
@@ -264,7 +270,7 @@ public class Leprechaun extends WorldStorage {
   }
 
   private boolean updateUltraComposts() {
-    int quantity = client.getVarbitValue(5732);
+    int quantity = plugin.getClient().getVarbitValue(5732);
 
     if (quantity == ultraComposts.getQuantity()) {
       return false;
@@ -275,7 +281,7 @@ public class Leprechaun extends WorldStorage {
   }
 
   private boolean updateWateringCan() {
-    int wateringCanState = client.getVarbitValue(1439);
+    int wateringCanState = plugin.getClient().getVarbitValue(1439);
     if (wateringCanState >= WATERING_CAN_IDS.length) {
       return false;
     }
@@ -294,7 +300,7 @@ public class Leprechaun extends WorldStorage {
       return false;
     }
 
-    wateringCan.setId(wateringCanId, itemManager);
+    wateringCan.setId(wateringCanId, plugin.getItemManager());
     wateringCan.setQuantity(1);
     return true;
   }
@@ -320,21 +326,21 @@ public class Leprechaun extends WorldStorage {
         .forEach(
             loadedItem -> {
               if (Arrays.stream(WATERING_CAN_IDS).anyMatch(i -> i == loadedItem.getId())) {
-                wateringCan.setId(loadedItem.getId(), itemManager);
+                wateringCan.setId(loadedItem.getId(), plugin.getItemManager());
                 wateringCan.setQuantity(loadedItem.getQuantity());
                 return;
               }
 
               if (loadedItem.getId() == ItemID.MAGIC_SECATEURS
                   || loadedItem.getId() == ItemID.SECATEURS) {
-                secateurs.setId(loadedItem.getId(), itemManager);
+                secateurs.setId(loadedItem.getId(), plugin.getItemManager());
                 secateurs.setQuantity(loadedItem.getQuantity());
                 return;
               }
 
               if (loadedItem.getId() == ItemID.BOTTOMLESS_COMPOST_BUCKET
                   || loadedItem.getId() == ItemID.BOTTOMLESS_COMPOST_BUCKET_22997) {
-                bottomlessBucket.setId(loadedItem.getId(), itemManager);
+                bottomlessBucket.setId(loadedItem.getId(), plugin.getItemManager());
                 bottomlessBucket.setQuantity(loadedItem.getQuantity());
                 return;
               }

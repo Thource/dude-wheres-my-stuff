@@ -100,33 +100,33 @@ class FakeDataService {
 
   private static void createCoinsData(ConfigManager configManager) {
     configManager.setConfiguration(
-        DudeWheresMyStuffConfig.CONFIG_GROUP, PROFILE, "coins.nightmarezone", "-1;995,73000000");
+        DudeWheresMyStuffConfig.CONFIG_GROUP, PROFILE, "coins.nightmarezone", "-1;73000000");
     configManager.setConfiguration(
-        DudeWheresMyStuffConfig.CONFIG_GROUP, PROFILE, "coins.lastmanstanding", "-1;995,188979000");
+        DudeWheresMyStuffConfig.CONFIG_GROUP, PROFILE, "coins.lastmanstanding", "-1;188979000");
     configManager.setConfiguration(
         DudeWheresMyStuffConfig.CONFIG_GROUP,
         PROFILE,
         "coins.servantsmoneybag",
-        System.currentTimeMillis() - (1000 * 60 * 60 * 4) + ";995,737300");
+        System.currentTimeMillis() - (1000 * 60 * 60 * 4) + ";737300");
     configManager.setConfiguration(
-        DudeWheresMyStuffConfig.CONFIG_GROUP, PROFILE, "coins.blastfurnace", "-1;995,173");
+        DudeWheresMyStuffConfig.CONFIG_GROUP, PROFILE, "coins.blastfurnace", "-1;173");
     configManager.setConfiguration(
-        DudeWheresMyStuffConfig.CONFIG_GROUP, PROFILE, "coins.inventory", "-1;995,26000000");
+        DudeWheresMyStuffConfig.CONFIG_GROUP, PROFILE, "coins.inventory", "-1;26000000");
     configManager.setConfiguration(
         DudeWheresMyStuffConfig.CONFIG_GROUP,
         PROFILE,
         "coins.lootingbag",
-        System.currentTimeMillis() - (1000 * 60 * 60 * 18) + ";995,666000");
+        System.currentTimeMillis() - (1000 * 60 * 60 * 18) + ";666000");
     configManager.setConfiguration(
         DudeWheresMyStuffConfig.CONFIG_GROUP,
         PROFILE,
         "coins.grandexchange",
-        System.currentTimeMillis() - (1000 * 60 * 60 * 50) + ";995,69420");
+        System.currentTimeMillis() - (1000 * 60 * 60 * 50) + ";69420");
     configManager.setConfiguration(
         DudeWheresMyStuffConfig.CONFIG_GROUP,
         PROFILE,
         "coins.shilofurnace",
-        System.currentTimeMillis() - (1000 * 60 * 30) + ";995,2020");
+        System.currentTimeMillis() - (1000 * 60 * 30) + ";2020");
   }
 
   private static void createCarryableData(ConfigManager configManager) {

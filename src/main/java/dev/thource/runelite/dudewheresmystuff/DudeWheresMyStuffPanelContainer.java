@@ -46,7 +46,7 @@ public class DudeWheresMyStuffPanelContainer extends PluginPanel {
     previewPanel.setActive(false);
 
     previewing = false;
-    update();
+    softUpdate();
   }
 
   void enablePreviewMode() {
@@ -57,17 +57,7 @@ public class DudeWheresMyStuffPanelContainer extends PluginPanel {
     previewPanel.setActive(active);
 
     previewing = true;
-    update();
-  }
-
-  /** Updates the active tab panel, if this plugin panel is displayed. */
-  void update() {
-    if (!active) {
-      return;
-    }
-
-    previewPanel.update();
-    panel.update();
+    softUpdate();
   }
 
   void softUpdate() {
@@ -89,7 +79,7 @@ public class DudeWheresMyStuffPanelContainer extends PluginPanel {
       panel.setActive(true);
     }
 
-    update();
+    softUpdate();
   }
 
   @Override

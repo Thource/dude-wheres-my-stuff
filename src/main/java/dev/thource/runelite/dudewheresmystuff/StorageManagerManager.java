@@ -3,19 +3,22 @@ package dev.thource.runelite.dudewheresmystuff;
 import dev.thource.runelite.dudewheresmystuff.carryable.CarryableStorageManager;
 import dev.thource.runelite.dudewheresmystuff.coins.CoinsStorageManager;
 import dev.thource.runelite.dudewheresmystuff.coins.CoinsStorageType;
+import dev.thource.runelite.dudewheresmystuff.death.DeathItems;
 import dev.thource.runelite.dudewheresmystuff.death.DeathStorageManager;
-import dev.thource.runelite.dudewheresmystuff.death.DeathStorageType;
 import dev.thource.runelite.dudewheresmystuff.death.Deathbank;
 import dev.thource.runelite.dudewheresmystuff.death.Deathpile;
 import dev.thource.runelite.dudewheresmystuff.minigames.MinigamesStorageManager;
 import dev.thource.runelite.dudewheresmystuff.playerownedhouse.PlayerOwnedHouseStorageManager;
 import dev.thource.runelite.dudewheresmystuff.stash.StashStorageManager;
 import dev.thource.runelite.dudewheresmystuff.world.WorldStorageManager;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemListener;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import javax.swing.JComboBox;
+import javax.swing.SwingUtilities;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.events.ActorDeath;
@@ -27,7 +30,7 @@ import net.runelite.api.events.WidgetClosed;
 import net.runelite.api.events.WidgetLoaded;
 
 @Getter
-class StorageManagerManager {
+public class StorageManagerManager {
 
   private final CarryableStorageManager carryableStorageManager;
   private final CoinsStorageManager coinsStorageManager;
@@ -42,7 +45,6 @@ class StorageManagerManager {
 
   @Getter(AccessLevel.NONE)
   private final DudeWheresMyStuffPlugin plugin;
-
 
   @SuppressWarnings("java:S107")
   StorageManagerManager(
@@ -87,68 +89,70 @@ class StorageManagerManager {
   }
 
   public void load() {
-    storageManagers.forEach(StorageManager::load);
+    for (StorageManager<?, ?> storageManager : storageManagers) {
+      storageManager.load();
+
+      SwingUtilities.invokeLater(
+          () -> {
+            storageManager.getStorages().forEach(storage -> storage.getStoragePanel().update());
+            storageManager.getStorageTabPanel().reorderStoragePanels();
+          });
+    }
   }
 
   public void load(String profileKey) {
-    storageManagers.forEach(storageManager -> storageManager.load(profileKey));
+    for (StorageManager<?, ?> storageManager : storageManagers) {
+      storageManager.load(profileKey);
+
+      SwingUtilities.invokeLater(
+          () -> {
+            storageManager.getStorages().forEach(storage -> storage.getStoragePanel().update());
+            storageManager.getStorageTabPanel().reorderStoragePanels();
+          });
+    }
   }
 
   public void save() {
     storageManagers.forEach(StorageManager::save);
   }
 
-  // Run the predicate against all StorageManagers, save if true, return if any true
-  private boolean anyMatch(Predicate<? super StorageManager<?, ?>> predicate) {
-    List<StorageManager<?, ?>> trueManagers =
-        storageManagers.stream().filter(predicate).collect(Collectors.toList());
-
-    if (plugin.getClientState() == ClientState.LOGGED_IN) {
-      trueManagers.forEach(StorageManager::save);
-    }
-
-    return !trueManagers.isEmpty();
+  public void onGameTick() {
+    storageManagers.forEach(StorageManager::onGameTick);
   }
 
-  public boolean onGameTick() {
-    return anyMatch(StorageManager::onGameTick);
+  public void onWidgetLoaded(WidgetLoaded widgetLoaded) {
+    storageManagers.forEach(manager -> manager.onWidgetLoaded(widgetLoaded));
   }
 
-  public boolean onWidgetLoaded(WidgetLoaded widgetLoaded) {
-    return anyMatch(storageManager -> storageManager.onWidgetLoaded(widgetLoaded));
+  public void onWidgetClosed(WidgetClosed widgetClosed) {
+    storageManagers.forEach(manager -> manager.onWidgetClosed(widgetClosed));
   }
 
-  public boolean onWidgetClosed(WidgetClosed widgetClosed) {
-    return anyMatch(storageManager -> storageManager.onWidgetClosed(widgetClosed));
+  public void onVarbitChanged() {
+    storageManagers.forEach(StorageManager::onVarbitChanged);
   }
 
-  public boolean onVarbitChanged() {
-    return anyMatch(StorageManager::onVarbitChanged);
+  public void onItemContainerChanged(ItemContainerChanged itemContainerChanged) {
+    storageManagers.forEach(manager -> manager.onItemContainerChanged(itemContainerChanged));
   }
 
-  public boolean onItemContainerChanged(ItemContainerChanged itemContainerChanged) {
-    return anyMatch(storageManager -> storageManager.onItemContainerChanged(itemContainerChanged));
+  public void onItemDespawned(ItemDespawned itemDespawned) {
+    storageManagers.forEach(manager -> manager.onItemDespawned(itemDespawned));
   }
 
-  public boolean onItemDespawned(ItemDespawned itemDespawned) {
-    return anyMatch(storageManager -> storageManager.onItemDespawned(itemDespawned));
-  }
-
-  public boolean onChatMessage(ChatMessage chatMessage) {
-    return anyMatch(storageManager -> storageManager.onChatMessage(chatMessage));
+  public void onChatMessage(ChatMessage chatMessage) {
+    storageManagers.forEach(manager -> manager.onChatMessage(chatMessage));
   }
 
   @SuppressWarnings("java:S1452")
   public Stream<? extends Storage<? extends Enum<? extends Enum<?>>>> getStorages() {
     return Stream.of(
             getDeathStorageManager().storages.stream()
+                .filter(s -> !(s instanceof DeathItems))
                 .filter(
                     s ->
-                        (s.getType() == DeathStorageType.DEATHPILE
-                                && !((Deathpile) s)
-                                    .hasExpired(getDeathStorageManager().isPreviewManager))
-                            || (s.getType() != DeathStorageType.DEATHPILE
-                                && ((Deathbank) s).getLostAt() == -1L)),
+                        (s instanceof Deathpile && !((Deathpile) s).hasExpired())
+                            || (s instanceof Deathbank && ((Deathbank) s).getLostAt() == -1L)),
             getCoinsStorageManager().storages.stream()
                 .filter(
                     storage ->
@@ -163,5 +167,24 @@ class StorageManagerManager {
 
   public List<ItemStack> getItems() {
     return getStorages().map(Storage::getItems).flatMap(List::stream).collect(Collectors.toList());
+  }
+
+  public void setItemSortMode(ItemSortMode itemSortMode) {
+    storageManagers.forEach(
+        storageManager -> {
+          storageManager.getStorages().stream()
+              .map(Storage::getStoragePanel)
+              .forEach(storagePanel -> storagePanel.setSortMode(itemSortMode));
+
+          JComboBox<ItemSortMode> sortDropdown =
+              storageManager.getStorageTabPanel().getSortItemsDropdown();
+
+          final ItemListener[] itemListeners = sortDropdown.getItemListeners();
+
+          // We need to remove and re-add the item listeners to avoid recursion
+          Arrays.stream(itemListeners).forEach(sortDropdown::removeItemListener);
+          sortDropdown.setSelectedItem(itemSortMode);
+          Arrays.stream(itemListeners).forEach(sortDropdown::addItemListener);
+        });
   }
 }

@@ -1,9 +1,7 @@
 package dev.thource.runelite.dudewheresmystuff.coins;
 
-import net.runelite.api.Client;
+import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import net.runelite.api.widgets.Widget;
-import net.runelite.client.callback.ClientThread;
-import net.runelite.client.game.ItemManager;
 import org.apache.commons.lang3.math.NumberUtils;
 
 /**
@@ -12,13 +10,13 @@ import org.apache.commons.lang3.math.NumberUtils;
  */
 public class ServantsMoneybag extends CoinsStorage {
 
-  ServantsMoneybag(Client client, ClientThread clientThread, ItemManager itemManager) {
-    super(CoinsStorageType.SERVANT_MONEYBAG, client, clientThread, itemManager);
+  ServantsMoneybag(DudeWheresMyStuffPlugin plugin) {
+    super(CoinsStorageType.SERVANT_MONEYBAG, plugin);
   }
 
   @Override
   public boolean onGameTick() {
-    Widget widget = client.getWidget(193, 2);
+    Widget widget = plugin.getClient().getWidget(193, 2);
     if (widget == null) {
       return false;
     }
