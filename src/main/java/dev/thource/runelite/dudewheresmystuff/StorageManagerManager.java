@@ -40,10 +40,9 @@ public class StorageManagerManager {
   private final PlayerOwnedHouseStorageManager playerOwnedHouseStorageManager;
   private final WorldStorageManager worldStorageManager;
 
-  @Getter(AccessLevel.NONE)
+  @Getter()
   private final List<StorageManager<?, ?>> storageManagers;
 
-  @Getter(AccessLevel.NONE)
   private final DudeWheresMyStuffPlugin plugin;
 
   @SuppressWarnings("java:S107")

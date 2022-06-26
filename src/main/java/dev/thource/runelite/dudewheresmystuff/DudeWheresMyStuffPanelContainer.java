@@ -89,4 +89,12 @@ public class DudeWheresMyStuffPanelContainer extends PluginPanel {
     previewPanel.setActive(false);
     panel.setActive(false);
   }
+
+  public void reorderStoragePanels() {
+    if (previewing) {
+      previewPanel.reorderStoragePanels();
+    } else {
+      panel.reorderStoragePanels();
+    }
+  }
 }

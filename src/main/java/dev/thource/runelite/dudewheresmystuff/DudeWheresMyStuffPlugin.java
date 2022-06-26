@@ -33,6 +33,7 @@ import net.runelite.api.vars.AccountType;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDependency;
@@ -188,6 +189,14 @@ public class DudeWheresMyStuffPlugin extends Plugin {
   @Override
   protected void shutDown() {
     clientToolbar.removeNavigation(navButton);
+  }
+
+  @Subscribe
+  public void onConfigChanged(ConfigChanged configChanged) {
+    if (Objects.equals(configChanged.getGroup(), DudeWheresMyStuffConfig.CONFIG_GROUP)
+        && Objects.equals(configChanged.getKey(), "showEmptyStorages")) {
+      panelContainer.reorderStoragePanels();
+    }
   }
 
   @Subscribe

@@ -81,6 +81,7 @@ public class DudeWheresMyStuffPanel extends JPanel {
   private final JPanel display = new JPanel();
   private final FasterMaterialTabGroup tabGroup = new FasterMaterialTabGroup(display);
   private final boolean previewMode;
+  private StorageManagerManager storageManagerManager;
   @Setter private boolean active;
   @Getter private String displayName = "";
   @Nullable private TabContentPanel activeTabPanel = null;
@@ -96,6 +97,7 @@ public class DudeWheresMyStuffPanel extends JPanel {
     super();
 
     this.itemManager = itemManager;
+    this.storageManagerManager = storageManagerManager;
     this.previewMode = previewMode;
 
     setLayout(new BorderLayout());
@@ -282,5 +284,11 @@ public class DudeWheresMyStuffPanel extends JPanel {
 
   public boolean isPreviewPanel() {
     return previewMode;
+  }
+
+  public void reorderStoragePanels() {
+    storageManagerManager
+        .getStorageManagers()
+        .forEach(storageManager -> storageManager.getStorageTabPanel().reorderStoragePanels());
   }
 }
