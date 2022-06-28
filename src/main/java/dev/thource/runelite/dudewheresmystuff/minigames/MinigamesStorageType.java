@@ -10,20 +10,20 @@ import net.runelite.api.vars.AccountType;
 @RequiredArgsConstructor
 @Getter
 public enum MinigamesStorageType implements StorageType {
-  MAGE_TRAINING_ARENA("Mage Training Arena", -1, false, "magetrainingarena"),
-  TITHE_FARM("Tithe Farm", -1, true, "tithefarm"),
-  LAST_MAN_STANDING("Last Man Standing", -1, false, "lastmanstanding"),
-  NIGHTMARE_ZONE("Nightmare Zone", -1, true, "nightmarezone"),
-  PEST_CONTROL("Pest Control", -1, true, "pestcontrol"),
-  BARBARIAN_ASSAULT("Barbarian Assault", -1, true, "barbarianassault"),
-  GUARDIANS_OF_THE_RIFT("Guardians of the Rift", -1, false, "guardiansoftherift"),
-  TEMPOROSS("Tempoross", -1, true, "tempoross"),
-  SLAYER("Slayer", -1, true, "slayer"),
-  SOUL_WARS("Soul Wars", -1, true, "soulwars"),
-  MAHOGANY_HOMES("Mahogany Homes", -1, true, "mahoganyhomes");
+  MAGE_TRAINING_ARENA("Mage Training Arena", false, "magetrainingarena"),
+  TITHE_FARM("Tithe Farm", true, "tithefarm"),
+  LAST_MAN_STANDING("Last Man Standing", false, "lastmanstanding"),
+  NIGHTMARE_ZONE("Nightmare Zone", true, "nightmarezone"),
+  PEST_CONTROL("Pest Control", true, "pestcontrol"),
+  BARBARIAN_ASSAULT("Barbarian Assault", true, "barbarianassault"),
+  GUARDIANS_OF_THE_RIFT("Guardians of the Rift", false, "guardiansoftherift"),
+  TEMPOROSS("Tempoross", true, "tempoross"),
+  SLAYER("Slayer", true, "slayer"),
+  SOUL_WARS("Soul Wars", true, "soulwars"),
+  MAHOGANY_HOMES("Mahogany Homes", false, "mahoganyhomes");
 
   private final String name;
-  private final int itemContainerId;
+  private final int itemContainerId = -1;
   // Whether the storage can be updated with no action required by the player
   private final boolean automatic;
   private final String configKey;
