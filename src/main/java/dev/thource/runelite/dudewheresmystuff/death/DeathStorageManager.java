@@ -48,6 +48,7 @@ import net.runelite.api.events.ItemDespawned;
 import net.runelite.api.vars.AccountType;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
+import net.runelite.client.util.Text;
 import org.apache.commons.lang3.math.NumberUtils;
 
 /** DeathStorageManager is responsible for managing all DeathStorages. */
@@ -237,11 +238,52 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
     }
 
     updateWorldMapPoints();
-    boolean deathpileCreated = processDeath();
 
-    if (updated || deathpileCreated) {
+    if (processDeath()) {
+      updated = true;
+    }
+
+    if (checkItemsLostOnDeathWindow()) {
+      updated = true;
+    }
+
+    if (updated) {
       updateStorages(storages);
     }
+  }
+
+  private boolean checkItemsLostOnDeathWindow() {
+    if (deathbank.getLastUpdated() == -1) {
+      Widget deathbankTextWidget = client.getWidget(4, 3);
+      if (deathbankTextWidget != null) {
+        Widget textWidget = deathbankTextWidget.getChild(3);
+        if (textWidget != null) {
+          String deathbankText = Text.removeTags(textWidget.getText()).replace(" ", "");
+
+          // check for unsafe death message
+          if (deathbankText.contains("theywillbedeleted")) {
+            DeathStorageType type =
+                Arrays.stream(DeathStorageType.values())
+                    .filter(
+                        t ->
+                            t.getDeathWindowLocationText() != null
+                                && deathbankText.contains(t.getDeathWindowLocationText()))
+                    .findFirst()
+                    .orElse(DeathStorageType.UNKNOWN_DEATHBANK);
+
+            deathbank.setType(type);
+            deathbank.setLastUpdated(System.currentTimeMillis());
+            deathbank.setLocked(true);
+            deathbank.getItems().clear();
+            deathbank.getItems().add(new ItemStack(ItemID.MYSTERY_BOX, 1, plugin));
+
+            return true;
+          }
+        }
+      }
+    }
+
+    return false;
   }
 
   @Override
