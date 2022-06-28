@@ -139,7 +139,7 @@ public abstract class StorageManager<T extends StorageType, S extends Storage<T>
 
   /** Load all Storages. */
   public void load(String profileKey) {
-    if (!enabled) {
+    if (!enabled || profileKey == null) {
       return;
     }
 

@@ -183,12 +183,12 @@ public abstract class Storage<T extends StorageType> {
 
   /** loads the Storage data from the specified RuneLite RS profile config. */
   public void load(ConfigManager configManager, String managerConfigKey, String profileKey) {
+    items.clear();
     List<ItemStack> loadedItems = loadItems(configManager, managerConfigKey, profileKey);
     if (loadedItems == null || loadedItems.isEmpty()) {
       return;
     }
 
-    items.clear();
     items.addAll(loadedItems);
   }
 

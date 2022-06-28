@@ -34,6 +34,7 @@ import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.events.RuneScapeProfileChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDependency;
@@ -178,7 +179,6 @@ public class DudeWheresMyStuffPlugin extends Plugin {
     clientState = ClientState.LOGGED_OUT;
 
     ItemContainerWatcher.reset();
-    storageManagerManager.reset();
     if (fullReset) {
       panelContainer.reset();
     } else {
@@ -214,6 +214,14 @@ public class DudeWheresMyStuffPlugin extends Plugin {
   }
 
   @Subscribe
+  public void onRuneScapeProfileChanged(RuneScapeProfileChanged e)
+  {
+    storageManagerManager.reset();
+    storageManagerManager.load();
+    SwingUtilities.invokeLater(panelContainer.getPanel()::softUpdate);
+  }
+
+  @Subscribe
   void onGameStateChanged(GameStateChanged gameStateChanged) {
     storageManagerManager.onGameStateChanged(gameStateChanged);
 
@@ -221,13 +229,6 @@ public class DudeWheresMyStuffPlugin extends Plugin {
       reset(false);
     } else if (gameStateChanged.getGameState() == GameState.LOGGING_IN) {
       clientState = ClientState.LOGGING_IN;
-    } else if (gameStateChanged.getGameState() == GameState.LOGGED_IN) {
-      if (clientState != ClientState.LOGGING_IN) {
-        return;
-      }
-
-      storageManagerManager.load();
-      SwingUtilities.invokeLater(panelContainer.getPanel()::softUpdate);
     }
   }
 
@@ -278,8 +279,6 @@ public class DudeWheresMyStuffPlugin extends Plugin {
       }
 
       SwingUtilities.invokeLater(panelContainer.getPanel()::softUpdate);
-
-      storageManagerManager.save();
 
       return;
     }

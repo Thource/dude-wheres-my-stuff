@@ -106,8 +106,9 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
   public void onItemContainerChanged(ItemContainerChanged itemContainerChanged) {
     if (enabled) {
       if (itemContainerChanged.getContainerId() == InventoryID.INVENTORY.getId()) {
-        updateInventoryItems(itemContainerChanged.getItemContainer().getItems());
-        updateStorages(Collections.singletonList(deathbank));
+        if (updateInventoryItems(itemContainerChanged.getItemContainer().getItems())) {
+          updateStorages(Collections.singletonList(deathbank));
+        }
       } else if (itemContainerChanged.getContainerId() == 525) {
         updateDeathbankItems(itemContainerChanged.getItemContainer().getItems());
         updateStorages(Collections.singletonList(deathbank));
@@ -245,9 +246,9 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
 
   @Override
   protected void updateStorages(List<? extends DeathStorage> storages) {
-    save();
-
     if (!storages.isEmpty()) {
+      save();
+
       SwingUtilities.invokeLater(
           () -> storages.forEach(storage -> storage.getStoragePanel().update()));
 
