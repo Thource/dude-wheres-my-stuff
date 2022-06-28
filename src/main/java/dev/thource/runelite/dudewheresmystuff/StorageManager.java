@@ -13,6 +13,7 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.ItemDespawned;
+import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.WidgetClosed;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.client.callback.ClientThread;
@@ -172,5 +173,14 @@ public abstract class StorageManager<T extends StorageType, S extends Storage<T>
     this.isPreviewManager = isPreviewManager;
 
     storages.forEach(storage -> storage.storagePanel = storage.createStoragePanel());
+  }
+
+  public void onMenuOptionClicked(MenuOptionClicked menuOption) {
+    if (enabled) {
+      updateStorages(
+          storages.stream()
+              .filter(storage -> storage.isEnabled() && storage.onMenuOptionClicked(menuOption))
+              .collect(Collectors.toList()));
+    }
   }
 }

@@ -25,6 +25,7 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.ItemDespawned;
+import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.PlayerChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetClosed;
@@ -287,6 +288,16 @@ public class DudeWheresMyStuffPlugin extends Plugin {
     storageManagerManager.onGameTick();
 
     SwingUtilities.invokeLater(panelContainer::softUpdate);
+  }
+
+
+  @Subscribe
+  void onMenuOptionClicked(MenuOptionClicked menuOption) {
+    if (clientState == ClientState.LOGGED_OUT) {
+      return;
+    }
+
+    storageManagerManager.onMenuOptionClicked(menuOption);
   }
 
   @Subscribe

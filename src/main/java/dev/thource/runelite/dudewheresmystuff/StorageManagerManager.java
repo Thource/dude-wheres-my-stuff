@@ -11,7 +11,6 @@ import dev.thource.runelite.dudewheresmystuff.minigames.MinigamesStorageManager;
 import dev.thource.runelite.dudewheresmystuff.playerownedhouse.PlayerOwnedHouseStorageManager;
 import dev.thource.runelite.dudewheresmystuff.stash.StashStorageManager;
 import dev.thource.runelite.dudewheresmystuff.world.WorldStorageManager;
-import java.awt.event.ActionListener;
 import java.awt.event.ItemListener;
 import java.util.Arrays;
 import java.util.List;
@@ -19,13 +18,13 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.swing.JComboBox;
 import javax.swing.SwingUtilities;
-import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.events.ActorDeath;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.ItemDespawned;
+import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.WidgetClosed;
 import net.runelite.api.events.WidgetLoaded;
 
@@ -40,8 +39,7 @@ public class StorageManagerManager {
   private final PlayerOwnedHouseStorageManager playerOwnedHouseStorageManager;
   private final WorldStorageManager worldStorageManager;
 
-  @Getter()
-  private final List<StorageManager<?, ?>> storageManagers;
+  @Getter() private final List<StorageManager<?, ?>> storageManagers;
 
   private final DudeWheresMyStuffPlugin plugin;
 
@@ -185,5 +183,9 @@ public class StorageManagerManager {
           sortDropdown.setSelectedItem(itemSortMode);
           Arrays.stream(itemListeners).forEach(sortDropdown::addItemListener);
         });
+  }
+
+  public void onMenuOptionClicked(MenuOptionClicked menuOption) {
+    storageManagers.forEach(manager -> manager.onMenuOptionClicked(menuOption));
   }
 }

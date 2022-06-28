@@ -534,7 +534,8 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
                     s.getType() != CarryableStorageType.SEED_BOX
                         && s.getType() != CarryableStorageType.LOOTING_BAG
                         && s.getType() != CarryableStorageType.RUNE_POUCH
-                        && s.getType() != CarryableStorageType.BOTTOMLESS_BUCKET)
+                        && s.getType() != CarryableStorageType.BOTTOMLESS_BUCKET
+                        && s.getType() != CarryableStorageType.PLANK_SACK)
             .sorted(
                 Comparator.comparingInt(
                     s -> {

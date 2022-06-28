@@ -12,6 +12,7 @@ import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.WidgetClosed;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.vars.AccountType;
@@ -76,6 +77,10 @@ public abstract class Storage<T extends StorageType> {
   }
 
   public boolean onVarbitChanged() {
+    return false;
+  }
+
+  public boolean onMenuOptionClicked(MenuOptionClicked menuOption) {
     return false;
   }
 

@@ -22,7 +22,8 @@ public class CarryableStorageManager
       if (type == CarryableStorageType.RUNE_POUCH
           || type == CarryableStorageType.LOOTING_BAG
           || type == CarryableStorageType.SEED_BOX
-          || type == CarryableStorageType.BOTTOMLESS_BUCKET) {
+          || type == CarryableStorageType.BOTTOMLESS_BUCKET
+          || type == CarryableStorageType.PLANK_SACK) {
         continue;
       }
 
@@ -35,6 +36,7 @@ public class CarryableStorageManager
     storages.add(new LootingBag(plugin));
     storages.add(new SeedBox(plugin));
     storages.add(bottomlessBucket);
+    storages.add(new PlankSack(plugin));
   }
 
   @Override
