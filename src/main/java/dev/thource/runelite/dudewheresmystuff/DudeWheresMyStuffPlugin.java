@@ -255,7 +255,7 @@ public class DudeWheresMyStuffPlugin extends Plugin {
     }
 
     if (clientState == ClientState.LOGGING_IN) {
-      boolean isMember = client.getVar(VarClientInt.MEMBERSHIP_STATUS) == 1;
+      boolean isMember = client.getVarcIntValue(VarClientInt.MEMBERSHIP_STATUS) == 1;
       AccountType accountType = client.getAccountType();
       String displayName = Objects.requireNonNull(client.getLocalPlayer()).getName();
 
