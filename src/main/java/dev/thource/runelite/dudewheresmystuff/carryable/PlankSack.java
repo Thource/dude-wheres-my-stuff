@@ -32,8 +32,8 @@ public class PlankSack extends CarryableStorage {
   private final ItemStack oakPlankStack;
   private final ItemStack teakPlankStack;
   private final ItemStack mahoganyPlankStack;
-  private boolean wasJustFilled;
-  private boolean wasJustEmptied;
+  private int checkFilledTicks;
+  private int checkEmptiedTicks;
 
   PlankSack(DudeWheresMyStuffPlugin plugin) {
     super(CarryableStorageType.PLANK_SACK, plugin);
@@ -58,36 +58,18 @@ public class PlankSack extends CarryableStorage {
 
   @Override
   public boolean onMenuOptionClicked(MenuOptionClicked menuOption) {
-    System.out.println(
-        "menuOptionClicked "
-            + menuOption.isItemOp()
-            + " "
-            + menuOption.getParam0()
-            + " "
-            + menuOption.getParam1()
-            + " "
-            + menuOption.getMenuAction().getId()
-            + " "
-            + menuOption.getMenuOption()
-            + " "
-            + menuOption.getMenuTarget()
-            + " "
-            + menuOption.getItemId()
-            + " "
-            + menuOption.getItemOp());
-
     if (menuOption.isItemOp() && menuOption.getItemId() == ItemID.PLANK_SACK) {
       if (menuOption.getMenuOption().equals("Fill")) {
-        wasJustFilled = true;
-        wasJustEmptied = false;
+        checkFilledTicks = 3;
+        checkEmptiedTicks = 0;
       } else if (menuOption.getMenuOption().equals("Empty")) {
-        wasJustFilled = false;
-        wasJustEmptied = true;
+        checkFilledTicks = 0;
+        checkEmptiedTicks = 3;
       }
     } else if (menuOption.getMenuOption().equals("Use")
         && usePattern.matcher(Text.removeTags(menuOption.getMenuTarget())).matches()) {
-      wasJustFilled = true;
-      wasJustEmptied = false;
+      checkFilledTicks = 3;
+      checkEmptiedTicks = 0;
     }
 
     return false;
@@ -95,8 +77,8 @@ public class PlankSack extends CarryableStorage {
 
   @Override
   public boolean onGameTick() {
-    if (wasJustFilled) {
-      wasJustFilled = false;
+    if (checkFilledTicks > 0) {
+      checkFilledTicks--;
 
       ItemContainerWatcher.getInventoryWatcher()
           .getItemsRemovedLastTick()
@@ -109,8 +91,8 @@ public class PlankSack extends CarryableStorage {
       lastUpdated = System.currentTimeMillis();
 
       return true;
-    } else if (wasJustEmptied) {
-      wasJustEmptied = false;
+    } else if (checkEmptiedTicks > 0) {
+      checkEmptiedTicks--;
 
       ItemContainerWatcher.getInventoryWatcher()
           .getItemsAddedLastTick()
@@ -133,6 +115,15 @@ public class PlankSack extends CarryableStorage {
     if (chatMessage.getType() != ChatMessageType.SPAM
         && chatMessage.getType() != ChatMessageType.GAMEMESSAGE) {
       return false;
+    }
+
+    if (chatMessage.getMessage().equals("Your sack is empty.")) {
+      plankStack.setQuantity(0);
+      oakPlankStack.setQuantity(0);
+      teakPlankStack.setQuantity(0);
+      mahoganyPlankStack.setQuantity(0);
+      lastUpdated = System.currentTimeMillis();
+      return true;
     }
 
     Matcher matcher = chatPattern.matcher(Text.removeTags(chatMessage.getMessage()));
