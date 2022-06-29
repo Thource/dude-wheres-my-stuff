@@ -81,6 +81,7 @@ public class DudeWheresMyStuffPanel extends JPanel {
   private final JPanel display = new JPanel();
   private final FasterMaterialTabGroup tabGroup = new FasterMaterialTabGroup(display);
   private final boolean previewMode;
+  private StorageManagerManager storageManagerManager;
   @Setter private boolean active;
   @Getter private String displayName = "";
   @Nullable private TabContentPanel activeTabPanel = null;
@@ -96,6 +97,7 @@ public class DudeWheresMyStuffPanel extends JPanel {
     super();
 
     this.itemManager = itemManager;
+    this.storageManagerManager = storageManagerManager;
     this.previewMode = previewMode;
 
     setLayout(new BorderLayout());
@@ -117,44 +119,33 @@ public class DudeWheresMyStuffPanel extends JPanel {
             itemManager,
             configManager,
             storageManagerManager,
-            plugin.isDeveloperModeEnabled());
+            plugin.isDeveloperMode());
     addTab(Tab.OVERVIEW, overviewTab);
 
     addTab(
         Tab.DEATH,
-        new DeathStorageTabPanel(
-            itemManager,
-            config,
-            this,
-            storageManagerManager.getDeathStorageManager(),
-            plugin.isDeveloperModeEnabled(),
-            client));
+        new DeathStorageTabPanel(plugin, storageManagerManager.getDeathStorageManager()));
     addTab(
         Tab.COINS,
-        new CoinsStorageTabPanel(
-            itemManager, config, storageManagerManager.getCoinsStorageManager()));
+        new CoinsStorageTabPanel(plugin, storageManagerManager.getCoinsStorageManager()));
     addTab(
         Tab.CARRYABLE_STORAGE,
-        new CarryableStorageTabPanel(
-            itemManager, config, storageManagerManager.getCarryableStorageManager()));
+        new CarryableStorageTabPanel(plugin, storageManagerManager.getCarryableStorageManager()));
     addTab(
         Tab.STASH_UNITS,
-        new StashStorageTabPanel(
-            itemManager, config, storageManagerManager.getStashStorageManager()));
+        new StashStorageTabPanel(plugin, storageManagerManager.getStashStorageManager()));
     addTab(
         Tab.POH_STORAGE,
         new PlayerOwnedHouseStorageTabPanel(
-            itemManager, config, storageManagerManager.getPlayerOwnedHouseStorageManager()));
+            plugin, storageManagerManager.getPlayerOwnedHouseStorageManager()));
     addTab(
         Tab.WORLD,
-        new WorldStorageTabPanel(
-            itemManager, config, storageManagerManager.getWorldStorageManager()));
+        new WorldStorageTabPanel(plugin, storageManagerManager.getWorldStorageManager()));
     addTab(
         Tab.MINIGAMES,
-        new MinigamesStorageTabPanel(
-            itemManager, config, storageManagerManager.getMinigamesStorageManager()));
+        new MinigamesStorageTabPanel(plugin, storageManagerManager.getMinigamesStorageManager()));
 
-    addTab(Tab.SEARCH, new SearchTabPanel(itemManager, config, this, storageManagerManager));
+    addTab(Tab.SEARCH, new SearchTabPanel(plugin, storageManagerManager));
 
     for (Tab tab : Tab.TABS) {
       if (tab == Tab.OVERVIEW) {
@@ -204,8 +195,7 @@ public class DudeWheresMyStuffPanel extends JPanel {
     materialTab.setOnSelectEvent(
         () -> {
           activeTabPanel = tabContentPanel;
-
-          tabContentPanel.update();
+          softUpdate();
           return true;
         });
 
@@ -221,20 +211,12 @@ public class DudeWheresMyStuffPanel extends JPanel {
     tabGroup.select(uiTabs.get(tab));
   }
 
-  void update() {
+  void softUpdate() {
     if (!active || activeTabPanel == null) {
       return;
     }
 
-    SwingUtilities.invokeLater(() -> activeTabPanel.update());
-  }
-
-  void softUpdate() {
-    if (!active || activeTabPanel == null || !(activeTabPanel instanceof StorageTabPanel)) {
-      return;
-    }
-
-    ((StorageTabPanel<?, ?, ?>) activeTabPanel).softUpdate();
+    activeTabPanel.softUpdate();
   }
 
   void setDisplayName(String name) {
@@ -242,8 +224,11 @@ public class DudeWheresMyStuffPanel extends JPanel {
   }
 
   void reset() {
-    logOut();
-    update();
+    SwingUtilities.invokeLater(
+        () -> {
+          logOut();
+          softUpdate();
+        });
   }
 
   void logOut() {
@@ -267,11 +252,8 @@ public class DudeWheresMyStuffPanel extends JPanel {
               overviewItemPanel.setVisible(false);
             });
 
-    SwingUtilities.invokeLater(
-        () -> {
-          ((SearchTabPanel) storageTabPanelMap.get(Tab.SEARCH)).getSearchBar().setText("");
-          switchTab(Tab.OVERVIEW);
-        });
+    ((SearchTabPanel) storageTabPanelMap.get(Tab.SEARCH)).getSearchBar().setText("");
+    switchTab(Tab.OVERVIEW);
 
     setDisplayName("");
   }
@@ -281,10 +263,11 @@ public class DudeWheresMyStuffPanel extends JPanel {
     storageTabPanelMap.forEach(
         (tab, storageTabPanel) -> {
           StorageManager<?, ?> storageManager = storageTabPanel.storageManager;
-          if (storageManager != null && tab != Tab.DEATH) {
+          if (storageManager != null) {
             storageManager.getStorages().forEach(storage -> storage.disable(isMember, accountType));
 
-            if (storageManager.getStorages().stream().noneMatch(Storage::isEnabled)) {
+            if (tab != Tab.DEATH
+                && storageManager.getStorages().stream().noneMatch(Storage::isEnabled)) {
               storageManager.disable();
               return;
             }
@@ -301,5 +284,11 @@ public class DudeWheresMyStuffPanel extends JPanel {
 
   public boolean isPreviewPanel() {
     return previewMode;
+  }
+
+  public void reorderStoragePanels() {
+    storageManagerManager
+        .getStorageManagers()
+        .forEach(storageManager -> storageManager.getStorageTabPanel().reorderStoragePanels());
   }
 }

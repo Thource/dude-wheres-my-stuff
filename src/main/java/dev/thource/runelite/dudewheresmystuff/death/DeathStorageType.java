@@ -11,9 +11,19 @@ import net.runelite.api.vars.AccountType;
 @RequiredArgsConstructor
 @Getter
 public enum DeathStorageType implements StorageType {
-  DEATHPILE("Deathpile", -1, true, "deathpiles", false, -100, -100, null),
-  UNKNOWN_DEATHBANK("Unknown Deathbank", -1, false, "unknown", true, -100, -100, null),
-  HYDRA("Alchemical Hydra", -1, false, "hydra", true, 13, 14, Region.BOSS_HYDRA), // confirmed
+  DEATH_ITEMS("Death Items", -1, true, "", false, -100, -100, null, null),
+  DEATHPILE("Deathpile", -1, true, "deathpiles", false, -100, -100, null, null),
+  UNKNOWN_DEATHBANK("Unknown Deathbank", -1, false, "unknown", true, -100, -100, null, null),
+  HYDRA(
+      "Alchemical Hydra",
+      -1,
+      false,
+      "hydra",
+      true,
+      13,
+      14,
+      Region.BOSS_HYDRA,
+      "KaruulmSlayerDungeon"), // confirmed
   GUARDIANS(
       "Grotesque Guardians",
       -1,
@@ -22,7 +32,8 @@ public enum DeathStorageType implements StorageType {
       true,
       3,
       4,
-      Region.BOSS_GROTESQUE_GUARDIANS), // confirmed
+      Region.BOSS_GROTESQUE_GUARDIANS,
+      null), // confirmed
   SEPULCHRE(
       "Hallowed Sepulchre",
       -1,
@@ -31,12 +42,30 @@ public enum DeathStorageType implements StorageType {
       true,
       29,
       30,
-      Region.MG_HALLOWED_SEPULCHRE), // confirmed
-  HESPORI("Hespori", -1, false, "hespori", true, 15, 16, Region.BOSS_HESPORI), // confirmed
-  MIMIC("The Mimic", -1, false, "mimic", true, 17, 18, null),
-  NEX("Nex", -1, false, "nex", true, 36, 37, Region.BOSS_NEX), // confirmed
+      Region.MG_HALLOWED_SEPULCHRE,
+      null), // confirmed
+  HESPORI(
+      "Hespori",
+      -1,
+      false,
+      "hespori",
+      true,
+      15,
+      16,
+      Region.BOSS_HESPORI,
+      "FarmingGuild"), // confirmed
+  MIMIC("The Mimic", -1, false, "mimic", true, 17, 18, null, null),
+  NEX("Nex", -1, false, "nex", true, 36, 37, Region.BOSS_NEX, null), // confirmed
   NIGHTMARE(
-      "The Nightmare", -1, false, "nightmare", true, 25, 26, Region.BOSS_NIGHTMARE), // confirmed
+      "The Nightmare",
+      -1,
+      false,
+      "nightmare",
+      true,
+      25,
+      26,
+      Region.BOSS_NIGHTMARE,
+      "Shura"), // confirmed
   PHOSANI(
       "Phosani's Nightmare",
       -1,
@@ -45,7 +74,8 @@ public enum DeathStorageType implements StorageType {
       true,
       27,
       28,
-      Region.BOSS_NIGHTMARE), // confirmed
+      Region.BOSS_NIGHTMARE,
+      "SisterSenga"), // confirmed
   TOB(
       "Theatre of Blood",
       -1,
@@ -54,16 +84,27 @@ public enum DeathStorageType implements StorageType {
       true,
       11,
       12,
-      Region.RAIDS_THEATRE_OF_BLOOD), // confirmed
+      Region.RAIDS_THEATRE_OF_BLOOD,
+      "TheatreofBlood"), // confirmed
   VOLCANIC_MINE(
-      "Volcanic Mine", -1, false, "volcanicmine", true, 1, 2, Region.MG_VOLCANIC_MINE), // confirmed
-  VORKATH("Vorkath", -1, false, "vorkath", true, 5, 6, Region.BOSS_VORKATH), // confirmed
-  ZULRAH("Zulrah", -1, false, "zulrah", true, 33, 0, Region.BOSS_ZULRAH), // confirmed
-  QUEST_DS2("Dragon Slayer II", -1, false, "questds2", true, 7, 8, Region.REGION_GALVEK_SHIPWRECKS),
-  QUEST_ATOH("A Taste of Hope", -1, false, "questatoh", true, 9, 10, null),
-  QUEST_SOTF("Sins of the Father", -1, false, "questsotf", true, 23, 24, null),
-  QUEST_SOTE("Song of the Elves", -1, false, "questsote", true, 19, 20, null),
-  QUEST_TFE("The Fremennik Exiles", -1, false, "questtfe", true, 21, 22, null);
+      "Volcanic Mine",
+      -1,
+      false,
+      "volcanicmine",
+      true,
+      1,
+      2,
+      Region.MG_VOLCANIC_MINE,
+      "FossilIsland"), // confirmed
+  VORKATH(
+      "Vorkath", -1, false, "vorkath", true, 5, 6, Region.BOSS_VORKATH, "Rellekka"), // confirmed
+  ZULRAH("Zulrah", -1, false, "zulrah", true, 33, 0, Region.BOSS_ZULRAH, "Zul-Andra"), // confirmed
+  QUEST_DS2(
+      "Dragon Slayer II", -1, false, "questds2", true, 7, 8, Region.REGION_GALVEK_SHIPWRECKS, null),
+  QUEST_ATOH("A Taste of Hope", -1, false, "questatoh", true, 9, 10, null, null),
+  QUEST_SOTF("Sins of the Father", -1, false, "questsotf", true, 23, 24, null, null),
+  QUEST_SOTE("Song of the Elves", -1, false, "questsote", true, 19, 20, null, null),
+  QUEST_TFE("The Fremennik Exiles", -1, false, "questtfe", true, 21, 22, null, null);
 
   private final String name;
   private final int itemContainerId;
@@ -74,5 +115,6 @@ public enum DeathStorageType implements StorageType {
   private final int deathBankLockedState;
   private final int deathBankUnlockedState;
   private final Region region;
+  private final String deathWindowLocationText;
   private final List<AccountType> accountTypeBlacklist = null;
 }

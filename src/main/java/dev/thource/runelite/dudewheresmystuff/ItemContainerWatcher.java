@@ -62,9 +62,9 @@ public class ItemContainerWatcher {
     }
   }
 
-  static void onGameTick() {
+  static void onGameTick(DudeWheresMyStuffPlugin plugin) {
     for (ItemContainerWatcher itemContainerWatcher : all) {
-      itemContainerWatcher.gameTick();
+      itemContainerWatcher.gameTick(plugin);
     }
   }
 
@@ -76,7 +76,7 @@ public class ItemContainerWatcher {
     return justUpdated;
   }
 
-  private void gameTick() {
+  private void gameTick(DudeWheresMyStuffPlugin plugin) {
     justUpdated = false;
     itemsLastTick.clear();
     itemsLastTick.addAll(items);
@@ -105,7 +105,7 @@ public class ItemContainerWatcher {
                     return newItem;
                   }
 
-                  return new ItemStack(item.getId(), item.getQuantity(), clientThread, itemManager);
+                  return new ItemStack(item.getId(), item.getQuantity(), plugin);
                 })
             .collect(Collectors.toList()));
   }

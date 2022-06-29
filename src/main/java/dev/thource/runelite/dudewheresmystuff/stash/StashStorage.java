@@ -1,15 +1,14 @@
 package dev.thource.runelite.dudewheresmystuff.stash;
 
+import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.ItemContainerWatcher;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
 import dev.thource.runelite.dudewheresmystuff.Storage;
+import dev.thource.runelite.dudewheresmystuff.StoragePanel;
 import java.util.Objects;
 import lombok.Getter;
 import net.runelite.api.ChatMessageType;
-import net.runelite.api.Client;
 import net.runelite.api.events.ChatMessage;
-import net.runelite.client.callback.ClientThread;
-import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement;
 
 /** StashStorage is responsible for tracking storages that the players STASH units. */
@@ -20,10 +19,18 @@ public class StashStorage extends Storage<StashStorageType> {
   private boolean handleWithdrawOnTick = false;
   private boolean handleDepositOnTick = false;
 
-  protected StashStorage(
-      Client client, ClientThread clientThread, ItemManager itemManager, StashUnit stashUnit) {
-    super(StashStorageType.STASH, client, clientThread, itemManager);
+  protected StashStorage(DudeWheresMyStuffPlugin plugin, StashUnit stashUnit) {
+    super(StashStorageType.STASH, plugin);
     this.stashUnit = stashUnit;
+  }
+
+  @Override
+  protected StoragePanel createStoragePanel() {
+    StoragePanel panel = super.createStoragePanel();
+
+    panel.setTitleToolTip(stashUnit.getChartText());
+
+    return panel;
   }
 
   @Override
@@ -36,7 +43,7 @@ public class StashStorage extends Storage<StashStorageType> {
     if (stashUnit
             .getStashUnitData()
             .getWorldPoints()[0]
-            .distanceTo(client.getLocalPlayer().getWorldLocation())
+            .distanceTo(plugin.getClient().getLocalPlayer().getWorldLocation())
         > 10) {
       return false;
     }
@@ -90,6 +97,10 @@ public class StashStorage extends Storage<StashStorageType> {
 
   @Override
   public String getName() {
+    if (stashUnit == null) {
+      return "";
+    }
+
     return stashUnit.getLocationName();
   }
 

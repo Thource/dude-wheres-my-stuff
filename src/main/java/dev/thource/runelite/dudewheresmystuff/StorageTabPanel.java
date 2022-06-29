@@ -11,28 +11,24 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import lombok.Getter;
-import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
-import net.runelite.client.util.SwingUtil;
 
 /** StorageTabPanel is a base class that shows the player their data. */
 public abstract class StorageTabPanel<
         T extends StorageType, S extends Storage<T>, M extends StorageManager<T, S>>
     extends TabContentPanel {
 
-  protected final transient DudeWheresMyStuffConfig config;
+  protected final DudeWheresMyStuffPlugin plugin;
   @Getter protected final transient M storageManager;
-  protected final transient ItemManager itemManager;
-  protected final JPanel itemsBoxContainer;
-  protected final JComboBox<ItemSortMode> sortItemsDropdown;
-  protected final transient List<ItemsBox> itemsBoxes = new ArrayList<>();
+  protected final JPanel storagePanelContainer;
+  @Getter protected final JComboBox<ItemSortMode> sortItemsDropdown;
+  protected final transient List<StoragePanel> storagePanels = new ArrayList<>();
 
-  protected StorageTabPanel(
-      ItemManager itemManager, DudeWheresMyStuffConfig config, M storageManager) {
-    this.itemManager = itemManager;
-    this.config = config;
+  protected StorageTabPanel(DudeWheresMyStuffPlugin plugin, M storageManager) {
+    this.plugin = plugin;
     this.storageManager = storageManager;
+    storageManager.setStorageTabPanel(this);
 
     setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
     setBackground(ColorScheme.DARK_GRAY_COLOR);
@@ -53,23 +49,18 @@ public abstract class StorageTabPanel<
     sortItemsDropdown.setForeground(Color.WHITE);
     sortItemsDropdown.addItem(ItemSortMode.VALUE);
     sortItemsDropdown.addItem(ItemSortMode.UNSORTED);
-    sortItemsDropdown.setSelectedItem(config.itemSortMode());
-    sortItemsDropdown.addItemListener(
-        i -> {
-          ItemSortMode newSortMode = (ItemSortMode) i.getItem();
-          if (config.itemSortMode() == newSortMode) {
-            return;
-          }
-
-          config.setItemSortMode((ItemSortMode) i.getItem());
-          update();
-        });
+    sortItemsDropdown.setSelectedItem(plugin.getConfig().itemSortMode());
+    sortItemsDropdown.addItemListener(i -> plugin.setItemSortMode((ItemSortMode) i.getItem()));
     sortItemsDropdown.setPreferredSize(new Dimension(-1, 30));
     sortItemsContainer.add(sortItemsDropdown);
 
-    itemsBoxContainer = new JPanel();
-    itemsBoxContainer.setLayout(new BoxLayout(itemsBoxContainer, BoxLayout.Y_AXIS));
-    add(itemsBoxContainer);
+    storagePanelContainer = new JPanel();
+    storagePanelContainer.setLayout(new BoxLayout(storagePanelContainer, BoxLayout.Y_AXIS));
+    add(storagePanelContainer);
+
+    for (S storage : storageManager.getStorages()) {
+      storagePanelContainer.add(storage.getStoragePanel());
+    }
   }
 
   protected Comparator<S> getStorageSorter() {
@@ -79,57 +70,27 @@ public abstract class StorageTabPanel<
         .thenComparing(s -> s.getType().getName());
   }
 
-  protected boolean showPrice() {
-    return true;
-  }
+  public void reorderStoragePanels() {
+    EnhancedSwingUtilities.fastRemoveAll(storagePanelContainer);
+    storagePanels.clear();
 
-  protected void rebuildList() {
-    SwingUtil.fastRemoveAll(itemsBoxContainer);
-
-    itemsBoxes.clear();
     storageManager.getStorages().stream()
-        .sorted(getStorageSorter())
-        .filter(Storage::isEnabled)
         .filter(
-            storage -> {
-              if (config.showEmptyStorages()) {
-                return true;
-              }
-
-              return storage.getItems().stream()
-                  .anyMatch(itemStack -> itemStack.getId() != -1 && itemStack.getQuantity() > 0);
-            })
+            storage ->
+                plugin.getConfig().showEmptyStorages()
+                    || !storage.getStoragePanel().getItemBoxes().isEmpty())
+        .sorted(getStorageSorter())
         .forEach(
             storage -> {
-              ItemsBox itemsBox =
-                  new ItemsBox(
-                      itemManager,
-                      storageManager.getPluginManager(),
-                      storageManager.getItemIdentificationPlugin(),
-                      storageManager.getItemIdentificationConfig(), storage,
-                      null,
-                      showPrice());
-              for (ItemStack itemStack : storage.getItems()) {
-                if (itemStack.getQuantity() > 0) {
-                  itemsBox.getItems().add(itemStack);
-                }
-              }
-              itemsBox.setSortMode(config.itemSortMode());
-              itemsBox.rebuild();
-              itemsBoxes.add(itemsBox);
-              itemsBoxContainer.add(itemsBox);
+              storagePanelContainer.add(storage.getStoragePanel());
+              storagePanels.add(storage.getStoragePanel());
             });
 
-    revalidate();
+    storagePanelContainer.revalidate();
   }
 
   @Override
-  public void update() {
-    sortItemsDropdown.setSelectedItem(config.itemSortMode());
-    rebuildList();
-  }
-
   public void softUpdate() {
-    itemsBoxes.forEach(ItemsBox::updateLabels);
+    storagePanels.forEach(panel -> panel.getStorage().softUpdate());
   }
 }

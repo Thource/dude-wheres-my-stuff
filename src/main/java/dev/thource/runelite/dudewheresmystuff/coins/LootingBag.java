@@ -1,5 +1,6 @@
 package dev.thource.runelite.dudewheresmystuff.coins;
 
+import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import java.util.Objects;
 import lombok.Getter;
 import net.runelite.api.Client;
@@ -11,13 +12,13 @@ import net.runelite.client.game.ItemManager;
 @Getter
 public class LootingBag extends CoinsStorage {
 
-  LootingBag(Client client, ClientThread clientThread, ItemManager itemManager) {
-    super(CoinsStorageType.LOOTING_BAG, client, clientThread, itemManager);
+  LootingBag(DudeWheresMyStuffPlugin plugin) {
+    super(CoinsStorageType.LOOTING_BAG, plugin);
   }
 
   @Override
   public boolean onGameTick() {
-    Widget lootingBagWidget = client.getWidget(81, 5);
+    Widget lootingBagWidget = plugin.getClient().getWidget(81, 5);
     if (lootingBagWidget == null) {
       return false;
     }

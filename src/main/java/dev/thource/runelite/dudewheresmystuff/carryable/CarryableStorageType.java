@@ -16,7 +16,8 @@ public enum CarryableStorageType implements StorageType {
   LOOTING_BAG("Looting Bag", 516, false, "lootingbag", true),
   SEED_BOX("Seed Box", 573, false, "seedbox", true),
   RUNE_POUCH("Rune Pouch", -1, true, "runepouch", true),
-  BOTTOMLESS_BUCKET("Bottomless Compost Bucket", -1, false, "bottomlessbucket", true);
+  BOTTOMLESS_BUCKET("Bottomless Compost Bucket", -1, false, "bottomlessbucket", true),
+  PLANK_SACK("Plank Sack", -1, false, "planksack", true);
 
   private final String name;
   private final int itemContainerId;

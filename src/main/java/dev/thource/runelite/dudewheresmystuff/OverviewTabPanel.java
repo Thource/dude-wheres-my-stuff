@@ -123,7 +123,7 @@ class OverviewTabPanel extends TabContentPanel {
   }
 
   @Override
-  public void update() {
+  public void softUpdate() {
     resetSummaryContextMenu();
 
     if (Objects.equals(pluginPanel.getDisplayName(), "")) {

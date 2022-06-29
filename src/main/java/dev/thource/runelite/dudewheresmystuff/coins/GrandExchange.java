@@ -1,11 +1,9 @@
 package dev.thource.runelite.dudewheresmystuff.coins;
 
+import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import java.util.Objects;
 import java.util.stream.IntStream;
-import net.runelite.api.Client;
 import net.runelite.api.widgets.Widget;
-import net.runelite.client.callback.ClientThread;
-import net.runelite.client.game.ItemManager;
 import org.apache.commons.lang3.math.NumberUtils;
 
 /**
@@ -14,8 +12,8 @@ import org.apache.commons.lang3.math.NumberUtils;
  */
 public class GrandExchange extends CoinsStorage {
 
-  GrandExchange(Client client, ClientThread clientThread, ItemManager itemManager) {
-    super(CoinsStorageType.GRAND_EXCHANGE, client, clientThread, itemManager);
+  GrandExchange(DudeWheresMyStuffPlugin plugin) {
+    super(CoinsStorageType.GRAND_EXCHANGE, plugin);
   }
 
   @Override
@@ -24,7 +22,7 @@ public class GrandExchange extends CoinsStorage {
   }
 
   private boolean updateFromCollectWindow() {
-    if (client.getWidget(402, 1) == null) {
+    if (plugin.getClient().getWidget(402, 1) == null) {
       return false;
     }
 
@@ -36,7 +34,7 @@ public class GrandExchange extends CoinsStorage {
   }
 
   private int getCoinsInCollectSlot(int slot) {
-    Widget slotWidget = client.getWidget(402, 5 + slot);
+    Widget slotWidget = plugin.getClient().getWidget(402, 5 + slot);
     if (slotWidget == null) {
       return 0;
     }
@@ -50,7 +48,7 @@ public class GrandExchange extends CoinsStorage {
   }
 
   private boolean updateFromGrandExchangeWindow() {
-    if (client.getWidget(465, 1) == null) {
+    if (plugin.getClient().getWidget(465, 1) == null) {
       return false;
     }
 
@@ -62,7 +60,7 @@ public class GrandExchange extends CoinsStorage {
   }
 
   private int getCoinsInGrandExchangeSlot(int slot) {
-    Widget slotWidget = client.getWidget(465, 7 + slot);
+    Widget slotWidget = plugin.getClient().getWidget(465, 7 + slot);
     if (slotWidget == null) {
       return 0;
     }

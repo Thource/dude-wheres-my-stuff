@@ -1,12 +1,8 @@
 package dev.thource.runelite.dudewheresmystuff.minigames;
 
-import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffConfig;
-import dev.thource.runelite.dudewheresmystuff.ItemStack;
-import dev.thource.runelite.dudewheresmystuff.ItemsBox;
-import dev.thource.runelite.dudewheresmystuff.Storage;
+import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.StorageTabPanel;
 import java.util.Comparator;
-import net.runelite.client.game.ItemManager;
 
 /** MinigamesStorageTabPanel is responsible for displaying minigame data to the player. */
 public class MinigamesStorageTabPanel
@@ -14,10 +10,8 @@ public class MinigamesStorageTabPanel
 
   /** A constructor. */
   public MinigamesStorageTabPanel(
-      ItemManager itemManager,
-      DudeWheresMyStuffConfig config,
-      MinigamesStorageManager storageManager) {
-    super(itemManager, config, storageManager);
+      DudeWheresMyStuffPlugin plugin, MinigamesStorageManager storageManager) {
+    super(plugin, storageManager);
 
     remove(sortItemsDropdown);
   }
@@ -26,51 +20,48 @@ public class MinigamesStorageTabPanel
   protected Comparator<MinigamesStorage> getStorageSorter() {
     return Comparator.comparing(s -> s.getType().getName());
   }
+  //
+  //  @Override
+  //  protected void rebuildList() {
+  //    removeAll();
+  //
+  //    storagePanels.clear();
+  //    storageManager.getStorages().stream()
+  //        .filter(Storage::isEnabled)
+  //        .filter(
+  //            storage -> {
+  //              if (config.showEmptyStorages()) {
+  //                return true;
+  //              }
+  //
+  //              return storage.getItems().stream()
+  //                  .anyMatch(itemStack -> itemStack.getId() != -1 && itemStack.getQuantity() >
+  // 0);
+  //            })
+  //        .sorted(getStorageSorter())
+  //        .forEach(
+  //            storage -> {
+  //              StoragePanel storagePanel =
+  //                  new StoragePanel(
+  //                      itemManager,
+  //                      storageManager.getPluginManager(),
+  //                      storageManager.getItemIdentificationPlugin(),
+  //                      storageManager.getItemIdentificationConfig(), storage,
+  //                      null,
+  //                      showPrice());
+  //              for (ItemStack itemStack : storage.getItems()) {
+  //                if (storage.getType().isAutomatic()
+  //                    || storage.getLastUpdated() != -1L
+  //                    || itemStack.getQuantity() > 0) {
+  //                  storagePanel.getItems().add(itemStack);
+  //                }
+  //              }
+  //              storagePanel.rebuild();
+  //              storagePanels.add(storagePanel);
+  //              add(storagePanel);
+  //            });
+  //
+  //    revalidate();
+  //  }
 
-  @Override
-  protected void rebuildList() {
-    removeAll();
-
-    itemsBoxes.clear();
-    storageManager.getStorages().stream()
-        .filter(Storage::isEnabled)
-        .filter(
-            storage -> {
-              if (config.showEmptyStorages()) {
-                return true;
-              }
-
-              return storage.getItems().stream()
-                  .anyMatch(itemStack -> itemStack.getId() != -1 && itemStack.getQuantity() > 0);
-            })
-        .sorted(getStorageSorter())
-        .forEach(
-            storage -> {
-              ItemsBox itemsBox =
-                  new ItemsBox(
-                      itemManager,
-                      storageManager.getPluginManager(),
-                      storageManager.getItemIdentificationPlugin(),
-                      storageManager.getItemIdentificationConfig(), storage,
-                      null,
-                      showPrice());
-              for (ItemStack itemStack : storage.getItems()) {
-                if (storage.getType().isAutomatic()
-                    || storage.getLastUpdated() != -1L
-                    || itemStack.getQuantity() > 0) {
-                  itemsBox.getItems().add(itemStack);
-                }
-              }
-              itemsBox.rebuild();
-              itemsBoxes.add(itemsBox);
-              add(itemsBox);
-            });
-
-    revalidate();
-  }
-
-  @Override
-  protected boolean showPrice() {
-    return false;
-  }
 }
