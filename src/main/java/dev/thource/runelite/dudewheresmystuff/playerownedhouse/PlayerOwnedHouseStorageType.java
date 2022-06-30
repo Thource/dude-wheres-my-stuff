@@ -351,7 +351,7 @@ public enum PlayerOwnedHouseStorageType implements StorageType {
           ItemID.RUNE_PLATEBODY_H4,
           ItemID.RUNE_PLATEBODY_H5,
           ItemID.THIEVING_BAG,
-          ItemID.ZOMBIE_HEAD,
+          ItemID.ZOMBIE_HEAD_19912,
           ItemID.ANCIENT_COIF,
           ItemID.ANCIENT_DHIDE_BODY,
           ItemID.ANCIENT_CHAPS,
