@@ -1,6 +1,7 @@
 package dev.thource.runelite.dudewheresmystuff.world;
 
 import dev.thource.runelite.dudewheresmystuff.StorageType;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import lombok.Getter;
@@ -19,7 +20,18 @@ public enum WorldStorageType implements StorageType {
       false,
       "bank",
       false,
-      Collections.singletonList(AccountType.ULTIMATE_IRONMAN));
+      Collections.singletonList(AccountType.ULTIMATE_IRONMAN)),
+  GROUP_STORAGE(
+      "Group Storage",
+      InventoryID.GROUP_STORAGE.getId(),
+      false,
+      "groupstorage",
+      false,
+      Arrays.asList(
+          AccountType.ULTIMATE_IRONMAN,
+          AccountType.HARDCORE_IRONMAN,
+          AccountType.IRONMAN,
+          AccountType.NORMAL));
 
   private final String name;
   private final int itemContainerId;
