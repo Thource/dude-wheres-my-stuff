@@ -2,7 +2,6 @@ package dev.thource.runelite.dudewheresmystuff.carryable;
 
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffConfig;
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
-import dev.thource.runelite.dudewheresmystuff.ItemContainerWatcher;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -11,7 +10,6 @@ import lombok.Getter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.ItemID;
 import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.util.Text;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -32,8 +30,6 @@ public class PlankSack extends CarryableStorage {
   private final ItemStack oakPlankStack;
   private final ItemStack teakPlankStack;
   private final ItemStack mahoganyPlankStack;
-  private int checkFilledTicks;
-  private int checkEmptiedTicks;
 
   PlankSack(DudeWheresMyStuffPlugin plugin) {
     super(CarryableStorageType.PLANK_SACK, plugin);
@@ -54,60 +50,6 @@ public class PlankSack extends CarryableStorage {
     plankStack.setQuantity(0);
     lastUpdated = -1;
     enable();
-  }
-
-  @Override
-  public boolean onMenuOptionClicked(MenuOptionClicked menuOption) {
-    if (menuOption.isItemOp() && menuOption.getItemId() == ItemID.PLANK_SACK) {
-      if (menuOption.getMenuOption().equals("Fill")) {
-        checkFilledTicks = 3;
-        checkEmptiedTicks = 0;
-      } else if (menuOption.getMenuOption().equals("Empty")) {
-        checkFilledTicks = 0;
-        checkEmptiedTicks = 3;
-      }
-    } else if (menuOption.getMenuOption().equals("Use")
-        && usePattern.matcher(Text.removeTags(menuOption.getMenuTarget())).matches()) {
-      checkFilledTicks = 3;
-      checkEmptiedTicks = 0;
-    }
-
-    return false;
-  }
-
-  @Override
-  public boolean onGameTick() {
-    if (checkFilledTicks > 0) {
-      checkFilledTicks--;
-
-      ItemContainerWatcher.getInventoryWatcher()
-          .getItemsRemovedLastTick()
-          .forEach(
-              itemStack ->
-                  items.stream()
-                      .filter(i -> i.getId() == itemStack.getId())
-                      .findFirst()
-                      .ifPresent(i -> i.setQuantity(i.getQuantity() + 1)));
-      lastUpdated = System.currentTimeMillis();
-
-      return true;
-    } else if (checkEmptiedTicks > 0) {
-      checkEmptiedTicks--;
-
-      ItemContainerWatcher.getInventoryWatcher()
-          .getItemsAddedLastTick()
-          .forEach(
-              itemStack ->
-                  items.stream()
-                      .filter(i -> i.getId() == itemStack.getId())
-                      .findFirst()
-                      .ifPresent(i -> i.setQuantity(Math.max(i.getQuantity() - 1, 0))));
-      lastUpdated = System.currentTimeMillis();
-
-      return true;
-    }
-
-    return false;
   }
 
   @Override
