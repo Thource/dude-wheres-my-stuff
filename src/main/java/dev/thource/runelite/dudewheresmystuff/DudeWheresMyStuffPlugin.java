@@ -151,6 +151,21 @@ public class DudeWheresMyStuffPlugin extends Plugin {
                   true,
                   client));
 
+      SwingUtilities.invokeLater(
+          () -> {
+            storageManagerManager
+                .getStorageManagers()
+                .forEach(
+                    storageManager ->
+                        storageManager.getStorages().forEach(Storage::createStoragePanel));
+
+            previewStorageManagerManager
+                .getStorageManagers()
+                .forEach(
+                    storageManager ->
+                        storageManager.getStorages().forEach(Storage::createStoragePanel));
+          });
+
       final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "icon.png");
 
       navButton =
@@ -215,8 +230,7 @@ public class DudeWheresMyStuffPlugin extends Plugin {
   }
 
   @Subscribe
-  public void onRuneScapeProfileChanged(RuneScapeProfileChanged e)
-  {
+  public void onRuneScapeProfileChanged(RuneScapeProfileChanged e) {
     storageManagerManager.reset();
     storageManagerManager.load();
     SwingUtilities.invokeLater(panelContainer.getPanel()::softUpdate);
@@ -276,6 +290,8 @@ public class DudeWheresMyStuffPlugin extends Plugin {
 
         onVarbitChanged(new VarbitChanged());
 
+        panelContainer.getPanel().setDisplayName(client.getLocalPlayer().getName());
+
         pluginStartedAlreadyLoggedIn = false;
       }
 
@@ -289,7 +305,6 @@ public class DudeWheresMyStuffPlugin extends Plugin {
 
     SwingUtilities.invokeLater(panelContainer::softUpdate);
   }
-
 
   @Subscribe
   void onMenuOptionClicked(MenuOptionClicked menuOption) {

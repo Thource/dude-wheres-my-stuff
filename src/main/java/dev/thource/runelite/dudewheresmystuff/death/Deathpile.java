@@ -4,7 +4,6 @@ import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.DurationFormatter;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
 import dev.thource.runelite.dudewheresmystuff.Region;
-import dev.thource.runelite.dudewheresmystuff.StoragePanel;
 import java.util.List;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
@@ -37,20 +36,20 @@ public class Deathpile extends DeathStorage {
   }
 
   @Override
-  protected StoragePanel createStoragePanel() {
-    StoragePanel panel = super.createStoragePanel();
+  protected void createStoragePanel() {
+    super.createStoragePanel();
 
     Region region = Region.get(worldPoint.getRegionID());
     if (region == null) {
-      panel.setSubTitle("Unknown");
+      storagePanel.setSubTitle("Unknown");
     } else {
-      panel.setSubTitle(region.getName());
+      storagePanel.setSubTitle(region.getName());
     }
 
     if (!deathStorageManager.isPreviewManager()) {
       final JPopupMenu popupMenu = new JPopupMenu();
       popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
-      panel.setComponentPopupMenu(popupMenu);
+      storagePanel.setComponentPopupMenu(popupMenu);
 
       final JMenuItem deleteDeathpile = new JMenuItem("Delete Deathpile");
       deleteDeathpile.addActionListener(
@@ -60,7 +59,7 @@ public class Deathpile extends DeathStorage {
             try {
               result =
                   JOptionPane.showConfirmDialog(
-                      panel,
+                      storagePanel,
                       "Are you sure you want to delete this deathpile?\nThis cannot be undone.",
                       "Confirm deletion",
                       JOptionPane.OK_CANCEL_OPTION,
@@ -78,8 +77,6 @@ public class Deathpile extends DeathStorage {
           });
       popupMenu.add(deleteDeathpile);
     }
-
-    return panel;
   }
 
   @Override

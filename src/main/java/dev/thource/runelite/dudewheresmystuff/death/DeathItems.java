@@ -19,8 +19,8 @@ public class DeathItems extends DeathStorage {
   }
 
   @Override
-  protected StoragePanel createStoragePanel() {
-    StoragePanel storagePanel = new StoragePanel(plugin, this, false, false);
+  protected void createStoragePanel() {
+    storagePanel = new StoragePanel(plugin, this, false, false);
 
     storagePanel.collapse(true);
 
@@ -32,24 +32,22 @@ public class DeathItems extends DeathStorage {
       final JMenuItem createDeathpile = new JMenuItem("Create Deathpile");
       createDeathpile.addActionListener(
           e -> {
-            deathStorageManager
-                .getStorages()
-                .add(
-                    new Deathpile(
-                        plugin,
-                        deathStorageManager.getPlayedMinutes(),
-                        WorldPoint.fromLocalInstance(
-                            plugin.getClient(),
-                            Objects.requireNonNull(plugin.getClient().getLocalPlayer())
-                                .getLocalLocation()),
-                        deathStorageManager,
-                        items));
+            Deathpile deathpile =
+                new Deathpile(
+                    plugin,
+                    deathStorageManager.getPlayedMinutes(),
+                    WorldPoint.fromLocalInstance(
+                        plugin.getClient(),
+                        Objects.requireNonNull(plugin.getClient().getLocalPlayer())
+                            .getLocalLocation()),
+                    deathStorageManager,
+                    items);
+            deathpile.createStoragePanel();
+            deathStorageManager.getStorages().add(deathpile);
             deathStorageManager.getStorageTabPanel().reorderStoragePanels();
           });
       popupMenu.add(createDeathpile);
     }
-
-    return storagePanel;
   }
 
   @Override

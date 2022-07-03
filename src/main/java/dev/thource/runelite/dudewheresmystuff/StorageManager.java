@@ -39,7 +39,7 @@ public abstract class StorageManager<T extends StorageType, S extends Storage<T>
   @Getter @Inject protected ItemIdentificationConfig itemIdentificationConfig;
   @Getter @Inject protected ClientThread clientThread;
   protected boolean enabled = true;
-  @Getter protected boolean isPreviewManager = false;
+  @Getter @Setter protected boolean isPreviewManager = false;
   @Getter @Setter protected StorageTabPanel<T, S, ? extends StorageManager<?, ?>> storageTabPanel;
 
   protected StorageManager(DudeWheresMyStuffPlugin plugin) {
@@ -167,12 +167,6 @@ public abstract class StorageManager<T extends StorageType, S extends Storage<T>
               .filter(storage -> storage.isEnabled() && storage.onChatMessage(chatMessage))
               .collect(Collectors.toList()));
     }
-  }
-
-  public void setPreviewManager(boolean isPreviewManager) {
-    this.isPreviewManager = isPreviewManager;
-
-    storages.forEach(storage -> storage.storagePanel = storage.createStoragePanel());
   }
 
   public void onMenuOptionClicked(MenuOptionClicked menuOption) {

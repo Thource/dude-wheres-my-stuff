@@ -2,7 +2,6 @@ package dev.thource.runelite.dudewheresmystuff.death;
 
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.DurationFormatter;
-import dev.thource.runelite.dudewheresmystuff.StoragePanel;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
@@ -31,8 +30,8 @@ public class Deathbank extends DeathStorage {
   }
 
   @Override
-  protected StoragePanel createStoragePanel() {
-    StoragePanel storagePanel = super.createStoragePanel();
+  protected void createStoragePanel() {
+    super.createStoragePanel();
 
     if (!deathStorageManager.isPreviewManager()) {
       final JPopupMenu popupMenu = new JPopupMenu();
@@ -68,8 +67,6 @@ public class Deathbank extends DeathStorage {
           });
       popupMenu.add(clearDeathbank);
     }
-
-    return storagePanel;
   }
 
   void setType(DeathStorageType type) {

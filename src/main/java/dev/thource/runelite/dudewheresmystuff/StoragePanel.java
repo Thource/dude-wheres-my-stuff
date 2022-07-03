@@ -63,7 +63,7 @@ public class StoragePanel extends JPanel {
   private final JPanel itemContainer = new JPanel();
   private final JPanel footerPanel = new JPanel();
   private final JLabel footerLabel = new JLabel();
-  private final DudeWheresMyStuffPlugin plugin;
+  private final transient DudeWheresMyStuffPlugin plugin;
   @Getter private final transient Storage<?> storage;
   private final boolean displayEmptyStacks;
   @Getter private List<ItemBox> itemBoxes = new ArrayList<>();
@@ -156,13 +156,13 @@ public class StoragePanel extends JPanel {
     titleLabel.setText(text);
   }
 
+  public String getSubTitle() {
+    return subTitleLabel.getText();
+  }
+
   public void setSubTitle(String text) {
     subTitleLabel.setText(text);
     subTitleLabel.setToolTipText(text);
-  }
-
-  public String getSubTitle() {
-    return subTitleLabel.getText();
   }
 
   public String getFooterText() {
@@ -311,11 +311,11 @@ public class StoragePanel extends JPanel {
     revalidate();
   }
 
-  public void setTitleToolTip(String text) {
-    titleLabel.setToolTipText(text);
-  }
-
   public String getTitleToolTip() {
     return titleLabel.getToolTipText();
+  }
+
+  public void setTitleToolTip(String text) {
+    titleLabel.setToolTipText(text);
   }
 }

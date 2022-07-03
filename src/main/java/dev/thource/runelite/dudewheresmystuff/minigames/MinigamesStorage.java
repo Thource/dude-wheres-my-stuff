@@ -13,8 +13,8 @@ abstract class MinigamesStorage extends Storage<MinigamesStorageType> {
   }
 
   @Override
-  protected StoragePanel createStoragePanel() {
-    return new StoragePanel(plugin, this, false, true);
+  protected void createStoragePanel() {
+    storagePanel = new StoragePanel(plugin, this, false, true);
   }
 
   @Override

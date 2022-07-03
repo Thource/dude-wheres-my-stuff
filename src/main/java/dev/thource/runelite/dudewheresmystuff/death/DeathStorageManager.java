@@ -189,6 +189,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
       Deathbank db = new Deathbank(deathbank.getType(), plugin, this);
       db.setLostAt(System.currentTimeMillis());
       db.getItems().addAll(deathbank.getItems());
+      SwingUtilities.invokeLater(db::createStoragePanel);
       storages.add(db);
     }
 
@@ -273,7 +274,9 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
 
             deathbank.setType(type);
             deathbank.setLastUpdated(System.currentTimeMillis());
-            deathbank.setLocked(true);
+            deathbank.setLocked(
+                type != DeathStorageType.ZULRAH
+                    || plugin.getClient().getAccountType() != AccountType.ULTIMATE_IRONMAN);
             deathbank.getItems().clear();
             deathbank.getItems().add(new ItemStack(ItemID.MYSTERY_BOX, 1, plugin));
 
@@ -398,12 +401,17 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
     if (deathbankType.isPresent()) {
       deathbank.setType(deathbankType.get());
       deathbank.setLastUpdated(System.currentTimeMillis());
-      deathbank.setLocked(true);
+      deathbank.setLocked(
+          deathbankType.get() != DeathStorageType.ZULRAH
+              || plugin.getClient().getAccountType() != AccountType.ULTIMATE_IRONMAN);
       deathbank.getItems().clear();
       deathbank.getItems().addAll(deathItems);
     } else {
       if (client.getAccountType() == AccountType.ULTIMATE_IRONMAN) {
-        storages.add(new Deathpile(plugin, getPlayedMinutes(), deathLocation, this, deathItems));
+        Deathpile deathpile =
+            new Deathpile(plugin, getPlayedMinutes(), deathLocation, this, deathItems);
+        SwingUtilities.invokeLater(deathpile::createStoragePanel);
+        storages.add(deathpile);
       }
     }
 
@@ -789,6 +797,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
     Deathbank loadedDeathbank = new Deathbank(deathStorageType, plugin, this);
     loadedDeathbank.setLostAt(lostAt);
     loadedDeathbank.getItems().addAll(items);
+    SwingUtilities.invokeLater(loadedDeathbank::createStoragePanel);
     storages.add(loadedDeathbank);
   }
 
@@ -796,7 +805,9 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
   public void reset() {
     oldInventoryItems = null;
     storages.clear();
-    storages.add(new DeathItems(plugin, this));
+    DeathItems deathItemsStorage = new DeathItems(plugin, this);
+    SwingUtilities.invokeLater(deathItemsStorage::createStoragePanel);
+    storages.add(deathItemsStorage);
     storages.add(deathbank);
     clearDeathbank(false);
     enable();
@@ -875,7 +886,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
       return;
     }
 
-    storages.add(
+    Deathpile deathpile =
         new Deathpile(
             plugin,
             NumberUtils.toInt(dataSplit[0], 0),
@@ -884,6 +895,8 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
                 NumberUtils.toInt(worldPointSplit[1], 0),
                 NumberUtils.toInt(worldPointSplit[2], 0)),
             this,
-            items));
+            items);
+    SwingUtilities.invokeLater(deathpile::createStoragePanel);
+    storages.add(deathpile);
   }
 }

@@ -35,13 +35,11 @@ public abstract class Storage<T extends StorageType> {
     this.type = type;
     this.plugin = plugin;
 
-    SwingUtilities.invokeLater(() -> this.storagePanel = createStoragePanel());
-
     itemContainerWatcher = ItemContainerWatcher.getWatcher(type.getItemContainerId());
   }
 
-  protected StoragePanel createStoragePanel() {
-    return new StoragePanel(plugin, this, true, false);
+  protected void createStoragePanel() {
+    storagePanel = new StoragePanel(plugin, this, true, false);
   }
 
   public long getTotalValue() {

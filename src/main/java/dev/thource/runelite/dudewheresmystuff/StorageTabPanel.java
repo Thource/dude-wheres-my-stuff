@@ -19,7 +19,7 @@ public abstract class StorageTabPanel<
         T extends StorageType, S extends Storage<T>, M extends StorageManager<T, S>>
     extends TabContentPanel {
 
-  protected final DudeWheresMyStuffPlugin plugin;
+  protected final transient DudeWheresMyStuffPlugin plugin;
   @Getter protected final transient M storageManager;
   protected final JPanel storagePanelContainer;
   @Getter protected final JComboBox<ItemSortMode> sortItemsDropdown;
@@ -57,10 +57,6 @@ public abstract class StorageTabPanel<
     storagePanelContainer = new JPanel();
     storagePanelContainer.setLayout(new BoxLayout(storagePanelContainer, BoxLayout.Y_AXIS));
     add(storagePanelContainer);
-
-    for (S storage : storageManager.getStorages()) {
-      storagePanelContainer.add(storage.getStoragePanel());
-    }
   }
 
   protected Comparator<S> getStorageSorter() {
