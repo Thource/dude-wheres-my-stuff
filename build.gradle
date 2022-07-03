@@ -24,7 +24,7 @@ dependencies {
 }
 
 group = 'dev.thource.runelite.dudewheresmystuff'
-version = '1.2.1'
+version = '1.3.0'
 //noinspection GroovyUnusedAssignment
 sourceCompatibility = '1.8'
 
