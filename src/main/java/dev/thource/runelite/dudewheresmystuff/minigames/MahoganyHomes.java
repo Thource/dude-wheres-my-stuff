@@ -20,7 +20,8 @@ public class MahoganyHomes extends MinigamesStorage {
 
   private final Pattern chatMessagePattern =
       Pattern.compile(
-          "You have completed <col=ef1020>\\d+</col> contracts with a total of <col=ef1020>(\\d+)</col> points\\.");
+          "You have completed <col=ef1020>\\d+</col> contracts with a total of "
+              + "<col=ef1020>(\\d+)</col> points\\.");
 
   private final ItemStack points = new ItemStack(ItemID.SAW, "Points", 0, 0, 0, true);
 

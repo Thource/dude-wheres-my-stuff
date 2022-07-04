@@ -502,6 +502,9 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
                   return updated;
                 })
             .collect(Collectors.toList());
+    if (updatedDeathpiles.isEmpty()) {
+      return;
+    }
 
     ListIterator<Deathpile> iterator = updatedDeathpiles.listIterator();
     while (iterator.hasNext()) {
@@ -513,7 +516,11 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
       }
     }
 
-    updateStorages(updatedDeathpiles);
+    if (updatedDeathpiles.isEmpty()) {
+      SwingUtilities.invokeLater(storageTabPanel::reorderStoragePanels);
+    } else {
+      updateStorages(updatedDeathpiles);
+    }
   }
 
   @Override
