@@ -10,6 +10,7 @@ import net.runelite.client.util.ImageUtil;
 @RequiredArgsConstructor
 public enum SidebarIcon {
   DEFAULT(null),
+  OVERVIEW(Tab.OVERVIEW),
   DEATH(Tab.DEATH),
   COINS(Tab.COINS),
   CARRYABLE_STORAGE(Tab.CARRYABLE_STORAGE),
