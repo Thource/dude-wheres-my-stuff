@@ -9,7 +9,6 @@ import dev.thource.runelite.dudewheresmystuff.minigames.MinigamesStorageManager;
 import dev.thource.runelite.dudewheresmystuff.playerownedhouse.PlayerOwnedHouseStorageManager;
 import dev.thource.runelite.dudewheresmystuff.stash.StashStorageManager;
 import dev.thource.runelite.dudewheresmystuff.world.WorldStorageManager;
-import java.awt.image.BufferedImage;
 import java.util.Objects;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
@@ -45,7 +44,6 @@ import net.runelite.client.plugins.itemidentification.ItemIdentificationConfig;
 import net.runelite.client.plugins.itemidentification.ItemIdentificationPlugin;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
-import net.runelite.client.util.ImageUtil;
 
 /**
  * DudeWheresMyStuffPlugin is a RuneLite plugin designed to help accounts of all types find their
@@ -166,15 +164,7 @@ public class DudeWheresMyStuffPlugin extends Plugin {
                         storageManager.getStorages().forEach(Storage::createStoragePanel));
           });
 
-      final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "icon.png");
-
-      navButton =
-          NavigationButton.builder()
-              .tooltip("Dude, Where's My Stuff?")
-              .icon(icon)
-              .panel(panelContainer)
-              .priority(4)
-              .build();
+      navButton = buildNavigationButton();
 
       ItemContainerWatcher.init(client, clientThread, itemManager);
     }
@@ -209,10 +199,25 @@ public class DudeWheresMyStuffPlugin extends Plugin {
 
   @Subscribe
   public void onConfigChanged(ConfigChanged configChanged) {
-    if (Objects.equals(configChanged.getGroup(), DudeWheresMyStuffConfig.CONFIG_GROUP)
-        && Objects.equals(configChanged.getKey(), "showEmptyStorages")) {
-      panelContainer.reorderStoragePanels();
+    if (Objects.equals(configChanged.getGroup(), DudeWheresMyStuffConfig.CONFIG_GROUP)) {
+      if (Objects.equals(configChanged.getKey(), "showEmptyStorages")) {
+        panelContainer.reorderStoragePanels();
+      } else if (Objects.equals(configChanged.getKey(), "sidebarIcon")) {
+        clientToolbar.removeNavigation(navButton);
+
+        navButton = buildNavigationButton();
+        clientToolbar.addNavigation(navButton);
+      }
     }
+  }
+
+  private NavigationButton buildNavigationButton() {
+    return NavigationButton.builder()
+        .tooltip("Dude, Where's My Stuff?")
+        .icon(config.sidebarIcon().getIcon(itemManager))
+        .panel(panelContainer)
+        .priority(4)
+        .build();
   }
 
   @Subscribe
