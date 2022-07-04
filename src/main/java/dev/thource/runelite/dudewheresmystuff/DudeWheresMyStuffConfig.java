@@ -19,6 +19,14 @@ public interface DudeWheresMyStuffConfig extends Config {
   }
 
   @ConfigItem(
+      keyName = "sidebarIcon",
+      name = "Sidebar icon",
+      description = "Which icon to display in the RuneLite sidebar")
+  default SidebarIcon sidebarIcon() {
+    return SidebarIcon.DEFAULT;
+  }
+
+  @ConfigItem(
       keyName = "itemSortMode",
       name = "Item Sort Mode",
       description = "Which mode to use when sorting items",
