@@ -22,6 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 package dev.thource.runelite.dudewheresmystuff;
 
 import com.google.common.collect.ImmutableMap;
@@ -1250,7 +1251,7 @@ enum ItemIdentification {
     ImmutableMap.Builder<Integer, ItemIdentification> builder = new ImmutableMap.Builder<>();
 
     for (ItemIdentification i : values()) {
-      for (int id : i.itemIDs) {
+      for (int id : i.itemIds) {
         builder.put(id, i);
       }
     }
@@ -1261,13 +1262,13 @@ enum ItemIdentification {
   final Type type;
   final String medName;
   final String shortName;
-  final int[] itemIDs;
+  final int[] itemIds;
 
   ItemIdentification(Type type, String medName, String shortName, int... ids) {
     this.type = type;
     this.medName = medName;
     this.shortName = shortName;
-    this.itemIDs = ids;
+    this.itemIds = ids;
   }
 
   static ItemIdentification get(int id) {

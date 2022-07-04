@@ -236,9 +236,12 @@ public class DudeWheresMyStuffPlugin extends Plugin {
 
   @Subscribe
   public void onRuneScapeProfileChanged(RuneScapeProfileChanged e) {
-    storageManagerManager.reset();
-    storageManagerManager.load();
-    SwingUtilities.invokeLater(panelContainer.getPanel()::softUpdate);
+    clientThread.invokeLater(
+        () -> {
+          storageManagerManager.reset();
+          storageManagerManager.load();
+          SwingUtilities.invokeLater(panelContainer.getPanel()::softUpdate);
+        });
   }
 
   @Subscribe

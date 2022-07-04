@@ -23,7 +23,8 @@ public class PlankSack extends CarryableStorage {
   // Thanks for using \u00A0, Jagex...
   private static final Pattern chatPattern =
       Pattern.compile(
-          "Basic\\u00A0planks:\\u00A0(\\d+), Oak\\u00A0planks:\\u00A0(\\d+), Teak\\u00A0planks:\\u00A0(\\d+), Mahogany\\u00A0planks:\\u00A0(\\d+)");
+          "Basic\\u00A0planks:\\u00A0(\\d+), Oak\\u00A0planks:\\u00A0(\\d+), "
+              + "Teak\\u00A0planks:\\u00A0(\\d+), Mahogany\\u00A0planks:\\u00A0(\\d+)");
   private static final Pattern usePattern = Pattern.compile(".*[Pp]lank -> Plank sack");
 
   private final ItemStack plankStack;
