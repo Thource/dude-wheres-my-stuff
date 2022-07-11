@@ -401,9 +401,12 @@ public class DudeWheresMyStuffPlugin extends Plugin {
       }
     }
 
-    panelContainer.getPreviewPanel().logOut();
+    SwingUtilities.invokeLater(
+        () -> {
+          panelContainer.getPreviewPanel().logOut();
 
-    panelContainer.disablePreviewMode();
+          panelContainer.disablePreviewMode();
+        });
     this.previewProfileKey = null;
   }
 
