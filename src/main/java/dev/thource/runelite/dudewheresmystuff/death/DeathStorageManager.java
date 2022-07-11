@@ -517,6 +517,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
     }
 
     if (updatedDeathpiles.isEmpty()) {
+      save();
       SwingUtilities.invokeLater(storageTabPanel::reorderStoragePanels);
     } else {
       updateStorages(updatedDeathpiles);
