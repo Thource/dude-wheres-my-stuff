@@ -207,6 +207,8 @@ public class DudeWheresMyStuffPlugin extends Plugin {
 
         navButton = buildNavigationButton();
         clientToolbar.addNavigation(navButton);
+      } else if (Objects.equals(configChanged.getKey(), "itemSortMode")) {
+        setItemSortMode(ItemSortMode.valueOf(configChanged.getNewValue()));
       }
     }
   }
@@ -443,12 +445,6 @@ public class DudeWheresMyStuffPlugin extends Plugin {
   }
 
   public void setItemSortMode(ItemSortMode itemSortMode) {
-    if (config.itemSortMode() == itemSortMode) {
-      return;
-    }
-
-    config.setItemSortMode(itemSortMode);
-
     storageManagerManager.setItemSortMode(itemSortMode);
     previewStorageManagerManager.setItemSortMode(itemSortMode);
   }
