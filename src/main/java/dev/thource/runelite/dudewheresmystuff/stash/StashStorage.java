@@ -81,6 +81,7 @@ public class StashStorage extends Storage<StashStorageType> {
 
   private void handleDeposit() {
     lastUpdated = System.currentTimeMillis();
+    items.clear();
     for (ItemStack itemStack :
         ItemContainerWatcher.getInventoryWatcher().getItemsRemovedLastTick()) {
       for (ItemRequirement itemRequirement : stashUnit.getItemRequirements()) {
