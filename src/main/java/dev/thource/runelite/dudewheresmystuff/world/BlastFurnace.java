@@ -15,8 +15,8 @@ import org.apache.commons.lang3.math.NumberUtils;
 public class BlastFurnace extends WorldStorage {
   private final Map<Integer, ItemStack> varbits = new HashMap<>();
 
-  protected BlastFurnace(WorldStorageType type, DudeWheresMyStuffPlugin plugin) {
-    super(type, plugin);
+  protected BlastFurnace(DudeWheresMyStuffPlugin plugin) {
+    super(WorldStorageType.BLAST_FURNACE, plugin);
 
     ItemStack copperOre = new ItemStack(ItemID.COPPER_ORE, plugin);
     ItemStack tinOre = new ItemStack(ItemID.TIN_ORE, plugin);
