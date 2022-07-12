@@ -32,7 +32,8 @@ public enum WorldStorageType implements StorageType {
           AccountType.HARDCORE_IRONMAN,
           AccountType.IRONMAN,
           AccountType.NORMAL)),
-  BLAST_FURNACE("Blast Furnace", -1, true, "blastfurnace", true, null);
+  BLAST_FURNACE("Blast Furnace", -1, true, "blastfurnace", true, null),
+  LOG_STORAGE("Log Storage", -1, false, "logstorage", true, null);
 
   private final String name;
   private final int itemContainerId;

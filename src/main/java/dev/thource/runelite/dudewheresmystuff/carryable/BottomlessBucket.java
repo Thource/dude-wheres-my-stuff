@@ -31,15 +31,14 @@ public class BottomlessBucket extends CarryableStorage {
     super(CarryableStorageType.BOTTOMLESS_BUCKET, plugin);
 
     compostStack = new ItemStack(ItemID.COMPOST, plugin);
-    plugin.getClientThread().invoke(compostStack::stripPrices);
     supercompostStack = new ItemStack(ItemID.SUPERCOMPOST, plugin);
-    plugin.getClientThread().invoke(supercompostStack::stripPrices);
     ultracompostStack = new ItemStack(ItemID.ULTRACOMPOST, plugin);
-    plugin.getClientThread().invoke(ultracompostStack::stripPrices);
 
     items.add(compostStack);
     items.add(supercompostStack);
     items.add(ultracompostStack);
+
+    plugin.getClientThread().invoke(() -> items.forEach(ItemStack::stripPrices));
   }
 
   @Override
