@@ -413,7 +413,7 @@ public enum StashUnit {
   MUBARIZS_ROOM_AT_THE_DUEL_ARENA(
       "Duel Arena",
       "Mubariz's room at the Duel Arena",
-      STASHUnit.MUBARIZS_ROOM_AT_THE_DUEL_ARENA,
+      STASHUnit.PVP_ARENA_TICKET_OFFICE,
       new int[] {ItemID.IRON_CHAINBODY, ItemID.LEATHER_CHAPS, ItemID.COIF},
       ItemRequirements.item(ItemID.IRON_CHAINBODY),
       ItemRequirements.item(ItemID.LEATHER_CHAPS),
