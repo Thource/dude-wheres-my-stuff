@@ -80,14 +80,13 @@ public class BarbarianAssault extends MinigamesStorage {
       return;
     }
 
-    String[] pointSplit = data.split("=");
-    if (pointSplit.length != 4) {
+    String[] dataSplit = data.split("=");
+    if (dataSplit.length != items.size()) {
       return;
     }
 
-    attackerPoints.setQuantity(NumberUtils.toInt(pointSplit[0]));
-    collectorPoints.setQuantity(NumberUtils.toInt(pointSplit[1]));
-    defenderPoints.setQuantity(NumberUtils.toInt(pointSplit[2]));
-    healerPoints.setQuantity(NumberUtils.toInt(pointSplit[3]));
+    for (int i = 0; i < items.size(); i++) {
+      items.get(i).setQuantity(NumberUtils.toInt(dataSplit[i]));
+    }
   }
 }

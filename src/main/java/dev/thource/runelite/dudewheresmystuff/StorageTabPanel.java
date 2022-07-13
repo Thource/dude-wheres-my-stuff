@@ -50,7 +50,7 @@ public abstract class StorageTabPanel<
     sortItemsDropdown.addItem(ItemSortMode.VALUE);
     sortItemsDropdown.addItem(ItemSortMode.UNSORTED);
     sortItemsDropdown.setSelectedItem(plugin.getConfig().itemSortMode());
-    sortItemsDropdown.addItemListener(i -> plugin.setItemSortMode((ItemSortMode) i.getItem()));
+    sortItemsDropdown.addItemListener(i -> plugin.getConfig().setItemSortMode((ItemSortMode) i.getItem()));
     sortItemsDropdown.setPreferredSize(new Dimension(-1, 30));
     sortItemsContainer.add(sortItemsDropdown);
 

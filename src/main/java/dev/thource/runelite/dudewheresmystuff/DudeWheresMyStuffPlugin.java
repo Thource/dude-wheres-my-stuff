@@ -207,6 +207,8 @@ public class DudeWheresMyStuffPlugin extends Plugin {
 
         navButton = buildNavigationButton();
         clientToolbar.addNavigation(navButton);
+      } else if (Objects.equals(configChanged.getKey(), "itemSortMode")) {
+        setItemSortMode(ItemSortMode.valueOf(configChanged.getNewValue()));
       }
     }
   }
@@ -383,11 +385,30 @@ public class DudeWheresMyStuffPlugin extends Plugin {
         configManager.unsetConfiguration(
             DudeWheresMyStuffConfig.CONFIG_GROUP, previewProfileKey, key);
       }
+
+      if (Objects.equals(previewProfileKey, configManager.getRSProfileKey())) {
+        storageManagerManager.reset();
+
+        SwingUtilities.invokeLater(
+            () ->
+                storageManagerManager
+                    .getStorageManagers()
+                    .forEach(
+                        storageManager -> {
+                          storageManager
+                              .getStorages()
+                              .forEach(storage -> storage.getStoragePanel().update());
+                          storageManager.getStorageTabPanel().reorderStoragePanels();
+                        }));
+      }
     }
 
-    panelContainer.getPreviewPanel().logOut();
+    SwingUtilities.invokeLater(
+        () -> {
+          panelContainer.getPreviewPanel().logOut();
 
-    panelContainer.disablePreviewMode();
+          panelContainer.disablePreviewMode();
+        });
     this.previewProfileKey = null;
   }
 
@@ -424,12 +445,6 @@ public class DudeWheresMyStuffPlugin extends Plugin {
   }
 
   public void setItemSortMode(ItemSortMode itemSortMode) {
-    if (config.itemSortMode() == itemSortMode) {
-      return;
-    }
-
-    config.setItemSortMode(itemSortMode);
-
     storageManagerManager.setItemSortMode(itemSortMode);
     previewStorageManagerManager.setItemSortMode(itemSortMode);
   }
