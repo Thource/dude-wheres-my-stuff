@@ -3,9 +3,9 @@ package dev.thource.runelite.dudewheresmystuff.carryable;
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
 import lombok.Getter;
+import net.runelite.api.EnumComposition;
 import net.runelite.api.Varbits;
-import net.runelite.client.game.RunepouchRune;
-
+import net.runelite.api.EnumID;
 /**
  * RunePouch is responsible for tracking how many runes the player has stored in their rune pouch.
  */
@@ -60,24 +60,26 @@ public class RunePouch extends CarryableStorage {
   private void refreshItems() {
     items.clear();
 
-    RunepouchRune rune1 = RunepouchRune.getRune(rune1Type);
-    RunepouchRune rune2 = RunepouchRune.getRune(rune2Type);
-    RunepouchRune rune3 = RunepouchRune.getRune(rune3Type);
+    EnumComposition runepouchEnum = plugin.getClient().getEnum(EnumID.RUNEPOUCH_RUNE);
 
-    if (rune1 != null) {
-      items.add(new ItemStack(rune1.getItemId(), rune1Quantity, plugin));
+    int rune1 = runepouchEnum.getIntValue(rune1Type);
+    int rune2 = runepouchEnum.getIntValue(rune2Type);
+    int rune3 = runepouchEnum.getIntValue(rune3Type);
+
+    if (rune1 != 0) {
+      items.add(new ItemStack(rune1, rune1Quantity, plugin));
     } else {
       items.add(new ItemStack(-1, EMPTY, 1, 0, 0, false));
     }
 
-    if (rune2 != null) {
-      items.add(new ItemStack(rune2.getItemId(), rune2Quantity, plugin));
+    if (rune2 != 0) {
+      items.add(new ItemStack(rune2, rune2Quantity, plugin));
     } else {
       items.add(new ItemStack(-1, EMPTY, 1, 0, 0, false));
     }
 
-    if (rune3 != null) {
-      items.add(new ItemStack(rune3.getItemId(), rune3Quantity, plugin));
+    if (rune3 != 0) {
+      items.add(new ItemStack(rune3, rune3Quantity, plugin));
     } else {
       items.add(new ItemStack(-1, EMPTY, 1, 0, 0, false));
     }
