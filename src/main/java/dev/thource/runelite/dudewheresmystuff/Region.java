@@ -417,6 +417,7 @@ public enum Region {
   REGION_FREMENNIK_ISLES("Fremennik Isles", 9276, 9532),
   REGION_FROGLAND("Frogland", 9802),
   REGION_GALVEK_SHIPWRECKS("Galvek Shipwrecks", 6486, 6487, 6488, 6489, 6742, 6743, 6744, 6745),
+  REGION_SOTE_BOSSFIGHT("Song of the Elves", 13148),
   REGION_GORAKS_PLANE("Gorak's Plane", 12115),
   REGION_GRAND_EXCHANGE("Grand Exchange", 12598),
   REGION_GWD("God Wars Dungeon", 11578),
