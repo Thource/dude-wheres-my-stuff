@@ -103,8 +103,8 @@ public enum DeathStorageType implements StorageType {
       "Dragon Slayer II", -1, false, "questds2", true, 7, 8, Region.REGION_GALVEK_SHIPWRECKS, null),
   QUEST_ATOH("A Taste of Hope", -1, false, "questatoh", true, 9, 10, null, null),
   QUEST_SOTF("Sins of the Father", -1, false, "questsotf", true, 23, 24, null, null),
-  QUEST_SOTE("Song of the Elves", -1, false, "questsote", true, 19, 20, null, null),
-  QUEST_TFE("The Fremennik Exiles", -1, false, "questtfe", true, 21, 22, null, null);
+  QUEST_SOTE("Song of the Elves", -1, false, "questsote", true, 21, 22, null, "elvenrebel"),
+  QUEST_TFE("The Fremennik Exiles", -1, false, "questtfe", true, 19, 20, null, null);
 
   private final String name;
   private final int itemContainerId;
