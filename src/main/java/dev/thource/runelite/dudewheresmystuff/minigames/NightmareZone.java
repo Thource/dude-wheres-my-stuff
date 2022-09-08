@@ -26,7 +26,7 @@ public class NightmareZone extends MinigamesStorage {
   public boolean onVarbitChanged() {
     int newPoints =
         plugin.getClient().getVarbitValue(Varbits.NMZ_POINTS)
-            + plugin.getClient().getVar(VarPlayer.NMZ_REWARD_POINTS);
+            + plugin.getClient().getVarpValue(VarPlayer.NMZ_REWARD_POINTS);
     if (newPoints == points.getQuantity()) {
       return false;
     }
