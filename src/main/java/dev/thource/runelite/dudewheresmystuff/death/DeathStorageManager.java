@@ -344,6 +344,9 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
       log.info(
           "Died, but did not respawn in a known respawn location: "
               + client.getLocalPlayer().getWorldLocation().getRegionID());
+    } else if (deathRegion == Region.REGION_POH) {
+      // POH deaths are safe even if the player respawns in a RESPAWN_REGIONS (i.e. the house is in prifddinas)
+      log.info("Died in POH");
     } else {
       updated = true;
       registerDeath(deathRegion);
