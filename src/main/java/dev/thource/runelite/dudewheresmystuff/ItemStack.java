@@ -29,6 +29,7 @@ package dev.thource.runelite.dudewheresmystuff;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import net.runelite.api.GameState;
 import net.runelite.api.ItemComposition;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.game.ItemManager;
@@ -57,7 +58,7 @@ public class ItemStack {
     this.name = "Loading";
     this.quantity = 0L;
 
-    plugin.getClientThread().invoke(() -> populateFromComposition(plugin.getItemManager()));
+    plugin.getClientThread().invoke(() -> populateFromComposition(plugin));
   }
 
   /**
@@ -105,15 +106,22 @@ public class ItemStack {
   /**
    * Populates an item's data from the item id.
    *
-   * @param itemManager itemManager
+   * @param plugin plugin
    */
-  private void populateFromComposition(ItemManager itemManager) {
+  private boolean populateFromComposition(DudeWheresMyStuffPlugin plugin) {
+    if (plugin.getClient().getGameState().getState() < GameState.LOGIN_SCREEN.getState()) {
+      return false;
+    }
+
+    ItemManager itemManager = plugin.getItemManager();
     ItemComposition composition = itemManager.getItemComposition(id);
     name = composition.getName();
     gePrice = itemManager.getItemPrice(id);
     haPrice = composition.getHaPrice();
     stackable = composition.isStackable();
     itemIdentification = ItemIdentification.get(itemManager.canonicalize(id));
+
+    return true;
   }
 
   long getTotalGePrice() {
@@ -128,9 +136,9 @@ public class ItemStack {
     this.id = id;
   }
 
-  public void setId(int id, ItemManager itemManager) {
+  public void setId(int id, DudeWheresMyStuffPlugin plugin) {
     this.id = id;
-    populateFromComposition(itemManager);
+    populateFromComposition(plugin);
   }
 
   public void stripPrices() {
