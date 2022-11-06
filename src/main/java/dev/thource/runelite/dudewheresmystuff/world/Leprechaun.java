@@ -201,7 +201,7 @@ public class Leprechaun extends WorldStorage {
     }
 
     if (secateurs.getId() != secateursId) {
-      secateurs.setId(secateursId, plugin.getItemManager());
+      secateurs.setId(secateursId, plugin);
     }
 
     secateurs.setQuantity(quantity);
@@ -300,7 +300,7 @@ public class Leprechaun extends WorldStorage {
       return false;
     }
 
-    wateringCan.setId(wateringCanId, plugin.getItemManager());
+    wateringCan.setId(wateringCanId, plugin);
     wateringCan.setQuantity(1);
     return true;
   }
@@ -326,21 +326,21 @@ public class Leprechaun extends WorldStorage {
         .forEach(
             loadedItem -> {
               if (Arrays.stream(WATERING_CAN_IDS).anyMatch(i -> i == loadedItem.getId())) {
-                wateringCan.setId(loadedItem.getId(), plugin.getItemManager());
+                wateringCan.setId(loadedItem.getId(), plugin);
                 wateringCan.setQuantity(loadedItem.getQuantity());
                 return;
               }
 
               if (loadedItem.getId() == ItemID.MAGIC_SECATEURS
                   || loadedItem.getId() == ItemID.SECATEURS) {
-                secateurs.setId(loadedItem.getId(), plugin.getItemManager());
+                secateurs.setId(loadedItem.getId(), plugin);
                 secateurs.setQuantity(loadedItem.getQuantity());
                 return;
               }
 
               if (loadedItem.getId() == ItemID.BOTTOMLESS_COMPOST_BUCKET
                   || loadedItem.getId() == ItemID.BOTTOMLESS_COMPOST_BUCKET_22997) {
-                bottomlessBucket.setId(loadedItem.getId(), plugin.getItemManager());
+                bottomlessBucket.setId(loadedItem.getId(), plugin);
                 bottomlessBucket.setQuantity(loadedItem.getQuantity());
                 return;
               }
