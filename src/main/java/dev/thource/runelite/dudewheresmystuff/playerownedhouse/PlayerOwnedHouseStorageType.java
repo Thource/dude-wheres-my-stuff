@@ -1359,7 +1359,12 @@ public enum PlayerOwnedHouseStorageType implements StorageType {
           ItemID.XERICS_GENERAL,
           ItemID.XERICS_GUARD,
           ItemID.XERICS_SENTINEL,
-          ItemID.XERICS_WARRIOR)),
+          ItemID.XERICS_WARRIOR,
+          ItemID.ICTHLARINS_SHROUD_TIER_1,
+          ItemID.ICTHLARINS_SHROUD_TIER_2,
+          ItemID.ICTHLARINS_SHROUD_TIER_3,
+          ItemID.ICTHLARINS_SHROUD_TIER_4,
+          ItemID.ICTHLARINS_SHROUD_TIER_5)),
   MENAGERIE("Menagerie", 517, "menagerie", null),
   ;
 
