@@ -1126,7 +1126,8 @@ public enum PlayerOwnedHouseStorageType implements StorageType {
           ItemID.ZEALOTS_BOOTS,
           ItemID.ZEALOTS_HELM,
           ItemID.ZEALOTS_ROBE_BOTTOM,
-          ItemID.ZEALOTS_ROBE_TOP)),
+          ItemID.ZEALOTS_ROBE_TOP,
+          ItemID.MASK_OF_REBIRTH)),
   FANCY_DRESS_BOX(
       "Fancy Dress Box",
       33405,
