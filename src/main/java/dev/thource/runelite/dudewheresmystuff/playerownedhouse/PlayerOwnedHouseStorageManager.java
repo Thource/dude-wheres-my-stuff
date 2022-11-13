@@ -16,8 +16,14 @@ public class PlayerOwnedHouseStorageManager
     super(plugin);
 
     for (PlayerOwnedHouseStorageType type : PlayerOwnedHouseStorageType.values()) {
+      if (type == PlayerOwnedHouseStorageType.MENAGERIE) {
+        continue;
+      }
+
       storages.add(new PlayerOwnedHouseStorage(type, plugin));
     }
+
+    storages.add(new Menagerie(plugin));
   }
 
   @Override
