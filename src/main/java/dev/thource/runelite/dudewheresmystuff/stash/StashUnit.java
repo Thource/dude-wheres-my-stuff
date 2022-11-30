@@ -1223,7 +1223,7 @@ public enum StashUnit {
         ItemID.DRAGON_PLATESKIRT,
         ItemID.CLIMBING_BOOTS,
         ItemID.DRAGON_CHAINBODY_3140,
-        ItemID.BULL_ROARER
+        ItemID.BULLROARER
       },
       ItemRequirements.any(
           "Dragon plateskirt",
@@ -1234,7 +1234,7 @@ public enum StashUnit {
           "Dragon chainbody",
           ItemRequirements.item(ItemID.DRAGON_CHAINBODY_3140),
           ItemRequirements.item(ItemID.DRAGON_CHAINBODY_G)),
-      ItemRequirements.item(ItemID.BULL_ROARER)),
+      ItemRequirements.item(ItemID.BULLROARER)),
   GYPSY_TENT_ENTRANCE(
       "Varrock",
       "Gypsy Aris' tent",
