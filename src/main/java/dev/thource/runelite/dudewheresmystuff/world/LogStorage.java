@@ -1,18 +1,15 @@
 package dev.thource.runelite.dudewheresmystuff.world;
 
-import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffConfig;
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.ItemID;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.widgets.Widget;
-import net.runelite.client.config.ConfigManager;
 import org.apache.commons.lang3.math.NumberUtils;
 
 public class LogStorage extends WorldStorage {
@@ -30,8 +27,9 @@ public class LogStorage extends WorldStorage {
   protected LogStorage(DudeWheresMyStuffPlugin plugin) {
     super(WorldStorageType.LOG_STORAGE, plugin);
 
+    hasStaticItems = true;
+
     ItemStack logs = new ItemStack(ItemID.LOGS, plugin);
-    logs.stripPrices();
     ItemStack oakLogs = new ItemStack(ItemID.OAK_LOGS, plugin);
     ItemStack willowLogs = new ItemStack(ItemID.WILLOW_LOGS, plugin);
     ItemStack yewLogs = new ItemStack(ItemID.YEW_LOGS, plugin);
@@ -134,54 +132,5 @@ public class LogStorage extends WorldStorage {
     itemStack.get().setQuantity(quantity);
     this.lastUpdated = System.currentTimeMillis();
     return true;
-  }
-
-  @Override
-  public void save(ConfigManager configManager, String managerConfigKey) {
-    String data =
-        lastUpdated
-            + ";"
-            + items.stream().map(item -> "" + item.getQuantity()).collect(Collectors.joining("="));
-
-    configManager.setRSProfileConfiguration(
-        DudeWheresMyStuffConfig.CONFIG_GROUP, managerConfigKey + "." + type.getConfigKey(), data);
-  }
-
-  @Override
-  public void load(ConfigManager configManager, String managerConfigKey, String profileKey) {
-    String data =
-        configManager.getConfiguration(
-            DudeWheresMyStuffConfig.CONFIG_GROUP,
-            profileKey,
-            managerConfigKey + "." + type.getConfigKey(),
-            String.class);
-    if (data == null) {
-      return;
-    }
-
-    String[] dataSplit = data.split(";");
-    if (dataSplit.length != 2) {
-      return;
-    }
-
-    lastUpdated = NumberUtils.toLong(dataSplit[0], -1);
-
-    String[] itemSplit = dataSplit[1].split("=");
-    if (itemSplit.length != items.size()) {
-      return;
-    }
-
-    for (int i = 0; i < items.size(); i++) {
-      items.get(i).setQuantity(NumberUtils.toInt(itemSplit[i]));
-    }
-  }
-
-  @Override
-  public void reset() {
-    for (ItemStack item : items) {
-      item.setQuantity(0);
-    }
-    lastUpdated = -1;
-    enable();
   }
 }

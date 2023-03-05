@@ -2,7 +2,7 @@ package dev.thource.runelite.dudewheresmystuff.carryable;
 
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
-import dev.thource.runelite.dudewheresmystuff.Storage;
+import dev.thource.runelite.dudewheresmystuff.ItemStorage;
 import lombok.Getter;
 import net.runelite.api.EquipmentInventorySlot;
 import net.runelite.api.events.ItemContainerChanged;
@@ -12,7 +12,7 @@ import net.runelite.api.events.ItemContainerChanged;
  * rune pouch, etc).
  */
 @Getter
-public class CarryableStorage extends Storage<CarryableStorageType> {
+public class CarryableStorage extends ItemStorage<CarryableStorageType> {
 
   protected CarryableStorage(CarryableStorageType type, DudeWheresMyStuffPlugin plugin) {
     super(type, plugin);

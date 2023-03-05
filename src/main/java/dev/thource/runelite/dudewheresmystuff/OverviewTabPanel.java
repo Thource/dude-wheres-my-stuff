@@ -32,17 +32,21 @@ import java.awt.event.MouseEvent;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
+import java.util.stream.Stream;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
+import javax.swing.JPopupMenu.Separator;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ItemID;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.config.RuneScapeProfile;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.ColorScheme;
 
@@ -53,6 +57,10 @@ class OverviewTabPanel extends TabContentPanel {
   private static final String GP_TOTAL = "%,d gp";
   private static final String DELETE_SAVE_WARNING =
       "Are you sure you want to delete your save data?\nThis cannot be undone.";
+  private static final String DELETE_ALL_SAVE_WARNING =
+      "Are you sure you want to delete ALL of your save data?\nThis cannot be undone.";
+  private static final String DELETE_ALL_SAVE_FINAL_WARNING =
+      "Are you REALLY sure you want to delete ALL of your save data?\nThis REALLY cannot be undone.";
 
   @Getter private final Map<Tab, OverviewItemPanel> overviews;
   private final OverviewItemPanel summaryOverview;
@@ -218,22 +226,64 @@ class OverviewTabPanel extends TabContentPanel {
             popupMenu.add(exitPreviewMode);
           } else {
             populatePopupMenuWithProfiles(popupMenu);
+
+            if (plugin.getProfilesWithData().findAny().isPresent()) {
+              popupMenu.add(new Separator());
+
+              final JMenuItem deleteAllData = new JMenuItem("Delete all data");
+              deleteAllData.addActionListener(
+                  e -> {
+                    int result = JOptionPane.OK_OPTION;
+
+                    try {
+                      result =
+                          JOptionPane.showConfirmDialog(
+                              this,
+                              DELETE_ALL_SAVE_WARNING,
+                              "Confirm deletion",
+                              JOptionPane.OK_CANCEL_OPTION,
+                              JOptionPane.WARNING_MESSAGE);
+                    } catch (Exception err) {
+                      log.warn("Unexpected exception occurred while check for confirm required",
+                          err);
+                    }
+
+                    if (result == JOptionPane.OK_OPTION) {
+                      result =
+                          JOptionPane.showConfirmDialog(
+                              this,
+                              DELETE_ALL_SAVE_FINAL_WARNING,
+                              "Confirm deletion",
+                              JOptionPane.OK_CANCEL_OPTION,
+                              JOptionPane.WARNING_MESSAGE);
+
+                      if (result == JOptionPane.OK_OPTION) {
+                        plugin.getProfilesWithData().forEach(runeScapeProfile -> {
+                          for (String configKey : configManager.getRSProfileConfigurationKeys(
+                              DudeWheresMyStuffConfig.CONFIG_GROUP, runeScapeProfile.getKey(),
+                              "")) {
+                            configManager.unsetConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP,
+                                runeScapeProfile.getKey(), configKey);
+                          }
+                        });
+                        configManager.sendConfig();
+
+                        resetSummaryContextMenu();
+                      }
+                    }
+                  });
+              popupMenu.add(deleteAllData);
+            }
           }
         });
   }
 
   private void populatePopupMenuWithProfiles(JPopupMenu popupMenu) {
-    configManager
-        .getRSProfiles()
+    JMenu previewMenu = new JMenu("Preview data");
+
+    plugin.getProfilesWithData()
         .forEach(
             profile -> {
-              if (Objects.equals(pluginPanel.getDisplayName(), profile.getDisplayName())
-                  || configManager.getConfiguration(
-                          DudeWheresMyStuffConfig.CONFIG_GROUP, profile.getKey(), "isMember")
-                      == null) {
-                return;
-              }
-
               final JMenuItem previewItem = new JMenuItem(profile.getDisplayName());
               previewItem.addActionListener(
                   e -> {
@@ -243,7 +293,11 @@ class OverviewTabPanel extends TabContentPanel {
 
                     plugin.enablePreviewMode(profile.getKey(), profile.getDisplayName());
                   });
-              popupMenu.add(previewItem);
+              previewMenu.add(previewItem);
             });
+
+    if (previewMenu.getSubElements().length != 0) {
+      popupMenu.add(previewMenu);
+    }
   }
 }

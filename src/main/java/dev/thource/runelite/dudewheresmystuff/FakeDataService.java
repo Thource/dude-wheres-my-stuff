@@ -8,14 +8,22 @@ import net.runelite.client.config.ConfigManager;
 
 class FakeDataService {
 
-  private static final String PROFILE = "rsprofile.ZZZ";
+  public static final String PROFILE = "rsprofile.ZZZ";
 
   private FakeDataService() {}
 
   static void createData(ConfigManager configManager) {
+    // Wipe the fake profile data
+    for (String configKey : configManager.getRSProfileConfigurationKeys(
+        DudeWheresMyStuffConfig.CONFIG_GROUP, PROFILE, "")) {
+      configManager.unsetConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP, PROFILE, configKey);
+    }
+
     // Create a fake profile, real profiles have 8 character keys, so this has no chance of being
     // a duplicate
     configManager.setConfiguration("rsprofile", PROFILE, "displayName", "Thource");
+    configManager.setConfiguration(
+        DudeWheresMyStuffConfig.CONFIG_GROUP, PROFILE, "saveMigrated", true);
     configManager.setConfiguration(
         DudeWheresMyStuffConfig.CONFIG_GROUP, PROFILE, "minutesPlayed", 600);
     configManager.setConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP, PROFILE, "isMember", true);
@@ -42,7 +50,7 @@ class FakeDataService {
               DudeWheresMyStuffConfig.CONFIG_GROUP,
               PROFILE,
               "poh." + type.getConfigKey(),
-              (System.currentTimeMillis() - (1000 * 60 * 4)) + ";6555,1=20663,1=12921,1=12652,1");
+              (System.currentTimeMillis() - (1000 * 60 * 4)) + ";6555x1;482534;2343");
         }
       } else {
         configManager.setConfiguration(
@@ -52,8 +60,8 @@ class FakeDataService {
             (System.currentTimeMillis() - (1000 * 60 * 4))
                 + ";"
                 + type.getStorableItemIds().stream()
-                    .map(id -> id + "," + 1)
-                    .collect(Collectors.joining("=")));
+                    .map(id -> id + "x" + 1)
+                    .collect(Collectors.joining(",")));
       }
     }
   }
@@ -62,7 +70,7 @@ class FakeDataService {
     for (StashUnit stashUnit : StashUnit.values()) {
       StringBuilder itemsBuilder = new StringBuilder();
       for (int itemId : stashUnit.getDefaultItemIds()) {
-        itemsBuilder.append(itemId).append(",1=");
+        itemsBuilder.append(itemId).append("x1,");
       }
 
       configManager.setConfiguration(
@@ -77,25 +85,33 @@ class FakeDataService {
     configManager.setConfiguration(
         DudeWheresMyStuffConfig.CONFIG_GROUP,
         PROFILE,
-        "death.deathbank",
-        "hespori;true;" + (System.currentTimeMillis() - (1000 * 60 * 14)) + ";4214,1=11802,1=");
+        "death.deathpile.5d7f983f-3501-4010-8522-a45c3173ffb3",
+        "-1;995x26000000,5295x185,22875x3,5296x278,5343x19,952x15,7409x1,13353x1;5d7f983f-3501-4010-8522-a45c3173ffb3;3203,3824,0;true;400"
+    );
     configManager.setConfiguration(
         DudeWheresMyStuffConfig.CONFIG_GROUP,
         PROFILE,
-        "death.lostdeathbanks",
-        "hespori;"
-            + (System.currentTimeMillis() - (1000L * 60 * 60 * 24 * 28))
-            + ";4214,1=19675,1=2434,1=19564,1=148,6582=160,3548=24482,1=5295,79=5297,121=5296,"
-            + "588=5302,212=5298,92=5301,20=561,1135=560,4804=11865,1=6570,1=6585,1=12508,"
-            + "1=12954,1=10388,1=7462,1=11773,1=12851,1");
+        "death.deathpile.5a5d74b6-d279-4fa9-95e7-ee0c14f957d2",
+        "-1;562x7756,556x12148,560x5336,554x10885,3031x3789,168x642,2459x936,2999x272;5a5d74b6-d279-4fa9-95e7-ee0c14f957d2;2205,3212,0;true;555"
+    );
     configManager.setConfiguration(
         DudeWheresMyStuffConfig.CONFIG_GROUP,
         PROFILE,
-        "death.deathpiles",
-        "589;3222,3218,0;1523=150,4838=142,1697=3031,3789=7937,144000=2362,1030=1618,155$555;"
-            + "2205,3212,0;562,7756=556,12148=560,5336=554,10885=3031,3789=168,642=2459,936=2999,"
-            + "272$400;3203,3824,0;995,26000000=5295,185=22875,3=5296,278=5343,19=952,15=7409,"
-            + "1=13353,1");
+        "death.deathpile.cebe31f5-0047-40c2-bddf-9f2f37a3664b",
+        "-1;1523,150x4838,142x1697,3031x3789,7937x144000,2362x1030,1618x155;cebe31f5-0047-40c2-bddf-9f2f37a3664b;3222,3218,0;true;589"
+    );
+    configManager.setConfiguration(
+        DudeWheresMyStuffConfig.CONFIG_GROUP,
+        PROFILE,
+        "death.deathbank.9267fafd-517d-45db-8d88-ede39393f176",
+        "1678391322175;4214x1,11802x1,;9267fafd-517d-45db-8d88-ede39393f176;true;-1;HESPORI"
+    );
+    configManager.setConfiguration(
+        DudeWheresMyStuffConfig.CONFIG_GROUP,
+        PROFILE,
+        "death.deathbank.b6dcb979-ad92-4641-8540-6efee365c629",
+        "1675972962178;4214x1,19675x1,2434x1,19564x1,148x6582,160x3548,24482x1,5295x79,5297x121,5296x588,5302x212,5298x92,5301x20,561x1135,560x4804,11865x1,6570x1,6585x1,12508x1,12954x1,10388x1,7462x1,11773x1,12851x1;b6dcb979-ad92-4641-8540-6efee365c629;false;1675972962178;HESPORI"
+    );
   }
 
   private static void createCoinsData(ConfigManager configManager) {
@@ -134,42 +150,47 @@ class FakeDataService {
         DudeWheresMyStuffConfig.CONFIG_GROUP,
         PROFILE,
         "carryable.inventory",
-        "-1;2434,1=2434,1=-1,1=892,10593=143,1=-1,1=-1,1=9433,1=7937,144000=2362,1030=1618,"
-            + "155=1392,470=1514,12499=441,8800=1620,300=568,2700=566,60=563,3439=565,1075=555,"
-            + "6450=562,7756=556,12148=560,5336=554,10885=995,26000000=24482,1=12791,1=11941,1");
+        "-1;2434x1,2434x1,-1x1,892x10593,143x1,-1x1,-1x1,9433x1,7937x144000,2362x1030,"
+            + "1618x155,1392x470,1514x12499,441x8800,1620x300,568x2700,566x60,563x3439,565x1075,"
+            + "555x6450,562x7756,556x12148,560x5336,554x10885,995x26000000,24482x1,12791x1,"
+            + "11941x1");
     configManager.setConfiguration(
         DudeWheresMyStuffConfig.CONFIG_GROUP,
         PROFILE,
         "carryable.equipment",
-        "-1;-1,1=3749,1=-1,1=-1,1=6570,1=1708,1=892,255=-1,1=13576,1=4940,1=-1,1=-1,1=-1,1=12502,"
-            + "1=-1,1=-1,1=7462,1=22951,1=6737,1");
+        "-1;-1x1,3749x1,-1x1,-1x1,6570x1,1708x1,892x255,-1x1,13576x1,4940x1,-1x1,-1x1,-1x1,"
+            + "12502x1,-1x1,-1x1,7462x1,22951x1,6737x1");
     configManager.setConfiguration(
         DudeWheresMyStuffConfig.CONFIG_GROUP,
         PROFILE,
         "carryable.lootingbag",
         System.currentTimeMillis()
             - (1000 * 60 * 60 * 18)
-            + ";12632,2091=162,1523=150,4838=142,1697=3031,3789=168,"
-            + "642=2459,936=2999,272=262,448=445,2632=2354,1080=13391,"
-            + "294=4736,1=4728,1=4722,1=4716,1=810,19069=6914,1=11905,"
-            + "1=20736,1=995,666000");
+            + ";12632x2091,162x1523,150x4838,142x1697,3031x3789,168x642,2459x936,2999x272,262x448,"
+            + "445x2632,2354x1080,13391x294,4736x1,4728x1,4722x1,4716x1,810x19069,6914x1,11905x1,"
+            + "20736x1,995x666000");
     configManager.setConfiguration(
         DudeWheresMyStuffConfig.CONFIG_GROUP,
         PROFILE,
         "carryable.seedbox",
         System.currentTimeMillis()
             - (1000 * 60 * 60 * 14)
-            + ";5295,185=22875,3=5296,278=5300,35=5304,11");
+            + ";5295x185,22875x3,5296x278,5300x35,5304x11");
     configManager.setConfiguration(
         DudeWheresMyStuffConfig.CONFIG_GROUP,
         PROFILE,
         "carryable.runepouch",
-        "-1;563,580=4696,853=554,429");
+        "-1;563x580,4696x853,554x429");
     configManager.setConfiguration(
         DudeWheresMyStuffConfig.CONFIG_GROUP,
         PROFILE,
         "carryable.bottomlessbucket",
-        System.currentTimeMillis() - (1000 * 60 * 60 * 2) + ";0;0;1423");
+        System.currentTimeMillis() - (1000 * 60 * 60 * 2) + ";0,0,1423");
+    configManager.setConfiguration(
+        DudeWheresMyStuffConfig.CONFIG_GROUP,
+        PROFILE,
+        "carryable.planksack",
+        System.currentTimeMillis() - (1000 * 60 * 43) + ";0,0,0,21");
   }
 
   private static void createWorldData(ConfigManager configManager) {
@@ -177,8 +198,17 @@ class FakeDataService {
         DudeWheresMyStuffConfig.CONFIG_GROUP,
         PROFILE,
         "world.leprechaun",
-        "-1;5341,10=5343,19=952,15=7409,1=13353,1=5325,5=6036,8=1925,940=22997,1=3727,10="
-            + "6032,65=6034,17=21483,647");
+        "-1;10,19,15,1,1,5,8,1,10,65,17,647;1;10");
+    configManager.setConfiguration(
+        DudeWheresMyStuffConfig.CONFIG_GROUP,
+        PROFILE,
+        "world.blastfurnace",
+        "-1;0,0,0,4,0,0,0,0,0,0,0,0,0,0,22,0,0");
+    configManager.setConfiguration(
+        DudeWheresMyStuffConfig.CONFIG_GROUP,
+        PROFILE,
+        "world.logstorage",
+        System.currentTimeMillis() - (1000 * 60 * 60 * 2) + ";10,12,8,5,24");
   }
 
   private static void createMinigamesData(ConfigManager configManager) {
@@ -186,25 +216,30 @@ class FakeDataService {
         DudeWheresMyStuffConfig.CONFIG_GROUP,
         PROFILE,
         "minigames.magetrainingarena",
-        System.currentTimeMillis() - (1000 * 60 * 60 * 2) + ";84=30=1020=489");
+        System.currentTimeMillis() - (1000 * 60 * 60 * 2) + ";84,30,1020,489");
     configManager.setConfiguration(
-        DudeWheresMyStuffConfig.CONFIG_GROUP, PROFILE, "minigames.tithefarm", "843");
+        DudeWheresMyStuffConfig.CONFIG_GROUP, PROFILE, "minigames.tithefarm", "-1;843");
     configManager.setConfiguration(
         DudeWheresMyStuffConfig.CONFIG_GROUP,
         PROFILE,
         "minigames.lastmanstanding",
         System.currentTimeMillis() - (1000 * 60 * 60 * 5) + ";43");
     configManager.setConfiguration(
-        DudeWheresMyStuffConfig.CONFIG_GROUP, PROFILE, "minigames.nightmarezone", "435645");
+        DudeWheresMyStuffConfig.CONFIG_GROUP, PROFILE, "minigames.nightmarezone", "-1;435645");
     configManager.setConfiguration(
         DudeWheresMyStuffConfig.CONFIG_GROUP,
         PROFILE,
         "minigames.barbarianassault",
-        "194=294=40=64");
+        "-1;194,294,40,64");
     configManager.setConfiguration(
         DudeWheresMyStuffConfig.CONFIG_GROUP,
         PROFILE,
         "minigames.guardiansoftherift",
-        System.currentTimeMillis() - (1000 * 60 * 60) + ";1200=1200");
+        System.currentTimeMillis() - (1000 * 60 * 60) + ";1200,1200");
+    configManager.setConfiguration(
+        DudeWheresMyStuffConfig.CONFIG_GROUP,
+        PROFILE,
+        "minigames.mahoganyhomes",
+        System.currentTimeMillis() - (1000 * 60 * 23) + ";782");
   }
 }

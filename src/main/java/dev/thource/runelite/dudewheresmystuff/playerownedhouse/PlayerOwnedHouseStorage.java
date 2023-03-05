@@ -2,6 +2,7 @@ package dev.thource.runelite.dudewheresmystuff.playerownedhouse;
 
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
+import dev.thource.runelite.dudewheresmystuff.ItemStorage;
 import dev.thource.runelite.dudewheresmystuff.Storage;
 import lombok.Getter;
 import net.runelite.api.Item;
@@ -9,7 +10,7 @@ import net.runelite.api.events.ItemContainerChanged;
 
 /** PlayerOwnedHouseStorage is responsible for tracking storages in the player's house. */
 @Getter
-public class PlayerOwnedHouseStorage extends Storage<PlayerOwnedHouseStorageType> {
+public class PlayerOwnedHouseStorage extends ItemStorage<PlayerOwnedHouseStorageType> {
 
   protected PlayerOwnedHouseStorage(
       PlayerOwnedHouseStorageType type, DudeWheresMyStuffPlugin plugin) {

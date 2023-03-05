@@ -2,10 +2,8 @@ package dev.thource.runelite.dudewheresmystuff.world;
 
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
+import dev.thource.runelite.dudewheresmystuff.Saved;
 import dev.thource.runelite.dudewheresmystuff.carryable.BottomlessBucket;
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 import lombok.Setter;
 import net.runelite.api.ItemID;
 import net.runelite.client.config.ConfigManager;
@@ -13,7 +11,7 @@ import net.runelite.client.config.ConfigManager;
 /** Leprechaun is responsible for tracking the player's leprechaun-stored farming equipment. */
 public class Leprechaun extends WorldStorage {
 
-  private static final int[] WATERING_CAN_IDS = {
+  public static final int[] WATERING_CAN_IDS = {
     -1,
     ItemID.WATERING_CAN,
     ItemID.WATERING_CAN1,
@@ -38,12 +36,20 @@ public class Leprechaun extends WorldStorage {
   private final ItemStack composts;
   private final ItemStack superComposts;
   private final ItemStack ultraComposts;
-  private int bottomlessBucketCharges;
+  // 0 = normal, 1 = magic
+  @Saved(index = 2) public int secateursType;
+  // WATERING_CAN_IDS
+  @Saved(index = 3) public int wateringCanType;
+  // 0 = none, 1 = empty, 2 = compost, 3 = supercompost, 4 = ultracompost
+  @Saved(index = 4) public int bottomlessBucketType;
+  @Saved(index = 5) public int bottomlessBucketCharges;
   @Setter private BottomlessBucket bottomlessBucketStorage;
 
   /** A constructor. */
   public Leprechaun(DudeWheresMyStuffPlugin plugin) {
     super(WorldStorageType.LEPRECHAUN, plugin);
+
+    hasStaticItems = true;
 
     rakes = new ItemStack(ItemID.RAKE, plugin);
     seedDibbers = new ItemStack(ItemID.SEED_DIBBER, plugin);
@@ -53,7 +59,7 @@ public class Leprechaun extends WorldStorage {
     trowels = new ItemStack(ItemID.GARDENING_TROWEL, plugin);
     plantCures = new ItemStack(ItemID.PLANT_CURE, plugin);
     bottomlessBucket = new ItemStack(ItemID.BOTTOMLESS_COMPOST_BUCKET, plugin);
-    buckets = new ItemStack(ItemID.EMPTY_BUCKET, plugin);
+    buckets = new ItemStack(ItemID.BUCKET, plugin);
     composts = new ItemStack(ItemID.COMPOST, plugin);
     superComposts = new ItemStack(ItemID.SUPERCOMPOST, plugin);
     ultraComposts = new ItemStack(ItemID.ULTRACOMPOST, plugin);
@@ -74,84 +80,50 @@ public class Leprechaun extends WorldStorage {
 
   @Override
   public boolean onVarbitChanged() {
-    AtomicBoolean updated = new AtomicBoolean(false);
+    boolean updated = updateRakes();
 
-    if (updateRakes()) {
-      updated.set(true);
-    }
     if (updateSeedDibbers()) {
-      updated.set(true);
+      updated = true;
     }
     if (updateSpades()) {
-      updated.set(true);
+      updated = true;
     }
     if (updateSecateurs()) {
-      updated.set(true);
+      updated = true;
     }
     if (updateWateringCan()) {
-      updated.set(true);
+      updated = true;
     }
     if (updateTrowels()) {
-      updated.set(true);
+      updated = true;
     }
     if (updatePlantCures()) {
-      updated.set(true);
+      updated = true;
     }
     if (updateBottomlessBucket()) {
-      updated.set(true);
+      updated = true;
     }
     if (updateBuckets()) {
-      updated.set(true);
+      updated = true;
     }
     if (updateComposts()) {
-      updated.set(true);
+      updated = true;
     }
     if (updateSuperComposts()) {
-      updated.set(true);
+      updated = true;
     }
     if (updateUltraComposts()) {
-      updated.set(true);
+      updated = true;
     }
 
-    return updated.get();
+    return updated;
   }
 
   private boolean updateBottomlessBucket() {
     int type = plugin.getClient().getVarbitValue(7915);
+    int charges = plugin.getClient().getVarbitValue(7916);
 
-    int charges = 0;
-    int itemId = ItemID.BOTTOMLESS_COMPOST_BUCKET;
-
-    if (type == 1) {
-      bottomlessBucket.setName("Bottomless compost bucket");
-    } else if (type != 0) {
-      itemId = ItemID.BOTTOMLESS_COMPOST_BUCKET_22997;
-      charges = plugin.getClient().getVarbitValue(7916);
-    }
-
-    if (charges == bottomlessBucketCharges && itemId == bottomlessBucket.getId()) {
-      return false;
-    }
-
-    bottomlessBucketCharges = charges;
-    bottomlessBucket.setId(itemId);
-    String name = "Bottomless compost bucket";
-    if (charges > 0) {
-      name += " (" + charges + " ";
-      if (type == 2) {
-        name += "compost)";
-      } else if (type == 3) {
-        name += "supercompost)";
-      } else if (type == 4) {
-        name += "ultracompost)";
-      }
-    }
-    bottomlessBucket.setName(name);
-    bottomlessBucket.setQuantity(type == 0 ? 0 : 1);
-    if (bottomlessBucketStorage != null) {
-      bottomlessBucketStorage.updateCompost(type, charges);
-    }
-    return true;
+    return setBottomlessBucketVars(type, charges);
   }
 
   private boolean updateRakes() {
@@ -191,21 +163,20 @@ public class Leprechaun extends WorldStorage {
   }
 
   private boolean updateSecateurs() {
-    int secateursId =
-        plugin.getClient().getVarbitValue(1848) == 1 ? ItemID.MAGIC_SECATEURS : ItemID.SECATEURS;
+    boolean updated = false;
     int quantity =
         plugin.getClient().getVarbitValue(1438) + (plugin.getClient().getVarbitValue(8359) * 2);
 
-    if (quantity == secateurs.getQuantity() && secateurs.getId() == secateursId) {
-      return false;
+    if (quantity != secateurs.getQuantity()) {
+      secateurs.setQuantity(quantity);
+      updated = true;
     }
 
-    if (secateurs.getId() != secateursId) {
-      secateurs.setId(secateursId, plugin);
+    if (setSecateursType(plugin.getClient().getVarbitValue(1848))) {
+      updated = true;
     }
 
-    secateurs.setQuantity(quantity);
-    return true;
+    return updated;
   }
 
   private boolean updateTrowels() {
@@ -286,7 +257,26 @@ public class Leprechaun extends WorldStorage {
       return false;
     }
 
-    int wateringCanId = WATERING_CAN_IDS[wateringCanState];
+    return setWateringCanType(wateringCanState);
+  }
+
+  private boolean setSecateursType(int secateursType) {
+    this.secateursType = secateursType;
+
+    int secateursId =
+        secateursType == 1 ? ItemID.MAGIC_SECATEURS : ItemID.SECATEURS;
+
+    if (secateurs.getId() == secateursId) {
+      return false;
+    }
+
+    secateurs.setId(secateursId, plugin);
+    return true;
+  }
+
+  private boolean setWateringCanType(int wateringCanType) {
+    this.wateringCanType = wateringCanType;
+    int wateringCanId = WATERING_CAN_IDS[wateringCanType];
     if (wateringCanId == -1) {
       if (wateringCan.getQuantity() == 0) {
         return false;
@@ -305,52 +295,57 @@ public class Leprechaun extends WorldStorage {
     return true;
   }
 
+  private boolean setBottomlessBucketVars(int bottomlessBucketType, int bottomlessBucketCharges) {
+    int oldBottomlessBucketCharges = this.bottomlessBucketCharges;
+    this.bottomlessBucketType = bottomlessBucketType;
+    this.bottomlessBucketCharges = bottomlessBucketCharges;
+
+    int itemId = ItemID.BOTTOMLESS_COMPOST_BUCKET;
+
+    if (bottomlessBucketType == 1) {
+      bottomlessBucket.setName("Bottomless compost bucket");
+    } else if (bottomlessBucketType != 0) {
+      itemId = ItemID.BOTTOMLESS_COMPOST_BUCKET_22997;
+    }
+
+    if (oldBottomlessBucketCharges == bottomlessBucketCharges && itemId == bottomlessBucket.getId()) {
+      return false;
+    }
+
+    bottomlessBucket.setId(itemId);
+    String name = "Bottomless compost bucket";
+    if (bottomlessBucketCharges > 0) {
+      name += " (" + bottomlessBucketCharges + " ";
+      if (bottomlessBucketType == 2) {
+        name += "compost)";
+      } else if (bottomlessBucketType == 3) {
+        name += "supercompost)";
+      } else if (bottomlessBucketType == 4) {
+        name += "ultracompost)";
+      }
+    }
+    bottomlessBucket.setName(name);
+    bottomlessBucket.setQuantity(bottomlessBucketType == 0 ? 0 : 1);
+    if (bottomlessBucketStorage != null) {
+      bottomlessBucketStorage.updateCompost(bottomlessBucketType, bottomlessBucketCharges);
+    }
+    return true;
+  }
+
   @Override
   public void reset() {
-    for (ItemStack item : items) {
-      item.setQuantity(0);
-    }
-    lastUpdated = -1;
-    enable();
+    super.reset();
+    secateursType = 0;
+    wateringCanType = 0;
+    bottomlessBucketType = 0;
   }
 
   @Override
   public void load(ConfigManager configManager, String managerConfigKey, String profileKey) {
-    List<ItemStack> loadedItems = loadItems(configManager, managerConfigKey, profileKey);
-    if (loadedItems == null || loadedItems.isEmpty()) {
-      return;
-    }
+    super.load(configManager, managerConfigKey, profileKey);
 
-    loadedItems.stream()
-        .filter(i -> i.getId() != -1)
-        .forEach(
-            loadedItem -> {
-              if (Arrays.stream(WATERING_CAN_IDS).anyMatch(i -> i == loadedItem.getId())) {
-                wateringCan.setId(loadedItem.getId(), plugin);
-                wateringCan.setQuantity(loadedItem.getQuantity());
-                return;
-              }
-
-              if (loadedItem.getId() == ItemID.MAGIC_SECATEURS
-                  || loadedItem.getId() == ItemID.SECATEURS) {
-                secateurs.setId(loadedItem.getId(), plugin);
-                secateurs.setQuantity(loadedItem.getQuantity());
-                return;
-              }
-
-              if (loadedItem.getId() == ItemID.BOTTOMLESS_COMPOST_BUCKET
-                  || loadedItem.getId() == ItemID.BOTTOMLESS_COMPOST_BUCKET_22997) {
-                bottomlessBucket.setId(loadedItem.getId(), plugin);
-                bottomlessBucket.setQuantity(loadedItem.getQuantity());
-                return;
-              }
-
-              for (ItemStack item : items) {
-                if (loadedItem.getId() == item.getId()) {
-                  item.setQuantity(loadedItem.getQuantity());
-                  break;
-                }
-              }
-            });
+    setSecateursType(secateursType);
+    setWateringCanType(wateringCanType);
+    setBottomlessBucketVars(bottomlessBucketType, bottomlessBucketCharges);
   }
 }

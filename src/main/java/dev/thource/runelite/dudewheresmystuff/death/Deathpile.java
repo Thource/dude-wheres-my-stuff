@@ -1,15 +1,20 @@
 package dev.thource.runelite.dudewheresmystuff.death;
 
+import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffConfig;
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.DurationFormatter;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
 import dev.thource.runelite.dudewheresmystuff.Region;
+import dev.thource.runelite.dudewheresmystuff.Saved;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.border.EmptyBorder;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.coords.WorldPoint;
 
@@ -18,18 +23,26 @@ import net.runelite.api.coords.WorldPoint;
 @Slf4j
 public class Deathpile extends DeathStorage {
 
-  private final int playedMinutesAtCreation;
-  private final WorldPoint worldPoint;
+  @Saved(index = 3) public WorldPoint worldPoint;
+  @Saved(index = 4) public boolean useAccountPlayTime;
+  // when useAccountPlayTime is true, expiryTime is the account played minutes that the deathpile
+  // will expire at.
+  // when useAccountPlayTime is false, expiryTime is the amount of ticks left until
+  // the deathpile expires, ticking down only while the player is logged in.
+  @Saved(index = 5) public int expiryTime;
+  @Setter protected DeathWorldMapPoint worldMapPoint;
   private final DeathStorageManager deathStorageManager;
 
   Deathpile(
       DudeWheresMyStuffPlugin plugin,
-      int playedMinutesAtCreation,
+      boolean useAccountPlayTime,
+      int expiryTime,
       WorldPoint worldPoint,
       DeathStorageManager deathStorageManager,
       List<ItemStack> deathItems) {
     super(DeathStorageType.DEATHPILE, plugin);
-    this.playedMinutesAtCreation = playedMinutesAtCreation;
+    this.useAccountPlayTime = useAccountPlayTime;
+    this.expiryTime = expiryTime;
     this.worldPoint = worldPoint;
     this.deathStorageManager = deathStorageManager;
     this.items.addAll(deathItems);
@@ -103,14 +116,18 @@ public class Deathpile extends DeathStorage {
    * @return Unix timestamp of the expiry
    */
   public long getExpiryMs() {
-    int minutesLeft = playedMinutesAtCreation + 59 - deathStorageManager.getPlayedMinutes();
-    if (deathStorageManager.isPreviewManager()) {
-      return System.currentTimeMillis() + (minutesLeft * 60000L);
+    if (useAccountPlayTime) {
+      int minutesLeft = expiryTime - deathStorageManager.getPlayedMinutes();
+      if (deathStorageManager.isPreviewManager()) {
+        return System.currentTimeMillis() + (minutesLeft * 60000L);
+      }
+
+      return System.currentTimeMillis()
+          + (minutesLeft * 60000L)
+          - ((System.currentTimeMillis() - deathStorageManager.startMs) % 60000);
     }
 
-    return System.currentTimeMillis()
-        + (minutesLeft * 60000L)
-        - ((System.currentTimeMillis() - deathStorageManager.startMs) % 60000);
+    return System.currentTimeMillis() + (expiryTime * 600L);
   }
 
   public boolean hasExpired() {
@@ -120,5 +137,21 @@ public class Deathpile extends DeathStorage {
   @Override
   public void softUpdate() {
     storagePanel.setFooterText(getExpireText());
+  }
+
+  static Deathpile load(DudeWheresMyStuffPlugin plugin, DeathStorageManager deathStorageManager, String profileKey, String uuid) {
+    Deathpile deathpile = new Deathpile(
+      plugin,
+      true,
+      0,
+      null,
+      deathStorageManager,
+      new ArrayList<>()
+    );
+
+    deathpile.uuid = UUID.fromString(uuid);
+    deathpile.load(deathStorageManager.getConfigManager(), deathStorageManager.getConfigKey(), profileKey);
+
+    return deathpile;
   }
 }

@@ -10,6 +10,8 @@ import dev.thource.runelite.dudewheresmystuff.playerownedhouse.PlayerOwnedHouseS
 import dev.thource.runelite.dudewheresmystuff.stash.StashStorageManager;
 import dev.thource.runelite.dudewheresmystuff.world.WorldStorageManager;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Stream;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
 import lombok.Getter;
@@ -32,6 +34,7 @@ import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.vars.AccountType;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.config.RuneScapeProfile;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.RuneScapeProfileChanged;
@@ -92,6 +95,14 @@ public class DudeWheresMyStuffPlugin extends Plugin {
   private ClientState clientState = ClientState.LOGGED_OUT;
   private boolean pluginStartedAlreadyLoggedIn;
   private String previewProfileKey;
+
+  public Stream<RuneScapeProfile> getProfilesWithData() {
+    return configManager
+        .getRSProfiles()
+        .stream()
+        .filter(profile -> configManager.getConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP,
+            profile.getKey(), "isMember") != null);
+  }
 
   @Override
   protected void startUp() {
@@ -172,6 +183,17 @@ public class DudeWheresMyStuffPlugin extends Plugin {
     reset(true);
 
     clientToolbar.addNavigation(navButton);
+
+    AtomicBoolean anyProfilesMigrated = new AtomicBoolean(false);
+    getProfilesWithData().forEach(runeScapeProfile -> {
+      if (configManager.getConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP, runeScapeProfile.getKey(), "saveMigrated") == null) {
+        new SaveMigrator(configManager, runeScapeProfile.getKey()).migrate();
+        anyProfilesMigrated.set(true);
+      }
+    });
+    if (anyProfilesMigrated.get()) {
+      configManager.sendConfig();
+    }
 
     if (client.getGameState() == GameState.LOGGED_IN) {
       clientState = ClientState.LOGGING_IN;
@@ -282,6 +304,11 @@ public class DudeWheresMyStuffPlugin extends Plugin {
       boolean isMember = client.getVarcIntValue(VarClientInt.MEMBERSHIP_STATUS) == 1;
       AccountType accountType = client.getAccountType();
       String displayName = Objects.requireNonNull(client.getLocalPlayer()).getName();
+
+      // All saves should be migrated on plugin start, so this must be a new account
+      if (configManager.getRSProfileConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP, "saveMigrated") == null) {
+        configManager.setRSProfileConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP, "saveMigrated", true);
+      }
 
       configManager.setRSProfileConfiguration(
           DudeWheresMyStuffConfig.CONFIG_GROUP, "isMember", isMember);

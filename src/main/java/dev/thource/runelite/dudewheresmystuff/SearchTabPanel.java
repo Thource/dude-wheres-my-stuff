@@ -128,7 +128,7 @@ class SearchTabPanel
   @Override
   public void softUpdate() {
     List<? extends Storage<? extends Enum<? extends Enum<?>>>> storages =
-        storageManagerManager.getStorages().collect(Collectors.toList());
+        storageManagerManager.getStorages().filter(Storage::isEnabled).collect(Collectors.toList());
 
     storages.forEach(
         storage -> {

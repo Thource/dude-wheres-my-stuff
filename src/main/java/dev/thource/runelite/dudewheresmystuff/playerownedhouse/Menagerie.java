@@ -1,24 +1,22 @@
 package dev.thource.runelite.dudewheresmystuff.playerownedhouse;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffConfig;
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.ItemContainerWatcher;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
 import dev.thource.runelite.dudewheresmystuff.Region;
+import dev.thource.runelite.dudewheresmystuff.Saved;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
-import java.util.stream.Collectors;
 import net.runelite.api.Item;
 import net.runelite.api.ItemID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.client.config.ConfigManager;
-import org.apache.commons.lang3.math.NumberUtils;
 
 public class Menagerie extends PlayerOwnedHouseStorage {
 
@@ -64,13 +62,12 @@ public class Menagerie extends PlayerOwnedHouseStorage {
           ItemID.FISHBOWL_6671,
           ItemID.FISHBOWL_6672,
           ItemID.TOY_CAT);
-  private static final Map<Integer, List<Integer>> VARPLAYER_BITS_TO_ITEM_ID_MAP;
+  public static final List<List<Integer>> VARPLAYER_BITS_TO_ITEM_IDS_LIST;
 
   static {
-    ImmutableMap.Builder<Integer, List<Integer>> builder = new ImmutableMap.Builder<>();
+    ImmutableList.Builder<List<Integer>> builder = new ImmutableList.Builder<>();
 
-    builder.put(
-        864,
+    builder.add(
         Arrays.asList(
             ItemID.PET_CHAOS_ELEMENTAL,
             ItemID.PET_DAGANNOTH_SUPREME,
@@ -104,8 +101,7 @@ public class Menagerie extends PlayerOwnedHouseStorage {
             ItemID.GIANT_SQUIRREL,
             ItemID.TANGLEROOT,
             ItemID.RIFT_GUARDIAN));
-    builder.put(
-        1416,
+    builder.add(
         Arrays.asList(
             ItemID.ROCKY,
             ItemID.PHOENIX,
@@ -126,11 +122,12 @@ public class Menagerie extends PlayerOwnedHouseStorage {
             ItemID.NEXLING,
             ItemID.ABYSSAL_PROTECTOR));
 
-    VARPLAYER_BITS_TO_ITEM_ID_MAP = builder.build();
+    VARPLAYER_BITS_TO_ITEM_IDS_LIST = builder.build();
   }
 
-  private final int[] varplayerValues = new int[2];
-  private final List<ItemStack> itemContainerItems = new ArrayList<>();
+  @Saved(index = 2) public int petBits1;
+  @Saved(index = 3) public int petBits2;
+  private final List<ItemStack> compiledItems = new ArrayList<>();
   private final List<ItemStack> varplayerItems = new ArrayList<>();
   private boolean wasBeingFollowedLastTick = false;
 
@@ -139,9 +136,9 @@ public class Menagerie extends PlayerOwnedHouseStorage {
   }
 
   private void updateItems() {
-    items.clear();
-    items.addAll(itemContainerItems);
-    items.addAll(varplayerItems);
+    compiledItems.clear();
+    compiledItems.addAll(items);
+    compiledItems.addAll(varplayerItems);
   }
 
   private boolean updateRemovedInventoryItems() {
@@ -151,7 +148,7 @@ public class Menagerie extends PlayerOwnedHouseStorage {
     // Remove items that were added to the inventory
     for (ItemStack itemStack : inventoryWatcher.getItemsAddedLastTick()) {
       if (ITEM_CONTAINER_ITEM_IDS.contains(itemStack.getId())) {
-        ListIterator<ItemStack> listIterator = itemContainerItems.listIterator();
+        ListIterator<ItemStack> listIterator = items.listIterator();
 
         while (listIterator.hasNext()) {
           ItemStack item = listIterator.next();
@@ -176,7 +173,7 @@ public class Menagerie extends PlayerOwnedHouseStorage {
     if (!isBeingFollowed || wasBeingFollowedLastTick) {
       for (ItemStack itemStack : inventoryWatcher.getItemsRemovedLastTick()) {
         if (ITEM_CONTAINER_ITEM_IDS.contains(itemStack.getId())) {
-          itemContainerItems.add(itemStack);
+          items.add(itemStack);
           updated = true;
         }
       }
@@ -219,10 +216,10 @@ public class Menagerie extends PlayerOwnedHouseStorage {
     }
 
     lastUpdated = System.currentTimeMillis();
-    itemContainerItems.clear();
+    items.clear();
     for (Item item : itemContainerChanged.getItemContainer().getItems()) {
       if (item.getId() != -1) {
-        itemContainerItems.add(new ItemStack(item.getId(), 1, plugin));
+        items.add(new ItemStack(item.getId(), 1, plugin));
       }
     }
     updateItems();
@@ -230,28 +227,13 @@ public class Menagerie extends PlayerOwnedHouseStorage {
     return true;
   }
 
-  @Override
-  public boolean onVarbitChanged() {
-    boolean didChange = false;
-
-    int index = 0;
-    for (Integer varplayer : VARPLAYER_BITS_TO_ITEM_ID_MAP.keySet()) {
-      int value = plugin.getClient().getVarpValue(varplayer);
-      if (value != varplayerValues[index]) {
-        didChange = true;
-        varplayerValues[index] = value;
-      }
-
-      index++;
-    }
-
-    if (didChange) {
+  void rebuildPetsFromBits() {
       lastUpdated = System.currentTimeMillis();
 
       varplayerItems.clear();
       int varpIndex = 0;
-      for (List<Integer> itemIds : VARPLAYER_BITS_TO_ITEM_ID_MAP.values()) {
-        int value = varplayerValues[varpIndex];
+      for (List<Integer> itemIds : VARPLAYER_BITS_TO_ITEM_IDS_LIST) {
+        int value = varpIndex == 0 ? petBits1 : petBits2;
         for (int i = 0; i < itemIds.size(); i++) {
           if ((value & (1L << i)) == 0) {
             continue;
@@ -264,93 +246,44 @@ public class Menagerie extends PlayerOwnedHouseStorage {
       }
 
       updateItems();
-    }
-
-    return didChange;
   }
 
   @Override
-  public void save(ConfigManager configManager, String managerConfigKey) {
-    String data =
-        lastUpdated
-            + ";"
-            + itemContainerItems.stream()
-                .map(item -> item.getId() + "," + item.getQuantity())
-                .collect(Collectors.joining("="))
-            + ";"
-            + varplayerItems.stream()
-                .map(item -> item.getId() + "," + item.getQuantity())
-                .collect(Collectors.joining("="));
+  public boolean onVarbitChanged() {
+    int oldPetBits1 = petBits1;
+    int oldPetBits2 = petBits2;
 
-    configManager.setRSProfileConfiguration(
-        DudeWheresMyStuffConfig.CONFIG_GROUP, getConfigKey(managerConfigKey), data);
+    petBits1 = plugin.getClient().getVarbitValue(864);
+    petBits2 = plugin.getClient().getVarbitValue(1416);
+
+    if (petBits1 != oldPetBits1 || petBits2 != oldPetBits2) {
+      rebuildPetsFromBits();
+      return true;
+    }
+
+    return false;
   }
 
   @Override
-  protected List<ItemStack> loadItems(
-      ConfigManager configManager, String managerConfigKey, String profileKey) {
-    String data =
-        configManager.getConfiguration(
-            DudeWheresMyStuffConfig.CONFIG_GROUP,
-            profileKey,
-            getConfigKey(managerConfigKey),
-            String.class);
-    if (data == null) {
-      return Collections.emptyList();
-    }
-
-    String[] dataSplit = data.split(";");
-    if (dataSplit.length < 1) {
-      return Collections.emptyList();
-    }
-
-    this.lastUpdated = NumberUtils.toLong(dataSplit[0], -1);
-    if (dataSplit.length < 2) {
-      return Collections.emptyList();
-    }
-
-    for (String itemStackString : dataSplit[1].split("=")) {
-      ItemStack itemStack = stringDataToItemStack(itemStackString);
-
-      if (itemStack != null) {
-        itemContainerItems.add(itemStack);
-      }
-    }
-    List<ItemStack> loadedItems = new ArrayList<>(itemContainerItems);
-
-    if (dataSplit.length == 3) {
-      for (String itemStackString : dataSplit[2].split("=")) {
-        ItemStack itemStack = stringDataToItemStack(itemStackString);
-
-        if (itemStack != null) {
-          varplayerItems.add(itemStack);
-        }
-      }
-      loadedItems.addAll(varplayerItems);
-    }
-
-    return loadedItems;
-  }
-
-  private ItemStack stringDataToItemStack(String itemStackString) {
-    String[] itemStackData = itemStackString.split(",");
-    if (itemStackData.length != 2) {
-      return null;
-    }
-
-    int itemId = NumberUtils.toInt(itemStackData[0]);
-    int itemQuantity = NumberUtils.toInt(itemStackData[1]);
-
-    return new ItemStack(itemId, itemQuantity, plugin);
+  public List<ItemStack> getItems() {
+    return compiledItems;
   }
 
   @Override
   public void reset() {
     super.reset();
 
-    itemContainerItems.clear();
+    items.clear();
+    compiledItems.clear();
     varplayerItems.clear();
-    varplayerValues[0] = 0;
-    varplayerValues[1] = 0;
+    petBits1 = 0;
+    petBits2 = 0;
+  }
+
+  @Override
+  public void load(ConfigManager configManager, String managerConfigKey, String profileKey) {
+    super.load(configManager, managerConfigKey, profileKey);
+
+    rebuildPetsFromBits();
   }
 }

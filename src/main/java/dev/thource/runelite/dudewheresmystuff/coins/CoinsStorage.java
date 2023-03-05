@@ -1,27 +1,26 @@
 package dev.thource.runelite.dudewheresmystuff.coins;
 
-import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffConfig;
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
-import dev.thource.runelite.dudewheresmystuff.Storage;
+import dev.thource.runelite.dudewheresmystuff.ItemStorage;
 import java.util.Optional;
 import lombok.Getter;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.events.ItemContainerChanged;
-import net.runelite.client.config.ConfigManager;
-import org.apache.commons.lang3.math.NumberUtils;
 
 /**
  * CoinsStorage is responsible for tracking storages that hold the players coins (coffers,
  * inventory, etc).
  */
 @Getter
-public class CoinsStorage extends Storage<CoinsStorageType> {
+public class CoinsStorage extends ItemStorage<CoinsStorageType> {
 
   protected final ItemStack coinStack = new ItemStack(995, "Coins", 0, 1, 0, true);
 
   protected CoinsStorage(CoinsStorageType type, DudeWheresMyStuffPlugin plugin) {
     super(type, plugin);
+
+    hasStaticItems = true;
 
     items.add(coinStack);
   }
@@ -77,41 +76,5 @@ public class CoinsStorage extends Storage<CoinsStorageType> {
 
     coinStack.setQuantity(coins);
     return true;
-  }
-
-  @Override
-  public void reset() {
-    coinStack.setQuantity(0);
-    lastUpdated = -1;
-    enable();
-  }
-
-  @Override
-  public void save(ConfigManager configManager, String managerConfigKey) {
-    String data = lastUpdated + ";" + coinStack.getQuantity();
-
-    configManager.setRSProfileConfiguration(
-        DudeWheresMyStuffConfig.CONFIG_GROUP, managerConfigKey + "." + type.getConfigKey(), data);
-  }
-
-  @Override
-  public void load(ConfigManager configManager, String managerConfigKey, String profileKey) {
-    String data =
-        configManager.getConfiguration(
-            DudeWheresMyStuffConfig.CONFIG_GROUP,
-            profileKey,
-            managerConfigKey + "." + type.getConfigKey(),
-            String.class);
-    if (data == null) {
-      return;
-    }
-
-    String[] dataSplit = data.split(";");
-    if (dataSplit.length != 2) {
-      return;
-    }
-
-    this.lastUpdated = NumberUtils.toLong(dataSplit[0], -1);
-    coinStack.setQuantity(NumberUtils.toInt(dataSplit[1], 0));
   }
 }
