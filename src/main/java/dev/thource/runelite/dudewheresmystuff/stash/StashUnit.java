@@ -102,7 +102,10 @@ public enum StashUnit {
           "Rune crossbow",
           ItemRequirements.item(ItemID.RUNE_CROSSBOW),
           ItemRequirements.item(ItemID.RUNE_CROSSBOW_OR)),
-      ItemRequirements.item(ItemID.CLIMBING_BOOTS),
+      ItemRequirements.any(
+          "Climbing boots",
+          ItemRequirements.item(ItemID.CLIMBING_BOOTS),
+          ItemRequirements.item(ItemID.CLIMBING_BOOTS_G)),
       ItemRequirements.item(ItemID.RING_OF_VISIBILITY)),
   AGILITY_PYRAMID(
       "Agility Pyramid",
@@ -323,7 +326,9 @@ public enum StashUnit {
           ItemRequirements.item(ItemID.ABYSSAL_WHIP),
           ItemRequirements.item(ItemID.VOLCANIC_ABYSSAL_WHIP),
           ItemRequirements.item(ItemID.FROZEN_ABYSSAL_WHIP),
-          ItemRequirements.item(ItemID.ABYSSAL_WHIP_OR)),
+          ItemRequirements.item(ItemID.ABYSSAL_WHIP_OR),
+          ItemRequirements.item(ItemID.ABYSSAL_TENTACLE),
+          ItemRequirements.item(ItemID.ABYSSAL_TENTACLE_OR)),
       ItemRequirements.item(ItemID.CAPE_OF_LEGENDS),
       ItemRequirements.item(ItemID.SPINED_CHAPS)),
   CRYSTALLINE_MAPLE_TREES(
@@ -755,7 +760,10 @@ public enum StashUnit {
       STASHUnit.NEAR_THE_PIER_IN_ZULANDRA,
       new int[] {ItemID.DRAGON_2H_SWORD, ItemID.BANDOS_BOOTS, ItemID.OBSIDIAN_CAPE},
       ItemRequirements.item(ItemID.DRAGON_2H_SWORD),
-      ItemRequirements.item(ItemID.BANDOS_BOOTS),
+      ItemRequirements.any(
+          "Bandos boots",
+          ItemRequirements.item(ItemID.BANDOS_BOOTS),
+          ItemRequirements.item(ItemID.GUARDIAN_BOOTS)),
       ItemRequirements.item(ItemID.OBSIDIAN_CAPE)),
   FOUNTAIN_OF_HEROES(
       "Fountain of heroes",
@@ -766,7 +774,8 @@ public enum StashUnit {
       ItemRequirements.any(
           "Dragon boots",
           ItemRequirements.item(ItemID.DRAGON_BOOTS),
-          ItemRequirements.item(ItemID.DRAGON_BOOTS_G)),
+          ItemRequirements.item(ItemID.DRAGON_BOOTS_G),
+          ItemRequirements.item(ItemID.PRIMORDIAL_BOOTS)),
       ItemRequirements.item(ItemID.RUNE_LONGSWORD)),
   MOUNTAIN_CAMP_GOAT_ENCLOSURE(
       "Mountain Camp",
