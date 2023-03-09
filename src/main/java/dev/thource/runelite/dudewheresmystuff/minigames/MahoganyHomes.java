@@ -1,6 +1,5 @@
 package dev.thource.runelite.dudewheresmystuff.minigames;
 
-import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffConfig;
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
 import java.util.regex.Matcher;
@@ -10,7 +9,6 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.ItemID;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.widgets.Widget;
-import net.runelite.client.config.ConfigManager;
 import net.runelite.client.util.Text;
 import org.apache.commons.lang3.math.NumberUtils;
 
@@ -60,35 +58,5 @@ public class MahoganyHomes extends MinigamesStorage {
     lastUpdated = System.currentTimeMillis();
 
     return true;
-  }
-
-  @Override
-  public void save(ConfigManager configManager, String managerConfigKey) {
-    String data = lastUpdated + ";" + points.getQuantity();
-
-    configManager.setRSProfileConfiguration(
-        DudeWheresMyStuffConfig.CONFIG_GROUP, managerConfigKey + "." + type.getConfigKey(), data);
-  }
-
-  @Override
-  public void load(ConfigManager configManager, String managerConfigKey, String profileKey) {
-    String data =
-        configManager.getConfiguration(
-            DudeWheresMyStuffConfig.CONFIG_GROUP,
-            profileKey,
-            managerConfigKey + "." + type.getConfigKey(),
-            String.class);
-    if (data == null) {
-      return;
-    }
-
-    String[] dataSplit = data.split(";");
-    if (dataSplit.length != 2) {
-      return;
-    }
-
-    this.lastUpdated = NumberUtils.toLong(dataSplit[0], -1);
-
-    points.setQuantity(NumberUtils.toInt(dataSplit[1], 0));
   }
 }

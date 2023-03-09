@@ -47,7 +47,7 @@ public abstract class StorageManager<T extends StorageType, S extends Storage<T>
   }
 
   public long getTotalValue() {
-    return storages.stream().mapToLong(Storage::getTotalValue).sum();
+    return storages.stream().filter(Storage::isEnabled).mapToLong(Storage::getTotalValue).sum();
   }
 
   protected void updateStorages(List<? extends S> storages) {

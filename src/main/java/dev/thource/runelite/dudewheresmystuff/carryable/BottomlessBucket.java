@@ -30,6 +30,8 @@ public class BottomlessBucket extends CarryableStorage {
   BottomlessBucket(DudeWheresMyStuffPlugin plugin) {
     super(CarryableStorageType.BOTTOMLESS_BUCKET, plugin);
 
+    hasStaticItems = true;
+
     compostStack = new ItemStack(ItemID.COMPOST, plugin);
     supercompostStack = new ItemStack(ItemID.SUPERCOMPOST, plugin);
     ultracompostStack = new ItemStack(ItemID.ULTRACOMPOST, plugin);
@@ -83,49 +85,6 @@ public class BottomlessBucket extends CarryableStorage {
     }
 
     return true;
-  }
-
-  @Override
-  public void reset() {
-    compostStack.setQuantity(0);
-    supercompostStack.setQuantity(0);
-    ultracompostStack.setQuantity(0);
-    lastUpdated = -1;
-    enable();
-  }
-
-  @Override
-  public void save(ConfigManager configManager, String managerConfigKey) {
-    String data =
-        getLastUpdated()
-            + ";"
-            + items.stream().map(item -> "" + item.getQuantity()).collect(Collectors.joining(";"));
-
-    configManager.setRSProfileConfiguration(
-        DudeWheresMyStuffConfig.CONFIG_GROUP, managerConfigKey + "." + type.getConfigKey(), data);
-  }
-
-  @Override
-  public void load(ConfigManager configManager, String managerConfigKey, String profileKey) {
-    String data =
-        configManager.getConfiguration(
-            DudeWheresMyStuffConfig.CONFIG_GROUP,
-            profileKey,
-            managerConfigKey + "." + type.getConfigKey(),
-            String.class);
-    if (data == null) {
-      return;
-    }
-
-    String[] dataSplit = data.split(";");
-    if (dataSplit.length != 4) {
-      return;
-    }
-
-    lastUpdated = NumberUtils.toLong(dataSplit[0], -1);
-    compostStack.setQuantity(NumberUtils.toLong(dataSplit[1], 0));
-    supercompostStack.setQuantity(NumberUtils.toLong(dataSplit[2], 0));
-    ultracompostStack.setQuantity(NumberUtils.toLong(dataSplit[3], 0));
   }
 
   /**

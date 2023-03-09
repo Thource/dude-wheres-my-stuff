@@ -35,6 +35,8 @@ public class PlankSack extends CarryableStorage {
   PlankSack(DudeWheresMyStuffPlugin plugin) {
     super(CarryableStorageType.PLANK_SACK, plugin);
 
+    hasStaticItems = true;
+
     plankStack = new ItemStack(ItemID.PLANK, plugin);
     oakPlankStack = new ItemStack(ItemID.OAK_PLANK, plugin);
     teakPlankStack = new ItemStack(ItemID.TEAK_PLANK, plugin);
@@ -44,13 +46,6 @@ public class PlankSack extends CarryableStorage {
     items.add(oakPlankStack);
     items.add(teakPlankStack);
     items.add(mahoganyPlankStack);
-  }
-
-  @Override
-  public void reset() {
-    plankStack.setQuantity(0);
-    lastUpdated = -1;
-    enable();
   }
 
   @Override
@@ -80,40 +75,5 @@ public class PlankSack extends CarryableStorage {
     mahoganyPlankStack.setQuantity(NumberUtils.toInt(matcher.group(4)));
     lastUpdated = System.currentTimeMillis();
     return true;
-  }
-
-  @Override
-  public void save(ConfigManager configManager, String managerConfigKey) {
-    String data =
-        getLastUpdated()
-            + ";"
-            + items.stream().map(item -> "" + item.getQuantity()).collect(Collectors.joining(";"));
-
-    configManager.setRSProfileConfiguration(
-        DudeWheresMyStuffConfig.CONFIG_GROUP, managerConfigKey + "." + type.getConfigKey(), data);
-  }
-
-  @Override
-  public void load(ConfigManager configManager, String managerConfigKey, String profileKey) {
-    String data =
-        configManager.getConfiguration(
-            DudeWheresMyStuffConfig.CONFIG_GROUP,
-            profileKey,
-            managerConfigKey + "." + type.getConfigKey(),
-            String.class);
-    if (data == null) {
-      return;
-    }
-
-    String[] dataSplit = data.split(";");
-    if (dataSplit.length != 5) {
-      return;
-    }
-
-    lastUpdated = NumberUtils.toLong(dataSplit[0], -1);
-    plankStack.setQuantity(NumberUtils.toLong(dataSplit[1], 0));
-    oakPlankStack.setQuantity(NumberUtils.toLong(dataSplit[2], 0));
-    teakPlankStack.setQuantity(NumberUtils.toLong(dataSplit[3], 0));
-    mahoganyPlankStack.setQuantity(NumberUtils.toLong(dataSplit[4], 0));
   }
 }

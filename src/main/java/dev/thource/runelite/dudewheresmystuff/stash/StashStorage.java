@@ -3,6 +3,7 @@ package dev.thource.runelite.dudewheresmystuff.stash;
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.ItemContainerWatcher;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
+import dev.thource.runelite.dudewheresmystuff.ItemStorage;
 import dev.thource.runelite.dudewheresmystuff.Storage;
 import java.util.Objects;
 import lombok.Getter;
@@ -12,7 +13,7 @@ import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement;
 
 /** StashStorage is responsible for tracking storages that the players STASH units. */
 @Getter
-public class StashStorage extends Storage<StashStorageType> {
+public class StashStorage extends ItemStorage<StashStorageType> {
 
   private final StashUnit stashUnit;
   private boolean handleWithdrawOnTick = false;

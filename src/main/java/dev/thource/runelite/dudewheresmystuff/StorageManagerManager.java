@@ -27,6 +27,7 @@ import net.runelite.api.events.ItemDespawned;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.WidgetClosed;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.client.config.ConfigManager;
 
 @Getter
 public class StorageManagerManager {
@@ -42,6 +43,7 @@ public class StorageManagerManager {
   @Getter() private final List<StorageManager<?, ?>> storageManagers;
 
   private final DudeWheresMyStuffPlugin plugin;
+  private final ConfigManager configManager;
 
   @SuppressWarnings("java:S107")
   StorageManagerManager(
@@ -54,6 +56,7 @@ public class StorageManagerManager {
       PlayerOwnedHouseStorageManager playerOwnedHouseStorageManager,
       WorldStorageManager worldStorageManager) {
     this.plugin = plugin;
+    this.configManager = carryableStorageManager.getConfigManager();
     this.carryableStorageManager = carryableStorageManager;
     this.coinsStorageManager = coinsStorageManager;
     this.deathStorageManager = deathStorageManager;
@@ -86,15 +89,7 @@ public class StorageManagerManager {
   }
 
   public void load() {
-    for (StorageManager<?, ?> storageManager : storageManagers) {
-      storageManager.load();
-
-      SwingUtilities.invokeLater(
-          () -> {
-            storageManager.getStorages().forEach(storage -> storage.getStoragePanel().update());
-            storageManager.getStorageTabPanel().reorderStoragePanels();
-          });
-    }
+    load(configManager.getRSProfileKey());
   }
 
   public void load(String profileKey) {
@@ -163,7 +158,7 @@ public class StorageManagerManager {
   }
 
   public List<ItemStack> getItems() {
-    return getStorages().map(Storage::getItems).flatMap(List::stream).collect(Collectors.toList());
+    return getStorages().filter(Storage::isEnabled).map(Storage::getItems).flatMap(List::stream).collect(Collectors.toList());
   }
 
   public void setItemSortMode(ItemSortMode itemSortMode) {

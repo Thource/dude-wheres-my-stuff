@@ -27,7 +27,7 @@ public class RunePouch extends CarryableStorage {
     Varbits.RUNE_POUCH_AMOUNT3,
     Varbits.RUNE_POUCH_AMOUNT4,
   };
-  private static final int MAX_RUNE_TYPES = 4;
+  private static final int MAX_RUNE_TYPES = runeTypeVarbits.length;
   private int[] runeTypes = new int[MAX_RUNE_TYPES];
   private int[] runeQuantities = new int[MAX_RUNE_TYPES];
 

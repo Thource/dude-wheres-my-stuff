@@ -35,7 +35,8 @@ public class DeathItems extends DeathStorage {
             Deathpile deathpile =
                 new Deathpile(
                     plugin,
-                    deathStorageManager.getPlayedMinutes(),
+                    true,
+                    deathStorageManager.getPlayedMinutes() + 59,
                     WorldPoint.fromLocalInstance(
                         plugin.getClient(),
                         Objects.requireNonNull(plugin.getClient().getLocalPlayer())

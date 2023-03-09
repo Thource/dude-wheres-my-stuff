@@ -2,6 +2,8 @@ package dev.thource.runelite.dudewheresmystuff.death;
 
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.DurationFormatter;
+import dev.thource.runelite.dudewheresmystuff.Saved;
+import java.util.UUID;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
@@ -16,15 +18,16 @@ import lombok.extern.slf4j.Slf4j;
 @Setter
 public class Deathbank extends DeathStorage {
 
-  private boolean locked = false;
-  private long lostAt = -1L;
+  @Saved(index = 3) public boolean locked = false;
+  @Saved(index = 4) public long lostAt = -1L;
+  @Saved(index = 5) public DeathbankType deathbankType;
   private DeathStorageManager deathStorageManager;
 
   Deathbank(
-      DeathStorageType deathStorageType,
+      DeathbankType deathbankType,
       DudeWheresMyStuffPlugin plugin,
       DeathStorageManager deathStorageManager) {
-    super(deathStorageType, plugin);
+    super(DeathStorageType.DEATHBANK, plugin);
 
     this.deathStorageManager = deathStorageManager;
   }
@@ -83,10 +86,7 @@ public class Deathbank extends DeathStorage {
 
   @Override
   public void reset() {
-    super.reset();
-    setType(DeathStorageType.UNKNOWN_DEATHBANK);
-    setLocked(false);
-    lostAt = -1L;
+    // deathbanks get removed instead of reset
   }
 
   @Override
@@ -99,5 +99,18 @@ public class Deathbank extends DeathStorage {
     }
 
     super.softUpdate();
+  }
+
+  static Deathbank load(DudeWheresMyStuffPlugin plugin, DeathStorageManager deathStorageManager, String profileKey, String uuid) {
+    Deathbank deathbank = new Deathbank(
+        DeathbankType.UNKNOWN,
+        plugin,
+        deathStorageManager
+    );
+
+    deathbank.uuid = UUID.fromString(uuid);
+    deathbank.load(deathStorageManager.getConfigManager(), deathStorageManager.getConfigKey(), profileKey);
+
+    return deathbank;
   }
 }
