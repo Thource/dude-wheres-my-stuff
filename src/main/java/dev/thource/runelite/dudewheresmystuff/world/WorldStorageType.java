@@ -35,7 +35,14 @@ public enum WorldStorageType implements StorageType {
   BLAST_FURNACE("Blast Furnace", -1, true, "blastfurnace", true, null),
   LOG_STORAGE("Log Storage", -1, false, "logstorage", true, null),
   FOSSIL_STORAGE("Fossil Storage", -1, true, "fossilstorage", true, null),
-  VYRE_WELL("Vyre Well", -1, true, "vyrewell", true, null);
+  VYRE_WELL("Vyre Well", -1, true, "vyrewell", true, null),
+  SEED_VAULT(
+      "Seed Vault",
+      InventoryID.SEED_VAULT.getId(),
+      false,
+      "seedvault",
+      true,
+      Collections.singletonList(AccountType.ULTIMATE_IRONMAN));
 
   private final String name;
   private final int itemContainerId;
