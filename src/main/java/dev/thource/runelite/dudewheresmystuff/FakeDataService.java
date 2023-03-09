@@ -214,6 +214,11 @@ class FakeDataService {
         PROFILE,
         "world.fossilstorage",
         "-1;10,4,5,6,4,3,2,34,23,12,5,4,6,45,3,43,23,21,12,4,6,4,11,16,1,2,7,9,4,8");
+    configManager.setConfiguration(
+        DudeWheresMyStuffConfig.CONFIG_GROUP,
+        PROFILE,
+        "world.vyrewell",
+        "-1;10000,3000000");
   }
 
   private static void createMinigamesData(ConfigManager configManager) {

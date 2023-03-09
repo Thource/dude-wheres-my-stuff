@@ -25,6 +25,7 @@ public class WorldStorageManager extends StorageManager<WorldStorageType, WorldS
     storages.add(new BlastFurnace(plugin));
     storages.add(new LogStorage(plugin));
     storages.add(new FossilStorage(plugin));
+    storages.add(new VyreWell(plugin));
   }
 
   @Override
