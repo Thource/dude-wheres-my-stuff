@@ -22,6 +22,7 @@ public class WorldStorageManager extends StorageManager<WorldStorageType, WorldS
     storages.add(leprechaun);
     storages.add(new WorldStorage(WorldStorageType.BANK, plugin));
     storages.add(new WorldStorage(WorldStorageType.GROUP_STORAGE, plugin));
+    storages.add(new WorldStorage(WorldStorageType.SEED_VAULT, plugin));
     storages.add(new BlastFurnace(plugin));
     storages.add(new LogStorage(plugin));
     storages.add(new FossilStorage(plugin));
