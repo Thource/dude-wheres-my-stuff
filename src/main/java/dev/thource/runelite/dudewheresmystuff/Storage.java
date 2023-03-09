@@ -143,6 +143,14 @@ public abstract class Storage<T extends StorageType> {
         return worldPoint.getX() + "," + worldPoint.getY() + "," + worldPoint.getPlane();
       }
 
+      if (field.getName().equals("lastUpdated")) {
+        long lastUpdated = (long) field.get(this);
+
+        lastUpdated = lastUpdated / 10000L * 10000L;
+
+        return Long.toString(lastUpdated);
+      }
+
       return field.get(this).toString();
     } catch (IllegalAccessException e) {
       log.error("Tried saving field " + field.getName() + " of " + this.getClass().getName() + " but received IllegalAccessException! ");
