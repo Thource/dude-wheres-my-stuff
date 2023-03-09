@@ -120,7 +120,9 @@ public class Menagerie extends PlayerOwnedHouseStorage {
             ItemID.LIL_CREATOR,
             ItemID.TINY_TEMPOR,
             ItemID.NEXLING,
-            ItemID.ABYSSAL_PROTECTOR));
+            ItemID.ABYSSAL_PROTECTOR,
+            ItemID.TUMEKENS_GUARDIAN,
+            ItemID.MUPHIN));
 
     VARPLAYER_BITS_TO_ITEM_IDS_LIST = builder.build();
   }
