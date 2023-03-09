@@ -308,6 +308,7 @@ public enum PlayerOwnedHouseStorageType implements StorageType {
           ItemID._3RD_AGE_FULL_HELMET,
           ItemID._3RD_AGE_KITESHIELD,
           ItemID._3RD_AGE_PLATELEGS,
+          ItemID._3RD_AGE_PLATESKIRT,
           ItemID._3RD_AGE_PLATEBODY,
           ItemID._3RD_AGE_RANGE_COIF,
           ItemID._3RD_AGE_RANGE_LEGS,
