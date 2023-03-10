@@ -570,7 +570,8 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
                         && s.getType() != CarryableStorageType.LOOTING_BAG
                         && s.getType() != CarryableStorageType.RUNE_POUCH
                         && s.getType() != CarryableStorageType.BOTTOMLESS_BUCKET
-                        && s.getType() != CarryableStorageType.PLANK_SACK)
+                        && s.getType() != CarryableStorageType.PLANK_SACK
+                        && s.getType() != CarryableStorageType.BOLT_POUCH)
             .sorted(
                 Comparator.comparingInt(
                     s -> {
@@ -602,6 +603,11 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
             .filter(s -> s.getType() == CarryableStorageType.RUNE_POUCH)
             .findFirst()
             .ifPresent(runePouch -> runePouch.getItems().forEach(itemStacksIterator::add));
+      } else if (itemStack.getId() == ItemID.BOLT_POUCH) {
+        carryableStorageManager.getStorages().stream()
+            .filter(s -> s.getType() == CarryableStorageType.BOLT_POUCH)
+            .findFirst()
+            .ifPresent(boltPouch -> boltPouch.getItems().forEach(itemStacksIterator::add));
       } else if (itemStack.getId() == ItemID.LOOTING_BAG
           || itemStack.getId() == ItemID.LOOTING_BAG_22586) {
         lootingBagPresent = true;
