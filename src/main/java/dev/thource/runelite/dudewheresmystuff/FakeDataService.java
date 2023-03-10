@@ -191,6 +191,11 @@ class FakeDataService {
         PROFILE,
         "carryable.planksack",
         System.currentTimeMillis() - (1000 * 60 * 43) + ";0,0,0,21");
+    configManager.setConfiguration(
+        DudeWheresMyStuffConfig.CONFIG_GROUP,
+        PROFILE,
+        "carryable.boltpouch",
+        "-1;4740x301,21950x10000,8882x8080,9245x99");
   }
 
   private static void createWorldData(ConfigManager configManager) {
