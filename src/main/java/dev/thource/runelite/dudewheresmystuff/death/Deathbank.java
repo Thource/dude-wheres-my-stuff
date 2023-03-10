@@ -1,5 +1,6 @@
 package dev.thource.runelite.dudewheresmystuff.death;
 
+import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffConfig;
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.DurationFormatter;
 import dev.thource.runelite.dudewheresmystuff.Saved;
@@ -7,6 +8,7 @@ import java.util.UUID;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import lombok.Getter;
 import lombok.Setter;
@@ -29,12 +31,16 @@ public class Deathbank extends DeathStorage {
       DeathStorageManager deathStorageManager) {
     super(DeathStorageType.DEATHBANK, plugin);
 
+    this.deathbankType = deathbankType;
     this.deathStorageManager = deathStorageManager;
   }
 
   @Override
   protected void createStoragePanel() {
     super.createStoragePanel();
+
+    storagePanel.setTitle(deathbankType.getName());
+    storagePanel.setSubTitle(locked ? "Locked" : "Unlocked");
 
     if (!deathStorageManager.isPreviewManager()) {
       final JPopupMenu popupMenu = new JPopupMenu();
@@ -63,25 +69,26 @@ public class Deathbank extends DeathStorage {
                 deathStorageManager.clearDeathbank(false);
               } else {
                 deathStorageManager.getStorages().remove(this);
+                deathStorageManager.getConfigManager().unsetRSProfileConfiguration(
+                  DudeWheresMyStuffConfig.CONFIG_GROUP,
+                  this.getConfigKey(deathStorageManager.getConfigKey())
+                );
               }
               deathStorageManager.getStorageTabPanel().reorderStoragePanels();
-              deathStorageManager.save();
             }
           });
       popupMenu.add(clearDeathbank);
     }
   }
 
-  void setType(DeathStorageType type) {
-    this.type = type;
-
-    storagePanel.setTitle(type.getName());
-  }
-
   public void setLocked(boolean locked) {
     this.locked = locked;
 
-    storagePanel.setSubTitle(locked ? "Locked" : "Unlocked");
+    SwingUtilities.invokeLater(() -> {
+      if (storagePanel != null) {
+        storagePanel.setSubTitle(locked ? "Locked" : "Unlocked");
+      }
+    });
   }
 
   @Override

@@ -189,8 +189,16 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
   }
 
   void clearDeathbank(boolean wasLost) {
-    if (wasLost && deathbank != null) {
-      deathbank.setLostAt(System.currentTimeMillis());
+    if (deathbank != null) {
+      if (wasLost) {
+        deathbank.setLostAt(System.currentTimeMillis());
+      } else {
+        storages.remove(deathbank);
+        configManager.unsetRSProfileConfiguration(
+            DudeWheresMyStuffConfig.CONFIG_GROUP,
+            deathbank.getConfigKey(getConfigKey())
+        );
+      }
     }
 
     deathbank = null;
