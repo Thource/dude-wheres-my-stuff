@@ -7,6 +7,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.border.EmptyBorder;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.client.config.ConfigManager;
 
 public class DeathItems extends DeathStorage {
 
@@ -57,5 +58,15 @@ public class DeathItems extends DeathStorage {
     items.addAll(deathStorageManager.getDeathItems());
 
     storagePanel.update();
+  }
+
+  @Override
+  public void save(ConfigManager configManager, String managerConfigKey) {
+    // No saving
+  }
+
+  @Override
+  public void load(ConfigManager configManager, String managerConfigKey, String profileKey) {
+    // No loading
   }
 }

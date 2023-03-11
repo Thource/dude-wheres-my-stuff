@@ -18,29 +18,18 @@ public class CarryableStorageManager
   private CarryableStorageManager(DudeWheresMyStuffPlugin plugin) {
     super(plugin);
 
-    for (CarryableStorageType type : CarryableStorageType.values()) {
-      if (type == CarryableStorageType.RUNE_POUCH
-          || type == CarryableStorageType.LOOTING_BAG
-          || type == CarryableStorageType.SEED_BOX
-          || type == CarryableStorageType.BOTTOMLESS_BUCKET
-          || type == CarryableStorageType.PLANK_SACK
-          || type == CarryableStorageType.BOLT_POUCH
-          || type == CarryableStorageType.GNOMISH_FIRELIGHTER) {
-        continue;
-      }
-
-      storages.add(new CarryableStorage(type, plugin));
-    }
-
     bottomlessBucket = new BottomlessBucket(plugin);
 
-    storages.add(new RunePouch(plugin));
+    storages.add(new CarryableStorage(CarryableStorageType.EQUIPMENT, plugin));
+    storages.add(new CarryableStorage(CarryableStorageType.INVENTORY, plugin));
     storages.add(new LootingBag(plugin));
     storages.add(new SeedBox(plugin));
+    storages.add(new RunePouch(plugin));
     storages.add(bottomlessBucket);
     storages.add(new PlankSack(plugin));
     storages.add(new BoltPouch(plugin));
     storages.add(new GnomishFirelighter(plugin));
+    storages.add(new MasterScrollBook(plugin));
   }
 
   @Override
