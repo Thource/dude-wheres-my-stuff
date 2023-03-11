@@ -59,7 +59,7 @@ public class GnomishFirelighter extends CarryableStorage {
       itemStack = items.stream().filter(i -> i.getName().contains(matcher.group(2))).findFirst();
     }
 
-    if (itemStack.isEmpty()) {
+    if (!itemStack.isPresent()) {
       return false;
     }
 
