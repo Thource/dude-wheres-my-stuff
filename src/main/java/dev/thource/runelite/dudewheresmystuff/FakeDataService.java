@@ -196,6 +196,16 @@ class FakeDataService {
         PROFILE,
         "carryable.boltpouch",
         "-1;4740x301,21950x10000,8882x8080,9245x99");
+    configManager.setConfiguration(
+        DudeWheresMyStuffConfig.CONFIG_GROUP,
+        PROFILE,
+        "carryable.gnomishfirelighter",
+        System.currentTimeMillis() - (1000 * 60 * 60 * 3) + ";0,0,730,0,0");
+    configManager.setConfiguration(
+        DudeWheresMyStuffConfig.CONFIG_GROUP,
+        PROFILE,
+        "carryable.masterscrollbook",
+        "-1;1,12,32,40,2,32,43,5,9,8,4,24,57,100,28");
   }
 
   private static void createWorldData(ConfigManager configManager) {
@@ -224,6 +234,16 @@ class FakeDataService {
         PROFILE,
         "world.vyrewell",
         "-1;10000,3000000");
+    configManager.setConfiguration(
+        DudeWheresMyStuffConfig.CONFIG_GROUP,
+        PROFILE,
+        "world.annette",
+        "-1;82");
+    configManager.setConfiguration(
+        DudeWheresMyStuffConfig.CONFIG_GROUP,
+        PROFILE,
+        "world.elnock",
+        "-1;0,1,1,948");
   }
 
   private static void createMinigamesData(ConfigManager configManager) {
@@ -240,7 +260,7 @@ class FakeDataService {
         "minigames.lastmanstanding",
         System.currentTimeMillis() - (1000 * 60 * 60 * 5) + ";43");
     configManager.setConfiguration(
-        DudeWheresMyStuffConfig.CONFIG_GROUP, PROFILE, "minigames.nightmarezone", "-1;435645");
+        DudeWheresMyStuffConfig.CONFIG_GROUP, PROFILE, "minigames.nightmarezone", "-1;435645,12,8,120,30");
     configManager.setConfiguration(
         DudeWheresMyStuffConfig.CONFIG_GROUP,
         PROFILE,
@@ -256,5 +276,15 @@ class FakeDataService {
         PROFILE,
         "minigames.mahoganyhomes",
         System.currentTimeMillis() - (1000 * 60 * 23) + ";782");
+    configManager.setConfiguration(
+        DudeWheresMyStuffConfig.CONFIG_GROUP,
+        PROFILE,
+        "minigames.slayer",
+        "-1;1043");
+    configManager.setConfiguration(
+        DudeWheresMyStuffConfig.CONFIG_GROUP,
+        PROFILE,
+        "minigames.pestcontrol",
+        System.currentTimeMillis() - (1000 * 60 * 4) + ";1050");
   }
 }
