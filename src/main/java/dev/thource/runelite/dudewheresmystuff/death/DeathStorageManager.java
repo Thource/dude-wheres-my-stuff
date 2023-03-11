@@ -579,7 +579,8 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
                         && s.getType() != CarryableStorageType.RUNE_POUCH
                         && s.getType() != CarryableStorageType.BOTTOMLESS_BUCKET
                         && s.getType() != CarryableStorageType.PLANK_SACK
-                        && s.getType() != CarryableStorageType.BOLT_POUCH)
+                        && s.getType() != CarryableStorageType.BOLT_POUCH
+                        && s.getType() != CarryableStorageType.GNOMISH_FIRELIGHTER)
             .sorted(
                 Comparator.comparingInt(
                     s -> {
@@ -616,6 +617,11 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
             .filter(s -> s.getType() == CarryableStorageType.BOLT_POUCH)
             .findFirst()
             .ifPresent(boltPouch -> boltPouch.getItems().forEach(itemStacksIterator::add));
+      } else if (itemStack.getId() == ItemID.GNOMISH_FIRELIGHTER_20278) {
+        carryableStorageManager.getStorages().stream()
+            .filter(s -> s.getType() == CarryableStorageType.GNOMISH_FIRELIGHTER)
+            .findFirst()
+            .ifPresent(gnomishFirelighter -> gnomishFirelighter.getItems().forEach(itemStacksIterator::add));
       } else if (itemStack.getId() == ItemID.LOOTING_BAG
           || itemStack.getId() == ItemID.LOOTING_BAG_22586) {
         lootingBagPresent = true;

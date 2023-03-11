@@ -24,7 +24,8 @@ public class CarryableStorageManager
           || type == CarryableStorageType.SEED_BOX
           || type == CarryableStorageType.BOTTOMLESS_BUCKET
           || type == CarryableStorageType.PLANK_SACK
-          || type == CarryableStorageType.BOLT_POUCH) {
+          || type == CarryableStorageType.BOLT_POUCH
+          || type == CarryableStorageType.GNOMISH_FIRELIGHTER) {
         continue;
       }
 
@@ -39,6 +40,7 @@ public class CarryableStorageManager
     storages.add(bottomlessBucket);
     storages.add(new PlankSack(plugin));
     storages.add(new BoltPouch(plugin));
+    storages.add(new GnomishFirelighter(plugin));
   }
 
   @Override
