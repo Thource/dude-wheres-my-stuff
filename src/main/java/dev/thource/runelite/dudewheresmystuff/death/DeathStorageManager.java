@@ -580,7 +580,8 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
                         && s.getType() != CarryableStorageType.BOTTOMLESS_BUCKET
                         && s.getType() != CarryableStorageType.PLANK_SACK
                         && s.getType() != CarryableStorageType.BOLT_POUCH
-                        && s.getType() != CarryableStorageType.GNOMISH_FIRELIGHTER)
+                        && s.getType() != CarryableStorageType.GNOMISH_FIRELIGHTER
+                        && s.getType() != CarryableStorageType.MASTER_SCROLL_BOOK)
             .sorted(
                 Comparator.comparingInt(
                     s -> {
