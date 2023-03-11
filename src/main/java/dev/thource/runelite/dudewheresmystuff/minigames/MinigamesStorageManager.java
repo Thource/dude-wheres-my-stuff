@@ -22,6 +22,7 @@ public class MinigamesStorageManager
     storages.add(new NightmareZone(plugin));
     storages.add(new GuardiansOfTheRift(plugin));
     storages.add(new MahoganyHomes(plugin));
+    storages.add(new Slayer(plugin));
   }
 
   @Override
