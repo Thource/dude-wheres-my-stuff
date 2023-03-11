@@ -14,7 +14,7 @@ public enum MinigamesStorageType implements StorageType {
   TITHE_FARM("Tithe Farm", true, "tithefarm"),
   LAST_MAN_STANDING("Last Man Standing", false, "lastmanstanding"),
   NIGHTMARE_ZONE("Nightmare Zone", true, "nightmarezone"),
-  PEST_CONTROL("Pest Control", true, "pestcontrol"),
+  PEST_CONTROL("Pest Control", false, "pestcontrol"),
   BARBARIAN_ASSAULT("Barbarian Assault", true, "barbarianassault"),
   GUARDIANS_OF_THE_RIFT("Guardians of the Rift", false, "guardiansoftherift"),
   TEMPOROSS("Tempoross", true, "tempoross"),
