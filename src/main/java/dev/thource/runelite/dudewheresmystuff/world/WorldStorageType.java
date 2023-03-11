@@ -42,7 +42,8 @@ public enum WorldStorageType implements StorageType {
       false,
       "seedvault",
       true,
-      Collections.singletonList(AccountType.ULTIMATE_IRONMAN));
+      Collections.singletonList(AccountType.ULTIMATE_IRONMAN)),
+  ANNETTE("Annette", -1, true, "annette", true, null);
 
   private final String name;
   private final int itemContainerId;
