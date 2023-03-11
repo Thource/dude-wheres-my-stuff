@@ -44,7 +44,7 @@ public class ItemStack {
   @EqualsAndHashCode.Exclude @Setter private String name;
   @EqualsAndHashCode.Exclude private int gePrice;
   @EqualsAndHashCode.Exclude private int haPrice;
-  @EqualsAndHashCode.Exclude private boolean stackable;
+  @EqualsAndHashCode.Exclude @Setter private boolean stackable;
   @EqualsAndHashCode.Exclude private ItemIdentification itemIdentification;
 
   /**
