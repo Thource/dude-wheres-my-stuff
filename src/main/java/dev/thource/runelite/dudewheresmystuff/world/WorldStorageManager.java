@@ -28,6 +28,7 @@ public class WorldStorageManager extends StorageManager<WorldStorageType, WorldS
     storages.add(new FossilStorage(plugin));
     storages.add(new VyreWell(plugin));
     storages.add(new Annette(plugin));
+    storages.add(new ElnockInquisitor(plugin));
   }
 
   @Override
