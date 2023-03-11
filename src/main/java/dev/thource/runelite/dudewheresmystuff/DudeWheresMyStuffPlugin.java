@@ -175,14 +175,18 @@ public class DudeWheresMyStuffPlugin extends Plugin {
                         storageManager.getStorages().forEach(Storage::createStoragePanel));
           });
 
-      navButton = buildNavigationButton();
+      clientThread.invoke(() -> {
+        navButton = buildNavigationButton();
+      });
 
       ItemContainerWatcher.init(client, clientThread, itemManager);
     }
 
     reset(true);
 
-    clientToolbar.addNavigation(navButton);
+    clientThread.invoke(() -> {
+      clientToolbar.addNavigation(navButton);
+    });
 
     AtomicBoolean anyProfilesMigrated = new AtomicBoolean(false);
     getProfilesWithData().forEach(runeScapeProfile -> {
@@ -225,10 +229,12 @@ public class DudeWheresMyStuffPlugin extends Plugin {
       if (Objects.equals(configChanged.getKey(), "showEmptyStorages")) {
         panelContainer.reorderStoragePanels();
       } else if (Objects.equals(configChanged.getKey(), "sidebarIcon")) {
-        clientToolbar.removeNavigation(navButton);
+        clientThread.invoke(() -> {
+          clientToolbar.removeNavigation(navButton);
 
-        navButton = buildNavigationButton();
-        clientToolbar.addNavigation(navButton);
+          navButton = buildNavigationButton();
+          clientToolbar.addNavigation(navButton);
+        });
       } else if (Objects.equals(configChanged.getKey(), "itemSortMode")) {
         setItemSortMode(ItemSortMode.valueOf(configChanged.getNewValue()));
       }
