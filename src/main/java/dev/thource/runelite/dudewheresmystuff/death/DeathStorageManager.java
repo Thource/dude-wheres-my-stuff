@@ -126,7 +126,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
     if (deathbank == null) {
       deathbank = new Deathbank(deathbankType, plugin, this);
       storages.add(deathbank);
-      SwingUtilities.invokeLater(deathbank::createStoragePanel);
+      SwingUtilities.invokeLater(() -> deathbank.createStoragePanel(this));
     } else {
       deathbank.setDeathbankType(deathbankType);
       deathbank.getItems().clear();
@@ -194,10 +194,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
         deathbank.setLostAt(System.currentTimeMillis());
       } else {
         storages.remove(deathbank);
-        configManager.unsetRSProfileConfiguration(
-            DudeWheresMyStuffConfig.CONFIG_GROUP,
-            deathbank.getConfigKey(getConfigKey())
-        );
+        deathbank.deleteData(this);
       }
     }
 
@@ -283,7 +280,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
 
             deathbank = new Deathbank(type, plugin, this);
             storages.add(deathbank);
-            SwingUtilities.invokeLater(deathbank::createStoragePanel);
+            SwingUtilities.invokeLater(() -> deathbank.createStoragePanel(this));
             deathbank.setLastUpdated(System.currentTimeMillis());
             deathbank.setLocked(
                 type != DeathbankType.ZULRAH
@@ -426,7 +423,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
     if (deathbankType.isPresent()) {
       deathbank = new Deathbank(deathbankType.get(), plugin, this);
       storages.add(deathbank);
-      SwingUtilities.invokeLater(deathbank::createStoragePanel);
+      SwingUtilities.invokeLater(() -> deathbank.createStoragePanel(this));
       deathbank.setLastUpdated(System.currentTimeMillis());
       deathbank.setLocked(
           deathbankType.get() != DeathbankType.ZULRAH
@@ -437,7 +434,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
       if (client.getAccountType() == AccountType.ULTIMATE_IRONMAN) {
         Deathpile deathpile =
             new Deathpile(plugin, true, getPlayedMinutes() + 59, deathLocation, this, deathItems);
-        SwingUtilities.invokeLater(deathpile::createStoragePanel);
+        SwingUtilities.invokeLater(() -> deathpile.createStoragePanel(this));
         storages.add(deathpile);
       }
     }
@@ -660,7 +657,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
     oldInventoryItems = null;
     storages.clear();
     DeathItems deathItemsStorage = new DeathItems(plugin, this);
-    SwingUtilities.invokeLater(deathItemsStorage::createStoragePanel);
+    SwingUtilities.invokeLater(() -> deathItemsStorage.createStoragePanel(this));
     storages.add(deathItemsStorage);
     clearDeathbank(false);
     enable();
@@ -695,7 +692,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
         getConfigKey() + "." + DeathStorageType.DEATHPILE.getConfigKey() + ".")) {
       Deathpile deathpile = Deathpile.load(plugin, this, profileKey,
           configurationKey.split("\\.")[2]);
-      SwingUtilities.invokeLater(deathpile::createStoragePanel);
+      SwingUtilities.invokeLater(() -> deathpile.createStoragePanel(this));
       storages.add(deathpile);
     }
 
@@ -708,7 +705,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
         profileKey,
         getConfigKey() + "." + DeathStorageType.DEATHBANK.getConfigKey() + ".")) {
       Deathbank deathbank = Deathbank.load(plugin, this, profileKey, configurationKey.split("\\.")[2]);
-      SwingUtilities.invokeLater(deathbank::createStoragePanel);
+      SwingUtilities.invokeLater(() -> deathbank.createStoragePanel(this));
       if (deathbank.lostAt == -1L) {
         this.deathbank = deathbank;
       }

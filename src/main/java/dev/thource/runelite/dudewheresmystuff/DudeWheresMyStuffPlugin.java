@@ -94,7 +94,7 @@ public class DudeWheresMyStuffPlugin extends Plugin {
   private NavigationButton navButton;
   private ClientState clientState = ClientState.LOGGED_OUT;
   private boolean pluginStartedAlreadyLoggedIn;
-  private String previewProfileKey;
+  @Getter private String previewProfileKey;
 
   public Stream<RuneScapeProfile> getProfilesWithData() {
     return configManager
@@ -166,13 +166,13 @@ public class DudeWheresMyStuffPlugin extends Plugin {
                 .getStorageManagers()
                 .forEach(
                     storageManager ->
-                        storageManager.getStorages().forEach(Storage::createStoragePanel));
+                        storageManager.getStorages().forEach(o -> o.createStoragePanel(storageManager)));
 
             previewStorageManagerManager
                 .getStorageManagers()
                 .forEach(
                     storageManager ->
-                        storageManager.getStorages().forEach(Storage::createStoragePanel));
+                        storageManager.getStorages().forEach(o -> o.createStoragePanel(storageManager)));
           });
 
       clientThread.invoke(() -> {
@@ -471,10 +471,6 @@ public class DudeWheresMyStuffPlugin extends Plugin {
 
           panelContainer.enablePreviewMode();
         });
-  }
-
-  public boolean isPreviewModeEnabled() {
-    return this.previewProfileKey != null;
   }
 
   public void setItemSortMode(ItemSortMode itemSortMode) {
