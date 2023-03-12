@@ -4,7 +4,7 @@ import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.ItemContainerWatcher;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
 import dev.thource.runelite.dudewheresmystuff.ItemStorage;
-import dev.thource.runelite.dudewheresmystuff.Storage;
+import dev.thource.runelite.dudewheresmystuff.StorageManager;
 import java.util.Objects;
 import lombok.Getter;
 import net.runelite.api.ChatMessageType;
@@ -25,10 +25,12 @@ public class StashStorage extends ItemStorage<StashStorageType> {
   }
 
   @Override
-  protected void createStoragePanel() {
-    super.createStoragePanel();
+  protected void createStoragePanel(StorageManager<?, ?> storageManager) {
+    super.createStoragePanel(storageManager);
 
     storagePanel.setTitleToolTip(stashUnit.getChartText());
+
+    createComponentPopupMenu(storageManager);
   }
 
   @Override

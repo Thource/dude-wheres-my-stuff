@@ -1,18 +1,23 @@
 package dev.thource.runelite.dudewheresmystuff;
 
 import dev.thource.runelite.dudewheresmystuff.death.DeathbankType;
+import dev.thource.runelite.dudewheresmystuff.death.Deathpile;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.annotation.Nullable;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
+import javax.swing.border.EmptyBorder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -24,8 +29,6 @@ import net.runelite.api.events.WidgetClosed;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.vars.AccountType;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.ui.overlay.worldmap.WorldMapPoint;
-import org.apache.commons.lang3.math.NumberUtils;
 
 /** Storage serves as a base class for all trackable data in the plugin. */
 @Slf4j
@@ -43,8 +46,58 @@ public abstract class Storage<T extends StorageType> {
     this.plugin = plugin;
   }
 
-  protected void createStoragePanel() {
+  protected void createComponentPopupMenu(StorageManager<?, ?> storageManager) {
+    if (type.isAutomatic()) {
+      return;
+    }
+
+    final JPopupMenu popupMenu = new JPopupMenu();
+    popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
+    storagePanel.setComponentPopupMenu(popupMenu);
+
+    final JMenuItem reset = new JMenuItem("Reset");
+    reset.addActionListener(
+        e -> {
+          int result = JOptionPane.CANCEL_OPTION;
+
+          try {
+            result =
+                JOptionPane.showConfirmDialog(
+                    storagePanel,
+                    "Are you sure you want to reset your " + type.getName() + " data?\nThis cannot be undone.",
+                    "Confirm reset",
+                    JOptionPane.OK_CANCEL_OPTION,
+                    JOptionPane.WARNING_MESSAGE);
+          } catch (Exception err) {
+            log.warn("Unexpected exception occurred while check for confirm required", err);
+          }
+
+          if (result == JOptionPane.OK_OPTION) {
+            deleteData(storageManager);
+            storagePanel.update();
+            softUpdate();
+            storageManager.getStorageTabPanel().reorderStoragePanels();
+          }
+        });
+    popupMenu.add(reset);
+  }
+
+  public void deleteData(StorageManager<?, ?> storageManager) {
+    String profileKey = storageManager.isPreviewManager() ? plugin.getPreviewProfileKey()
+        : storageManager.getConfigManager().getRSProfileKey();
+
+    storageManager.getConfigManager().unsetConfiguration(
+        DudeWheresMyStuffConfig.CONFIG_GROUP,
+        profileKey,
+        getConfigKey(storageManager.getConfigKey())
+    );
+    reset();
+  }
+
+  protected void createStoragePanel(StorageManager<?, ?> storageManager) {
     storagePanel = new StoragePanel(plugin, this, true, false);
+
+    createComponentPopupMenu(storageManager);
   }
 
   public long getTotalValue() {

@@ -1,11 +1,11 @@
 package dev.thource.runelite.dudewheresmystuff.death;
 
-import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffConfig;
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.DurationFormatter;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
 import dev.thource.runelite.dudewheresmystuff.Region;
 import dev.thource.runelite.dudewheresmystuff.Saved;
+import dev.thource.runelite.dudewheresmystuff.StorageManager;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -49,8 +49,8 @@ public class Deathpile extends DeathStorage {
   }
 
   @Override
-  protected void createStoragePanel() {
-    super.createStoragePanel();
+  protected void createStoragePanel(StorageManager<?, ?> storageManager) {
+    super.createStoragePanel(storageManager);
 
     Region region = Region.get(worldPoint.getRegionID());
     if (region == null) {
@@ -59,37 +59,40 @@ public class Deathpile extends DeathStorage {
       storagePanel.setSubTitle(region.getName());
     }
 
-    if (!deathStorageManager.isPreviewManager()) {
-      final JPopupMenu popupMenu = new JPopupMenu();
-      popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
-      storagePanel.setComponentPopupMenu(popupMenu);
+    createComponentPopupMenu(storageManager);
+  }
 
-      final JMenuItem deleteDeathpile = new JMenuItem("Delete Deathpile");
-      deleteDeathpile.addActionListener(
-          e -> {
-            int result = JOptionPane.OK_OPTION;
+  @Override
+  protected void createComponentPopupMenu(StorageManager<?, ?> storageManager) {
+    final JPopupMenu popupMenu = new JPopupMenu();
+    popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
+    storagePanel.setComponentPopupMenu(popupMenu);
 
-            try {
-              result =
-                  JOptionPane.showConfirmDialog(
-                      storagePanel,
-                      "Are you sure you want to delete this deathpile?\nThis cannot be undone.",
-                      "Confirm deletion",
-                      JOptionPane.OK_CANCEL_OPTION,
-                      JOptionPane.WARNING_MESSAGE);
-            } catch (Exception err) {
-              log.warn("Unexpected exception occurred while check for confirm required", err);
-            }
+    final JMenuItem deleteDeathpile = new JMenuItem("Delete Deathpile");
+    deleteDeathpile.addActionListener(
+        e -> {
+          int result = JOptionPane.CANCEL_OPTION;
 
-            if (result == JOptionPane.OK_OPTION) {
-              deathStorageManager.getStorages().remove(this);
-              deathStorageManager.refreshMapPoints();
-              deathStorageManager.getStorageTabPanel().reorderStoragePanels();
-              deathStorageManager.save();
-            }
-          });
-      popupMenu.add(deleteDeathpile);
-    }
+          try {
+            result =
+                JOptionPane.showConfirmDialog(
+                    storagePanel,
+                    "Are you sure you want to delete this deathpile?\nThis cannot be undone.",
+                    "Confirm deletion",
+                    JOptionPane.OK_CANCEL_OPTION,
+                    JOptionPane.WARNING_MESSAGE);
+          } catch (Exception err) {
+            log.warn("Unexpected exception occurred while check for confirm required", err);
+          }
+
+          if (result == JOptionPane.OK_OPTION) {
+            deathStorageManager.getStorages().remove(this);
+            deathStorageManager.refreshMapPoints();
+            deathStorageManager.getStorageTabPanel().reorderStoragePanels();
+            deleteData(deathStorageManager);
+          }
+        });
+    popupMenu.add(deleteDeathpile);
   }
 
   @Override
