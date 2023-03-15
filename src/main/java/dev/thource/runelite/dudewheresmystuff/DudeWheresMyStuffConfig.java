@@ -27,6 +27,21 @@ public interface DudeWheresMyStuffConfig extends Config {
   }
 
   @ConfigItem(
+      keyName = "deathpilesUseAccountPlayTime",
+      name = "Cross-client deathpile tracking",
+      description = "When enabled, deathpile expiry will be based on account play time, this means "
+          + "that if you play for 5 minutes on another client (like mobile) your deathpile timer "
+          + "will still be accurate.<br><br>Using this option requires you to set your quest tab "
+          + "to the \"Character summary\" tab (brown star icon) once per login. With this option "
+          + "enabled, an infobox will be displayed prompting you to swap to the \"Character "
+          + "summary\" tab when the plugin doesn't know your play time.<br><br>If the plugin "
+          + "doesn't know your play time at the time of your death, the deathpile will default to "
+          + "non cross-client tracking mode.")
+  default boolean deathpilesUseAccountPlayTime() {
+    return false;
+  }
+
+  @ConfigItem(
       keyName = "itemSortMode",
       name = "Item Sort Mode",
       description = "Which mode to use when sorting items",

@@ -14,6 +14,7 @@ import dev.thource.runelite.dudewheresmystuff.carryable.CarryableStorageManager;
 import dev.thource.runelite.dudewheresmystuff.carryable.CarryableStorageType;
 import dev.thource.runelite.dudewheresmystuff.coins.CoinsStorageManager;
 import dev.thource.runelite.dudewheresmystuff.coins.CoinsStorageType;
+import java.awt.Color;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
@@ -46,7 +47,9 @@ import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.ItemDespawned;
 import net.runelite.api.vars.AccountType;
 import net.runelite.api.widgets.Widget;
+import net.runelite.client.ui.overlay.infobox.InfoBox;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
+import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
 
 /** DeathStorageManager is responsible for managing all DeathStorages. */
@@ -72,15 +75,19 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
   @Setter private CarryableStorageManager carryableStorageManager;
   @Setter private CoinsStorageManager coinsStorageManager;
   @Inject private WorldMapPointManager worldMapPointManager;
-  @Setter private int startPlayedMinutes = -1;
+  @Getter @Setter private int startPlayedMinutes = -1;
   private boolean dying;
   private WorldPoint deathLocation;
   private List<ItemStack> deathItems;
   private Item[] oldInventoryItems;
+  private final InfoBox playTimeInfoBox = new CheckPlayTimeInfoBox(plugin);
 
   @Inject
   private DeathStorageManager(DudeWheresMyStuffPlugin plugin) {
     super(plugin);
+
+    playTimeInfoBox.setTooltip("Navigate to the quest tab and swap to the Character Summary tab "
+        + "(brown star) to track cross-client deathpiles.");
 
     storages.add(new DeathItems(plugin, this));
   }
@@ -212,6 +219,8 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
 
   @Override
   public void onGameTick() {
+    super.onGameTick();
+
     boolean updated = false;
 
     int playedMinutes = client.getVarcIntValue(526);
@@ -220,10 +229,14 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
         refreshMapPoints();
       }
 
+      SwingUtilities.invokeLater(storageTabPanel::reorderStoragePanels);
+
       startPlayedMinutes = playedMinutes;
       startMs = System.currentTimeMillis();
     }
-    if (startPlayedMinutes == -1) {
+    refreshInfoBox();
+
+    if (startPlayedMinutes <= 0) {
       return;
     }
 
@@ -257,6 +270,15 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
     if (updated) {
       updateStorages(storages);
     }
+  }
+
+  public void refreshInfoBox() {
+    plugin.getInfoBoxManager().removeInfoBox(playTimeInfoBox);
+    if (startPlayedMinutes > 0 || !plugin.getConfig().deathpilesUseAccountPlayTime()) {
+      return;
+    }
+
+    plugin.getInfoBoxManager().addInfoBox(playTimeInfoBox);
   }
 
   private boolean checkItemsLostOnDeathWindow() {
@@ -432,14 +454,19 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
       deathbank.getItems().addAll(deathItems);
     } else {
       if (client.getAccountType() == AccountType.ULTIMATE_IRONMAN) {
-        Deathpile deathpile =
-            new Deathpile(plugin, true, getPlayedMinutes() + 59, deathLocation, this, deathItems);
-        SwingUtilities.invokeLater(() -> deathpile.createStoragePanel(this));
-        storages.add(deathpile);
+        createDeathpile(deathLocation, deathItems);
       }
     }
 
     refreshMapPoints();
+  }
+
+  void createDeathpile(WorldPoint location, List<ItemStack> items) {
+    boolean useAccountPlayTime = deathpilesUseAccountPlayTime();
+    int expiryTime = useAccountPlayTime ? getPlayedMinutes() + 59 : 5900;
+    Deathpile deathpile = new Deathpile(plugin, useAccountPlayTime, expiryTime, location, this, items);
+    SwingUtilities.invokeLater(() -> deathpile.createStoragePanel(this));
+    storages.add(deathpile);
   }
 
   private Optional<DeathbankType> getDeathbankType(Region deathRegion) {
@@ -711,5 +738,9 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
       }
       storages.add(deathbank);
     }
+  }
+
+  boolean deathpilesUseAccountPlayTime() {
+    return plugin.getConfig().deathpilesUseAccountPlayTime() && startPlayedMinutes != 0;
   }
 }

@@ -62,7 +62,7 @@ public class StoragePanel extends JPanel {
   private final JLabel priceLabel;
   private final JPanel itemContainer = new JPanel();
   private final JPanel footerPanel = new JPanel();
-  private final JLabel footerLabel = new JLabel();
+  @Getter private final JLabel footerLabel = new JLabel();
   private final transient DudeWheresMyStuffPlugin plugin;
   @Getter private final transient Storage<?> storage;
   private final boolean displayEmptyStacks;

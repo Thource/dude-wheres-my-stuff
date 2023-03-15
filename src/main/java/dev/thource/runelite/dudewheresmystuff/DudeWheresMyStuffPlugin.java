@@ -47,6 +47,7 @@ import net.runelite.client.plugins.itemidentification.ItemIdentificationConfig;
 import net.runelite.client.plugins.itemidentification.ItemIdentificationPlugin;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
+import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 /**
  * DudeWheresMyStuffPlugin is a RuneLite plugin designed to help accounts of all types find their
@@ -69,6 +70,7 @@ public class DudeWheresMyStuffPlugin extends Plugin {
   @Inject private ClientToolbar clientToolbar;
   @Getter @Inject private Client client;
   @Getter @Inject private ClientThread clientThread;
+  @Getter @Inject private InfoBoxManager infoBoxManager;
   @Getter @Inject private ItemManager itemManager;
   @Getter @Inject private DudeWheresMyStuffConfig config;
   @Inject private ConfigManager configManager;
@@ -205,6 +207,8 @@ public class DudeWheresMyStuffPlugin extends Plugin {
     } else if (client.getGameState() == GameState.LOGGING_IN) {
       clientState = ClientState.LOGGING_IN;
     }
+
+    deathStorageManager.refreshInfoBox();
   }
 
   private void reset(boolean fullReset) {
@@ -221,23 +225,34 @@ public class DudeWheresMyStuffPlugin extends Plugin {
   @Override
   protected void shutDown() {
     clientToolbar.removeNavigation(navButton);
+
+    infoBoxManager.removeIf(infoBox -> infoBox.getName().startsWith(this.getClass().getSimpleName()));
   }
 
   @Subscribe
   public void onConfigChanged(ConfigChanged configChanged) {
-    if (Objects.equals(configChanged.getGroup(), DudeWheresMyStuffConfig.CONFIG_GROUP)) {
-      if (Objects.equals(configChanged.getKey(), "showEmptyStorages")) {
+    if (!Objects.equals(configChanged.getGroup(), DudeWheresMyStuffConfig.CONFIG_GROUP)) {
+      return;
+    }
+
+    switch (configChanged.getKey()) {
+      case "showEmptyStorages":
         panelContainer.reorderStoragePanels();
-      } else if (Objects.equals(configChanged.getKey(), "sidebarIcon")) {
+        break;
+      case "sidebarIcon":
         clientThread.invoke(() -> {
           clientToolbar.removeNavigation(navButton);
 
           navButton = buildNavigationButton();
           clientToolbar.addNavigation(navButton);
         });
-      } else if (Objects.equals(configChanged.getKey(), "itemSortMode")) {
+        break;
+      case "itemSortMode":
         setItemSortMode(ItemSortMode.valueOf(configChanged.getNewValue()));
-      }
+        break;
+      case "deathpilesUseAccountPlayTime":
+        deathStorageManager.refreshInfoBox();
+        break;
     }
   }
 

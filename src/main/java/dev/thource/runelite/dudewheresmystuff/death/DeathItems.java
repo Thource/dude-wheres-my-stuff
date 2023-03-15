@@ -42,19 +42,9 @@ public class DeathItems extends DeathStorage {
     final JMenuItem createDeathpile = new JMenuItem("Create Deathpile");
     createDeathpile.addActionListener(
         e -> {
-          Deathpile deathpile =
-              new Deathpile(
-                  plugin,
-                  true,
-                  deathStorageManager.getPlayedMinutes() + 59,
-                  WorldPoint.fromLocalInstance(
-                      plugin.getClient(),
-                      Objects.requireNonNull(plugin.getClient().getLocalPlayer())
-                          .getLocalLocation()),
-                  deathStorageManager,
-                  items);
-          deathpile.createStoragePanel(deathStorageManager);
-          deathStorageManager.getStorages().add(deathpile);
+          WorldPoint location =
+              Objects.requireNonNull(plugin.getClient().getLocalPlayer()).getWorldLocation();
+          deathStorageManager.createDeathpile(location, items);
           deathStorageManager.getStorageTabPanel().reorderStoragePanels();
         });
     popupMenu.add(createDeathpile);
