@@ -9,14 +9,18 @@ import dev.thource.runelite.dudewheresmystuff.StorageManager;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.client.util.ImageUtil;
 
 /** Deathpile is responsible for tracking the player's deathpiled items. */
 @Getter
@@ -30,8 +34,11 @@ public class Deathpile extends DeathStorage {
   // when useAccountPlayTime is false, expiryTime is the amount of ticks left until
   // the deathpile expires, ticking down only while the player is logged in.
   @Saved(index = 5) public int expiryTime;
+  @Saved(index = 6) public long expiredAt = -1L;
   @Setter protected DeathWorldMapPoint worldMapPoint;
   private final DeathStorageManager deathStorageManager;
+  private final static ImageIcon warningIcon =
+      new ImageIcon(ImageUtil.loadImageResource(DudeWheresMyStuffPlugin.class, "warning.png"));
 
   Deathpile(
       DudeWheresMyStuffPlugin plugin,
@@ -57,6 +64,16 @@ public class Deathpile extends DeathStorage {
       storagePanel.setSubTitle("Unknown");
     } else {
       storagePanel.setSubTitle(region.getName());
+    }
+
+    if (!useAccountPlayTime && expiredAt == -1L) {
+      JLabel footerLabel = storagePanel.getFooterLabel();
+      footerLabel.setIconTextGap(66);
+      footerLabel.setHorizontalTextPosition(SwingConstants.LEFT);
+      footerLabel.setIcon(warningIcon);
+      footerLabel.setToolTipText("This deathpile is using tick-based tracking, which means that "
+          + "the timer could be out of sync. To use the more accurate play time based timers, "
+          + "enable cross-client timers in the plugin settings.");
     }
 
     createComponentPopupMenu(storageManager);
@@ -96,19 +113,49 @@ public class Deathpile extends DeathStorage {
   }
 
   @Override
+  public boolean onGameTick() {
+    if (expiredAt == -1L) {
+      if (useAccountPlayTime) {
+        if (deathStorageManager.getStartPlayedMinutes() > 0 &&
+            deathStorageManager.getPlayedMinutes() >= expiryTime) {
+          expiredAt = System.currentTimeMillis();
+
+          return true;
+        }
+      } else {
+        expiryTime--;
+
+        if (expiryTime <= 0) {
+          expiredAt = System.currentTimeMillis();
+
+          JLabel footerLabel = storagePanel.getFooterLabel();
+          footerLabel.setIcon(null);
+          footerLabel.setToolTipText(null);
+        }
+
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  @Override
   public void reset() {
     // deathpiles get removed instead of reset
   }
 
   String getExpireText() {
-    String expireText = "Expire";
-    long timeUntilExpiry = getExpiryMs() - System.currentTimeMillis();
-    if (timeUntilExpiry < 0) {
-      expireText += "d " + DurationFormatter.format(Math.abs(timeUntilExpiry)) + " ago";
-    } else {
-      expireText += "s in " + DurationFormatter.format(Math.abs(timeUntilExpiry));
+    if (expiredAt != -1L) {
+      return "Expired " + DurationFormatter.format(System.currentTimeMillis() - expiredAt) +
+          " ago";
     }
-    return expireText;
+
+    if (useAccountPlayTime && deathStorageManager.getStartPlayedMinutes() <= 0) {
+      return "Waiting for play time";
+    }
+
+    return "Expires in " + DurationFormatter.format(getExpiryMs() - System.currentTimeMillis());
   }
 
   /**
@@ -119,18 +166,27 @@ public class Deathpile extends DeathStorage {
    * @return Unix timestamp of the expiry
    */
   public long getExpiryMs() {
-    if (useAccountPlayTime) {
-      int minutesLeft = expiryTime - deathStorageManager.getPlayedMinutes();
-      if (deathStorageManager.isPreviewManager()) {
-        return System.currentTimeMillis() + (minutesLeft * 60000L);
-      }
-
-      return System.currentTimeMillis()
-          + (minutesLeft * 60000L)
-          - ((System.currentTimeMillis() - deathStorageManager.startMs) % 60000);
+    if (expiredAt != -1L) {
+      return expiredAt;
     }
 
-    return System.currentTimeMillis() + (expiryTime * 600L);
+    if (!useAccountPlayTime) {
+      return System.currentTimeMillis() + (expiryTime * 600L);
+    }
+
+    // We don't know the player's play time yet, so assume they're fresh for sorting purposes
+    if (deathStorageManager.getStartPlayedMinutes() <= 0) {
+      return System.currentTimeMillis() + 3_540_000;
+    }
+
+    int minutesLeft = expiryTime - deathStorageManager.getPlayedMinutes();
+    if (deathStorageManager.isPreviewManager()) {
+      return System.currentTimeMillis() + (minutesLeft * 60000L);
+    }
+
+    return System.currentTimeMillis()
+        + (minutesLeft * 60000L)
+        - ((System.currentTimeMillis() - deathStorageManager.startMs) % 60000);
   }
 
   public boolean hasExpired() {

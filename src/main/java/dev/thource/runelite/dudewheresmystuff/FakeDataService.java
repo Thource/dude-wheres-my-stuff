@@ -86,19 +86,23 @@ class FakeDataService {
         DudeWheresMyStuffConfig.CONFIG_GROUP,
         PROFILE,
         "death.deathpile.5d7f983f-3501-4010-8522-a45c3173ffb3",
-        "-1;995x26000000,5295x185,22875x3,5296x278,5343x19,952x15,7409x1,13353x1;5d7f983f-3501-4010-8522-a45c3173ffb3;3203,3824,0;true;400"
+        "-1;995x26000000,5295x185,22875x3,5296x278,5343x19,952x15,7409x1,13353x1;"
+            + "5d7f983f-3501-4010-8522-a45c3173ffb3;3203,3824,0;true;0;"
+            + (System.currentTimeMillis() - (1000 * 60 * 25))
     );
     configManager.setConfiguration(
         DudeWheresMyStuffConfig.CONFIG_GROUP,
         PROFILE,
         "death.deathpile.5a5d74b6-d279-4fa9-95e7-ee0c14f957d2",
-        "-1;562x7756,556x12148,560x5336,554x10885,3031x3789,168x642,2459x936,2999x272;5a5d74b6-d279-4fa9-95e7-ee0c14f957d2;2205,3212,0;true;555"
+        "-1;562x7756,556x12148,560x5336,554x10885,3031x3789,168x642,2459x936,2999x272;"
+            + "5a5d74b6-d279-4fa9-95e7-ee0c14f957d2;2205,3212,0;false;500"
     );
     configManager.setConfiguration(
         DudeWheresMyStuffConfig.CONFIG_GROUP,
         PROFILE,
         "death.deathpile.cebe31f5-0047-40c2-bddf-9f2f37a3664b",
-        "-1;1523,150x4838,142x1697,3031x3789,7937x144000,2362x1030,1618x155;cebe31f5-0047-40c2-bddf-9f2f37a3664b;3222,3218,0;true;589"
+        "-1;1523,150x4838,142x1697,3031x3789,7937x144000,2362x1030,1618x155;"
+            + "cebe31f5-0047-40c2-bddf-9f2f37a3664b;3222,3218,0;true;619"
     );
     configManager.setConfiguration(
         DudeWheresMyStuffConfig.CONFIG_GROUP,
@@ -110,7 +114,11 @@ class FakeDataService {
         DudeWheresMyStuffConfig.CONFIG_GROUP,
         PROFILE,
         "death.deathbank.b6dcb979-ad92-4641-8540-6efee365c629",
-        "1675972962178;4214x1,19675x1,2434x1,19564x1,148x6582,160x3548,24482x1,5295x79,5297x121,5296x588,5302x212,5298x92,5301x20,561x1135,560x4804,11865x1,6570x1,6585x1,12508x1,12954x1,10388x1,7462x1,11773x1,12851x1;b6dcb979-ad92-4641-8540-6efee365c629;false;1675972962178;HESPORI"
+        "1675972962178;4214x1,19675x1,2434x1,19564x1,148x6582,160x3548,24482x1,5295x79,"
+            + "5297x121,5296x588,5302x212,5298x92,5301x20,561x1135,560x4804,11865x1,6570x1,"
+            + "6585x1,12508x1,12954x1,10388x1,7462x1,11773x1,12851x1;"
+            + "b6dcb979-ad92-4641-8540-6efee365c629;false;"
+            + (System.currentTimeMillis() - (1000 * 60 * 60 * 24 * 9)) + ";HESPORI"
     );
   }
 
