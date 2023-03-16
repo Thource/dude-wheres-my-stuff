@@ -208,13 +208,14 @@ public class DudeWheresMyStuffPlugin extends Plugin {
       clientState = ClientState.LOGGING_IN;
     }
 
-    deathStorageManager.refreshInfoBox();
+    deathStorageManager.refreshInfoBoxes();
   }
 
   private void reset(boolean fullReset) {
     clientState = ClientState.LOGGED_OUT;
 
     ItemContainerWatcher.reset();
+    storageManagerManager.reset();
     if (fullReset) {
       panelContainer.reset();
     } else {
@@ -251,7 +252,8 @@ public class DudeWheresMyStuffPlugin extends Plugin {
         setItemSortMode(ItemSortMode.valueOf(configChanged.getNewValue()));
         break;
       case "deathpilesUseAccountPlayTime":
-        deathStorageManager.refreshInfoBox();
+      case "deathbankInfoBox":
+        deathStorageManager.refreshInfoBoxes();
         break;
     }
   }

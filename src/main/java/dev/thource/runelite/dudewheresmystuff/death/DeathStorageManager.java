@@ -14,7 +14,6 @@ import dev.thource.runelite.dudewheresmystuff.carryable.CarryableStorageManager;
 import dev.thource.runelite.dudewheresmystuff.carryable.CarryableStorageType;
 import dev.thource.runelite.dudewheresmystuff.coins.CoinsStorageManager;
 import dev.thource.runelite.dudewheresmystuff.coins.CoinsStorageType;
-import java.awt.Color;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
@@ -49,7 +48,6 @@ import net.runelite.api.vars.AccountType;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.ui.overlay.infobox.InfoBox;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
-import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
 
 /** DeathStorageManager is responsible for managing all DeathStorages. */
@@ -80,7 +78,8 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
   private WorldPoint deathLocation;
   private List<ItemStack> deathItems;
   private Item[] oldInventoryItems;
-  private final InfoBox playTimeInfoBox = new CheckPlayTimeInfoBox(plugin);
+  private final CheckPlayTimeInfoBox playTimeInfoBox = new CheckPlayTimeInfoBox(plugin);
+  private DeathbankInfoBox deathbankInfoBox;
 
   @Inject
   private DeathStorageManager(DudeWheresMyStuffPlugin plugin) {
@@ -234,7 +233,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
       startPlayedMinutes = playedMinutes;
       startMs = System.currentTimeMillis();
     }
-    refreshInfoBox();
+    refreshInfoBoxes();
 
     if (startPlayedMinutes <= 0) {
       return;
@@ -272,13 +271,40 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
     }
   }
 
-  public void refreshInfoBox() {
-    plugin.getInfoBoxManager().removeInfoBox(playTimeInfoBox);
-    if (startPlayedMinutes > 0 || !plugin.getConfig().deathpilesUseAccountPlayTime()) {
-      return;
+  public void refreshInfoBoxes() {
+    refreshCheckPlayTimeInfoBox();
+    refreshDeathbankInfoBox();
+  }
+
+  private void refreshDeathbankInfoBox() {
+    boolean showInfoBox = deathbank != null && plugin.getConfig().deathbankInfoBox();
+    boolean hasDeathbankChanged = (showInfoBox && deathbankInfoBox == null)
+        || (deathbankInfoBox != null && deathbankInfoBox.getDeathbank() != deathbank);
+    List<InfoBox> infoBoxes = plugin.getInfoBoxManager().getInfoBoxes();
+
+    if (deathbankInfoBox != null && (!showInfoBox || hasDeathbankChanged)
+        && infoBoxes.contains(deathbankInfoBox)) {
+      plugin.getInfoBoxManager().removeInfoBox(deathbankInfoBox);
     }
 
-    plugin.getInfoBoxManager().addInfoBox(playTimeInfoBox);
+    if (hasDeathbankChanged) {
+      deathbankInfoBox = deathbank == null ? null : new DeathbankInfoBox(plugin, deathbank);
+    }
+
+    if (showInfoBox && deathbankInfoBox != null && !infoBoxes.contains(deathbankInfoBox)) {
+      plugin.getInfoBoxManager().addInfoBox(deathbankInfoBox);
+    }
+  }
+
+  private void refreshCheckPlayTimeInfoBox() {
+    boolean showInfoBox = startPlayedMinutes <= 0 && plugin.getConfig().deathpilesUseAccountPlayTime();
+    boolean isAdded = plugin.getInfoBoxManager().getInfoBoxes().contains(playTimeInfoBox);
+
+    if (!showInfoBox && isAdded) {
+      plugin.getInfoBoxManager().removeInfoBox(playTimeInfoBox);
+    } else if (showInfoBox && !isAdded) {
+      plugin.getInfoBoxManager().addInfoBox(playTimeInfoBox);
+    }
   }
 
   private boolean checkItemsLostOnDeathWindow() {
@@ -686,7 +712,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
     DeathItems deathItemsStorage = new DeathItems(plugin, this);
     SwingUtilities.invokeLater(() -> deathItemsStorage.createStoragePanel(this));
     storages.add(deathItemsStorage);
-    clearDeathbank(false);
+    deathbank = null;
     enable();
     refreshMapPoints();
   }
