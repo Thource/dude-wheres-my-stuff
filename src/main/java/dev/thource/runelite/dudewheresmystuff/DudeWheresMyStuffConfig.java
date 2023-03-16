@@ -42,6 +42,15 @@ public interface DudeWheresMyStuffConfig extends Config {
   }
 
   @ConfigItem(
+      keyName = "deathbankInfoBox",
+      name = "Show infobox for deathbank",
+      description = "When enabled, an infobox will be displayed while you have an active "
+          + "deathbank.")
+  default boolean deathbankInfoBox() {
+    return true;
+  }
+
+  @ConfigItem(
       keyName = "itemSortMode",
       name = "Item Sort Mode",
       description = "Which mode to use when sorting items",
