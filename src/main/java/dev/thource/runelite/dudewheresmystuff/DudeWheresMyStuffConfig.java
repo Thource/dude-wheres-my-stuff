@@ -51,6 +51,14 @@ public interface DudeWheresMyStuffConfig extends Config {
   }
 
   @ConfigItem(
+      keyName = "deathpileInfoBox",
+      name = "Show infoboxes for deathpiles",
+      description = "When enabled, infoboxes will be displayed while you have active deathpiles.")
+  default boolean deathpileInfoBox() {
+    return true;
+  }
+
+  @ConfigItem(
       keyName = "itemSortMode",
       name = "Item Sort Mode",
       description = "Which mode to use when sorting items",

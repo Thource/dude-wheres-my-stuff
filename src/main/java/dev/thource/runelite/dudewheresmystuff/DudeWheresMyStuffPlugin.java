@@ -253,6 +253,7 @@ public class DudeWheresMyStuffPlugin extends Plugin {
         break;
       case "deathpilesUseAccountPlayTime":
       case "deathbankInfoBox":
+      case "deathpileInfoBox":
         deathStorageManager.refreshInfoBoxes();
         break;
     }

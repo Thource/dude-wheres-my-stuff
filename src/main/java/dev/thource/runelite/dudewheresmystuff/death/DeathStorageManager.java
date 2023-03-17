@@ -14,6 +14,7 @@ import dev.thource.runelite.dudewheresmystuff.carryable.CarryableStorageManager;
 import dev.thource.runelite.dudewheresmystuff.carryable.CarryableStorageType;
 import dev.thource.runelite.dudewheresmystuff.coins.CoinsStorageManager;
 import dev.thource.runelite.dudewheresmystuff.coins.CoinsStorageType;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
@@ -25,6 +26,7 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.annotation.Nullable;
 import javax.swing.SwingUtilities;
 import lombok.Getter;
@@ -47,6 +49,7 @@ import net.runelite.api.events.ItemDespawned;
 import net.runelite.api.vars.AccountType;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.ui.overlay.infobox.InfoBox;
+import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
 import net.runelite.client.util.Text;
 
@@ -80,6 +83,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
   private Item[] oldInventoryItems;
   private final CheckPlayTimeInfoBox playTimeInfoBox = new CheckPlayTimeInfoBox(plugin);
   private DeathbankInfoBox deathbankInfoBox;
+  private List<DeathpileInfoBox> deathpileInfoBoxes = new ArrayList<>();
 
   @Inject
   private DeathStorageManager(DudeWheresMyStuffPlugin plugin) {
@@ -232,6 +236,12 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
 
       startPlayedMinutes = playedMinutes;
       startMs = System.currentTimeMillis();
+
+      if (startPlayedMinutes > 0) {
+        getDeathpiles()
+            .filter(Deathpile::isUseAccountPlayTime)
+            .forEach(deathpile -> deathpile.getStoragePanel().getFooterLabel().setToolTipText(null));
+      }
     }
     refreshInfoBoxes();
 
@@ -271,9 +281,55 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
     }
   }
 
+  private Stream<Deathpile> getDeathpiles() {
+    return storages.stream()
+        .filter(Deathpile.class::isInstance)
+        .map(storage -> (Deathpile) storage);
+  }
+
   public void refreshInfoBoxes() {
     refreshCheckPlayTimeInfoBox();
     refreshDeathbankInfoBox();
+    refreshDeathpileInfoBoxes();
+  }
+
+  private void refreshDeathpileInfoBoxes() {
+    InfoBoxManager infoBoxManager = plugin.getInfoBoxManager();
+    List<InfoBox> currentInfoBoxes = infoBoxManager.getInfoBoxes();
+
+    ListIterator<DeathpileInfoBox> iterator = deathpileInfoBoxes.listIterator();
+    while (iterator.hasNext()) {
+      DeathpileInfoBox infoBox = iterator.next();
+
+      if (!storages.contains(infoBox.getDeathpile())) {
+        if (currentInfoBoxes.contains(infoBox)) {
+          infoBoxManager.removeInfoBox(infoBox);
+        }
+
+        iterator.remove();
+      }
+    }
+
+    getDeathpiles()
+        .filter(deathpile -> !deathpile.hasExpired())
+        .forEach(deathpile -> {
+          if (deathpileInfoBoxes.stream()
+              .noneMatch(infoBox -> infoBox.getDeathpile() == deathpile)) {
+            deathpileInfoBoxes.add(new DeathpileInfoBox(plugin, deathpile));
+          }
+        });
+
+    for (DeathpileInfoBox infoBox : deathpileInfoBoxes) {
+      if (plugin.getConfig().deathpileInfoBox()) {
+        if (!currentInfoBoxes.contains(infoBox)) {
+          infoBoxManager.addInfoBox(infoBox);
+        }
+      } else {
+        if (currentInfoBoxes.contains(infoBox)) {
+          infoBoxManager.removeInfoBox(infoBox);
+        }
+      }
+    }
   }
 
   private void refreshDeathbankInfoBox() {

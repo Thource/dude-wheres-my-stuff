@@ -66,14 +66,22 @@ public class Deathpile extends DeathStorage {
       storagePanel.setSubTitle(region.getName());
     }
 
-    if (!useAccountPlayTime && expiredAt == -1L) {
-      JLabel footerLabel = storagePanel.getFooterLabel();
-      footerLabel.setIconTextGap(66);
-      footerLabel.setHorizontalTextPosition(SwingConstants.LEFT);
-      footerLabel.setIcon(warningIcon);
-      footerLabel.setToolTipText("This deathpile is using tick-based tracking, which means that "
-          + "the timer could be out of sync. To use the more accurate play time based timers, "
-          + "enable cross-client timers in the plugin settings.");
+    JLabel footerLabel = storagePanel.getFooterLabel();
+    if (expiredAt == -1L) {
+      if (!useAccountPlayTime) {
+        footerLabel.setIconTextGap(66);
+        footerLabel.setHorizontalTextPosition(SwingConstants.LEFT);
+        footerLabel.setIcon(warningIcon);
+        footerLabel.setToolTipText(
+            "This deathpile is using tick-based tracking, which means that the timer could be out "
+                + "of sync. To use the more accurate play time based timers, enable cross-client "
+                + "timers in the plugin settings.");
+      } else if (deathStorageManager.getStartPlayedMinutes() <= 0) {
+        footerLabel.setToolTipText(
+            "This deathpile is using play time based tracking, but the plugin doesn't know what "
+                + "your current play time is. To update your play time, swap the quest interface "
+                + "to the \"Character summary\" tab (brown star).");
+      }
     }
 
     createComponentPopupMenu(storageManager);
