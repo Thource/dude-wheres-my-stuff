@@ -10,6 +10,8 @@ import dev.thource.runelite.dudewheresmystuff.playerownedhouse.PlayerOwnedHouseS
 import dev.thource.runelite.dudewheresmystuff.stash.StashStorageManager;
 import dev.thource.runelite.dudewheresmystuff.world.WorldStorageManager;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Stream;
 import javax.inject.Inject;
@@ -36,7 +38,9 @@ import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneScapeProfile;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ClientShutdown;
 import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.events.ConfigSync;
 import net.runelite.client.events.RuneScapeProfileChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
@@ -96,6 +100,7 @@ public class DudeWheresMyStuffPlugin extends Plugin {
   private NavigationButton navButton;
   private ClientState clientState = ClientState.LOGGED_OUT;
   private boolean pluginStartedAlreadyLoggedIn;
+  private String profileKey;
   @Getter private String previewProfileKey;
 
   public Stream<RuneScapeProfile> getProfilesWithData() {
@@ -225,9 +230,40 @@ public class DudeWheresMyStuffPlugin extends Plugin {
 
   @Override
   protected void shutDown() {
+    save();
+
     clientToolbar.removeNavigation(navButton);
 
     infoBoxManager.removeIf(infoBox -> infoBox.getName().startsWith(this.getClass().getSimpleName()));
+  }
+
+  @Subscribe
+  public void onConfigSync(ConfigSync configSync) {
+    save();
+  }
+
+  @Subscribe
+  public void onClientShutdown(ClientShutdown clientShutdown) {
+    save();
+  }
+
+  private void load(String profileKey) {
+    this.profileKey = profileKey;
+
+    clientThread.invokeLater(
+        () -> {
+          storageManagerManager.reset();
+          storageManagerManager.load(profileKey);
+          SwingUtilities.invokeLater(panelContainer.getPanel()::softUpdate);
+        });
+  }
+
+  private void save() {
+    if (profileKey == null) {
+      return;
+    }
+
+    storageManagerManager.save(profileKey);
   }
 
   @Subscribe
@@ -284,21 +320,15 @@ public class DudeWheresMyStuffPlugin extends Plugin {
 
   @Subscribe
   public void onRuneScapeProfileChanged(RuneScapeProfileChanged e) {
-    clientThread.invokeLater(
-        () -> {
-          storageManagerManager.reset();
-          storageManagerManager.load();
-          SwingUtilities.invokeLater(panelContainer.getPanel()::softUpdate);
-        });
+    save();
+    load(configManager.getRSProfileKey());
   }
 
   @Subscribe
   void onGameStateChanged(GameStateChanged gameStateChanged) {
     storageManagerManager.onGameStateChanged(gameStateChanged);
 
-    if (gameStateChanged.getGameState() == GameState.LOGIN_SCREEN) {
-      reset(false);
-    } else if (gameStateChanged.getGameState() == GameState.LOGGING_IN) {
+    if (gameStateChanged.getGameState() == GameState.LOGGING_IN) {
       clientState = ClientState.LOGGING_IN;
     }
   }
@@ -343,7 +373,7 @@ public class DudeWheresMyStuffPlugin extends Plugin {
       clientState = ClientState.LOGGED_IN;
 
       if (pluginStartedAlreadyLoggedIn) {
-        storageManagerManager.load();
+        load(configManager.getRSProfileKey());
 
         for (ItemContainer itemContainer : client.getItemContainers()) {
           onItemContainerChanged(new ItemContainerChanged(itemContainer.getId(), itemContainer));

@@ -230,8 +230,6 @@ public class Menagerie extends PlayerOwnedHouseStorage {
   }
 
   void rebuildPetsFromBits() {
-      lastUpdated = System.currentTimeMillis();
-
       varplayerItems.clear();
       int varpIndex = 0;
       for (List<Integer> itemIds : VARPLAYER_BITS_TO_ITEM_IDS_LIST) {
@@ -260,6 +258,7 @@ public class Menagerie extends PlayerOwnedHouseStorage {
 
     if (petBits1 != oldPetBits1 || petBits2 != oldPetBits2) {
       rebuildPetsFromBits();
+      lastUpdated = System.currentTimeMillis();
       return true;
     }
 

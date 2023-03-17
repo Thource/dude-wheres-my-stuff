@@ -403,8 +403,6 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
   @Override
   protected void updateStorages(List<? extends DeathStorage> storages) {
     if (!storages.isEmpty()) {
-      save();
-
       SwingUtilities.invokeLater(
           () -> storages.forEach(storage -> {
             if (storage.getStoragePanel() != null) {
@@ -487,7 +485,6 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
         .forEach(
             s -> {
               s.getCoinStack().setQuantity(0);
-              s.save(configManager, coinsStorageManager.getConfigKey());
               SwingUtilities.invokeLater(() -> {
                 if (s.getStoragePanel() != null) {
                   s.getStoragePanel().update();
@@ -504,7 +501,6 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
         .forEach(
             s -> {
               s.getItems().clear();
-              s.save(configManager, carryableStorageManager.getConfigKey());
               SwingUtilities.invokeLater(() -> {
                 if (s.getStoragePanel() != null) {
                   s.getStoragePanel().update();
@@ -650,7 +646,6 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
     }
 
     if (updatedDeathpiles.isEmpty()) {
-      save();
       SwingUtilities.invokeLater(storageTabPanel::reorderStoragePanels);
     } else {
       updateStorages(updatedDeathpiles);

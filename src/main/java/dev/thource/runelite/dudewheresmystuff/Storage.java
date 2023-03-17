@@ -1,7 +1,6 @@
 package dev.thource.runelite.dudewheresmystuff;
 
 import dev.thource.runelite.dudewheresmystuff.death.DeathbankType;
-import dev.thource.runelite.dudewheresmystuff.death.Deathpile;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
@@ -38,6 +37,7 @@ public abstract class Storage<T extends StorageType> {
   protected T type;
   protected boolean enabled = true;
   @Nullable protected StoragePanel storagePanel;
+  @Nullable protected String lastSaveString;
 
   @Saved(index = 0) @Setter protected long lastUpdated = -1L;
 
@@ -145,6 +145,7 @@ public abstract class Storage<T extends StorageType> {
    */
   public void reset() {
     lastUpdated = -1;
+    lastSaveString = null;
     enable();
   }
 
@@ -163,12 +164,21 @@ public abstract class Storage<T extends StorageType> {
   }
 
   /** saves the Storage data to the player's RuneLite RS profile config. */
-  public void save(ConfigManager configManager, String managerConfigKey) {
+  public void save(ConfigManager configManager, String profileKey, String managerConfigKey) {
+    if (!type.isAutomatic() && lastUpdated == -1L) {
+      return;
+    }
+
     String saveString = getSavedFields()
         .map(this::getSaveStringFromField)
         .collect(Collectors.joining(";"));
+    if (Objects.equals(lastSaveString, saveString)) {
+      return;
+    }
 
-    configManager.setRSProfileConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP, getConfigKey(managerConfigKey), saveString);
+    this.lastSaveString = saveString;
+    configManager.setConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP, profileKey,
+        getConfigKey(managerConfigKey), saveString);
   }
 
   protected String getItemStackListSaveString(List<ItemStack> list) {
@@ -196,12 +206,8 @@ public abstract class Storage<T extends StorageType> {
         return worldPoint.getX() + "," + worldPoint.getY() + "," + worldPoint.getPlane();
       }
 
-      if (field.getName().equals("lastUpdated")) {
-        long lastUpdated = (long) field.get(this);
-
-        lastUpdated = lastUpdated / 10000L * 10000L;
-
-        return Long.toString(lastUpdated);
+      if (field.getName().equals("lastUpdated") && type.isAutomatic()) {
+        return "-1";
       }
 
       return field.get(this).toString();
@@ -238,6 +244,7 @@ public abstract class Storage<T extends StorageType> {
       return;
     }
 
+    this.lastSaveString = data;
     String[] splitData = data.split(";");
     List<Field> savedFields = getSavedFields().collect(Collectors.toList());
 

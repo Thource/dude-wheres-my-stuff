@@ -12,7 +12,7 @@ public class SearchStorageManager extends StorageManager<StorageType, Storage<St
   }
 
   @Override
-  public void save() {
+  public void save(String profileKey) {
     // No saving necessary
   }
 

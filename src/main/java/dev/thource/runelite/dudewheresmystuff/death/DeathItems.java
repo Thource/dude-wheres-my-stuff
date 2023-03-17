@@ -59,7 +59,8 @@ public class DeathItems extends DeathStorage {
   }
 
   @Override
-  public void save(ConfigManager configManager, String managerConfigKey) {
+  public void save(ConfigManager configManager, String profileKey,
+      String managerConfigKey) {
     // No saving
   }
 
