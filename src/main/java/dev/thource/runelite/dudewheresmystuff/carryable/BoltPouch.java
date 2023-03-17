@@ -154,6 +154,7 @@ public class BoltPouch extends CarryableStorage {
   @Override
   public void reset() {
     lastUpdated = -1;
+    lastSaveString = null;
     enable();
   }
 }

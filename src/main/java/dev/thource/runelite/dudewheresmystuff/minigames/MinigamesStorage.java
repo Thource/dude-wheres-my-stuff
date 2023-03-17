@@ -21,11 +21,4 @@ abstract class MinigamesStorage extends ItemStorage<MinigamesStorageType> {
 
     createComponentPopupMenu(storageManager);
   }
-
-  @Override
-  public void reset() {
-    items.forEach(item -> item.setQuantity(0));
-    lastUpdated = -1L;
-    enable();
-  }
 }

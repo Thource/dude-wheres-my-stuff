@@ -54,7 +54,6 @@ public abstract class StorageManager<T extends StorageType, S extends Storage<T>
     if (!storages.isEmpty()) {
       storages.forEach(
           storage -> {
-            storage.save(configManager, getConfigKey());
             SwingUtilities.invokeLater(storage.getStoragePanel()::update);
           });
 
@@ -125,13 +124,14 @@ public abstract class StorageManager<T extends StorageType, S extends Storage<T>
 
   public abstract String getConfigKey();
 
-  /** Save all Storages. */
-  public void save() {
+  /** Save all Storages.
+   * @param profileKey*/
+  public void save(String profileKey) {
     if (!enabled) {
       return;
     }
 
-    storages.forEach(storage -> storage.save(configManager, getConfigKey()));
+    storages.forEach(storage -> storage.save(configManager, profileKey, getConfigKey()));
   }
 
   public void load() {

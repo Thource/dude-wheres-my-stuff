@@ -88,10 +88,6 @@ public class StorageManagerManager {
     storageManagers.forEach(storageManager -> storageManager.onGameStateChanged(gameStateChanged));
   }
 
-  public void load() {
-    load(configManager.getRSProfileKey());
-  }
-
   public void load(String profileKey) {
     for (StorageManager<?, ?> storageManager : storageManagers) {
       storageManager.load(profileKey);
@@ -104,8 +100,10 @@ public class StorageManagerManager {
     }
   }
 
-  public void save() {
-    storageManagers.forEach(StorageManager::save);
+  public void save(String profileKey) {
+    for (StorageManager<?, ?> storageManager : storageManagers) {
+      storageManager.save(profileKey);
+    }
   }
 
   public void onGameTick() {
