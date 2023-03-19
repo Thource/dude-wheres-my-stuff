@@ -14,6 +14,8 @@ import net.runelite.api.widgets.Widget;
 @Slf4j
 public class StashStorageManager extends StorageManager<StashStorageType, StashStorage> {
 
+  private boolean updatedThisOpening = false;
+
   @Inject
   private StashStorageManager(DudeWheresMyStuffPlugin plugin) {
     super(plugin);
@@ -29,8 +31,14 @@ public class StashStorageManager extends StorageManager<StashStorageType, StashS
 
     Widget stashChartWidget = client.getWidget(493, 2);
     if (stashChartWidget == null) {
+      updatedThisOpening = false;
       return;
     }
+    if (updatedThisOpening) {
+      return;
+    }
+
+    updatedThisOpening = true;
 
     boolean updated = updateBeginnerStashChartItems();
     if (updateEasyStashChartItems()) {
