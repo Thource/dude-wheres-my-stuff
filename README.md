@@ -62,4 +62,4 @@ and showing you where they are in an easy to view way.
 
 ## Planned features
 
-Check out the Trello board: https://trello.com/b/YMugGCCW/dude-wheres-my-stuff
+Check out the Github issues: https://github.com/Thource/dude-wheres-my-stuff/issues
