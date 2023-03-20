@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.UUID;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
@@ -118,6 +119,49 @@ public class Deathpile extends DeathStorage {
           }
         });
     popupMenu.add(deleteDeathpile);
+
+    if (plugin.isDeveloperMode()) {
+      JMenu debugMenu = new JMenu("Debug");
+      popupMenu.add(debugMenu);
+
+      JMenuItem setExpiresIn = new JMenuItem("Set expires in");
+      debugMenu.add(setExpiresIn);
+      setExpiresIn.addActionListener(
+        e -> {
+          int minutes = 0;
+          try {
+          minutes = Integer.parseInt(
+              JOptionPane.showInputDialog("Enter expiry in minutes from now"));
+          } catch (NumberFormatException nfe) {
+            // Do nothing
+          }
+
+          if (minutes <= 0) {
+            return;
+          }
+
+          if (useAccountPlayTime) {
+            expiryTime = deathStorageManager.getPlayedMinutes() + minutes;
+          } else {
+            expiryTime = minutes * 100;
+          }
+          expiredAt = -1L;
+          softUpdate();
+          storageManager.getStorageTabPanel().reorderStoragePanels();
+        }
+      );
+
+      JMenuItem expire = new JMenuItem("Expire");
+      debugMenu.add(expire);
+      expire.addActionListener(
+        e -> {
+          expiredAt = -1L;
+          expiryTime = 0;
+          softUpdate();
+          storageManager.getStorageTabPanel().reorderStoragePanels();
+        }
+      );
+    }
   }
 
   @Override
