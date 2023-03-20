@@ -595,6 +595,11 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
   @Override
   public void onItemDespawned(ItemDespawned itemDespawned) {
     WorldPoint worldPoint = itemDespawned.getTile().getWorldLocation();
+    // 10 is the max telegrab range, this should stop deathpiles from disappearing at random
+    if (worldPoint.distanceTo(plugin.getClient().getLocalPlayer().getWorldLocation()) > 10) {
+      return;
+    }
+
     TileItem despawnedItem = itemDespawned.getItem();
 
     AtomicLong quantityToRemove = new AtomicLong(despawnedItem.getQuantity());
