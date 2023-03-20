@@ -643,6 +643,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
       Deathpile deathpile = iterator.next();
 
       if (deathpile.getItems().isEmpty()) {
+        deathpile.deleteData(this);
         storages.remove(deathpile);
         iterator.remove();
       }
