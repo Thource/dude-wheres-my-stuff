@@ -297,11 +297,15 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
     InfoBoxManager infoBoxManager = plugin.getInfoBoxManager();
     List<InfoBox> currentInfoBoxes = infoBoxManager.getInfoBoxes();
 
+    List<Deathpile> activeDeathpiles = getDeathpiles()
+        .filter(deathpile -> !deathpile.hasExpired())
+        .collect(Collectors.toList());
+
     ListIterator<DeathpileInfoBox> iterator = deathpileInfoBoxes.listIterator();
     while (iterator.hasNext()) {
       DeathpileInfoBox infoBox = iterator.next();
 
-      if (!storages.contains(infoBox.getDeathpile())) {
+      if (!activeDeathpiles.contains(infoBox.getDeathpile())) {
         if (currentInfoBoxes.contains(infoBox)) {
           infoBoxManager.removeInfoBox(infoBox);
         }
@@ -310,8 +314,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
       }
     }
 
-    getDeathpiles()
-        .filter(deathpile -> !deathpile.hasExpired())
+    activeDeathpiles
         .forEach(deathpile -> {
           if (deathpileInfoBoxes.stream()
               .noneMatch(infoBox -> infoBox.getDeathpile() == deathpile)) {
