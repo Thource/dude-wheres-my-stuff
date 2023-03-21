@@ -40,7 +40,7 @@ public class BottomlessBucket extends CarryableStorage {
     items.add(supercompostStack);
     items.add(ultracompostStack);
 
-    plugin.getClientThread().invoke(() -> items.forEach(ItemStack::stripPrices));
+    plugin.getClientThread().invokeLater(() -> items.forEach(ItemStack::stripPrices));
   }
 
   @Override
