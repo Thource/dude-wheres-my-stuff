@@ -28,7 +28,7 @@ public class NightmareZone extends MinigamesStorage {
     items.add(new ItemStack(ItemID.SUPER_MAGIC_POTION_1, 0, plugin));
     items.add(new ItemStack(ItemID.OVERLOAD_1, 0, plugin));
     items.add(new ItemStack(ItemID.ABSORPTION_1, 0, plugin));
-    plugin.getClientThread().invoke(() -> items.forEach(itemStack -> itemStack.setStackable(true)));
+    plugin.getClientThread().invokeLater(() -> items.forEach(itemStack -> itemStack.setStackable(true)));
   }
 
   @Override
