@@ -41,7 +41,7 @@ public class LogStorage extends WorldStorage {
     items.add(yewLogs);
     items.add(magicLogs);
 
-    plugin.getClientThread().invoke(() -> items.forEach(ItemStack::stripPrices));
+    plugin.getClientThread().invokeLater(() -> items.forEach(ItemStack::stripPrices));
   }
 
   @Override
