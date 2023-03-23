@@ -1,16 +1,12 @@
 package dev.thource.runelite.dudewheresmystuff;
 
 import dev.thource.runelite.dudewheresmystuff.death.DeathbankType;
-import java.lang.reflect.Field;
-import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import javax.annotation.Nullable;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
@@ -38,8 +34,7 @@ public abstract class Storage<T extends StorageType> {
   protected boolean enabled = true;
   @Nullable protected StoragePanel storagePanel;
   @Nullable protected String lastSaveString;
-
-  @Saved(index = 0) @Setter protected long lastUpdated = -1L;
+  @Setter protected long lastUpdated = -1L;
 
   protected Storage(T type, DudeWheresMyStuffPlugin plugin) {
     this.type = type;
@@ -149,29 +144,13 @@ public abstract class Storage<T extends StorageType> {
     enable();
   }
 
-  protected List<Field> getAllFields(Class<?> type) {
-    List<Field> fields = new ArrayList<>();
-    for (Class<?> c = type; c != null; c = c.getSuperclass()) {
-      fields.addAll(Arrays.asList(c.getDeclaredFields()));
-    }
-    return fields;
-  }
-
-  protected Stream<Field> getSavedFields() {
-    return getAllFields(this.getClass()).stream()
-               .filter(field -> field.isAnnotationPresent(Saved.class))
-               .sorted(Comparator.comparing(field -> field.getAnnotation(Saved.class).index()));
-  }
-
   /** saves the Storage data to the player's RuneLite RS profile config. */
   public void save(ConfigManager configManager, String profileKey, String managerConfigKey) {
     if (!type.isAutomatic() && lastUpdated == -1L) {
       return;
     }
 
-    String saveString = getSavedFields()
-        .map(this::getSaveStringFromField)
-        .collect(Collectors.joining(";"));
+    String saveString = getSaveString();
     if (Objects.equals(lastSaveString, saveString)) {
       return;
     }
@@ -181,54 +160,18 @@ public abstract class Storage<T extends StorageType> {
         getConfigKey(managerConfigKey), saveString);
   }
 
-  protected String getItemStackListSaveString(List<ItemStack> list) {
-    return list.stream()
-        .map(item -> item.getId() + "x" + item.getQuantity())
-        .collect(Collectors.joining(","));
+  public String getSaveString() {
+    return String.join(";", getSaveValues());
   }
 
-  protected String getSaveStringFromField(Field field) {
-    try {
-      if (field.getType() == List.class) {
-        ParameterizedType listType = (ParameterizedType) field.getGenericType();
-        Class<?> listClass = (Class<?>) listType.getActualTypeArguments()[0];
+  protected ArrayList<String> getSaveValues() {
+    ArrayList<String> saveValues = new ArrayList<>();
 
-        if (listClass == ItemStack.class) {
-          @SuppressWarnings("unchecked") // at this point we know that the type is List<ItemStack>, regardless of what the compiler thinks
-          List<ItemStack> list = (List<ItemStack>) field.get(this);
-          return getItemStackListSaveString(list);
-        } else {
-          return ((List<?>) field.get(this)).stream().map(Object::toString).collect(Collectors.joining(","));
-        }
-      } else if (field.getType() == WorldPoint.class) {
-        WorldPoint worldPoint = (WorldPoint) field.get(this);
-
-        return worldPoint.getX() + "," + worldPoint.getY() + "," + worldPoint.getPlane();
-      }
-
-      if (field.getName().equals("lastUpdated") && type.isAutomatic()) {
-        return "-1";
-      }
-
-      return field.get(this).toString();
-    } catch (IllegalAccessException e) {
-      log.error("Tried saving field " + field.getName() + " of " + this.getClass().getName() + " but received IllegalAccessException! ");
-//      e.printStackTrace();
-      return "";
-    }
-  }
-
-  protected void loadItemStackListForField(Field field, String data) throws IllegalAccessException {
-    List<ItemStack> list = new ArrayList<>();
-
-    for (String stackData : data.split(",")) {
-      String[] stackDataSplit = stackData.split("x");
-      if (stackDataSplit.length == 2) {
-        list.add(new ItemStack(Integer.parseInt(stackDataSplit[0]), Long.parseLong(stackDataSplit[1]), plugin));
-      }
+    if (!type.isAutomatic()) {
+      saveValues.add(SaveFieldFormatter.format(lastUpdated));
     }
 
-    field.set(this, list);
+    return saveValues;
   }
 
   /** loads the Storage data from the specified RuneLite RS profile config. */
@@ -245,43 +188,12 @@ public abstract class Storage<T extends StorageType> {
     }
 
     this.lastSaveString = data;
-    String[] splitData = data.split(";");
-    List<Field> savedFields = getSavedFields().collect(Collectors.toList());
-
-    for (int i = 0; i < Math.min(splitData.length, savedFields.size()); i++) {
-      loadField(savedFields.get(i), splitData[i]);
-    }
+    loadValues(new ArrayList<>(Arrays.asList(data.split(";"))));
   }
 
-  private void loadField(Field field, String data) {
-    try {
-      if (field.getType() == long.class) {
-        field.setLong(this, Long.parseLong(data));
-      } else if (field.getType() == int.class) {
-        field.setInt(this, Integer.parseInt(data));
-      } else if (field.getType() == boolean.class) {
-        field.setBoolean(this, data.equals("true"));
-      } else if (field.getType() == UUID.class) {
-        field.set(this, UUID.fromString(data));
-      } else if (field.getType() == WorldPoint.class) {
-        String[] splitData = data.split(",");
-        field.set(this, new WorldPoint(Integer.parseInt(splitData[0]), Integer.parseInt(splitData[1]), Integer.parseInt(splitData[2])));
-      } else if (field.getType() == DeathbankType.class) {
-        field.set(this, DeathbankType.valueOf(data));
-      } else if (field.getType() == List.class) {
-        ParameterizedType listType = (ParameterizedType) field.getGenericType();
-        Class<?> listClass = (Class<?>) listType.getActualTypeArguments()[0];
-
-        if (listClass == ItemStack.class) {
-          loadItemStackListForField(field, data);
-        } else {
-          log.warn("Unsupported list type in Storage.loadField: " + listClass.getName());
-        }
-      } else {
-        log.warn("Unsupported type in Storage.loadField: " + field.getType().getName());
-      }
-    } catch (IllegalAccessException e) {
-      log.error("Tried loading field " + field.getName() + " of " + this.getClass().getName() + " but received IllegalAccessException!");
+  protected void loadValues(ArrayList<String> values) {
+    if (!type.isAutomatic()) {
+      lastUpdated = SaveFieldLoader.loadLong(values, lastUpdated);
     }
   }
 

@@ -4,7 +4,8 @@ import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.DurationFormatter;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
 import dev.thource.runelite.dudewheresmystuff.Region;
-import dev.thource.runelite.dudewheresmystuff.Saved;
+import dev.thource.runelite.dudewheresmystuff.SaveFieldFormatter;
+import dev.thource.runelite.dudewheresmystuff.SaveFieldLoader;
 import dev.thource.runelite.dudewheresmystuff.StorageManager;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,14 +29,14 @@ import net.runelite.client.util.ImageUtil;
 @Slf4j
 public class Deathpile extends DeathStorage {
 
-  @Saved(index = 3) public WorldPoint worldPoint;
-  @Saved(index = 4) public boolean useAccountPlayTime;
+  private WorldPoint worldPoint;
+  private boolean useAccountPlayTime;
   // when useAccountPlayTime is true, expiryTime is the account played minutes that the deathpile
   // will expire at.
   // when useAccountPlayTime is false, expiryTime is the amount of ticks left until
   // the deathpile expires, ticking down only while the player is logged in.
-  @Saved(index = 5) public int expiryTime;
-  @Saved(index = 6) public long expiredAt = -1L;
+  private int expiryTime;
+  private long expiredAt = -1L;
   @Setter protected DeathWorldMapPoint worldMapPoint;
   private final DeathStorageManager deathStorageManager;
   private final static ImageIcon warningIcon =
@@ -54,6 +55,28 @@ public class Deathpile extends DeathStorage {
     this.worldPoint = worldPoint;
     this.deathStorageManager = deathStorageManager;
     this.items.addAll(deathItems);
+  }
+
+  @Override
+  protected ArrayList<String> getSaveValues() {
+    ArrayList<String> saveValues = super.getSaveValues();
+
+    saveValues.add(SaveFieldFormatter.format(worldPoint));
+    saveValues.add(SaveFieldFormatter.format(useAccountPlayTime));
+    saveValues.add(SaveFieldFormatter.format(expiryTime));
+    saveValues.add(SaveFieldFormatter.format(expiredAt));
+
+    return saveValues;
+  }
+
+  @Override
+  protected void loadValues(ArrayList<String> values) {
+    super.loadValues(values);
+
+    worldPoint = SaveFieldLoader.loadWorldPoint(values, worldPoint);
+    useAccountPlayTime = SaveFieldLoader.loadBoolean(values, useAccountPlayTime);
+    expiryTime = SaveFieldLoader.loadInt(values, expiryTime);
+    expiredAt = SaveFieldLoader.loadLong(values, expiredAt);
   }
 
   @Override

@@ -819,7 +819,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
         getConfigKey() + "." + DeathStorageType.DEATHBANK.getConfigKey() + ".")) {
       Deathbank deathbank = Deathbank.load(plugin, this, profileKey, configurationKey.split("\\.")[2]);
       SwingUtilities.invokeLater(() -> deathbank.createStoragePanel(this));
-      if (deathbank.lostAt == -1L) {
+      if (deathbank.getLostAt() == -1L) {
         this.deathbank = deathbank;
       }
       storages.add(deathbank);

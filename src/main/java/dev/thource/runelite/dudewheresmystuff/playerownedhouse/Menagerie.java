@@ -1,17 +1,16 @@
 package dev.thource.runelite.dudewheresmystuff.playerownedhouse;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.ItemContainerWatcher;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
 import dev.thource.runelite.dudewheresmystuff.Region;
-import dev.thource.runelite.dudewheresmystuff.Saved;
+import dev.thource.runelite.dudewheresmystuff.SaveFieldFormatter;
+import dev.thource.runelite.dudewheresmystuff.SaveFieldLoader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.Map;
 import net.runelite.api.Item;
 import net.runelite.api.ItemID;
 import net.runelite.api.coords.WorldPoint;
@@ -127,14 +126,32 @@ public class Menagerie extends PlayerOwnedHouseStorage {
     VARPLAYER_BITS_TO_ITEM_IDS_LIST = builder.build();
   }
 
-  @Saved(index = 2) public int petBits1;
-  @Saved(index = 3) public int petBits2;
+  private int petBits1;
+  private int petBits2;
   private final List<ItemStack> compiledItems = new ArrayList<>();
   private final List<ItemStack> varplayerItems = new ArrayList<>();
   private boolean wasBeingFollowedLastTick = false;
 
   protected Menagerie(DudeWheresMyStuffPlugin plugin) {
     super(PlayerOwnedHouseStorageType.MENAGERIE, plugin);
+  }
+
+  @Override
+  protected ArrayList<String> getSaveValues() {
+    ArrayList<String> saveValues = super.getSaveValues();
+
+    saveValues.add(SaveFieldFormatter.format(petBits1));
+    saveValues.add(SaveFieldFormatter.format(petBits2));
+
+    return saveValues;
+  }
+
+  @Override
+  protected void loadValues(ArrayList<String> values) {
+    super.loadValues(values);
+
+    petBits1 = SaveFieldLoader.loadInt(values, petBits1);
+    petBits2 = SaveFieldLoader.loadInt(values, petBits2);
   }
 
   private void updateItems() {
