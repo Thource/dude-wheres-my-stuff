@@ -2,8 +2,11 @@ package dev.thource.runelite.dudewheresmystuff.death;
 
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.DurationFormatter;
-import dev.thource.runelite.dudewheresmystuff.Saved;
+import dev.thource.runelite.dudewheresmystuff.SaveFieldFormatter;
+import dev.thource.runelite.dudewheresmystuff.SaveFieldLoader;
 import dev.thource.runelite.dudewheresmystuff.StorageManager;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
@@ -20,9 +23,9 @@ import lombok.extern.slf4j.Slf4j;
 @Setter
 public class Deathbank extends DeathStorage {
 
-  @Saved(index = 3) public boolean locked = false;
-  @Saved(index = 4) public long lostAt = -1L;
-  @Saved(index = 5) public DeathbankType deathbankType;
+  private boolean locked = false;
+  @Getter private long lostAt = -1L;
+  private DeathbankType deathbankType;
   private DeathStorageManager deathStorageManager;
 
   Deathbank(
@@ -33,6 +36,26 @@ public class Deathbank extends DeathStorage {
 
     this.deathbankType = deathbankType;
     this.deathStorageManager = deathStorageManager;
+  }
+
+  @Override
+  protected ArrayList<String> getSaveValues() {
+    ArrayList<String> saveValues = super.getSaveValues();
+
+    saveValues.add(SaveFieldFormatter.format(locked));
+    saveValues.add(SaveFieldFormatter.format(lostAt));
+    saveValues.add(SaveFieldFormatter.format(deathbankType));
+
+    return saveValues;
+  }
+
+  @Override
+  protected void loadValues(ArrayList<String> values) {
+    super.loadValues(values);
+
+    locked = SaveFieldLoader.loadBoolean(values, locked);
+    lostAt = SaveFieldLoader.loadLong(values, lostAt);
+    deathbankType = SaveFieldLoader.loadDeathbankType(values, deathbankType);
   }
 
   @Override

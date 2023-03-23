@@ -1,9 +1,7 @@
 package dev.thource.runelite.dudewheresmystuff;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 import lombok.Getter;
 import net.runelite.api.Item;
@@ -12,9 +10,8 @@ import net.runelite.api.ItemContainer;
 import net.runelite.api.events.ItemContainerChanged;
 
 public class ItemStorage<T extends StorageType> extends Storage<T> {
-    @Nullable
-    protected final ItemContainerWatcher itemContainerWatcher;
-    @Saved(index = 1) @Getter protected List<ItemStack> items = new ArrayList<>();
+    @Nullable protected final ItemContainerWatcher itemContainerWatcher;
+    @Getter protected List<ItemStack> items = new ArrayList<>();
     protected boolean hasStaticItems = false;
 
     protected ItemStorage(T type, DudeWheresMyStuffPlugin plugin) {
@@ -68,45 +65,32 @@ public class ItemStorage<T extends StorageType> extends Storage<T> {
     }
 
     @Override
+    protected ArrayList<String> getSaveValues() {
+        ArrayList<String> saveValues = super.getSaveValues();
+
+        saveValues.add(SaveFieldFormatter.format(items, hasStaticItems));
+
+        return saveValues;
+    }
+
+    @Override
+    protected void loadValues(ArrayList<String> values) {
+        super.loadValues(values);
+
+        if (hasStaticItems) {
+            SaveFieldLoader.loadItemsIntoList(values, items);
+        } else {
+            items = SaveFieldLoader.loadItems(values, items, plugin);
+        }
+    }
+
+    @Override
     public long getTotalValue() {
         if (items.isEmpty()) { // avoids a NPE from .sum() on empty stream
             return 0;
         }
 
         return items.stream().mapToLong(ItemStack::getTotalGePrice).sum();
-    }
-
-    @Override
-    protected String getItemStackListSaveString(List<ItemStack> list) {
-        if (hasStaticItems) {
-            return list.stream()
-               .map(item -> Long.toString(item.getQuantity()))
-               .collect(Collectors.joining(","));
-        }
-
-        return super.getItemStackListSaveString(list);
-    }
-
-    @Override
-    protected void loadItemStackListForField(Field field, String data) throws IllegalAccessException {
-        if (hasStaticItems) {
-            @SuppressWarnings("unchecked")
-            List<ItemStack> list = (List<ItemStack>) field.get(this);
-
-            int i = 0;
-            for (String quantity : data.split(",")) {
-                if (i >= list.size()) {
-                    break;
-                }
-
-                list.get(i).setQuantity(Long.parseLong(quantity));
-                i++;
-            }
-
-            return;
-        }
-
-        super.loadItemStackListForField(field, data);
     }
 
     @Override

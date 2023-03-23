@@ -2,8 +2,11 @@ package dev.thource.runelite.dudewheresmystuff.world;
 
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
-import dev.thource.runelite.dudewheresmystuff.Saved;
+import dev.thource.runelite.dudewheresmystuff.SaveFieldFormatter;
+import dev.thource.runelite.dudewheresmystuff.SaveFieldLoader;
 import dev.thource.runelite.dudewheresmystuff.carryable.BottomlessBucket;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Setter;
 import net.runelite.api.ItemID;
 import net.runelite.client.config.ConfigManager;
@@ -37,12 +40,12 @@ public class Leprechaun extends WorldStorage {
   private final ItemStack superComposts;
   private final ItemStack ultraComposts;
   // 0 = normal, 1 = magic
-  @Saved(index = 2) public int secateursType;
+  private int secateursType;
   // WATERING_CAN_IDS
-  @Saved(index = 3) public int wateringCanType;
+  private int wateringCanType;
   // 0 = none, 1 = empty, 2 = compost, 3 = supercompost, 4 = ultracompost
-  @Saved(index = 4) public int bottomlessBucketType;
-  @Saved(index = 5) public int bottomlessBucketCharges;
+  private int bottomlessBucketType;
+  private int bottomlessBucketCharges;
   @Setter private BottomlessBucket bottomlessBucketStorage;
 
   /** A constructor. */
@@ -76,6 +79,28 @@ public class Leprechaun extends WorldStorage {
     items.add(composts);
     items.add(superComposts);
     items.add(ultraComposts);
+  }
+
+  @Override
+  protected ArrayList<String> getSaveValues() {
+    ArrayList<String> saveValues = super.getSaveValues();
+
+    saveValues.add(SaveFieldFormatter.format(secateursType));
+    saveValues.add(SaveFieldFormatter.format(wateringCanType));
+    saveValues.add(SaveFieldFormatter.format(bottomlessBucketType));
+    saveValues.add(SaveFieldFormatter.format(bottomlessBucketCharges));
+
+    return saveValues;
+  }
+
+  @Override
+  protected void loadValues(ArrayList<String> values) {
+    super.loadValues(values);
+
+    secateursType = SaveFieldLoader.loadInt(values, secateursType);
+    wateringCanType = SaveFieldLoader.loadInt(values, wateringCanType);
+    bottomlessBucketType = SaveFieldLoader.loadInt(values, bottomlessBucketType);
+    bottomlessBucketCharges = SaveFieldLoader.loadInt(values, bottomlessBucketCharges);
   }
 
   @Override
