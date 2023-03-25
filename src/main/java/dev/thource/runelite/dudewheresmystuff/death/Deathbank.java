@@ -143,4 +143,10 @@ public class Deathbank extends DeathStorage {
 
     return deathbank;
   }
+
+  @Override
+  public boolean isWithdrawable() {
+    // If the items were lost, then they can't be withdrawn
+    return lostAt == -1;
+  }
 }

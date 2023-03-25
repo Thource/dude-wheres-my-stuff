@@ -221,6 +221,7 @@ public class DudeWheresMyStuffPanel extends JPanel {
 
   void setDisplayName(String name) {
     displayName = name;
+    storageManagerManager.setDisplayName(name);
   }
 
   void reset() {

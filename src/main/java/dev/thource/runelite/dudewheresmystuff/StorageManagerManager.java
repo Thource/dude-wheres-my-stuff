@@ -12,13 +12,23 @@ import dev.thource.runelite.dudewheresmystuff.playerownedhouse.PlayerOwnedHouseS
 import dev.thource.runelite.dudewheresmystuff.stash.StashStorageManager;
 import dev.thource.runelite.dudewheresmystuff.world.WorldStorageManager;
 import java.awt.event.ItemListener;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Date;
 import java.util.List;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.swing.JComboBox;
 import javax.swing.SwingUtilities;
 import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.events.ActorDeath;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
@@ -28,9 +38,12 @@ import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.WidgetClosed;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.client.config.ConfigManager;
+import static net.runelite.client.RuneLite.RUNELITE_DIR;
 
+@Slf4j
 @Getter
 public class StorageManagerManager {
+  public static final File EXPORT_DIR = new File(RUNELITE_DIR, "dudewheresmystuff");
 
   private final CarryableStorageManager carryableStorageManager;
   private final CoinsStorageManager coinsStorageManager;
@@ -39,7 +52,7 @@ public class StorageManagerManager {
   private final StashStorageManager stashStorageManager;
   private final PlayerOwnedHouseStorageManager playerOwnedHouseStorageManager;
   private final WorldStorageManager worldStorageManager;
-
+  @Setter private String displayName;
   @Getter() private final List<StorageManager<?, ?>> storageManagers;
 
   private final DudeWheresMyStuffPlugin plugin;
@@ -64,6 +77,7 @@ public class StorageManagerManager {
     this.stashStorageManager = stashStorageManager;
     this.playerOwnedHouseStorageManager = playerOwnedHouseStorageManager;
     this.worldStorageManager = worldStorageManager;
+    this.displayName = "";
 
     storageManagers =
         Arrays.asList(
@@ -159,6 +173,47 @@ public class StorageManagerManager {
     return getStorages().filter(Storage::isEnabled).map(Storage::getItems).flatMap(List::stream).collect(Collectors.toList());
   }
 
+  /**
+   * Gets all known withdrawable items
+   *
+   * If the same item is in multiple storages, the item stacks are combined.
+   * "Same item" refers to items with the same canonical ID, but note that the
+   * actual ID of the stack will be set to the ID of one of the items
+   * arbitrarily. It is therefore recommended that callers do not use the IDs,
+   * only the canonical IDs.
+   *
+   * @return The item stacks
+   */
+  public Collection<ItemStack> getWithdrawableItems() {
+    // We need to deduplicate and combine item stacks if they're in multiple
+    // storages. This is a map from the stack's canonical (unnoted,
+    // un-placeholdered) ID to its stack.
+    TreeMap<Integer, ItemStack> items = new TreeMap<>();
+
+    getStorages()
+        .filter(Storage::isWithdrawable)
+        .map(Storage::getItems)
+        .flatMap(List::stream)
+        .forEach((ItemStack stack) -> {
+      if (stack.getQuantity() == 0 || stack.getId() == -1) {
+        return;
+      }
+
+      int id = stack.getCanonicalId();
+
+      ItemStack existing = items.get(id);
+      if (existing == null) {
+        // No item yet, insert a copy so that we can modify their quantities later if necessary
+        items.put(id, new ItemStack(stack));
+      } else {
+        // This item was already in there. Update the quantity to include the new stack.
+        existing.setQuantity(stack.getQuantity() + existing.getQuantity());
+      }
+    });
+
+    return items.values();
+  }
+
   public void setItemSortMode(ItemSortMode itemSortMode) {
     storageManagers.forEach(
         storageManager -> {
@@ -180,5 +235,37 @@ public class StorageManagerManager {
 
   public void onMenuOptionClicked(MenuOptionClicked menuOption) {
     storageManagers.forEach(manager -> manager.onMenuOptionClicked(menuOption));
+  }
+
+  // Creates a CSV file containing all the items in any exportable storage
+  public void exportItems() {
+    if (displayName.equals("")) {
+      log.info("Can't export: no display name");
+      return;
+    }
+    File user_dir = new File(EXPORT_DIR, displayName);
+    String fileName = new SimpleDateFormat("'dudewheresmystuff-'yyyyMMdd'T'HHmmss'.csv'").format(new Date());
+    String filePath = user_dir + File.separator + fileName;
+
+    Collection<ItemStack> items = getWithdrawableItems();
+
+    try
+    {
+      user_dir.mkdirs();
+
+      BufferedWriter writer = new BufferedWriter(new FileWriter(filePath));
+      // Include a CSV header describing the columns
+      writer.write("ID,Name,Quantity\n");
+
+      for (ItemStack stack : items) {
+        String escaped_name = stack.getName().replace(",", "").replace("\n", "");
+        writer.write(String.format("%d,%s,%d\n", stack.getCanonicalId(), escaped_name, stack.getQuantity()));
+      }
+      writer.close();
+    }
+    catch (IOException e)
+    {
+      log.error("Unable to export: " + e.getMessage());
+    }
   }
 }
