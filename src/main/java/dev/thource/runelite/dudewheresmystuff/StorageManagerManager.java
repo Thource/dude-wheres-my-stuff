@@ -13,6 +13,7 @@ import dev.thource.runelite.dudewheresmystuff.minigames.MinigamesStorageManager;
 import dev.thource.runelite.dudewheresmystuff.playerownedhouse.PlayerOwnedHouseStorageManager;
 import dev.thource.runelite.dudewheresmystuff.stash.StashStorageManager;
 import dev.thource.runelite.dudewheresmystuff.world.WorldStorageManager;
+import java.awt.TrayIcon.MessageType;
 import java.awt.event.ItemListener;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -245,28 +246,28 @@ public class StorageManagerManager {
       log.info("Can't export: no display name");
       return;
     }
-    File user_dir = new File(EXPORT_DIR, displayName);
+    File userDir = new File(EXPORT_DIR, displayName);
     String fileName = new SimpleDateFormat("'dudewheresmystuff-'yyyyMMdd'T'HHmmss'.csv'").format(
         new Date());
-    String filePath = user_dir + File.separator + fileName;
+    String filePath = userDir + File.separator + fileName;
 
     Collection<ItemStack> items = getWithdrawableItems();
 
-    try {
-      user_dir.mkdirs();
-
-      BufferedWriter writer = new BufferedWriter(new FileWriter(filePath));
+    //noinspection ResultOfMethodCallIgnored
+    userDir.mkdirs();
+    try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
       // Include a CSV header describing the columns
       writer.write("ID,Name,Quantity\n");
 
       for (ItemStack stack : items) {
-        String escaped_name = stack.getName().replace(",", "").replace("\n", "");
+        String escapedName = stack.getName().replace(",", "").replace("\n", "");
         writer.write(
-            String.format("%d,%s,%d\n", stack.getCanonicalId(), escaped_name, stack.getQuantity()));
+            String.format("%d,%s,%d%n", stack.getCanonicalId(), escapedName, stack.getQuantity()));
       }
-      writer.close();
+      plugin.getNotifier().notify("Items successfully exported to: " + filePath, MessageType.INFO);
     } catch (IOException e) {
       log.error("Unable to export: " + e.getMessage());
+      plugin.getNotifier().notify("Item export failed.", MessageType.ERROR);
     }
   }
 }
