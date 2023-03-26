@@ -17,6 +17,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import lombok.Getter;
 import lombok.Setter;
@@ -29,6 +30,9 @@ import net.runelite.client.util.ImageUtil;
 @Slf4j
 public class Deathpile extends DeathStorage {
 
+  private static final ImageIcon WARNING_ICON =
+      new ImageIcon(ImageUtil.loadImageResource(DudeWheresMyStuffPlugin.class, "warning.png"));
+
   private WorldPoint worldPoint;
   private boolean useAccountPlayTime;
   // when useAccountPlayTime is true, expiryTime is the account played minutes that the deathpile
@@ -39,8 +43,6 @@ public class Deathpile extends DeathStorage {
   private long expiredAt = -1L;
   @Setter protected DeathWorldMapPoint worldMapPoint;
   private final DeathStorageManager deathStorageManager;
-  private final static ImageIcon warningIcon =
-      new ImageIcon(ImageUtil.loadImageResource(DudeWheresMyStuffPlugin.class, "warning.png"));
 
   Deathpile(
       DudeWheresMyStuffPlugin plugin,
@@ -82,6 +84,7 @@ public class Deathpile extends DeathStorage {
   @Override
   protected void createStoragePanel(StorageManager<?, ?> storageManager) {
     super.createStoragePanel(storageManager);
+    assert storagePanel != null;
 
     Region region = Region.get(worldPoint.getRegionID());
     if (region == null) {
@@ -95,7 +98,7 @@ public class Deathpile extends DeathStorage {
       if (!useAccountPlayTime) {
         footerLabel.setIconTextGap(66);
         footerLabel.setHorizontalTextPosition(SwingConstants.LEFT);
-        footerLabel.setIcon(warningIcon);
+        footerLabel.setIcon(WARNING_ICON);
         footerLabel.setToolTipText(
             "This deathpile is using tick-based tracking, which means that the timer could be out "
                 + "of sync. To use the more accurate play time based timers, enable cross-client "
@@ -113,6 +116,10 @@ public class Deathpile extends DeathStorage {
 
   @Override
   protected void createComponentPopupMenu(StorageManager<?, ?> storageManager) {
+    if (storagePanel == null) {
+      return;
+    }
+
     final JPopupMenu popupMenu = new JPopupMenu();
     popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
     storagePanel.setComponentPopupMenu(popupMenu);
@@ -143,6 +150,10 @@ public class Deathpile extends DeathStorage {
         });
     popupMenu.add(deleteDeathpile);
 
+    createDebugMenuOptions(storageManager, popupMenu);
+  }
+
+  private void createDebugMenuOptions(StorageManager<?, ?> storageManager, JPopupMenu popupMenu) {
     if (plugin.isDeveloperMode()) {
       JMenu debugMenu = new JMenu("Debug");
       popupMenu.add(debugMenu);
@@ -189,27 +200,34 @@ public class Deathpile extends DeathStorage {
 
   @Override
   public boolean onGameTick() {
-    if (expiredAt == -1L) {
-      if (useAccountPlayTime) {
-        if (deathStorageManager.getStartPlayedMinutes() > 0 &&
-            deathStorageManager.getPlayedMinutes() >= expiryTime) {
-          expiredAt = System.currentTimeMillis();
+    if (expiredAt != -1L) {
+      return false;
+    }
 
-          return true;
-        }
-      } else {
-        expiryTime--;
+    if (!useAccountPlayTime) {
+      expiryTime--;
+      if (expiryTime <= 0) {
+        expiredAt = System.currentTimeMillis();
 
-        if (expiryTime <= 0) {
-          expiredAt = System.currentTimeMillis();
+        SwingUtilities.invokeLater(() -> {
+          if (storagePanel == null) {
+            return;
+          }
 
           JLabel footerLabel = storagePanel.getFooterLabel();
           footerLabel.setIcon(null);
           footerLabel.setToolTipText(null);
-        }
-
-        return true;
+        });
       }
+
+      return true;
+    }
+
+    if (deathStorageManager.getStartPlayedMinutes() > 0
+        && deathStorageManager.getPlayedMinutes() >= expiryTime) {
+      expiredAt = System.currentTimeMillis();
+
+      return true;
     }
 
     return false;
@@ -222,8 +240,7 @@ public class Deathpile extends DeathStorage {
 
   String getExpireText() {
     if (expiredAt != -1L) {
-      return "Expired " + DurationFormatter.format(System.currentTimeMillis() - expiredAt) +
-          " ago";
+      return "Expired " + DurationFormatter.format(System.currentTimeMillis() - expiredAt) + " ago";
     }
 
     if (useAccountPlayTime && deathStorageManager.getStartPlayedMinutes() <= 0) {
@@ -270,6 +287,10 @@ public class Deathpile extends DeathStorage {
 
   @Override
   public void softUpdate() {
+    if (storagePanel == null) {
+      return;
+    }
+
     storagePanel.setFooterText(getExpireText());
   }
 
@@ -293,6 +314,6 @@ public class Deathpile extends DeathStorage {
 
   @Override
   public boolean isWithdrawable() {
-    return !hasExpired();
+    return super.isWithdrawable() && !hasExpired();
   }
 }

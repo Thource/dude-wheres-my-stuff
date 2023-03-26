@@ -32,6 +32,7 @@ import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetClosed;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.vars.AccountType;
+import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneScapeProfile;
@@ -70,6 +71,7 @@ public class DudeWheresMyStuffPlugin extends Plugin {
   boolean developerMode;
 
   @Inject private ClientToolbar clientToolbar;
+  @Getter @Inject private Notifier notifier;
   @Getter @Inject private Client client;
   @Getter @Inject private ClientThread clientThread;
   @Getter @Inject private InfoBoxManager infoBoxManager;

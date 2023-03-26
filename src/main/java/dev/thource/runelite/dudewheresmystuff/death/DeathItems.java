@@ -10,6 +10,7 @@ import javax.swing.border.EmptyBorder;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.config.ConfigManager;
 
+/** DeathItems shows the user what items they will lose on death. */
 public class DeathItems extends DeathStorage {
 
   private final DeathStorageManager deathStorageManager;
@@ -31,7 +32,8 @@ public class DeathItems extends DeathStorage {
 
   @Override
   protected void createComponentPopupMenu(StorageManager<?, ?> storageManager) {
-    if (!plugin.isDeveloperMode() || deathStorageManager.isPreviewManager()) {
+    if (!plugin.isDeveloperMode() || deathStorageManager.isPreviewManager()
+        || storagePanel == null) {
       return;
     }
 
@@ -55,7 +57,9 @@ public class DeathItems extends DeathStorage {
     items.clear();
     items.addAll(deathStorageManager.getDeathItems());
 
-    storagePanel.update();
+    if (storagePanel != null) {
+      storagePanel.update();
+    }
   }
 
   @Override
@@ -67,5 +71,10 @@ public class DeathItems extends DeathStorage {
   @Override
   public void load(ConfigManager configManager, String managerConfigKey, String profileKey) {
     // No loading
+  }
+
+  @Override
+  public boolean isWithdrawable() {
+    return false;
   }
 }

@@ -7,7 +7,7 @@ import lombok.Getter;
 import net.runelite.api.ItemID;
 import net.runelite.client.ui.overlay.infobox.InfoBox;
 
-public class DeathbankInfoBox extends InfoBox {
+class DeathbankInfoBox extends InfoBox {
 
   @Getter private final Deathbank deathbank;
 

@@ -134,7 +134,7 @@ public abstract class Storage<T extends StorageType> {
    * @return true if the items are withdrawable, otherwise false
    */
   public boolean isWithdrawable() {
-    return true;
+    return enabled;
   }
 
   /**

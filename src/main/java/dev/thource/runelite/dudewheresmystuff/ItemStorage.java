@@ -1,6 +1,7 @@
 package dev.thource.runelite.dudewheresmystuff;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import javax.annotation.Nullable;
 import lombok.Getter;
@@ -103,5 +104,35 @@ public class ItemStorage<T extends StorageType> extends Storage<T> {
     }
 
     super.reset();
+  }
+
+  /**
+   * @param id       the item id of the item to remove
+   * @param quantity the amount of the item to remove
+   * @return the amount of items removed from the storage
+   */
+  public long remove(int id, long quantity) {
+    if (quantity <= 0) {
+      return 0;
+    }
+
+    long itemsRemoved = 0;
+    Iterator<ItemStack> listIterator = items.iterator();
+    while (listIterator.hasNext() && quantity > 0) {
+      ItemStack itemStack = listIterator.next();
+      if (itemStack.getId() != id) {
+        continue;
+      }
+
+      long qtyToRemove = Math.min(quantity, itemStack.getQuantity());
+      quantity -= qtyToRemove;
+      itemsRemoved += qtyToRemove;
+      itemStack.setQuantity(itemStack.getQuantity() - qtyToRemove);
+      if (itemStack.getQuantity() <= 0) {
+        listIterator.remove();
+      }
+    }
+
+    return itemsRemoved;
   }
 }

@@ -260,7 +260,6 @@ public class DudeWheresMyStuffPanel extends JPanel {
   }
 
   void logIn(boolean isMember, AccountType accountType, String displayName) {
-    ((DeathStorageTabPanel) storageTabPanelMap.get(Tab.DEATH)).setAccountType(accountType);
     storageTabPanelMap.forEach(
         (tab, storageTabPanel) -> {
           StorageManager<?, ?> storageManager = storageTabPanel.storageManager;

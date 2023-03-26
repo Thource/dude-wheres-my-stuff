@@ -6,7 +6,7 @@ import javax.annotation.Nonnull;
 import net.runelite.client.ui.overlay.infobox.InfoBox;
 import net.runelite.client.util.ImageUtil;
 
-public class CheckPlayTimeInfoBox extends InfoBox {
+class CheckPlayTimeInfoBox extends InfoBox {
 
   public CheckPlayTimeInfoBox(@Nonnull DudeWheresMyStuffPlugin plugin) {
     super(ImageUtil.loadImageResource(DudeWheresMyStuffPlugin.class, "icon-28.png"), plugin);

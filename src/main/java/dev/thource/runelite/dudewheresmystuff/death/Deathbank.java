@@ -61,6 +61,7 @@ public class Deathbank extends DeathStorage {
   protected void createStoragePanel(StorageManager<?, ?> storageManager) {
     super.createStoragePanel(storageManager);
 
+    assert storagePanel != null; // storagePanel can't be null here as it's set in super kl
     storagePanel.setTitle(deathbankType.getName());
     storagePanel.setSubTitle(locked ? "Locked" : "Unlocked");
 
@@ -69,6 +70,10 @@ public class Deathbank extends DeathStorage {
 
   @Override
   protected void createComponentPopupMenu(StorageManager<?, ?> storageManager) {
+    if (storagePanel == null) {
+      return;
+    }
+
     final JPopupMenu popupMenu = new JPopupMenu();
     popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
     storagePanel.setComponentPopupMenu(popupMenu);
@@ -103,7 +108,7 @@ public class Deathbank extends DeathStorage {
     popupMenu.add(clearDeathbank);
   }
 
-  public void setLocked(boolean locked) {
+  void setLocked(boolean locked) {
     this.locked = locked;
 
     SwingUtilities.invokeLater(() -> {
@@ -120,7 +125,7 @@ public class Deathbank extends DeathStorage {
 
   @Override
   public void softUpdate() {
-    if (lostAt != -1) {
+    if (storagePanel != null && lostAt != -1) {
       long timeSinceLost = System.currentTimeMillis() - lostAt;
       storagePanel.setFooterText(
           "Lost " + DurationFormatter.format(Math.abs(timeSinceLost)) + " ago");
@@ -148,6 +153,6 @@ public class Deathbank extends DeathStorage {
   @Override
   public boolean isWithdrawable() {
     // If the items were lost, then they can't be withdrawn
-    return lostAt == -1;
+    return super.isWithdrawable() && lostAt == -1;
   }
 }
