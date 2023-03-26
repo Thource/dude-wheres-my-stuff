@@ -288,4 +288,8 @@ public class Deathpile extends DeathStorage {
 
     return deathpile;
   }
+  @Override
+  public boolean isWithdrawable() {
+    return !hasExpired();
+  }
 }

@@ -1,12 +1,9 @@
 package dev.thource.runelite.dudewheresmystuff;
 
-import dev.thource.runelite.dudewheresmystuff.death.DeathbankType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
-import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
@@ -16,7 +13,6 @@ import javax.swing.border.EmptyBorder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
@@ -121,6 +117,22 @@ public abstract class Storage<T extends StorageType> {
 
   public boolean onMenuOptionClicked(MenuOptionClicked menuOption) {
     return false;
+  }
+
+  /**
+   * Can the items in this storage be withdrawn?
+   *
+   * Should be overridden by subclasses. Should be false for things like minigame points, expired deathbanks,
+   * or deposit-only storages such as balloon log storage.
+   *
+   * NOTE: this abstraction does not work for storages where some items are real and others are not.
+   * For example, the ores in blast furnace storage cannot be withdrawn but bars can. Also, some items
+   * in the POH may be unable to be withdrawn by UIMs without getting the full set.
+   *
+   * @return true if the items are withdrawable, otherwise false
+   */
+  public boolean isWithdrawable() {
+    return true;
   }
 
   /**

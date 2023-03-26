@@ -133,4 +133,9 @@ public class LogStorage extends WorldStorage {
     this.lastUpdated = System.currentTimeMillis();
     return true;
   }
+
+  @Override
+  public boolean isWithdrawable() {
+    return false;
+  }
 }

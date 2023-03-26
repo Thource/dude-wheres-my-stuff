@@ -32,7 +32,6 @@ import java.awt.event.MouseEvent;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
-import java.util.stream.Stream;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JMenu;
@@ -46,7 +45,6 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ItemID;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.config.RuneScapeProfile;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.ColorScheme;
 
@@ -61,6 +59,7 @@ class OverviewTabPanel extends TabContentPanel {
       "Are you sure you want to delete ALL of your save data?\nThis cannot be undone.";
   private static final String DELETE_ALL_SAVE_FINAL_WARNING =
       "Are you REALLY sure you want to delete ALL of your save data?\nThis REALLY cannot be undone.";
+  private static final String EXPORT_ITEMS_TEXT = "Export items to CSV";
 
   @Getter private final Map<Tab, OverviewItemPanel> overviews;
   private final OverviewItemPanel summaryOverview;
@@ -274,6 +273,12 @@ class OverviewTabPanel extends TabContentPanel {
                   });
               popupMenu.add(deleteAllData);
             }
+          }
+
+          if (!Objects.equals(pluginPanel.getDisplayName(), "")) {
+            final JMenuItem exportItems = new JMenuItem("Export items to CSV");
+            exportItems.addActionListener(e -> storageManagerManager.exportItems());
+            popupMenu.add(exportItems);
           }
         });
   }

@@ -46,6 +46,7 @@ public class ItemStack {
   @EqualsAndHashCode.Exclude private int haPrice;
   @EqualsAndHashCode.Exclude @Setter private boolean stackable;
   @EqualsAndHashCode.Exclude private ItemIdentification itemIdentification;
+  @EqualsAndHashCode.Exclude private int canonicalId;
 
   /**
    * A constructor.
@@ -89,6 +90,7 @@ public class ItemStack {
         itemStack.isStackable());
 
     this.itemIdentification = itemStack.getItemIdentification();
+    this.canonicalId = itemStack.canonicalId;
   }
 
   // WARNING: ItemStacks created using this constructor will not have an ItemIdentification
@@ -101,6 +103,7 @@ public class ItemStack {
     this.gePrice = gePrice;
     this.haPrice = haPrice;
     this.stackable = stackable;
+    this.canonicalId = id;
   }
 
   /**
@@ -119,7 +122,8 @@ public class ItemStack {
     gePrice = itemManager.getItemPrice(id);
     haPrice = composition.getHaPrice();
     stackable = composition.isStackable();
-    itemIdentification = ItemIdentification.get(itemManager.canonicalize(id));
+    canonicalId = itemManager.canonicalize(id);
+    itemIdentification = ItemIdentification.get(canonicalId);
 
     return true;
   }

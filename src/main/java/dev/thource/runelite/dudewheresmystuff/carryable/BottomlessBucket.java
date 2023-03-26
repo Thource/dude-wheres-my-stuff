@@ -155,4 +155,9 @@ public class BottomlessBucket extends CarryableStorage {
 
     return true;
   }
+
+  @Override
+  public boolean isWithdrawable() {
+    return false;
+  }
 }
