@@ -5,6 +5,7 @@ import dev.thource.runelite.dudewheresmystuff.ItemStack;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ItemID;
 
+/** BoltPouch is responsible for tracking which bolts the player has in the bolt pouch. */
 @Slf4j
 public class BoltPouch extends CarryableStorage {
 

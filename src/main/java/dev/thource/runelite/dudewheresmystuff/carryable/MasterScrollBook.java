@@ -5,6 +5,10 @@ import dev.thource.runelite.dudewheresmystuff.ItemStack;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ItemID;
 
+/**
+ * MasterScrollBook is responsible for tracking which scrolls the player has stored in their master
+ * scroll book.
+ */
 @Slf4j
 public class MasterScrollBook extends CarryableStorage {
 
