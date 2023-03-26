@@ -25,6 +25,7 @@ import net.runelite.client.config.ConfigManager;
 @Slf4j
 @Getter
 public abstract class Storage<T extends StorageType> {
+
   protected final DudeWheresMyStuffPlugin plugin;
   protected T type;
   protected boolean enabled = true;
@@ -55,7 +56,8 @@ public abstract class Storage<T extends StorageType> {
             result =
                 JOptionPane.showConfirmDialog(
                     storagePanel,
-                    "Are you sure you want to reset your " + type.getName() + " data?\nThis cannot be undone.",
+                    "Are you sure you want to reset your " + type.getName()
+                        + " data?\nThis cannot be undone.",
                     "Confirm reset",
                     JOptionPane.OK_CANCEL_OPTION,
                     JOptionPane.WARNING_MESSAGE);
@@ -121,13 +123,13 @@ public abstract class Storage<T extends StorageType> {
 
   /**
    * Can the items in this storage be withdrawn?
-   *
-   * Should be overridden by subclasses. Should be false for things like minigame points, expired deathbanks,
-   * or deposit-only storages such as balloon log storage.
-   *
+   * <p>
+   * Should be overridden by subclasses. Should be false for things like minigame points, expired
+   * deathbanks, or deposit-only storages such as balloon log storage.
+   * <p>
    * NOTE: this abstraction does not work for storages where some items are real and others are not.
-   * For example, the ores in blast furnace storage cannot be withdrawn but bars can. Also, some items
-   * in the POH may be unable to be withdrawn by UIMs without getting the full set.
+   * For example, the ores in blast furnace storage cannot be withdrawn but bars can. Also, some
+   * items in the POH may be unable to be withdrawn by UIMs without getting the full set.
    *
    * @return true if the items are withdrawable, otherwise false
    */
@@ -224,7 +226,7 @@ public abstract class Storage<T extends StorageType> {
   public void disable(boolean isMember, AccountType accountType) {
     if ((type.isMembersOnly() && !isMember)
         || (type.getAccountTypeBlacklist() != null
-            && type.getAccountTypeBlacklist().contains(accountType))) {
+        && type.getAccountTypeBlacklist().contains(accountType))) {
       disable();
     }
   }

@@ -22,7 +22,7 @@ import net.runelite.client.ui.components.IconTextField;
 
 class SearchTabPanel
     extends StorageTabPanel<
-        StorageType, Storage<StorageType>, StorageManager<StorageType, Storage<StorageType>>> {
+    StorageType, Storage<StorageType>, StorageManager<StorageType, Storage<StorageType>>> {
 
   private static final String EMPTY_SEARCH_TEXT =
       "<html>Type at least 3 characters in the search bar to find your stuff</html>";

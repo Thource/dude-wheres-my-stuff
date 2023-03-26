@@ -6,7 +6,6 @@ import dev.thource.runelite.dudewheresmystuff.SaveFieldFormatter;
 import dev.thource.runelite.dudewheresmystuff.SaveFieldLoader;
 import dev.thource.runelite.dudewheresmystuff.carryable.BottomlessBucket;
 import java.util.ArrayList;
-import java.util.List;
 import lombok.Setter;
 import net.runelite.api.ItemID;
 import net.runelite.client.config.ConfigManager;
@@ -15,17 +14,17 @@ import net.runelite.client.config.ConfigManager;
 public class Leprechaun extends WorldStorage {
 
   public static final int[] WATERING_CAN_IDS = {
-    -1,
-    ItemID.WATERING_CAN,
-    ItemID.WATERING_CAN1,
-    ItemID.WATERING_CAN2,
-    ItemID.WATERING_CAN3,
-    ItemID.WATERING_CAN4,
-    ItemID.WATERING_CAN5,
-    ItemID.WATERING_CAN6,
-    ItemID.WATERING_CAN7,
-    ItemID.WATERING_CAN8,
-    ItemID.GRICOLLERS_CAN
+      -1,
+      ItemID.WATERING_CAN,
+      ItemID.WATERING_CAN1,
+      ItemID.WATERING_CAN2,
+      ItemID.WATERING_CAN3,
+      ItemID.WATERING_CAN4,
+      ItemID.WATERING_CAN5,
+      ItemID.WATERING_CAN6,
+      ItemID.WATERING_CAN7,
+      ItemID.WATERING_CAN8,
+      ItemID.GRICOLLERS_CAN
   };
   private final ItemStack rakes;
   private final ItemStack seedDibbers;
@@ -333,7 +332,8 @@ public class Leprechaun extends WorldStorage {
       itemId = ItemID.BOTTOMLESS_COMPOST_BUCKET_22997;
     }
 
-    if (oldBottomlessBucketCharges == bottomlessBucketCharges && itemId == bottomlessBucket.getId()) {
+    if (oldBottomlessBucketCharges == bottomlessBucketCharges
+        && itemId == bottomlessBucket.getId()) {
       return false;
     }
 

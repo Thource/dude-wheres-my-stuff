@@ -1,11 +1,8 @@
 package dev.thource.runelite.dudewheresmystuff.death;
 
 import dev.thource.runelite.dudewheresmystuff.Region;
-import dev.thource.runelite.dudewheresmystuff.StorageType;
-import java.util.List;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import net.runelite.api.vars.AccountType;
 
 /**
  * DeathbankType is used to identify Deathbanks.
@@ -28,7 +25,7 @@ public enum DeathbankType {
   ZULRAH("Zulrah", 33, 0, Region.BOSS_ZULRAH, "Zul-Andra"), // confirmed
   QUEST_DS2("Dragon Slayer II", 7, 8, Region.REGION_GALVEK_SHIPWRECKS, null),
   QUEST_ATOH("A Taste of Hope", 9, 10, null, null),
-  QUEST_SOTF("Sins of the Father", 23, 24, null,null),
+  QUEST_SOTF("Sins of the Father", 23, 24, null, null),
   QUEST_SOTE("Song of the Elves", 21, 22, null, "elvenrebel"),
   QUEST_TFE("The Fremennik Exiles", 19, 20, null, null);
 

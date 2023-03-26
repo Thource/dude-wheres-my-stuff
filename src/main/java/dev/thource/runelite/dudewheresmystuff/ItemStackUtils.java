@@ -7,12 +7,13 @@ import java.util.ListIterator;
 /** ItemStackUtils provides methods that interact with Lists of ItemStack. */
 public class ItemStackUtils {
 
-  private ItemStackUtils() {}
+  private ItemStackUtils() {
+  }
 
   /**
    * Compounds a List of ItemStacks, merging ItemStacks with the same id.
    *
-   * @param itemStacks ItemStacks to be compounded
+   * @param itemStacks           ItemStacks to be compounded
    * @param compoundUnstackables Whether unstackable ItemStacks should be compounded
    * @return a new List of new ItemStacks
    */
@@ -51,7 +52,7 @@ public class ItemStackUtils {
    * exists in the list, it will merge quantities. If there's an empty slot, it will fill it,
    * otherwise it'll be added to the end of the list.
    *
-   * @param items ItemStacks to be added to
+   * @param items     ItemStacks to be added to
    * @param itemToAdd ItemStack to add
    */
   public static void addItemStack(List<ItemStack> items, ItemStack itemToAdd) {
@@ -84,8 +85,8 @@ public class ItemStackUtils {
    * Removes an ItemStack from the supplied List of ItemStacks. Any removed ItemStacks will be
    * replaced with empty slots.
    *
-   * @param items ItemStacks to remove from
-   * @param itemToRemove ItemStack to remove
+   * @param items            ItemStacks to remove from
+   * @param itemToRemove     ItemStack to remove
    * @param replaceWithEmpty whether fully removed items should be replaced by an "empty" item
    */
   public static void removeItemStack(

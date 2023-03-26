@@ -10,7 +10,8 @@ class FakeDataService {
 
   public static final String PROFILE = "rsprofile.ZZZ";
 
-  private FakeDataService() {}
+  private FakeDataService() {
+  }
 
   static void createData(ConfigManager configManager) {
     // Wipe the fake profile data
@@ -60,8 +61,8 @@ class FakeDataService {
             (System.currentTimeMillis() - (1000 * 60 * 4))
                 + ";"
                 + type.getStorableItemIds().stream()
-                    .map(id -> id + "x" + 1)
-                    .collect(Collectors.joining(",")));
+                .map(id -> id + "x" + 1)
+                .collect(Collectors.joining(",")));
       }
     }
   }
@@ -268,7 +269,8 @@ class FakeDataService {
         "minigames.lastmanstanding",
         System.currentTimeMillis() - (1000 * 60 * 60 * 5) + ";43");
     configManager.setConfiguration(
-        DudeWheresMyStuffConfig.CONFIG_GROUP, PROFILE, "minigames.nightmarezone", "435645,12,8,120,30");
+        DudeWheresMyStuffConfig.CONFIG_GROUP, PROFILE, "minigames.nightmarezone",
+        "435645,12,8,120,30");
     configManager.setConfiguration(
         DudeWheresMyStuffConfig.CONFIG_GROUP,
         PROFILE,

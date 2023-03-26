@@ -31,5 +31,6 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 abstract class TabContentPanel extends JPanel {
+
   public abstract void softUpdate();
 }

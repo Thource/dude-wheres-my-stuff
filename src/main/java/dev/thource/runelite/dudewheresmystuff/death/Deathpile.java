@@ -150,39 +150,39 @@ public class Deathpile extends DeathStorage {
       JMenuItem setExpiresIn = new JMenuItem("Set expires in");
       debugMenu.add(setExpiresIn);
       setExpiresIn.addActionListener(
-        e -> {
-          int minutes = 0;
-          try {
-          minutes = Integer.parseInt(
-              JOptionPane.showInputDialog("Enter expiry in minutes from now"));
-          } catch (NumberFormatException nfe) {
-            // Do nothing
-          }
+          e -> {
+            int minutes = 0;
+            try {
+              minutes = Integer.parseInt(
+                  JOptionPane.showInputDialog("Enter expiry in minutes from now"));
+            } catch (NumberFormatException nfe) {
+              // Do nothing
+            }
 
-          if (minutes <= 0) {
-            return;
-          }
+            if (minutes <= 0) {
+              return;
+            }
 
-          if (useAccountPlayTime) {
-            expiryTime = deathStorageManager.getPlayedMinutes() + minutes;
-          } else {
-            expiryTime = minutes * 100;
+            if (useAccountPlayTime) {
+              expiryTime = deathStorageManager.getPlayedMinutes() + minutes;
+            } else {
+              expiryTime = minutes * 100;
+            }
+            expiredAt = -1L;
+            softUpdate();
+            storageManager.getStorageTabPanel().reorderStoragePanels();
           }
-          expiredAt = -1L;
-          softUpdate();
-          storageManager.getStorageTabPanel().reorderStoragePanels();
-        }
       );
 
       JMenuItem expire = new JMenuItem("Expire");
       debugMenu.add(expire);
       expire.addActionListener(
-        e -> {
-          expiredAt = -1L;
-          expiryTime = 0;
-          softUpdate();
-          storageManager.getStorageTabPanel().reorderStoragePanels();
-        }
+          e -> {
+            expiredAt = -1L;
+            expiryTime = 0;
+            softUpdate();
+            storageManager.getStorageTabPanel().reorderStoragePanels();
+          }
       );
     }
   }
@@ -273,21 +273,24 @@ public class Deathpile extends DeathStorage {
     storagePanel.setFooterText(getExpireText());
   }
 
-  static Deathpile load(DudeWheresMyStuffPlugin plugin, DeathStorageManager deathStorageManager, String profileKey, String uuid) {
+  static Deathpile load(DudeWheresMyStuffPlugin plugin, DeathStorageManager deathStorageManager,
+      String profileKey, String uuid) {
     Deathpile deathpile = new Deathpile(
-      plugin,
-      true,
-      0,
-      null,
-      deathStorageManager,
-      new ArrayList<>()
+        plugin,
+        true,
+        0,
+        null,
+        deathStorageManager,
+        new ArrayList<>()
     );
 
     deathpile.uuid = UUID.fromString(uuid);
-    deathpile.load(deathStorageManager.getConfigManager(), deathStorageManager.getConfigKey(), profileKey);
+    deathpile.load(deathStorageManager.getConfigManager(), deathStorageManager.getConfigKey(),
+        profileKey);
 
     return deathpile;
   }
+
   @Override
   public boolean isWithdrawable() {
     return !hasExpired();

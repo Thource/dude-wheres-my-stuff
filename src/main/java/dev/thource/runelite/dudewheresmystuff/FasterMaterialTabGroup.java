@@ -52,6 +52,7 @@ import javax.swing.JPanel;
  * @author Psikoi
  */
 public class FasterMaterialTabGroup extends JPanel {
+
   /* The panel on which the content tab's content will be displayed on. */
   private final JPanel display;
   /* A list of all the tabs contained in this group. */

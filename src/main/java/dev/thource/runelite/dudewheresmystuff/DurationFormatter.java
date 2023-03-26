@@ -18,7 +18,8 @@ public class DurationFormatter {
   private static final List<String> timesString =
       Arrays.asList("year", "month", "day", "hour", "minute", "second");
 
-  private DurationFormatter() {}
+  private DurationFormatter() {
+  }
 
   /**
    * Converts a millisecond duration into a human-readable String.
@@ -39,7 +40,7 @@ public class DurationFormatter {
         break;
       }
     }
-    if ("".equals(res.toString())) {
+    if ("".contentEquals(res)) {
       return "0 seconds";
     } else {
       return res.toString();

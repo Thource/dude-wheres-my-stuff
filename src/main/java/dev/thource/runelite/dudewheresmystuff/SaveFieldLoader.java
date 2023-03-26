@@ -2,12 +2,12 @@ package dev.thource.runelite.dudewheresmystuff;
 
 import dev.thource.runelite.dudewheresmystuff.death.DeathbankType;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import net.runelite.api.coords.WorldPoint;
 
 public class SaveFieldLoader {
+
   public static long loadLong(ArrayList<String> stringList, long dfault) {
     if (stringList.isEmpty()) {
       return dfault;
@@ -15,7 +15,7 @@ public class SaveFieldLoader {
 
     try {
       return Long.parseLong(stringList.remove(0));
-    } catch(NumberFormatException e) {
+    } catch (NumberFormatException e) {
       return dfault;
     }
   }
@@ -27,7 +27,7 @@ public class SaveFieldLoader {
 
     try {
       return UUID.fromString(stringList.remove(0));
-    } catch(IllegalArgumentException e) {
+    } catch (IllegalArgumentException e) {
       return dfault;
     }
   }
@@ -52,7 +52,8 @@ public class SaveFieldLoader {
     }
   }
 
-  public static List<ItemStack> loadItems(ArrayList<String> stringList, List<ItemStack> dfault, DudeWheresMyStuffPlugin plugin) {
+  public static List<ItemStack> loadItems(ArrayList<String> stringList, List<ItemStack> dfault,
+      DudeWheresMyStuffPlugin plugin) {
     if (stringList.isEmpty()) {
       return dfault;
     }
@@ -84,14 +85,15 @@ public class SaveFieldLoader {
     return stringList.remove(0).equals("true");
   }
 
-  public static DeathbankType loadDeathbankType(ArrayList<String> stringList, DeathbankType dfault) {
+  public static DeathbankType loadDeathbankType(ArrayList<String> stringList,
+      DeathbankType dfault) {
     if (stringList.isEmpty()) {
       return dfault;
     }
 
     try {
       return DeathbankType.valueOf(stringList.remove(0));
-    } catch(IllegalArgumentException e) {
+    } catch (IllegalArgumentException e) {
       return dfault;
     }
   }
@@ -109,7 +111,7 @@ public class SaveFieldLoader {
     try {
       return new WorldPoint(Integer.parseInt(splitData[0]), Integer.parseInt(splitData[1]),
           Integer.parseInt(splitData[2]));
-    } catch(NumberFormatException e) {
+    } catch (NumberFormatException e) {
       return dfault;
     }
   }
@@ -121,7 +123,7 @@ public class SaveFieldLoader {
 
     try {
       return Integer.parseInt(stringList.remove(0));
-    } catch(NumberFormatException e) {
+    } catch (NumberFormatException e) {
       return dfault;
     }
   }

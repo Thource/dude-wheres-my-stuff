@@ -6,7 +6,9 @@ import javax.swing.SwingUtilities;
 import net.runelite.client.util.SwingUtil;
 
 public class EnhancedSwingUtilities {
-  private EnhancedSwingUtilities() {}
+
+  private EnhancedSwingUtilities() {
+  }
 
   public static void fastRemoveAll(Container c) {
     fastRemoveAll(c, true);

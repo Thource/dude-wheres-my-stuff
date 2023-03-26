@@ -26,7 +26,7 @@ public class ItemContainerWatcher {
   @Getter static ItemContainerWatcher lootingBagWatcher = new ItemContainerWatcher(516);
   @Getter static ItemContainerWatcher seedBoxWatcher = new ItemContainerWatcher(573);
   private static final ItemContainerWatcher[] all =
-      new ItemContainerWatcher[] {inventoryWatcher, lootingBagWatcher, seedBoxWatcher};
+      new ItemContainerWatcher[]{inventoryWatcher, lootingBagWatcher, seedBoxWatcher};
   private static Client client;
   private static ClientThread clientThread;
   private static ItemManager itemManager;

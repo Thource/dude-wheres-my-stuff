@@ -11,6 +11,7 @@ import net.runelite.client.ui.overlay.infobox.InfoBox;
 public class DeathpileInfoBox extends InfoBox {
 
   @Getter private final Deathpile deathpile;
+
   public DeathpileInfoBox(@Nonnull DudeWheresMyStuffPlugin plugin, Deathpile deathpile) {
     super(plugin.getItemManager().getImage(ItemID.BONES), plugin);
     this.deathpile = deathpile;

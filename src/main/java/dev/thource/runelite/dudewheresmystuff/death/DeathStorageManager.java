@@ -69,7 +69,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
           14642, // ToB
           12172, // Gauntlet
           12633 // death's office
-          );
+      );
 
   @Getter @Nullable private Deathbank deathbank = null;
   long startMs = 0L;
@@ -83,7 +83,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
   private Item[] oldInventoryItems;
   private final CheckPlayTimeInfoBox playTimeInfoBox = new CheckPlayTimeInfoBox(plugin);
   private DeathbankInfoBox deathbankInfoBox;
-  private List<DeathpileInfoBox> deathpileInfoBoxes = new ArrayList<>();
+  private final List<DeathpileInfoBox> deathpileInfoBoxes = new ArrayList<>();
 
   @Inject
   private DeathStorageManager(DudeWheresMyStuffPlugin plugin) {
@@ -103,7 +103,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
             s ->
                 (s.getType() == DeathStorageType.DEATHPILE && !((Deathpile) s).hasExpired())
                     || (s.getType() != DeathStorageType.DEATHPILE
-                        && ((Deathbank) s).getLostAt() == -1L))
+                    && ((Deathbank) s).getLostAt() == -1L))
         .mapToLong(Storage::getTotalValue)
         .sum();
   }
@@ -162,7 +162,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
         && deathbank != null
         && deathbank.getDeathbankType() == DeathbankType.ZULRAH
         && Region.get(client.getLocalPlayer().getWorldLocation().getRegionID())
-            == Region.CITY_ZULANDRA) {
+        == Region.CITY_ZULANDRA) {
       List<ItemStack> inventoryItemsList =
           Arrays.stream(items)
               .map(i -> new ItemStack(i.getId(), "", i.getQuantity(), 0, 0, true))
@@ -240,7 +240,8 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
       if (startPlayedMinutes > 0) {
         getDeathpiles()
             .filter(Deathpile::isUseAccountPlayTime)
-            .forEach(deathpile -> deathpile.getStoragePanel().getFooterLabel().setToolTipText(null));
+            .forEach(
+                deathpile -> deathpile.getStoragePanel().getFooterLabel().setToolTipText(null));
       }
     }
     refreshInfoBoxes();
@@ -356,7 +357,8 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
   }
 
   private void refreshCheckPlayTimeInfoBox() {
-    boolean showInfoBox = startPlayedMinutes <= 0 && plugin.getConfig().deathpilesUseAccountPlayTime();
+    boolean showInfoBox =
+        startPlayedMinutes <= 0 && plugin.getConfig().deathpilesUseAccountPlayTime();
     boolean isAdded = plugin.getInfoBoxManager().getInfoBoxes().contains(playTimeInfoBox);
 
     if (!showInfoBox && isAdded) {
@@ -545,7 +547,8 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
   void createDeathpile(WorldPoint location, List<ItemStack> items) {
     boolean useAccountPlayTime = deathpilesUseAccountPlayTime();
     int expiryTime = useAccountPlayTime ? getPlayedMinutes() + 59 : 5900;
-    Deathpile deathpile = new Deathpile(plugin, useAccountPlayTime, expiryTime, location, this, items);
+    Deathpile deathpile = new Deathpile(plugin, useAccountPlayTime, expiryTime, location, this,
+        items);
     SwingUtilities.invokeLater(() -> deathpile.createStoragePanel(this));
     storages.add(deathpile);
   }
@@ -732,7 +735,8 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
         carryableStorageManager.getStorages().stream()
             .filter(s -> s.getType() == CarryableStorageType.GNOMISH_FIRELIGHTER)
             .findFirst()
-            .ifPresent(gnomishFirelighter -> gnomishFirelighter.getItems().forEach(itemStacksIterator::add));
+            .ifPresent(gnomishFirelighter -> gnomishFirelighter.getItems()
+                .forEach(itemStacksIterator::add));
       } else if (itemStack.getId() == ItemID.LOOTING_BAG
           || itemStack.getId() == ItemID.LOOTING_BAG_22586) {
         lootingBagPresent = true;
@@ -817,7 +821,8 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
         DudeWheresMyStuffConfig.CONFIG_GROUP,
         profileKey,
         getConfigKey() + "." + DeathStorageType.DEATHBANK.getConfigKey() + ".")) {
-      Deathbank deathbank = Deathbank.load(plugin, this, profileKey, configurationKey.split("\\.")[2]);
+      Deathbank deathbank = Deathbank.load(plugin, this, profileKey,
+          configurationKey.split("\\.")[2]);
       SwingUtilities.invokeLater(() -> deathbank.createStoragePanel(this));
       if (deathbank.getLostAt() == -1L) {
         this.deathbank = deathbank;

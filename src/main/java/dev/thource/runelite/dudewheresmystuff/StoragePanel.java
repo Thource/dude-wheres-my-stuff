@@ -53,6 +53,7 @@ import net.runelite.client.util.Text;
 
 /** ItemsBox is responsible for displaying items to the player. */
 public class StoragePanel extends JPanel {
+
   private static final int ITEMS_PER_ROW = 4;
   private static final int TITLE_PADDING = 5;
 

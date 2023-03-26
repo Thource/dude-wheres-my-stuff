@@ -15,9 +15,12 @@ import org.apache.commons.lang3.math.NumberUtils;
 @Getter
 public class PestControl extends MinigamesStorage {
 
-  private static final Pattern afterGamePattern1 = Pattern.compile("awarded you (\\d+) Void Knight");
-  private static final Pattern afterGamePattern2 = Pattern.compile("now have <col=800000>(\\d+)<col=000080> Void Knight");
-  private static final Pattern afterPurchasePattern = Pattern.compile("Remaining Void Knight Commendation Points: (\\d+)");
+  private static final Pattern afterGamePattern1 = Pattern.compile(
+      "awarded you (\\d+) Void Knight");
+  private static final Pattern afterGamePattern2 = Pattern.compile(
+      "now have <col=800000>(\\d+)<col=000080> Void Knight");
+  private static final Pattern afterPurchasePattern = Pattern.compile(
+      "Remaining Void Knight Commendation Points: (\\d+)");
 
   private final ItemStack points =
       new ItemStack(ItemID.VOID_SEAL1, "Points", 0, 0, 0, true);

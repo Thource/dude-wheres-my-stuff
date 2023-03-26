@@ -52,7 +52,7 @@ public class MasterScrollBook extends CarryableStorage {
   public boolean onVarbitChanged() {
     boolean updated = false;
 
-    for(int i = 0; i < VARBITS.length; i++) {
+    for (int i = 0; i < VARBITS.length; i++) {
       int quantity = plugin.getClient().getVarbitValue(VARBITS[i]);
       ItemStack itemStack = items.get(i);
 

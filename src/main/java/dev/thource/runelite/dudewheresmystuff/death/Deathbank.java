@@ -6,7 +6,6 @@ import dev.thource.runelite.dudewheresmystuff.SaveFieldFormatter;
 import dev.thource.runelite.dudewheresmystuff.SaveFieldLoader;
 import dev.thource.runelite.dudewheresmystuff.StorageManager;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
@@ -131,7 +130,8 @@ public class Deathbank extends DeathStorage {
     super.softUpdate();
   }
 
-  static Deathbank load(DudeWheresMyStuffPlugin plugin, DeathStorageManager deathStorageManager, String profileKey, String uuid) {
+  static Deathbank load(DudeWheresMyStuffPlugin plugin, DeathStorageManager deathStorageManager,
+      String profileKey, String uuid) {
     Deathbank deathbank = new Deathbank(
         DeathbankType.UNKNOWN,
         plugin,
@@ -139,7 +139,8 @@ public class Deathbank extends DeathStorage {
     );
 
     deathbank.uuid = UUID.fromString(uuid);
-    deathbank.load(deathStorageManager.getConfigManager(), deathStorageManager.getConfigKey(), profileKey);
+    deathbank.load(deathStorageManager.getConfigManager(), deathStorageManager.getConfigKey(),
+        profileKey);
 
     return deathbank;
   }

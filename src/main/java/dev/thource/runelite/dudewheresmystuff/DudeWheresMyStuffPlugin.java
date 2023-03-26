@@ -10,8 +10,6 @@ import dev.thource.runelite.dudewheresmystuff.playerownedhouse.PlayerOwnedHouseS
 import dev.thource.runelite.dudewheresmystuff.stash.StashStorageManager;
 import dev.thource.runelite.dudewheresmystuff.world.WorldStorageManager;
 import java.util.Objects;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Stream;
 import javax.inject.Inject;
@@ -173,13 +171,15 @@ public class DudeWheresMyStuffPlugin extends Plugin {
                 .getStorageManagers()
                 .forEach(
                     storageManager ->
-                        storageManager.getStorages().forEach(o -> o.createStoragePanel(storageManager)));
+                        storageManager.getStorages()
+                            .forEach(o -> o.createStoragePanel(storageManager)));
 
             previewStorageManagerManager
                 .getStorageManagers()
                 .forEach(
                     storageManager ->
-                        storageManager.getStorages().forEach(o -> o.createStoragePanel(storageManager)));
+                        storageManager.getStorages()
+                            .forEach(o -> o.createStoragePanel(storageManager)));
           });
 
       clientThread.invoke(() -> {
@@ -197,7 +197,8 @@ public class DudeWheresMyStuffPlugin extends Plugin {
 
     AtomicBoolean anyProfilesMigrated = new AtomicBoolean(false);
     getProfilesWithData().forEach(runeScapeProfile -> {
-      if (configManager.getConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP, runeScapeProfile.getKey(), "saveMigrated") == null) {
+      if (configManager.getConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP,
+          runeScapeProfile.getKey(), "saveMigrated") == null) {
         new SaveMigrator(configManager, runeScapeProfile.getKey()).migrate();
         anyProfilesMigrated.set(true);
       }
@@ -234,7 +235,8 @@ public class DudeWheresMyStuffPlugin extends Plugin {
 
     clientToolbar.removeNavigation(navButton);
 
-    infoBoxManager.removeIf(infoBox -> infoBox.getName().startsWith(this.getClass().getSimpleName()));
+    infoBoxManager.removeIf(
+        infoBox -> infoBox.getName().startsWith(this.getClass().getSimpleName()));
   }
 
   @Subscribe
@@ -360,8 +362,10 @@ public class DudeWheresMyStuffPlugin extends Plugin {
       String displayName = Objects.requireNonNull(client.getLocalPlayer()).getName();
 
       // All saves should be migrated on plugin start, so this must be a new account
-      if (configManager.getRSProfileConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP, "saveMigrated") == null) {
-        configManager.setRSProfileConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP, "saveMigrated", true);
+      if (configManager.getRSProfileConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP,
+          "saveMigrated") == null) {
+        configManager.setRSProfileConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP,
+            "saveMigrated", true);
       }
 
       configManager.setRSProfileConfiguration(

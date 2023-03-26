@@ -20,8 +20,8 @@ public class SearchStoragePanel extends StoragePanel {
             item ->
                 searchText == null
                     || item.getName()
-                        .toLowerCase(Locale.ROOT)
-                        .contains(searchText.toLowerCase(Locale.ROOT)))
+                    .toLowerCase(Locale.ROOT)
+                    .contains(searchText.toLowerCase(Locale.ROOT)))
         .collect(Collectors.toList());
   }
 }

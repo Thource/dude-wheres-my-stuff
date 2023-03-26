@@ -1,6 +1,5 @@
 package dev.thource.runelite.dudewheresmystuff.death;
 
-import dev.thource.runelite.dudewheresmystuff.Region;
 import dev.thource.runelite.dudewheresmystuff.StorageType;
 import java.util.List;
 import lombok.Getter;

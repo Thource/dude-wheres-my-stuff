@@ -3,10 +3,7 @@ package dev.thource.runelite.dudewheresmystuff.coins;
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import java.util.Objects;
 import lombok.Getter;
-import net.runelite.api.Client;
 import net.runelite.api.widgets.Widget;
-import net.runelite.client.callback.ClientThread;
-import net.runelite.client.game.ItemManager;
 
 /** LootingBag is responsible for tracking the player's coins in their looting bag. */
 @Getter

@@ -113,9 +113,11 @@ public abstract class StorageManager<T extends StorageType, S extends Storage<T>
     }
   }
 
-  public void onGameStateChanged(GameStateChanged gameStateChanged) {}
+  public void onGameStateChanged(GameStateChanged gameStateChanged) {
+  }
 
-  public void onActorDeath(ActorDeath actorDeath) {}
+  public void onActorDeath(ActorDeath actorDeath) {
+  }
 
   public void reset() {
     storages.forEach(Storage::reset);
@@ -124,8 +126,11 @@ public abstract class StorageManager<T extends StorageType, S extends Storage<T>
 
   public abstract String getConfigKey();
 
-  /** Save all Storages.
-   * @param profileKey*/
+  /**
+   * Save all Storages.
+   *
+   * @param profileKey
+   */
   public void save(String profileKey) {
     if (!enabled) {
       return;
@@ -157,7 +162,8 @@ public abstract class StorageManager<T extends StorageType, S extends Storage<T>
 
   public abstract Tab getTab();
 
-  public void onItemDespawned(ItemDespawned itemDespawned) {}
+  public void onItemDespawned(ItemDespawned itemDespawned) {
+  }
 
   /** Pass onChatMessage through to enabled storages. */
   public void onChatMessage(ChatMessage chatMessage) {

@@ -3,9 +3,9 @@ package dev.thource.runelite.dudewheresmystuff.world;
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
 import net.runelite.api.ItemID;
-import net.runelite.api.Varbits;
 
 public class FossilStorage extends WorldStorage {
+
   private static final int[] VARBITS = {
       5828,
       5829,

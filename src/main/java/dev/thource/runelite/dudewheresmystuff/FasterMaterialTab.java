@@ -50,6 +50,7 @@ import net.runelite.client.ui.ColorScheme;
  * @author Psikoi
  */
 public class FasterMaterialTab extends JLabel {
+
   private static final Border SELECTED_BORDER =
       new CompoundBorder(
           BorderFactory.createMatteBorder(0, 0, 1, 0, ColorScheme.BRAND_ORANGE),

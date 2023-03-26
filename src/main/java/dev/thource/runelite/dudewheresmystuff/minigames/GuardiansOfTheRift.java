@@ -71,11 +71,11 @@ public class GuardiansOfTheRift extends MinigamesStorage {
 
     if (chatMessage.getMessage().startsWith("You found some loot:")) {
       if (Region.get(
-              WorldPoint.fromLocalInstance(
-                      plugin.getClient(),
-                      Objects.requireNonNull(plugin.getClient().getLocalPlayer())
-                          .getLocalLocation())
-                  .getRegionID())
+          WorldPoint.fromLocalInstance(
+                  plugin.getClient(),
+                  Objects.requireNonNull(plugin.getClient().getLocalPlayer())
+                      .getLocalLocation())
+              .getRegionID())
           != Region.MG_GUARDIANS_OF_THE_RIFT) {
         return false;
       }

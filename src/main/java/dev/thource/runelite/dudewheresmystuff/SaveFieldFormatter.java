@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import net.runelite.api.coords.WorldPoint;
 
 public class SaveFieldFormatter {
+
   public static String format(List<ItemStack> list, boolean quantitiesOnly) {
     return list.stream()
         .map(item -> format(item, quantitiesOnly))

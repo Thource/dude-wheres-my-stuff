@@ -81,7 +81,7 @@ public class DudeWheresMyStuffPanel extends JPanel {
   private final JPanel display = new JPanel();
   private final FasterMaterialTabGroup tabGroup = new FasterMaterialTabGroup(display);
   private final boolean previewMode;
-  private StorageManagerManager storageManagerManager;
+  private final StorageManagerManager storageManagerManager;
   @Setter private boolean active;
   @Getter private String displayName = "";
   @Nullable private TabContentPanel activeTabPanel = null;

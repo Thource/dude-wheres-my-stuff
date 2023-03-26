@@ -41,9 +41,9 @@ public class StashStorage extends ItemStorage<StashStorageType> {
     }
 
     if (stashUnit
-            .getStashUnitData()
-            .getWorldPoints()[0]
-            .distanceTo(plugin.getClient().getLocalPlayer().getWorldLocation())
+        .getStashUnitData()
+        .getWorldPoints()[0]
+        .distanceTo(plugin.getClient().getLocalPlayer().getWorldLocation())
         > 10) {
       return false;
     }

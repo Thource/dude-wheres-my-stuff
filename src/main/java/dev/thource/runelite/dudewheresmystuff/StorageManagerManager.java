@@ -1,5 +1,7 @@
 package dev.thource.runelite.dudewheresmystuff;
 
+import static net.runelite.client.RuneLite.RUNELITE_DIR;
+
 import dev.thource.runelite.dudewheresmystuff.carryable.CarryableStorageManager;
 import dev.thource.runelite.dudewheresmystuff.coins.CoinsStorageManager;
 import dev.thource.runelite.dudewheresmystuff.coins.CoinsStorageType;
@@ -38,11 +40,11 @@ import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.WidgetClosed;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.client.config.ConfigManager;
-import static net.runelite.client.RuneLite.RUNELITE_DIR;
 
 @Slf4j
 @Getter
 public class StorageManagerManager {
+
   public static final File EXPORT_DIR = new File(RUNELITE_DIR, "dudewheresmystuff");
 
   private final CarryableStorageManager carryableStorageManager;
@@ -170,17 +172,17 @@ public class StorageManagerManager {
   }
 
   public List<ItemStack> getItems() {
-    return getStorages().filter(Storage::isEnabled).map(Storage::getItems).flatMap(List::stream).collect(Collectors.toList());
+    return getStorages().filter(Storage::isEnabled).map(Storage::getItems).flatMap(List::stream)
+        .collect(Collectors.toList());
   }
 
   /**
    * Gets all known withdrawable items
-   *
-   * If the same item is in multiple storages, the item stacks are combined.
-   * "Same item" refers to items with the same canonical ID, but note that the
-   * actual ID of the stack will be set to the ID of one of the items
-   * arbitrarily. It is therefore recommended that callers do not use the IDs,
-   * only the canonical IDs.
+   * <p>
+   * If the same item is in multiple storages, the item stacks are combined. "Same item" refers to
+   * items with the same canonical ID, but note that the actual ID of the stack will be set to the
+   * ID of one of the items arbitrarily. It is therefore recommended that callers do not use the
+   * IDs, only the canonical IDs.
    *
    * @return The item stacks
    */
@@ -195,21 +197,21 @@ public class StorageManagerManager {
         .map(Storage::getItems)
         .flatMap(List::stream)
         .forEach((ItemStack stack) -> {
-      if (stack.getQuantity() == 0 || stack.getId() == -1) {
-        return;
-      }
+          if (stack.getQuantity() == 0 || stack.getId() == -1) {
+            return;
+          }
 
-      int id = stack.getCanonicalId();
+          int id = stack.getCanonicalId();
 
-      ItemStack existing = items.get(id);
-      if (existing == null) {
-        // No item yet, insert a copy so that we can modify their quantities later if necessary
-        items.put(id, new ItemStack(stack));
-      } else {
-        // This item was already in there. Update the quantity to include the new stack.
-        existing.setQuantity(stack.getQuantity() + existing.getQuantity());
-      }
-    });
+          ItemStack existing = items.get(id);
+          if (existing == null) {
+            // No item yet, insert a copy so that we can modify their quantities later if necessary
+            items.put(id, new ItemStack(stack));
+          } else {
+            // This item was already in there. Update the quantity to include the new stack.
+            existing.setQuantity(stack.getQuantity() + existing.getQuantity());
+          }
+        });
 
     return items.values();
   }
@@ -244,13 +246,13 @@ public class StorageManagerManager {
       return;
     }
     File user_dir = new File(EXPORT_DIR, displayName);
-    String fileName = new SimpleDateFormat("'dudewheresmystuff-'yyyyMMdd'T'HHmmss'.csv'").format(new Date());
+    String fileName = new SimpleDateFormat("'dudewheresmystuff-'yyyyMMdd'T'HHmmss'.csv'").format(
+        new Date());
     String filePath = user_dir + File.separator + fileName;
 
     Collection<ItemStack> items = getWithdrawableItems();
 
-    try
-    {
+    try {
       user_dir.mkdirs();
 
       BufferedWriter writer = new BufferedWriter(new FileWriter(filePath));
@@ -259,12 +261,11 @@ public class StorageManagerManager {
 
       for (ItemStack stack : items) {
         String escaped_name = stack.getName().replace(",", "").replace("\n", "");
-        writer.write(String.format("%d,%s,%d\n", stack.getCanonicalId(), escaped_name, stack.getQuantity()));
+        writer.write(
+            String.format("%d,%s,%d\n", stack.getCanonicalId(), escaped_name, stack.getQuantity()));
       }
       writer.close();
-    }
-    catch (IOException e)
-    {
+    } catch (IOException e) {
       log.error("Unable to export: " + e.getMessage());
     }
   }

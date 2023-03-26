@@ -10,6 +10,7 @@ import net.runelite.client.util.AsyncBufferedImage;
 import net.runelite.client.util.QuantityFormatter;
 
 public class ItemBox extends JPanel {
+
   @Getter private int itemId = -1;
   @Getter private long itemQuantity = 1;
 
