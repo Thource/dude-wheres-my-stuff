@@ -245,16 +245,14 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
     }
     refreshInfoBoxes();
 
-    if (startPlayedMinutes <= 0) {
-      return;
-    }
-
-    Integer savedPlayedMinutes =
-        configManager.getRSProfileConfiguration(
-            DudeWheresMyStuffConfig.CONFIG_GROUP, "minutesPlayed", int.class);
-    if (savedPlayedMinutes == null || savedPlayedMinutes != getPlayedMinutes()) {
-      configManager.setRSProfileConfiguration(
-          DudeWheresMyStuffConfig.CONFIG_GROUP, "minutesPlayed", getPlayedMinutes());
+    if (startPlayedMinutes > 0) {
+      Integer savedPlayedMinutes =
+          configManager.getRSProfileConfiguration(
+              DudeWheresMyStuffConfig.CONFIG_GROUP, "minutesPlayed", int.class);
+      if (savedPlayedMinutes == null || savedPlayedMinutes != getPlayedMinutes()) {
+        configManager.setRSProfileConfiguration(
+            DudeWheresMyStuffConfig.CONFIG_GROUP, "minutesPlayed", getPlayedMinutes());
+      }
     }
 
     if (deathbank != null) {
