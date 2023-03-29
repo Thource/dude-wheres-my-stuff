@@ -250,7 +250,7 @@ public class SaveMigrator {
 
     int wateringCanIndex = 0;
     if (itemQuantities.get(4) > 0) {
-      wateringCanIndex = (Arrays.stream(Leprechaun.WATERING_CAN_IDS).boxed()
+      wateringCanIndex = (Arrays.stream(Leprechaun.getWateringCanIds()).boxed()
           .collect(Collectors.toList()).indexOf(itemIds.get(4)));
     }
     map.put(

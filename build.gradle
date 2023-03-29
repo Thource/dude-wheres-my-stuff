@@ -26,7 +26,7 @@ dependencies {
 group = 'dev.thource.runelite.dudewheresmystuff'
 version = '2.0.0'
 //noinspection GroovyUnusedAssignment
-sourceCompatibility = '11'
+sourceCompatibility = '1.8'
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'

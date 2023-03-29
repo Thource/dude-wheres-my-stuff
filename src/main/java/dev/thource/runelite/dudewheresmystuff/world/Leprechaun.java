@@ -13,7 +13,7 @@ import net.runelite.client.config.ConfigManager;
 /** Leprechaun is responsible for tracking the player's leprechaun-stored farming equipment. */
 public class Leprechaun extends WorldStorage {
 
-  public static final int[] WATERING_CAN_IDS = {
+  private static final int[] WATERING_CAN_IDS = {
       -1,
       ItemID.WATERING_CAN,
       ItemID.WATERING_CAN1,
@@ -78,6 +78,10 @@ public class Leprechaun extends WorldStorage {
     items.add(composts);
     items.add(superComposts);
     items.add(ultraComposts);
+  }
+
+  public static int[] getWateringCanIds() {
+    return WATERING_CAN_IDS.clone();
   }
 
   @Override
@@ -320,7 +324,7 @@ public class Leprechaun extends WorldStorage {
   }
 
   private boolean setBottomlessBucketVars(int bottomlessBucketType, int bottomlessBucketCharges) {
-    int oldBottomlessBucketCharges = this.bottomlessBucketCharges;
+    final int oldBottomlessBucketCharges = this.bottomlessBucketCharges;
     this.bottomlessBucketType = bottomlessBucketType;
     this.bottomlessBucketCharges = bottomlessBucketCharges;
 
