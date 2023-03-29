@@ -30,6 +30,7 @@ public class WorldStorageManager extends StorageManager<WorldStorageType, WorldS
     storages.add(new Annette(plugin));
     storages.add(new ElnockInquisitor(plugin));
     storages.add(new PickaxeStatue(plugin));
+    storages.add(new Nulodion(plugin));
   }
 
   @Override
