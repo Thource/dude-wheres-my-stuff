@@ -57,16 +57,16 @@ class OverviewTabPanel extends TabContentPanel {
       "Are you sure you want to delete your save data?\nThis cannot be undone.";
   private static final String DELETE_ALL_SAVE_WARNING =
       "Are you sure you want to delete ALL of your save data?\nThis cannot be undone.";
-  private static final String DELETE_ALL_SAVE_FINAL_WARNING =
-      "Are you REALLY sure you want to delete ALL of your save data?\nThis REALLY cannot be undone.";
+  private static final String DELETE_ALL_SAVE_FINAL_WARNING = "Are you REALLY sure you want to "
+      + "delete ALL of your save data?\nThis REALLY cannot be undone.";
   private static final String EXPORT_ITEMS_TEXT = "Export items to CSV";
+  private static final String CONFIRM_DELETION_TEXT = "Confirm deletion";
 
   @Getter private final Map<Tab, OverviewItemPanel> overviews;
   private final OverviewItemPanel summaryOverview;
   private final DudeWheresMyStuffPanel pluginPanel;
   private final transient DudeWheresMyStuffPlugin plugin;
   private final transient StorageManagerManager storageManagerManager;
-  private final transient ConfigManager configManager;
 
   OverviewTabPanel(
       DudeWheresMyStuffPlugin plugin,
@@ -75,7 +75,6 @@ class OverviewTabPanel extends TabContentPanel {
       ConfigManager configManager,
       StorageManagerManager storageManagerManager,
       boolean developerMode) {
-    this.configManager = configManager;
     this.pluginPanel = pluginPanel;
     this.plugin = plugin;
     this.storageManagerManager = storageManagerManager;
@@ -196,94 +195,99 @@ class OverviewTabPanel extends TabContentPanel {
           summaryOverview.setComponentPopupMenu(popupMenu);
 
           if (pluginPanel.isPreviewPanel()) {
-            final JMenuItem clearDeathbank = new JMenuItem("Delete data");
-            clearDeathbank.addActionListener(
-                e -> {
-                  int result = JOptionPane.OK_OPTION;
-
-                  try {
-                    result =
-                        JOptionPane.showConfirmDialog(
-                            this,
-                            DELETE_SAVE_WARNING,
-                            "Confirm deletion",
-                            JOptionPane.OK_CANCEL_OPTION,
-                            JOptionPane.WARNING_MESSAGE);
-                  } catch (Exception err) {
-                    log.warn("Unexpected exception occurred while check for confirm required", err);
-                  }
-
-                  if (result == JOptionPane.OK_OPTION) {
-                    plugin.disablePreviewMode(true);
-                    resetSummaryContextMenu();
-                  }
-                });
-            popupMenu.add(clearDeathbank);
-
-            final JMenuItem exitPreviewMode = new JMenuItem("Exit preview mode");
-            exitPreviewMode.addActionListener(e -> plugin.disablePreviewMode(false));
-            popupMenu.add(exitPreviewMode);
+            addDeleteDeathbankMenuOption(popupMenu);
+            addExitPreviewModeMenuOption(popupMenu);
           } else {
-            populatePopupMenuWithProfiles(popupMenu);
-
-            if (plugin.getProfilesWithData().findAny().isPresent()) {
-              popupMenu.add(new Separator());
-
-              final JMenuItem deleteAllData = new JMenuItem("Delete all data");
-              deleteAllData.addActionListener(
-                  e -> {
-                    int result = JOptionPane.OK_OPTION;
-
-                    try {
-                      result =
-                          JOptionPane.showConfirmDialog(
-                              this,
-                              DELETE_ALL_SAVE_WARNING,
-                              "Confirm deletion",
-                              JOptionPane.OK_CANCEL_OPTION,
-                              JOptionPane.WARNING_MESSAGE);
-                    } catch (Exception err) {
-                      log.warn("Unexpected exception occurred while check for confirm required",
-                          err);
-                    }
-
-                    if (result == JOptionPane.OK_OPTION) {
-                      result =
-                          JOptionPane.showConfirmDialog(
-                              this,
-                              DELETE_ALL_SAVE_FINAL_WARNING,
-                              "Confirm deletion",
-                              JOptionPane.OK_CANCEL_OPTION,
-                              JOptionPane.WARNING_MESSAGE);
-
-                      if (result == JOptionPane.OK_OPTION) {
-                        plugin.getProfilesWithData().forEach(runeScapeProfile -> {
-                          for (String configKey : configManager.getRSProfileConfigurationKeys(
-                              DudeWheresMyStuffConfig.CONFIG_GROUP, runeScapeProfile.getKey(),
-                              "")) {
-                            configManager.unsetConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP,
-                                runeScapeProfile.getKey(), configKey);
-                          }
-                        });
-                        configManager.sendConfig();
-
-                        resetSummaryContextMenu();
-                      }
-                    }
-                  });
-              popupMenu.add(deleteAllData);
-            }
+            addPreviewModeMenuOption(popupMenu);
+            addDeleteAllDataMenuOption(popupMenu);
           }
-
-          if (!Objects.equals(pluginPanel.getDisplayName(), "")) {
-            final JMenuItem exportItems = new JMenuItem("Export items to CSV");
-            exportItems.addActionListener(e -> storageManagerManager.exportItems());
-            popupMenu.add(exportItems);
-          }
+          addExportToCsvMenuOption(popupMenu);
         });
   }
 
-  private void populatePopupMenuWithProfiles(JPopupMenu popupMenu) {
+  private void addExportToCsvMenuOption(JPopupMenu popupMenu) {
+    if (!Objects.equals(pluginPanel.getDisplayName(), "")) {
+      final JMenuItem exportItems = new JMenuItem(EXPORT_ITEMS_TEXT);
+      exportItems.addActionListener(e -> storageManagerManager.exportItems());
+      popupMenu.add(exportItems);
+    }
+  }
+
+  private void addDeleteAllDataMenuOption(JPopupMenu popupMenu) {
+    if (plugin.getProfilesWithData().findAny().isPresent()) {
+      popupMenu.add(new Separator());
+
+      final JMenuItem deleteAllData = new JMenuItem("Delete all data");
+      deleteAllData.addActionListener(
+          e -> {
+            int result = JOptionPane.OK_OPTION;
+
+            try {
+              result =
+                  JOptionPane.showConfirmDialog(
+                      this,
+                      DELETE_ALL_SAVE_WARNING,
+                      CONFIRM_DELETION_TEXT,
+                      JOptionPane.OK_CANCEL_OPTION,
+                      JOptionPane.WARNING_MESSAGE);
+            } catch (Exception err) {
+              log.warn("Unexpected exception occurred while check for confirm required",
+                  err);
+            }
+
+            if (result == JOptionPane.OK_OPTION) {
+              result =
+                  JOptionPane.showConfirmDialog(
+                      this,
+                      DELETE_ALL_SAVE_FINAL_WARNING,
+                      CONFIRM_DELETION_TEXT,
+                      JOptionPane.OK_CANCEL_OPTION,
+                      JOptionPane.WARNING_MESSAGE);
+
+              if (result == JOptionPane.OK_OPTION) {
+                plugin.deleteAllData();
+
+                resetSummaryContextMenu();
+              }
+            }
+          });
+      popupMenu.add(deleteAllData);
+    }
+  }
+
+  private void addExitPreviewModeMenuOption(JPopupMenu popupMenu) {
+    final JMenuItem exitPreviewMode = new JMenuItem("Exit preview mode");
+    exitPreviewMode.addActionListener(e -> plugin.disablePreviewMode(false));
+    popupMenu.add(exitPreviewMode);
+  }
+
+  private void addDeleteDeathbankMenuOption(JPopupMenu popupMenu) {
+    final JMenuItem clearDeathbank = new JMenuItem("Delete data");
+    clearDeathbank.addActionListener(
+        e -> {
+          int result = JOptionPane.OK_OPTION;
+
+          try {
+            result =
+                JOptionPane.showConfirmDialog(
+                    this,
+                    DELETE_SAVE_WARNING,
+                    CONFIRM_DELETION_TEXT,
+                    JOptionPane.OK_CANCEL_OPTION,
+                    JOptionPane.WARNING_MESSAGE);
+          } catch (Exception err) {
+            log.warn("Unexpected exception occurred while check for confirm required", err);
+          }
+
+          if (result == JOptionPane.OK_OPTION) {
+            plugin.disablePreviewMode(true);
+            resetSummaryContextMenu();
+          }
+        });
+    popupMenu.add(clearDeathbank);
+  }
+
+  private void addPreviewModeMenuOption(JPopupMenu popupMenu) {
     JMenu previewMenu = new JMenu("Preview data");
 
     plugin.getProfilesWithData()

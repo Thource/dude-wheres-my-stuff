@@ -19,8 +19,15 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ItemID;
 import net.runelite.client.config.ConfigManager;
 
+/** SaveMigrator converts the player's data from the v1 format to the v2 format. */
 @Slf4j
 public class SaveMigrator {
+
+  private static final String PREFIX_COINS = "coins.";
+  private static final String PREFIX_CARRYABLE = "carryable.";
+  private static final String PREFIX_POH = "poh.";
+  private static final String PREFIX_MINIGAMES = "minigames.";
+  private static final String PREFIX_WORLD = "world.";
 
   private final ConfigManager configManager;
   private final String rsProfileKey;
@@ -30,7 +37,7 @@ public class SaveMigrator {
     this.rsProfileKey = rsProfileKey;
   }
 
-  public void migrate() {
+  void migrate() {
     log.info("Migrating data for profile: " + rsProfileKey);
 
     Map<String, String> map = new HashMap<>();
@@ -50,22 +57,27 @@ public class SaveMigrator {
   }
 
   private void migrateCoins(Map<String, String> map) {
-    stripLastUpdated(map, "coins." + CoinsStorageType.NMZ.getConfigKey());
-    stripLastUpdated(map, "coins." + CoinsStorageType.LMS.getConfigKey());
-    stripLastUpdated(map, "coins." + CoinsStorageType.BF.getConfigKey());
-    stripLastUpdated(map, "coins." + CoinsStorageType.INVENTORY.getConfigKey());
+    stripLastUpdated(map, PREFIX_COINS + CoinsStorageType.NMZ.getConfigKey());
+    stripLastUpdated(map, PREFIX_COINS + CoinsStorageType.LMS.getConfigKey());
+    stripLastUpdated(map, PREFIX_COINS + CoinsStorageType.BF.getConfigKey());
+    stripLastUpdated(map, PREFIX_COINS + CoinsStorageType.INVENTORY.getConfigKey());
   }
 
   private void migrateCarryables(Map<String, String> map) {
-    simpleItemsMigration(map, "carryable." + CarryableStorageType.INVENTORY.getConfigKey(), true);
-    simpleItemsMigration(map, "carryable." + CarryableStorageType.EQUIPMENT.getConfigKey(), true);
-    simpleItemsMigration(map, "carryable." + CarryableStorageType.LOOTING_BAG.getConfigKey(),
+    simpleItemsMigration(map, PREFIX_CARRYABLE + CarryableStorageType.INVENTORY.getConfigKey(),
+        true);
+    simpleItemsMigration(map, PREFIX_CARRYABLE + CarryableStorageType.EQUIPMENT.getConfigKey(),
+        true);
+    simpleItemsMigration(map, PREFIX_CARRYABLE + CarryableStorageType.LOOTING_BAG.getConfigKey(),
         false);
-    simpleItemsMigration(map, "carryable." + CarryableStorageType.SEED_BOX.getConfigKey(), false);
-    simpleItemsMigration(map, "carryable." + CarryableStorageType.RUNE_POUCH.getConfigKey(), true);
-    staticItemsMigration(map, "carryable." + CarryableStorageType.BOTTOMLESS_BUCKET.getConfigKey(),
+    simpleItemsMigration(map, PREFIX_CARRYABLE + CarryableStorageType.SEED_BOX.getConfigKey(),
         false);
-    staticItemsMigration(map, "carryable." + CarryableStorageType.PLANK_SACK.getConfigKey(), false);
+    simpleItemsMigration(map, PREFIX_CARRYABLE + CarryableStorageType.RUNE_POUCH.getConfigKey(),
+        true);
+    staticItemsMigration(map,
+        PREFIX_CARRYABLE + CarryableStorageType.BOTTOMLESS_BUCKET.getConfigKey());
+    staticItemsMigration(map, PREFIX_CARRYABLE + CarryableStorageType.PLANK_SACK.getConfigKey()
+    );
   }
 
   private void migrateDeaths(Map<String, String> map) {
@@ -153,38 +165,42 @@ public class SaveMigrator {
 
   private void migrateMinigames(Map<String, String> map) {
     minigamePointsMigration(map,
-        "minigames." + MinigamesStorageType.MAGE_TRAINING_ARENA.getConfigKey());
-    minigamePointsMigration(map, "minigames." + MinigamesStorageType.TITHE_FARM.getConfigKey());
-    minigamePointsMigration(map, "minigames." + MinigamesStorageType.NIGHTMARE_ZONE.getConfigKey());
+        PREFIX_MINIGAMES + MinigamesStorageType.MAGE_TRAINING_ARENA.getConfigKey());
+    minigamePointsMigration(map, PREFIX_MINIGAMES + MinigamesStorageType.TITHE_FARM.getConfigKey());
     minigamePointsMigration(map,
-        "minigames." + MinigamesStorageType.BARBARIAN_ASSAULT.getConfigKey());
+        PREFIX_MINIGAMES + MinigamesStorageType.NIGHTMARE_ZONE.getConfigKey());
     minigamePointsMigration(map,
-        "minigames." + MinigamesStorageType.GUARDIANS_OF_THE_RIFT.getConfigKey());
+        PREFIX_MINIGAMES + MinigamesStorageType.BARBARIAN_ASSAULT.getConfigKey());
+    minigamePointsMigration(map,
+        PREFIX_MINIGAMES + MinigamesStorageType.GUARDIANS_OF_THE_RIFT.getConfigKey());
   }
 
   private void migratePlayerOwnedHouse(Map<String, String> map) {
-    simpleItemsMigration(map, "poh." + PlayerOwnedHouseStorageType.ARMOUR_CASE.getConfigKey(),
+    simpleItemsMigration(map, PREFIX_POH + PlayerOwnedHouseStorageType.ARMOUR_CASE.getConfigKey(),
         false);
-    simpleItemsMigration(map, "poh." + PlayerOwnedHouseStorageType.CAPE_RACK.getConfigKey(), false);
-    simpleItemsMigration(map, "poh." + PlayerOwnedHouseStorageType.FANCY_DRESS_BOX.getConfigKey(),
-        false);
-    simpleItemsMigration(map, "poh." + PlayerOwnedHouseStorageType.MAGIC_WARDROBE.getConfigKey(),
+    simpleItemsMigration(map, PREFIX_POH + PlayerOwnedHouseStorageType.CAPE_RACK.getConfigKey(),
         false);
     simpleItemsMigration(map,
-        "poh." + PlayerOwnedHouseStorageType.TREASURE_CHEST_BEGINNER.getConfigKey(), false);
+        PREFIX_POH + PlayerOwnedHouseStorageType.FANCY_DRESS_BOX.getConfigKey(), false);
     simpleItemsMigration(map,
-        "poh." + PlayerOwnedHouseStorageType.TREASURE_CHEST_EASY.getConfigKey(), false);
+        PREFIX_POH + PlayerOwnedHouseStorageType.MAGIC_WARDROBE.getConfigKey(), false);
     simpleItemsMigration(map,
-        "poh." + PlayerOwnedHouseStorageType.TREASURE_CHEST_MEDIUM.getConfigKey(), false);
+        PREFIX_POH + PlayerOwnedHouseStorageType.TREASURE_CHEST_BEGINNER.getConfigKey(), false);
     simpleItemsMigration(map,
-        "poh." + PlayerOwnedHouseStorageType.TREASURE_CHEST_HARD.getConfigKey(), false);
+        PREFIX_POH + PlayerOwnedHouseStorageType.TREASURE_CHEST_EASY.getConfigKey(), false);
     simpleItemsMigration(map,
-        "poh." + PlayerOwnedHouseStorageType.TREASURE_CHEST_ELITE.getConfigKey(), false);
+        PREFIX_POH + PlayerOwnedHouseStorageType.TREASURE_CHEST_MEDIUM.getConfigKey(), false);
     simpleItemsMigration(map,
-        "poh." + PlayerOwnedHouseStorageType.TREASURE_CHEST_MASTER.getConfigKey(), false);
+        PREFIX_POH + PlayerOwnedHouseStorageType.TREASURE_CHEST_HARD.getConfigKey(), false);
+    simpleItemsMigration(map,
+        PREFIX_POH + PlayerOwnedHouseStorageType.TREASURE_CHEST_ELITE.getConfigKey(), false);
+    simpleItemsMigration(map,
+        PREFIX_POH + PlayerOwnedHouseStorageType.TREASURE_CHEST_MASTER.getConfigKey(), false);
 
-    simpleItemsMigration(map, "poh." + PlayerOwnedHouseStorageType.MENAGERIE.getConfigKey(), false);
-    String menagerieData = map.get("poh." + PlayerOwnedHouseStorageType.MENAGERIE.getConfigKey());
+    simpleItemsMigration(map, PREFIX_POH + PlayerOwnedHouseStorageType.MENAGERIE.getConfigKey(),
+        false);
+    String menagerieData = map.get(
+        PREFIX_POH + PlayerOwnedHouseStorageType.MENAGERIE.getConfigKey());
     if (menagerieData == null) {
       return;
     }
@@ -218,7 +234,7 @@ public class SaveMigrator {
     }
 
     map.put(
-        "poh." + PlayerOwnedHouseStorageType.MENAGERIE.getConfigKey(),
+        PREFIX_POH + PlayerOwnedHouseStorageType.MENAGERIE.getConfigKey(),
         menagerieDataSplit[0] + ";" + menagerieDataSplit[1] + ";" + petBits1 + ";" + petBits2
     );
   }
@@ -230,13 +246,13 @@ public class SaveMigrator {
   }
 
   private void migrateWorld(Map<String, String> map) {
-    simpleItemsMigration(map, "world." + WorldStorageType.LOG_STORAGE.getConfigKey(), false);
-    simpleItemsMigration(map, "world." + WorldStorageType.BLAST_FURNACE.getConfigKey(), false);
-    simpleItemsMigration(map, "world." + WorldStorageType.BANK.getConfigKey(), false);
-    simpleItemsMigration(map, "world." + WorldStorageType.GROUP_STORAGE.getConfigKey(), false);
-    simpleItemsMigration(map, "world." + WorldStorageType.LEPRECHAUN.getConfigKey(), true);
+    simpleItemsMigration(map, PREFIX_WORLD + WorldStorageType.LOG_STORAGE.getConfigKey(), false);
+    simpleItemsMigration(map, PREFIX_WORLD + WorldStorageType.BLAST_FURNACE.getConfigKey(), false);
+    simpleItemsMigration(map, PREFIX_WORLD + WorldStorageType.BANK.getConfigKey(), false);
+    simpleItemsMigration(map, PREFIX_WORLD + WorldStorageType.GROUP_STORAGE.getConfigKey(), false);
+    simpleItemsMigration(map, PREFIX_WORLD + WorldStorageType.LEPRECHAUN.getConfigKey(), true);
 
-    String leprechaunData = map.get("world." + WorldStorageType.LEPRECHAUN.getConfigKey());
+    String leprechaunData = map.get(PREFIX_WORLD + WorldStorageType.LEPRECHAUN.getConfigKey());
     if (leprechaunData == null) {
       return;
     }
@@ -254,7 +270,7 @@ public class SaveMigrator {
           .collect(Collectors.toList()).indexOf(itemIds.get(4)));
     }
     map.put(
-        "world." + WorldStorageType.LEPRECHAUN.getConfigKey(),
+        PREFIX_WORLD + WorldStorageType.LEPRECHAUN.getConfigKey(),
         itemQuantities.stream().map(Object::toString).collect(Collectors.joining(","))
             + ";"
             + (itemIds.get(3) == ItemID.MAGIC_SECATEURS ? "1" : "0") + ";"
@@ -297,8 +313,7 @@ public class SaveMigrator {
     map.put(configKey, oldValue.replace(",", "x").replace("=", ","));
   }
 
-  private void staticItemsMigration(Map<String, String> map, String configKey,
-      boolean removeLastUpdated) {
+  private void staticItemsMigration(Map<String, String> map, String configKey) {
     String oldValue = configManager.getConfiguration(
         DudeWheresMyStuffConfig.CONFIG_GROUP,
         rsProfileKey,
@@ -306,10 +321,6 @@ public class SaveMigrator {
     );
     if (oldValue == null) {
       return;
-    }
-
-    if (removeLastUpdated) {
-      oldValue = stripLastUpdated(oldValue);
     }
 
     String[] parts = oldValue.split(";", 2);

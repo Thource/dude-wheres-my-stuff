@@ -5,6 +5,7 @@ import java.awt.Container;
 import javax.swing.SwingUtilities;
 import net.runelite.client.util.SwingUtil;
 
+/** EnhancedSwingUtilities fixes some inefficiencies with SwingUtilities. */
 public class EnhancedSwingUtilities {
 
   private EnhancedSwingUtilities() {
@@ -18,7 +19,7 @@ public class EnhancedSwingUtilities {
     // If we are not on the EDT this will deadlock, in addition to being totally unsafe
     assert SwingUtilities.isEventDispatchThread();
 
-    // when a component is removed it has to be resized for some reason, but only if it's valid
+    // when a component is removed it has to be resized for some reason, but only if it's valid,
     // so we make sure to invalidate everything before removing it
     c.invalidate();
     for (int i = 0; i < c.getComponentCount(); i++) {
@@ -35,7 +36,7 @@ public class EnhancedSwingUtilities {
       SwingUtil.pumpPendingEvents();
 
       // call removeNotify early; this is most of the work in removeAll, and generates events that
-      // the next secondaryLoop will pickup
+      // the next secondaryLoop will pick up
       ic.removeNotify();
     }
 

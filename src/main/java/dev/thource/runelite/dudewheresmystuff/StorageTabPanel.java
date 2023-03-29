@@ -67,11 +67,13 @@ public abstract class StorageTabPanel<
         .thenComparing(s -> s.getType().getName());
   }
 
+  /** Sorts all the storage panels to be in the order specified by getStorageSorter. */
   public void reorderStoragePanels() {
     EnhancedSwingUtilities.fastRemoveAll(storagePanelContainer);
     storagePanels.clear();
 
     storageManager.getStorages().stream()
+        .filter(storage -> storage.getStoragePanel() != null)
         .filter(
             storage ->
                 plugin.getConfig().showEmptyStorages()

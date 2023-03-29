@@ -26,8 +26,6 @@
 package dev.thource.runelite.dudewheresmystuff;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.Container;
 import java.awt.FlowLayout;
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +56,7 @@ public class FasterMaterialTabGroup extends JPanel {
   /* A list of all the tabs contained in this group. */
   private final List<FasterMaterialTab> tabs = new ArrayList<>();
 
-  public FasterMaterialTabGroup(JPanel display) {
+  FasterMaterialTabGroup(JPanel display) {
     this.display = display;
     if (display != null) {
       this.display.setLayout(new BorderLayout());
@@ -67,51 +65,24 @@ public class FasterMaterialTabGroup extends JPanel {
     setOpaque(false);
   }
 
-  public FasterMaterialTabGroup() {
-    this(null);
-  }
-
-  private static void revalidateAll(Container c) {
-    c.revalidate();
-    for (int i = 0; i < c.getComponentCount(); i++) {
-      Component ic = c.getComponent(i);
-
-      if (ic instanceof Container) {
-        revalidateAll((Container) ic);
-      }
-
-      ic.addNotify();
-    }
-  }
-
-  /* Returns the tab on a certain index. */
-  public FasterMaterialTab getTab(int index) {
-
-    if (tabs.isEmpty()) {
-      return null;
-    }
-
-    return tabs.get(index);
-  }
-
   public void addTab(FasterMaterialTab tab) {
     tabs.add(tab);
     add(tab, BorderLayout.NORTH);
   }
 
-  /***
-   * Selects a tab from the group, and sets the display's content to the
-   * tab's associated content.
+  /**
+   * Selects a tab from the group, and sets the display's content to the tab's associated content.
+   *
    * @param selectedTab - The tab to select
    */
-  public boolean select(FasterMaterialTab selectedTab) {
+  public void select(FasterMaterialTab selectedTab) {
     if (!tabs.contains(selectedTab)) {
-      return false;
+      return;
     }
 
     // If the OnTabSelected returned false, exit the method to prevent tab switching
     if (!selectedTab.select()) {
-      return false;
+      return;
     }
 
     // If the display is available, switch from the old to the new display
@@ -128,7 +99,5 @@ public class FasterMaterialTabGroup extends JPanel {
         tab.unselect();
       }
     }
-
-    return true;
   }
 }

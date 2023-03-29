@@ -121,4 +121,16 @@ public class ItemStackUtils {
   public static void removeItemStack(List<ItemStack> items, ItemStack itemToRemove) {
     removeItemStack(items, itemToRemove, true);
   }
+
+  /**
+   * Removes a list of items from another list of items.
+   *
+   * @param itemsToModify the list of items to remove from
+   * @param itemsToRemove the list of items to be removed
+   */
+  public static void removeItems(List<ItemStack> itemsToModify, List<ItemStack> itemsToRemove) {
+    for (ItemStack itemStack : itemsToRemove) {
+      ItemStackUtils.removeItemStack(itemsToModify, itemStack, false);
+    }
+  }
 }

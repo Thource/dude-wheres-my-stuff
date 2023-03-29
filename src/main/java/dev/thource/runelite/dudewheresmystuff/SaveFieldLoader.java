@@ -6,9 +6,25 @@ import java.util.List;
 import java.util.UUID;
 import net.runelite.api.coords.WorldPoint;
 
+/**
+ * SaveFieldFormatter converts strings into various data types so that they can be loaded.
+ *
+ * <p>This class is the opposite of SaveFieldFormatter.
+ */
 public class SaveFieldLoader {
 
-  public static long loadLong(ArrayList<String> stringList, long dfault) {
+  private SaveFieldLoader() {
+  }
+
+  /**
+   * Pulls a string from the string list, converts it to a long and returns it or the default
+   * value.
+   *
+   * @param stringList the string list
+   * @param dfault     the fallback value to return
+   * @return the converted first string of the string list, or the fallback value
+   */
+  public static long loadLong(List<String> stringList, long dfault) {
     if (stringList.isEmpty()) {
       return dfault;
     }
@@ -20,7 +36,16 @@ public class SaveFieldLoader {
     }
   }
 
-  public static UUID loadUUID(ArrayList<String> stringList, UUID dfault) {
+  /**
+   * Pulls a string from the string list, converts it to a UUID and returns it or the default
+   * value.
+   *
+   * @param stringList the string list
+   * @param dfault     the fallback value to return
+   * @return the converted first string of the string list, or the fallback value
+   */
+  @SuppressWarnings("checkstyle:AbbreviationAsWordInName")
+  public static UUID loadUUID(List<String> stringList, UUID dfault) {
     if (stringList.isEmpty()) {
       return dfault;
     }
@@ -32,7 +57,14 @@ public class SaveFieldLoader {
     }
   }
 
-  public static void loadItemsIntoList(ArrayList<String> stringList, List<ItemStack> itemStacks) {
+  /**
+   * Pulls a string from the string list and uses it to set the quantities of the ItemStacks in
+   * itemStacks.
+   *
+   * @param stringList the string list
+   * @param itemStacks the list of items to modify the quantities of
+   */
+  public static void loadItemsIntoList(List<String> stringList, List<ItemStack> itemStacks) {
     if (stringList.isEmpty()) {
       return;
     }
@@ -52,7 +84,15 @@ public class SaveFieldLoader {
     }
   }
 
-  public static List<ItemStack> loadItems(ArrayList<String> stringList, List<ItemStack> dfault,
+  /**
+   * Pulls a string from the string list, converts it to a list of ItemStack and returns it or the
+   * default value.
+   *
+   * @param stringList the string list
+   * @param dfault     the fallback value to return
+   * @return the converted first string of the string list, or the fallback value
+   */
+  public static List<ItemStack> loadItems(List<String> stringList, List<ItemStack> dfault,
       DudeWheresMyStuffPlugin plugin) {
     if (stringList.isEmpty()) {
       return dfault;
@@ -77,7 +117,15 @@ public class SaveFieldLoader {
     return itemStacks;
   }
 
-  public static boolean loadBoolean(ArrayList<String> stringList, boolean dfault) {
+  /**
+   * Pulls a string from the string list, converts it to a boolean and returns it or the default
+   * value.
+   *
+   * @param stringList the string list
+   * @param dfault     the fallback value to return
+   * @return the converted first string of the string list, or the fallback value
+   */
+  public static boolean loadBoolean(List<String> stringList, boolean dfault) {
     if (stringList.isEmpty()) {
       return dfault;
     }
@@ -85,7 +133,15 @@ public class SaveFieldLoader {
     return stringList.remove(0).equals("true");
   }
 
-  public static DeathbankType loadDeathbankType(ArrayList<String> stringList,
+  /**
+   * Pulls a string from the string list, converts it to a DeathbankType and returns it or the
+   * default value.
+   *
+   * @param stringList the string list
+   * @param dfault     the fallback value to return
+   * @return the converted first string of the string list, or the fallback value
+   */
+  public static DeathbankType loadDeathbankType(List<String> stringList,
       DeathbankType dfault) {
     if (stringList.isEmpty()) {
       return dfault;
@@ -98,7 +154,15 @@ public class SaveFieldLoader {
     }
   }
 
-  public static WorldPoint loadWorldPoint(ArrayList<String> stringList, WorldPoint dfault) {
+  /**
+   * Pulls a string from the string list, converts it to a WorldPoint and returns it or the default
+   * value.
+   *
+   * @param stringList the string list
+   * @param dfault     the fallback value to return
+   * @return the converted first string of the string list, or the fallback value
+   */
+  public static WorldPoint loadWorldPoint(List<String> stringList, WorldPoint dfault) {
     if (stringList.isEmpty()) {
       return dfault;
     }
@@ -116,7 +180,15 @@ public class SaveFieldLoader {
     }
   }
 
-  public static int loadInt(ArrayList<String> stringList, int dfault) {
+  /**
+   * Pulls a string from the string list, converts it to an int and returns it or the default
+   * value.
+   *
+   * @param stringList the string list
+   * @param dfault     the fallback value to return
+   * @return the converted first string of the string list, or the fallback value
+   */
+  public static int loadInt(List<String> stringList, int dfault) {
     if (stringList.isEmpty()) {
       return dfault;
     }

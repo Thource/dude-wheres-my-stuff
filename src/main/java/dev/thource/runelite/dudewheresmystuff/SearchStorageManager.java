@@ -1,6 +1,6 @@
 package dev.thource.runelite.dudewheresmystuff;
 
-public class SearchStorageManager extends StorageManager<StorageType, Storage<StorageType>> {
+class SearchStorageManager extends StorageManager<StorageType, Storage<StorageType>> {
 
   protected SearchStorageManager(DudeWheresMyStuffPlugin plugin) {
     super(plugin);

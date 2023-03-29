@@ -92,8 +92,19 @@ public class ItemStack {
     this.canonicalId = itemStack.canonicalId;
   }
 
-  // WARNING: ItemStacks created using this constructor will not have an ItemIdentification
-  // attached.
+  /**
+   * A constructor.
+   *
+   * <p>WARNING: ItemStacks created using this constructor will not have an ItemIdentification
+   * attached.
+   *
+   * @param id        the item's id
+   * @param name      the item's name
+   * @param quantity  the quantity of the item
+   * @param gePrice   the GE price
+   * @param haPrice   the high alchemy price
+   * @param stackable if the item is stackable
+   */
   public ItemStack(
       int id, String name, long quantity, int gePrice, int haPrice, boolean stackable) {
     this.id = id;

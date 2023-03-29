@@ -39,7 +39,7 @@ public abstract class Storage<T extends StorageType> {
   }
 
   protected void createComponentPopupMenu(StorageManager<?, ?> storageManager) {
-    if (type.isAutomatic()) {
+    if (type.isAutomatic() || storagePanel == null) {
       return;
     }
 
@@ -75,6 +75,11 @@ public abstract class Storage<T extends StorageType> {
     popupMenu.add(reset);
   }
 
+  /**
+   * Deletes the data for this storage from the config and resets the storage.
+   *
+   * @param storageManager the storage manager that relates to this storage
+   */
   public void deleteData(StorageManager<?, ?> storageManager) {
     String profileKey = storageManager.isPreviewManager() ? plugin.getPreviewProfileKey()
         : storageManager.getConfigManager().getRSProfileKey();
@@ -101,14 +106,17 @@ public abstract class Storage<T extends StorageType> {
     return false;
   }
 
+  @SuppressWarnings("java:S1172") // the parameter is used in child classes
   public boolean onWidgetLoaded(WidgetLoaded widgetLoaded) {
     return false;
   }
 
+  @SuppressWarnings("java:S1172") // the parameter is used in child classes
   public boolean onWidgetClosed(WidgetClosed widgetClosed) {
     return false;
   }
 
+  @SuppressWarnings("java:S1172") // the parameter is used in child classes
   public boolean onChatMessage(ChatMessage chatMessage) {
     return false;
   }
@@ -117,19 +125,20 @@ public abstract class Storage<T extends StorageType> {
     return false;
   }
 
+  @SuppressWarnings("java:S1172") // the parameter is used in child classes
   public boolean onMenuOptionClicked(MenuOptionClicked menuOption) {
     return false;
   }
 
   /**
    * Can the items in this storage be withdrawn?
-   * <p>
-   * Should be overridden by subclasses. Should be false for things like minigame points, expired
-   * deathbanks, or deposit-only storages such as balloon log storage.
-   * <p>
-   * NOTE: this abstraction does not work for storages where some items are real and others are not.
-   * For example, the ores in blast furnace storage cannot be withdrawn but bars can. Also, some
-   * items in the POH may be unable to be withdrawn by UIMs without getting the full set.
+   *
+   * <p>Should be overridden by subclasses. Should be false for things like minigame points,
+   * expired deathbanks, or deposit-only storages such as balloon log storage.
+   *
+   * <p>NOTE: this abstraction does not work for storages where some items are real and others are
+   * not. For example, the ores in blast furnace storage cannot be withdrawn but bars can. Also,
+   * some items in the POH may be unable to be withdrawn by UIMs without getting the full set.
    *
    * @return true if the items are withdrawable, otherwise false
    */
@@ -215,6 +224,7 @@ public abstract class Storage<T extends StorageType> {
     return managerConfigKey + "." + type.getConfigKey();
   }
 
+  /** Disables the storage. */
   public void disable() {
     enabled = false;
 
@@ -223,6 +233,7 @@ public abstract class Storage<T extends StorageType> {
     }
   }
 
+  /** Disables the storage. */
   public void disable(boolean isMember, AccountType accountType) {
     if ((type.isMembersOnly() && !isMember)
         || (type.getAccountTypeBlacklist() != null
@@ -231,6 +242,7 @@ public abstract class Storage<T extends StorageType> {
     }
   }
 
+  /** Enables the storage. */
   public void enable() {
     enabled = true;
 
@@ -243,6 +255,7 @@ public abstract class Storage<T extends StorageType> {
     return type.getName();
   }
 
+  /** Updates the storage's panel. */
   public void softUpdate() {
     if (storagePanel == null) {
       return;

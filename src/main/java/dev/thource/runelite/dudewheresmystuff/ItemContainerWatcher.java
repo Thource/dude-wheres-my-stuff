@@ -11,8 +11,6 @@ import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
 import net.runelite.api.ItemContainer;
-import net.runelite.client.callback.ClientThread;
-import net.runelite.client.game.ItemManager;
 
 /** ItemContainerWatcher makes it easy to detect changes to ItemContainers. */
 public class ItemContainerWatcher {
@@ -28,8 +26,6 @@ public class ItemContainerWatcher {
   private static final ItemContainerWatcher[] all =
       new ItemContainerWatcher[]{inventoryWatcher, lootingBagWatcher, seedBoxWatcher};
   private static Client client;
-  private static ClientThread clientThread;
-  private static ItemManager itemManager;
 
   static {
     ImmutableMap.Builder<Integer, ItemContainerWatcher> mapBuilder = new ImmutableMap.Builder<>();
@@ -48,10 +44,8 @@ public class ItemContainerWatcher {
     this.itemContainerId = itemContainerId;
   }
 
-  static void init(Client client, ClientThread clientThread, ItemManager itemManager) {
+  static void init(Client client) {
     ItemContainerWatcher.client = client;
-    ItemContainerWatcher.clientThread = clientThread;
-    ItemContainerWatcher.itemManager = itemManager;
   }
 
   static void reset() {
@@ -122,9 +116,7 @@ public class ItemContainerWatcher {
             .map(ItemStack::new)
             .collect(Collectors.toList());
 
-    for (ItemStack itemStack : itemsLastTick) {
-      ItemStackUtils.removeItemStack(itemsAddedLastTick, itemStack, false);
-    }
+    ItemStackUtils.removeItems(itemsAddedLastTick, itemsLastTick);
 
     return itemsAddedLastTick;
   }
@@ -141,9 +133,7 @@ public class ItemContainerWatcher {
             .map(ItemStack::new)
             .collect(Collectors.toList());
 
-    for (ItemStack itemStack : items) {
-      ItemStackUtils.removeItemStack(itemsRemovedLastTick, itemStack, false);
-    }
+    ItemStackUtils.removeItems(itemsRemovedLastTick, items);
 
     return itemsRemovedLastTick;
   }

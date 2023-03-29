@@ -51,7 +51,7 @@ import net.runelite.client.ui.FontManager;
 import net.runelite.client.util.QuantityFormatter;
 import net.runelite.client.util.Text;
 
-/** ItemsBox is responsible for displaying items to the player. */
+/** StoragePanel is responsible for displaying items to the player. */
 public class StoragePanel extends JPanel {
 
   private static final int ITEMS_PER_ROW = 4;
@@ -70,6 +70,14 @@ public class StoragePanel extends JPanel {
   @Getter private List<ItemBox> itemBoxes = new ArrayList<>();
   private ItemSortMode itemSortMode = ItemSortMode.UNSORTED;
 
+  /**
+   * A constructor.
+   *
+   * @param plugin             the plugin
+   * @param storage            the storage that this panel represents
+   * @param showPrice          if prices should be shown
+   * @param displayEmptyStacks if empty stacks should be shown
+   */
   public StoragePanel(
       DudeWheresMyStuffPlugin plugin,
       Storage<?> storage,
@@ -175,10 +183,6 @@ public class StoragePanel extends JPanel {
     footerLabel.setText(text);
   }
 
-  public void setFooterToolTip(String text) {
-    footerLabel.setToolTipText(text);
-  }
-
   private void updatePrice() {
     if (priceLabel != null) {
       long totalPrice = storage.getTotalValue();
@@ -252,6 +256,7 @@ public class StoragePanel extends JPanel {
     redrawItems();
   }
 
+  /** Updates the total price and all items in the storage. */
   public void update() {
     updatePrice();
     updateItems();
@@ -259,6 +264,7 @@ public class StoragePanel extends JPanel {
     revalidate();
   }
 
+  /** Toggles the storage between expanded/collapsed state. */
   public void toggle() {
     if (isCollapsed()) {
       expand();
@@ -271,6 +277,11 @@ public class StoragePanel extends JPanel {
     collapse(false);
   }
 
+  /**
+   * Collapses the storage, reducing it to just the header and footer bars.
+   *
+   * @param force collapse the storage even if there are no items in it
+   */
   public void collapse(boolean force) {
     if (!force && itemBoxes.isEmpty()) {
       return;
@@ -282,6 +293,7 @@ public class StoragePanel extends JPanel {
     }
   }
 
+  /** Expands the storage, making the items visible again. */
   public void expand() {
     if (itemBoxes.isEmpty()) {
       return;
@@ -305,6 +317,11 @@ public class StoragePanel extends JPanel {
     }
   }
 
+  /**
+   * Changes which sorting method is used to sort the items within the panel.
+   *
+   * @param itemSortMode the new sort mode
+   */
   public void setSortMode(ItemSortMode itemSortMode) {
     this.itemSortMode = itemSortMode;
 

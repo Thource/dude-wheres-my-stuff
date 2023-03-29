@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.util.ImageUtil;
 
+/** Represents which icon to show in the runelite sidebar. */
 @Getter
 @RequiredArgsConstructor
 public enum SidebarIcon {
