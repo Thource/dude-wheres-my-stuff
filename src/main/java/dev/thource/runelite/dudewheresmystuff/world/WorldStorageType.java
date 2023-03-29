@@ -44,7 +44,8 @@ public enum WorldStorageType implements StorageType {
       true,
       Collections.singletonList(AccountType.ULTIMATE_IRONMAN)),
   ANNETTE("Annette", -1, true, "annette", true, null),
-  ELNOCK_INQUISITOR("Elnock Inquisitor", -1, true, "elnock", true, null);
+  ELNOCK_INQUISITOR("Elnock Inquisitor", -1, true, "elnock", true, null),
+  PICKAXE_STATUE("Pickaxe Statue", -1, true, "pickaxestatue", true, null);
 
   private final String name;
   private final int itemContainerId;
