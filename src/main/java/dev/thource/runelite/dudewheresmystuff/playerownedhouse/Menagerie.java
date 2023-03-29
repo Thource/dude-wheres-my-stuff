@@ -17,6 +17,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.client.config.ConfigManager;
 
+/** Menagerie is responsible for tracking which pets the player has in their POH menagerie. */
 public class Menagerie extends PlayerOwnedHouseStorage {
 
   private static final List<Integer> ITEM_CONTAINER_ITEM_IDS =
