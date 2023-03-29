@@ -4,6 +4,7 @@ import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ItemID;
+import net.runelite.client.config.ConfigManager;
 
 /** BoltPouch is responsible for tracking which bolts the player has in the bolt pouch. */
 @Slf4j
@@ -144,6 +145,15 @@ public class BoltPouch extends CarryableStorage {
     }
 
     return BOLT_ITEM_IDS[varbitValue];
+  }
+
+  @Override
+  public void load(ConfigManager configManager, String managerConfigKey, String profileKey) {
+    super.load(configManager, managerConfigKey, profileKey);
+
+    while (items.size() < 4) {
+      items.add(new ItemStack(-1, 0, plugin));
+    }
   }
 
   @Override
