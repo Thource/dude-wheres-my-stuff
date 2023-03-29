@@ -5,6 +5,10 @@ import dev.thource.runelite.dudewheresmystuff.ItemStack;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ItemID;
 
+/**
+ * MasterScrollBook is responsible for tracking which scrolls the player has stored in their master
+ * scroll book.
+ */
 @Slf4j
 public class MasterScrollBook extends CarryableStorage {
 
@@ -31,6 +35,8 @@ public class MasterScrollBook extends CarryableStorage {
 
     hasStaticItems = true;
 
+    varbits = VARBITS;
+
     items.add(new ItemStack(ItemID.NARDAH_TELEPORT, 0, plugin));
     items.add(new ItemStack(ItemID.DIGSITE_TELEPORT, 0, plugin));
     items.add(new ItemStack(ItemID.FELDIP_HILLS_TELEPORT, 0, plugin));
@@ -46,22 +52,5 @@ public class MasterScrollBook extends CarryableStorage {
     items.add(new ItemStack(ItemID.KEY_MASTER_TELEPORT, 0, plugin));
     items.add(new ItemStack(ItemID.REVENANT_CAVE_TELEPORT, 0, plugin));
     items.add(new ItemStack(ItemID.WATSON_TELEPORT, 0, plugin));
-  }
-
-  @Override
-  public boolean onVarbitChanged() {
-    boolean updated = false;
-
-    for(int i = 0; i < VARBITS.length; i++) {
-      int quantity = plugin.getClient().getVarbitValue(VARBITS[i]);
-      ItemStack itemStack = items.get(i);
-
-      if (quantity != itemStack.getQuantity()) {
-        itemStack.setQuantity(quantity);
-        updated = true;
-      }
-    }
-
-    return updated;
   }
 }

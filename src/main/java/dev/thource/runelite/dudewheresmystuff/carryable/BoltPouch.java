@@ -2,29 +2,24 @@ package dev.thource.runelite.dudewheresmystuff.carryable;
 
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.ChatMessageType;
 import net.runelite.api.ItemID;
-import net.runelite.api.events.ChatMessage;
-import net.runelite.api.widgets.Widget;
-import org.apache.commons.lang3.math.NumberUtils;
 
+/** BoltPouch is responsible for tracking which bolts the player has in the bolt pouch. */
 @Slf4j
 public class BoltPouch extends CarryableStorage {
 
   private static final int[] BOLT_TYPE_VARBITS = {
-    2473,
-    2474,
-    2475,
-    2476
+      2473,
+      2474,
+      2475,
+      2476
   };
   private static final int[] BOLT_COUNT_VARBITS = {
-    2469,
-    2470,
-    2471,
-    2472
+      2469,
+      2470,
+      2471,
+      2472
   };
   private static final int[] BOLT_ITEM_IDS = {
       -1,
@@ -125,7 +120,7 @@ public class BoltPouch extends CarryableStorage {
   public boolean onVarbitChanged() {
     boolean updated = false;
 
-    for(int i = 0; i < BOLT_TYPE_VARBITS.length; i++) {
+    for (int i = 0; i < BOLT_TYPE_VARBITS.length; i++) {
       int boltCount = plugin.getClient().getVarbitValue(BOLT_COUNT_VARBITS[i]);
       int boltItemId = getBoltItemId(plugin.getClient().getVarbitValue(BOLT_TYPE_VARBITS[i]));
       ItemStack boltStack = items.get(i);

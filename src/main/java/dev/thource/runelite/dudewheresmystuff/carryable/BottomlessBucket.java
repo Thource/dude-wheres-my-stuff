@@ -1,17 +1,14 @@
 package dev.thource.runelite.dudewheresmystuff.carryable;
 
-import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffConfig;
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.ItemID;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.widgets.Widget;
-import net.runelite.client.config.ConfigManager;
 import org.apache.commons.lang3.math.NumberUtils;
 
 /**
@@ -90,7 +87,7 @@ public class BottomlessBucket extends CarryableStorage {
   /**
    * Updates the compost count, for use by Leprechaun.
    *
-   * @param type 0 = missing, 1 = empty, 2 = compost, 3 = supercompost, 4 = ultracompost
+   * @param type    0 = missing, 1 = empty, 2 = compost, 3 = supercompost, 4 = ultracompost
    * @param charges the amount of charges
    */
   public void updateCompost(int type, int charges) {

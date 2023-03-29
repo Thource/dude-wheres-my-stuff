@@ -9,7 +9,10 @@ import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.util.AsyncBufferedImage;
 import net.runelite.client.util.QuantityFormatter;
 
-public class ItemBox extends JPanel {
+class ItemBox extends JPanel {
+
+  private static final String HTML_CLOSE_TAG = "</html>";
+
   @Getter private int itemId = -1;
   @Getter private long itemQuantity = 1;
 
@@ -51,7 +54,7 @@ public class ItemBox extends JPanel {
     final StringBuilder sb = new StringBuilder("<html>");
     sb.append(name).append(" x ").append(QuantityFormatter.formatNumber(quantity));
     if (item.getId() == ItemID.COINS_995) {
-      sb.append("</html>");
+      sb.append(HTML_CLOSE_TAG);
       return sb.toString();
     }
 
@@ -65,7 +68,7 @@ public class ItemBox extends JPanel {
     }
 
     if (item.getId() == ItemID.PLATINUM_TOKEN) {
-      sb.append("</html>");
+      sb.append(HTML_CLOSE_TAG);
       return sb.toString();
     }
 
@@ -77,7 +80,7 @@ public class ItemBox extends JPanel {
             .append(" ea)");
       }
     }
-    sb.append("</html>");
+    sb.append(HTML_CLOSE_TAG);
     return sb.toString();
   }
 }

@@ -3,7 +3,6 @@ package dev.thource.runelite.dudewheresmystuff.playerownedhouse;
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
 import dev.thource.runelite.dudewheresmystuff.ItemStorage;
-import dev.thource.runelite.dudewheresmystuff.Storage;
 import lombok.Getter;
 import net.runelite.api.Item;
 import net.runelite.api.events.ItemContainerChanged;

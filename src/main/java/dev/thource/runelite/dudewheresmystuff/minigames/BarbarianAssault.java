@@ -23,29 +23,11 @@ public class BarbarianAssault extends MinigamesStorage {
   BarbarianAssault(DudeWheresMyStuffPlugin plugin) {
     super(MinigamesStorageType.BARBARIAN_ASSAULT, plugin);
 
+    varbits = VARBITS;
+
     items.add(attackerPoints);
     items.add(collectorPoints);
     items.add(defenderPoints);
     items.add(healerPoints);
-  }
-
-  @Override
-  public boolean onVarbitChanged() {
-    boolean updated = false;
-
-    for (int i = 0; i < VARBITS.length; i++) {
-      int varbit = VARBITS[i];
-      ItemStack itemStack = items.get(i);
-
-      int newPoints = plugin.getClient().getVarbitValue(varbit);
-      if (newPoints == itemStack.getQuantity()) {
-        continue;
-      }
-
-      itemStack.setQuantity(newPoints);
-      updated = true;
-    }
-
-    return updated;
   }
 }

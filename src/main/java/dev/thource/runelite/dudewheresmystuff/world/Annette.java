@@ -4,27 +4,15 @@ import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
 import net.runelite.api.ItemID;
 
+/** Annette is responsible for tracking how many drift nets the player has stored with Annette. */
 public class Annette extends WorldStorage {
-
-  private final ItemStack nets;
 
   protected Annette(DudeWheresMyStuffPlugin plugin) {
     super(WorldStorageType.ANNETTE, plugin);
 
     hasStaticItems = true;
+    varbits = new int[]{243};
 
-    nets = new ItemStack(ItemID.DRIFT_NET, plugin);
-    items.add(nets);
-  }
-
-  @Override
-  public boolean onVarbitChanged() {
-    int newValue = plugin.getClient().getVarbitValue(243);
-    if (newValue == nets.getQuantity()) {
-      return false;
-    }
-
-    nets.setQuantity(newValue);
-    return true;
+    items.add(new ItemStack(ItemID.DRIFT_NET, plugin));
   }
 }

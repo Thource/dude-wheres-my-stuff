@@ -10,8 +10,6 @@ import dev.thource.runelite.dudewheresmystuff.playerownedhouse.PlayerOwnedHouseS
 import dev.thource.runelite.dudewheresmystuff.stash.StashStorageManager;
 import dev.thource.runelite.dudewheresmystuff.world.WorldStorageManager;
 import java.util.Objects;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Stream;
 import javax.inject.Inject;
@@ -34,6 +32,7 @@ import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetClosed;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.vars.AccountType;
+import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneScapeProfile;
@@ -62,16 +61,17 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 @PluginDependency(ItemIdentificationPlugin.class)
 public class DudeWheresMyStuffPlugin extends Plugin {
 
+  private static final String CONFIG_KEY_IS_MEMBER = "isMember";
+  private static final String CONFIG_KEY_SAVE_MIGRATED = "saveMigrated";
+
   @Getter @Inject protected PluginManager pluginManager;
   @Getter @Inject protected ItemIdentificationPlugin itemIdentificationPlugin;
   @Getter @Inject protected ItemIdentificationConfig itemIdentificationConfig;
 
-  @Inject
-  @Getter
-  @Named("developerMode")
-  boolean developerMode;
+  @Inject @Getter @Named("developerMode") boolean developerMode;
 
   @Inject private ClientToolbar clientToolbar;
+  @Getter @Inject private Notifier notifier;
   @Getter @Inject private Client client;
   @Getter @Inject private ClientThread clientThread;
   @Getter @Inject private InfoBoxManager infoBoxManager;
@@ -103,12 +103,12 @@ public class DudeWheresMyStuffPlugin extends Plugin {
   private String profileKey;
   @Getter private String previewProfileKey;
 
-  public Stream<RuneScapeProfile> getProfilesWithData() {
+  Stream<RuneScapeProfile> getProfilesWithData() {
     return configManager
         .getRSProfiles()
         .stream()
         .filter(profile -> configManager.getConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP,
-            profile.getKey(), "isMember") != null);
+            profile.getKey(), CONFIG_KEY_IS_MEMBER) != null);
   }
 
   @Override
@@ -157,15 +157,13 @@ public class DudeWheresMyStuffPlugin extends Plugin {
       panelContainer =
           new DudeWheresMyStuffPanelContainer(
               new DudeWheresMyStuffPanel(
-                  this, config, itemManager, configManager, storageManagerManager, false, client),
+                  this, configManager, storageManagerManager, false),
               new DudeWheresMyStuffPanel(
                   this,
-                  config,
-                  itemManager,
                   configManager,
                   previewStorageManagerManager,
-                  true,
-                  client));
+                  true
+              ));
 
       SwingUtilities.invokeLater(
           () -> {
@@ -173,31 +171,30 @@ public class DudeWheresMyStuffPlugin extends Plugin {
                 .getStorageManagers()
                 .forEach(
                     storageManager ->
-                        storageManager.getStorages().forEach(o -> o.createStoragePanel(storageManager)));
+                        storageManager.getStorages()
+                            .forEach(o -> o.createStoragePanel(storageManager)));
 
             previewStorageManagerManager
                 .getStorageManagers()
                 .forEach(
                     storageManager ->
-                        storageManager.getStorages().forEach(o -> o.createStoragePanel(storageManager)));
+                        storageManager.getStorages()
+                            .forEach(o -> o.createStoragePanel(storageManager)));
           });
 
-      clientThread.invoke(() -> {
-        navButton = buildNavigationButton();
-      });
+      clientThread.invoke(() -> navButton = buildNavigationButton());
 
-      ItemContainerWatcher.init(client, clientThread, itemManager);
+      ItemContainerWatcher.init(client);
     }
 
-    reset(true);
+    reset();
 
-    clientThread.invoke(() -> {
-      clientToolbar.addNavigation(navButton);
-    });
+    clientThread.invoke(() -> clientToolbar.addNavigation(navButton));
 
     AtomicBoolean anyProfilesMigrated = new AtomicBoolean(false);
     getProfilesWithData().forEach(runeScapeProfile -> {
-      if (configManager.getConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP, runeScapeProfile.getKey(), "saveMigrated") == null) {
+      if (configManager.getConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP,
+          runeScapeProfile.getKey(), CONFIG_KEY_SAVE_MIGRATED) == null) {
         new SaveMigrator(configManager, runeScapeProfile.getKey()).migrate();
         anyProfilesMigrated.set(true);
       }
@@ -216,16 +213,12 @@ public class DudeWheresMyStuffPlugin extends Plugin {
     deathStorageManager.refreshInfoBoxes();
   }
 
-  private void reset(boolean fullReset) {
+  private void reset() {
     clientState = ClientState.LOGGED_OUT;
 
     ItemContainerWatcher.reset();
     storageManagerManager.reset();
-    if (fullReset) {
-      panelContainer.reset();
-    } else {
-      panelContainer.getPanel().reset();
-    }
+    panelContainer.reset();
   }
 
   @Override
@@ -234,7 +227,8 @@ public class DudeWheresMyStuffPlugin extends Plugin {
 
     clientToolbar.removeNavigation(navButton);
 
-    infoBoxManager.removeIf(infoBox -> infoBox.getName().startsWith(this.getClass().getSimpleName()));
+    infoBoxManager.removeIf(
+        infoBox -> infoBox.getName().startsWith(this.getClass().getSimpleName()));
   }
 
   @Subscribe
@@ -267,7 +261,7 @@ public class DudeWheresMyStuffPlugin extends Plugin {
   }
 
   @Subscribe
-  public void onConfigChanged(ConfigChanged configChanged) {
+  void onConfigChanged(ConfigChanged configChanged) {
     if (!Objects.equals(configChanged.getGroup(), DudeWheresMyStuffConfig.CONFIG_GROUP)) {
       return;
     }
@@ -292,6 +286,8 @@ public class DudeWheresMyStuffPlugin extends Plugin {
       case "deathpileInfoBox":
         deathStorageManager.refreshInfoBoxes();
         break;
+      default:
+        // do nothing
     }
   }
 
@@ -355,17 +351,19 @@ public class DudeWheresMyStuffPlugin extends Plugin {
     }
 
     if (clientState == ClientState.LOGGING_IN) {
-      boolean isMember = client.getVarcIntValue(VarClientInt.MEMBERSHIP_STATUS) == 1;
-      AccountType accountType = client.getAccountType();
-      String displayName = Objects.requireNonNull(client.getLocalPlayer()).getName();
+      final boolean isMember = client.getVarcIntValue(VarClientInt.MEMBERSHIP_STATUS) == 1;
+      final AccountType accountType = client.getAccountType();
+      final String displayName = Objects.requireNonNull(client.getLocalPlayer()).getName();
 
       // All saves should be migrated on plugin start, so this must be a new account
-      if (configManager.getRSProfileConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP, "saveMigrated") == null) {
-        configManager.setRSProfileConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP, "saveMigrated", true);
+      if (configManager.getRSProfileConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP,
+          CONFIG_KEY_SAVE_MIGRATED) == null) {
+        configManager.setRSProfileConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP,
+            CONFIG_KEY_SAVE_MIGRATED, true);
       }
 
       configManager.setRSProfileConfiguration(
-          DudeWheresMyStuffConfig.CONFIG_GROUP, "isMember", isMember);
+          DudeWheresMyStuffConfig.CONFIG_GROUP, CONFIG_KEY_IS_MEMBER, isMember);
       configManager.setRSProfileConfiguration(
           DudeWheresMyStuffConfig.CONFIG_GROUP, "accountType", accountType.ordinal());
 
@@ -478,7 +476,11 @@ public class DudeWheresMyStuffPlugin extends Plugin {
                         storageManager -> {
                           storageManager
                               .getStorages()
-                              .forEach(storage -> storage.getStoragePanel().update());
+                              .forEach(storage -> {
+                                if (storage.getStoragePanel() != null) {
+                                  storage.getStoragePanel().update();
+                                }
+                              });
                           storageManager.getStorageTabPanel().reorderStoragePanels();
                         }));
       }
@@ -506,8 +508,8 @@ public class DudeWheresMyStuffPlugin extends Plugin {
           panelContainer
               .getPreviewPanel()
               .logIn(
-                  configManager.getConfiguration(
-                      DudeWheresMyStuffConfig.CONFIG_GROUP, profileKey, "isMember", boolean.class),
+                  configManager.getConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP, profileKey,
+                      CONFIG_KEY_IS_MEMBER, boolean.class),
                   AccountType.values()[
                       (int)
                           configManager.getConfiguration(
@@ -524,5 +526,17 @@ public class DudeWheresMyStuffPlugin extends Plugin {
   public void setItemSortMode(ItemSortMode itemSortMode) {
     storageManagerManager.setItemSortMode(itemSortMode);
     previewStorageManagerManager.setItemSortMode(itemSortMode);
+  }
+
+  void deleteAllData() {
+    getProfilesWithData().forEach(runeScapeProfile -> {
+      for (String configKey : configManager.getRSProfileConfigurationKeys(
+          DudeWheresMyStuffConfig.CONFIG_GROUP, runeScapeProfile.getKey(),
+          "")) {
+        configManager.unsetConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP,
+            runeScapeProfile.getKey(), configKey);
+      }
+    });
+    configManager.sendConfig();
   }
 }

@@ -20,48 +20,4 @@ public class MinigamesStorageTabPanel
   protected Comparator<MinigamesStorage> getStorageSorter() {
     return Comparator.comparing(s -> s.getType().getName());
   }
-  //
-  //  @Override
-  //  protected void rebuildList() {
-  //    removeAll();
-  //
-  //    storagePanels.clear();
-  //    storageManager.getStorages().stream()
-  //        .filter(Storage::isEnabled)
-  //        .filter(
-  //            storage -> {
-  //              if (config.showEmptyStorages()) {
-  //                return true;
-  //              }
-  //
-  //              return storage.getItems().stream()
-  //                  .anyMatch(itemStack -> itemStack.getId() != -1 && itemStack.getQuantity() >
-  // 0);
-  //            })
-  //        .sorted(getStorageSorter())
-  //        .forEach(
-  //            storage -> {
-  //              StoragePanel storagePanel =
-  //                  new StoragePanel(
-  //                      itemManager,
-  //                      storageManager.getPluginManager(),
-  //                      storageManager.getItemIdentificationPlugin(),
-  //                      storageManager.getItemIdentificationConfig(), storage,
-  //                      null,
-  //                      showPrice());
-  //              for (ItemStack itemStack : storage.getItems()) {
-  //                if (storage.getType().isAutomatic()
-  //                    || storage.getLastUpdated() != -1L
-  //                    || itemStack.getQuantity() > 0) {
-  //                  storagePanel.getItems().add(itemStack);
-  //                }
-  //              }
-  //              storagePanel.rebuild();
-  //              storagePanels.add(storagePanel);
-  //              add(storagePanel);
-  //            });
-  //
-  //    revalidate();
-  //  }
-
 }

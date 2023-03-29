@@ -9,9 +9,10 @@ import net.runelite.client.plugins.itemidentification.ItemIdentificationMode;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.components.TextComponent;
 
-public class ItemImageLabel extends JLabel {
+class ItemImageLabel extends JLabel {
+
   @Setter private transient ItemStack itemStack;
-  private final DudeWheresMyStuffPlugin plugin;
+  private final transient DudeWheresMyStuffPlugin plugin;
 
   public ItemImageLabel(DudeWheresMyStuffPlugin plugin) {
     this.plugin = plugin;
@@ -24,10 +25,10 @@ public class ItemImageLabel extends JLabel {
         || itemStack.getItemIdentification() == null
         || !plugin.getPluginManager().isPluginEnabled(plugin.getItemIdentificationPlugin())
         || !itemStack
-            .getItemIdentification()
-            .type
-            .enabled
-            .test(plugin.getItemIdentificationConfig())) {
+        .getItemIdentification()
+        .type
+        .enabled
+        .test(plugin.getItemIdentificationConfig())) {
       return;
     }
 

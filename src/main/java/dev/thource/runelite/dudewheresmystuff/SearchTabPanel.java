@@ -14,15 +14,13 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import lombok.Getter;
-import lombok.Setter;
-import net.runelite.api.vars.AccountType;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.components.IconTextField;
 
 class SearchTabPanel
     extends StorageTabPanel<
-        StorageType, Storage<StorageType>, StorageManager<StorageType, Storage<StorageType>>> {
+    StorageType, Storage<StorageType>, StorageManager<StorageType, Storage<StorageType>>> {
 
   private static final String EMPTY_SEARCH_TEXT =
       "<html>Type at least 3 characters in the search bar to find your stuff</html>";
@@ -32,7 +30,6 @@ class SearchTabPanel
   private final transient StorageManagerManager storageManagerManager;
   private final JLabel searchStatusLabel;
   private final JPanel searchStatusPanel;
-  @Setter private AccountType accountType;
 
   SearchTabPanel(DudeWheresMyStuffPlugin plugin, StorageManagerManager storageManagerManager) {
     super(plugin, new SearchStorageManager(plugin));
@@ -147,7 +144,7 @@ class SearchTabPanel
     }
 
     storagePanels.stream()
-        .filter(panel -> panel.getParent() != null)
+        .filter(panel -> panel.getParent() != null && panel.getStorage().getStoragePanel() != null)
         .forEach(
             panel -> {
               panel.getStorage().softUpdate();

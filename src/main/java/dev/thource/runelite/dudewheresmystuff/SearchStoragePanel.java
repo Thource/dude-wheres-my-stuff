@@ -5,7 +5,7 @@ import java.util.Locale;
 import java.util.stream.Collectors;
 import lombok.Setter;
 
-public class SearchStoragePanel extends StoragePanel {
+class SearchStoragePanel extends StoragePanel {
 
   @Setter private String searchText = "";
 
@@ -20,8 +20,8 @@ public class SearchStoragePanel extends StoragePanel {
             item ->
                 searchText == null
                     || item.getName()
-                        .toLowerCase(Locale.ROOT)
-                        .contains(searchText.toLowerCase(Locale.ROOT)))
+                    .toLowerCase(Locale.ROOT)
+                    .contains(searchText.toLowerCase(Locale.ROOT)))
         .collect(Collectors.toList());
   }
 }

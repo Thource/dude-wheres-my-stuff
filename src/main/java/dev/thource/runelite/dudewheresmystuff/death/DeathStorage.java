@@ -5,7 +5,6 @@ import dev.thource.runelite.dudewheresmystuff.ItemStorage;
 import dev.thource.runelite.dudewheresmystuff.SaveFieldFormatter;
 import dev.thource.runelite.dudewheresmystuff.SaveFieldLoader;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 import lombok.Getter;
 

@@ -27,6 +27,7 @@ public class StashStorage extends ItemStorage<StashStorageType> {
   @Override
   protected void createStoragePanel(StorageManager<?, ?> storageManager) {
     super.createStoragePanel(storageManager);
+    assert storagePanel != null;
 
     storagePanel.setTitleToolTip(stashUnit.getChartText());
 
@@ -41,9 +42,9 @@ public class StashStorage extends ItemStorage<StashStorageType> {
     }
 
     if (stashUnit
-            .getStashUnitData()
-            .getWorldPoints()[0]
-            .distanceTo(plugin.getClient().getLocalPlayer().getWorldLocation())
+        .getStashUnitData()
+        .getWorldPoints()[0]
+        .distanceTo(plugin.getClient().getLocalPlayer().getWorldLocation())
         > 10) {
       return false;
     }

@@ -1,6 +1,7 @@
 package dev.thource.runelite.dudewheresmystuff;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import javax.annotation.Nullable;
 import lombok.Getter;
@@ -9,98 +10,158 @@ import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.events.ItemContainerChanged;
 
+/** ItemStorage builds upon Storage by adding items and some other functionality. */
 public class ItemStorage<T extends StorageType> extends Storage<T> {
-    @Nullable protected final ItemContainerWatcher itemContainerWatcher;
-    @Getter protected List<ItemStack> items = new ArrayList<>();
-    protected boolean hasStaticItems = false;
 
-    protected ItemStorage(T type, DudeWheresMyStuffPlugin plugin) {
-        super(type, plugin);
+  @Nullable protected int[] varbits = null;
+  // used when there are items before the varbit items
+  protected int varbitItemOffset = 0;
+  @Nullable protected final ItemContainerWatcher itemContainerWatcher;
+  @Getter protected List<ItemStack> items = new ArrayList<>();
+  protected boolean hasStaticItems = false;
 
-        itemContainerWatcher = ItemContainerWatcher.getWatcher(type.getItemContainerId());
+  protected ItemStorage(T type, DudeWheresMyStuffPlugin plugin) {
+    super(type, plugin);
+
+    itemContainerWatcher = ItemContainerWatcher.getWatcher(type.getItemContainerId());
+  }
+
+  @Override
+  public boolean onVarbitChanged() {
+    if (varbits == null) {
+      return false;
     }
 
-    @Override
-    public boolean onGameTick() {
-        if (itemContainerWatcher != null && itemContainerWatcher.wasJustUpdated()) {
-            items.clear();
-            items.addAll(itemContainerWatcher.getItems());
-            lastUpdated = System.currentTimeMillis();
+    boolean updated = false;
 
-            return true;
-        }
+    for (int i = 0; i < varbits.length; i++) {
+      int varbit = varbits[i];
+      ItemStack itemStack = items.get(i + varbitItemOffset);
 
-        return false;
+      int newPoints = plugin.getClient().getVarbitValue(varbit);
+      if (newPoints == itemStack.getQuantity()) {
+        continue;
+      }
+
+      itemStack.setQuantity(newPoints);
+      updated = true;
     }
 
-    @Override
-    public boolean onItemContainerChanged(ItemContainerChanged itemContainerChanged) {
-        if (itemContainerWatcher != null
-                || type.getItemContainerId() == -1
-                || type.getItemContainerId() != itemContainerChanged.getContainerId()) {
-            return false;
-        }
+    return updated;
+  }
 
-        ItemContainer itemContainer = plugin.getClient().getItemContainer(type.getItemContainerId());
-        if (itemContainer == null) {
-            return false;
-        }
+  @Override
+  public boolean onGameTick() {
+    if (itemContainerWatcher != null && itemContainerWatcher.wasJustUpdated()) {
+      items.clear();
+      items.addAll(itemContainerWatcher.getItems());
+      lastUpdated = System.currentTimeMillis();
 
-        items.clear();
-        for (Item item : itemContainer.getItems()) {
-            if (item.getId() == -1) {
-                items.add(new ItemStack(item.getId(), "empty slot", 1, 0, 0, false));
-                continue;
-            }
-
-            ItemComposition itemComposition = plugin.getItemManager().getItemComposition(item.getId());
-            if (itemComposition.getPlaceholderTemplateId() == -1) {
-                items.add(new ItemStack(item.getId(), item.getQuantity(), plugin));
-            }
-        }
-
-        lastUpdated = System.currentTimeMillis();
-
-        return true;
+      return true;
     }
 
-    @Override
-    protected ArrayList<String> getSaveValues() {
-        ArrayList<String> saveValues = super.getSaveValues();
+    return false;
+  }
 
-        saveValues.add(SaveFieldFormatter.format(items, hasStaticItems));
-
-        return saveValues;
+  @Override
+  public boolean onItemContainerChanged(ItemContainerChanged itemContainerChanged) {
+    if (itemContainerWatcher != null
+        || type.getItemContainerId() != itemContainerChanged.getContainerId()) {
+      return false;
     }
 
-    @Override
-    protected void loadValues(ArrayList<String> values) {
-        super.loadValues(values);
-
-        if (hasStaticItems) {
-            SaveFieldLoader.loadItemsIntoList(values, items);
-        } else {
-            items = SaveFieldLoader.loadItems(values, items, plugin);
-        }
+    ItemContainer itemContainer = itemContainerChanged.getItemContainer();
+    if (itemContainer == null) {
+      return false;
     }
 
-    @Override
-    public long getTotalValue() {
-        if (items.isEmpty()) { // avoids a NPE from .sum() on empty stream
-            return 0;
-        }
+    items.clear();
+    for (Item item : itemContainer.getItems()) {
+      if (item.getId() == -1) {
+        items.add(new ItemStack(item.getId(), "empty slot", 1, 0, 0, false));
+        continue;
+      }
 
-        return items.stream().mapToLong(ItemStack::getTotalGePrice).sum();
+      ItemComposition itemComposition = plugin.getItemManager().getItemComposition(item.getId());
+      if (itemComposition.getPlaceholderTemplateId() == -1) {
+        items.add(new ItemStack(item.getId(), item.getQuantity(), plugin));
+      }
     }
 
-    @Override
-    public void reset() {
-        if (hasStaticItems) {
-            items.forEach(item -> item.setQuantity(0));
-        } else {
-            items.clear();
-        }
+    lastUpdated = System.currentTimeMillis();
 
-        super.reset();
+    return true;
+  }
+
+  @Override
+  protected ArrayList<String> getSaveValues() {
+    ArrayList<String> saveValues = super.getSaveValues();
+
+    saveValues.add(SaveFieldFormatter.format(items, hasStaticItems));
+
+    return saveValues;
+  }
+
+  @Override
+  protected void loadValues(ArrayList<String> values) {
+    super.loadValues(values);
+
+    if (hasStaticItems) {
+      SaveFieldLoader.loadItemsIntoList(values, items);
+    } else {
+      items = SaveFieldLoader.loadItems(values, items, plugin);
     }
+  }
+
+  @Override
+  public long getTotalValue() {
+    if (items.isEmpty()) { // avoids a NPE from .sum() on empty stream
+      return 0;
+    }
+
+    return items.stream().mapToLong(ItemStack::getTotalGePrice).sum();
+  }
+
+  @Override
+  public void reset() {
+    if (hasStaticItems) {
+      items.forEach(item -> item.setQuantity(0));
+    } else {
+      items.clear();
+    }
+
+    super.reset();
+  }
+
+  /**
+   * Removes a quantity of items with the id specified.
+   *
+   * @param id       the item id of the item to remove
+   * @param quantity the amount of the item to remove
+   * @return the amount of items removed from the storage
+   */
+  public long remove(int id, long quantity) {
+    if (quantity <= 0) {
+      return 0;
+    }
+
+    long itemsRemoved = 0;
+    Iterator<ItemStack> listIterator = items.iterator();
+    while (listIterator.hasNext() && quantity > 0) {
+      ItemStack itemStack = listIterator.next();
+      if (itemStack.getId() != id) {
+        continue;
+      }
+
+      long qtyToRemove = Math.min(quantity, itemStack.getQuantity());
+      quantity -= qtyToRemove;
+      itemsRemoved += qtyToRemove;
+      itemStack.setQuantity(itemStack.getQuantity() - qtyToRemove);
+      if (itemStack.getQuantity() <= 0) {
+        listIterator.remove();
+      }
+    }
+
+    return itemsRemoved;
+  }
 }

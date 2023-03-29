@@ -4,18 +4,13 @@ import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.EnhancedSwingUtilities;
 import dev.thource.runelite.dudewheresmystuff.StorageTabPanel;
 import java.util.Comparator;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.vars.AccountType;
 
 /** DeathStorageTabPanel is responsible for displaying death storage data to the player. */
 @Slf4j
 public class DeathStorageTabPanel
     extends StorageTabPanel<DeathStorageType, DeathStorage, DeathStorageManager> {
 
-  @Setter private AccountType accountType;
-
-  /** A constructor. */
   public DeathStorageTabPanel(DudeWheresMyStuffPlugin plugin, DeathStorageManager storageManager) {
     super(plugin, storageManager);
   }
@@ -26,14 +21,11 @@ public class DeathStorageTabPanel
     storagePanels.clear();
 
     storageManager.getStorages().stream()
-        .filter(
-            storage ->
-                !(storage instanceof Deathbank)
-                    || storage.getLastUpdated() != -1) // Hide deathbank if it has no data
-        .filter(
-            storage ->
-                plugin.getConfig().showEmptyStorages()
-                    || !storage.getStoragePanel().getItemBoxes().isEmpty())
+        .filter(storage -> !(storage instanceof Deathbank)
+            || storage.getLastUpdated() != -1) // Hide deathbank if it has no data
+        .filter(storage -> storage.getStoragePanel() != null)
+        .filter(storage -> plugin.getConfig().showEmptyStorages() || !storage.getStoragePanel()
+            .getItemBoxes().isEmpty())
         .sorted(getStorageSorter())
         .forEach(
             storage -> {

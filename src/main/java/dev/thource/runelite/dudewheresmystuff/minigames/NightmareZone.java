@@ -11,7 +11,7 @@ import net.runelite.api.Varbits;
 @Getter
 public class NightmareZone extends MinigamesStorage {
 
-  private final int[] POTION_VARBITS = {
+  private static final int[] POTION_VARBITS = {
       3951,
       3952,
       3953,
@@ -23,17 +23,21 @@ public class NightmareZone extends MinigamesStorage {
   NightmareZone(DudeWheresMyStuffPlugin plugin) {
     super(MinigamesStorageType.NIGHTMARE_ZONE, plugin);
 
+    varbits = POTION_VARBITS;
+    varbitItemOffset = 1;
+
     items.add(points);
     items.add(new ItemStack(ItemID.SUPER_RANGING_1, 0, plugin));
     items.add(new ItemStack(ItemID.SUPER_MAGIC_POTION_1, 0, plugin));
     items.add(new ItemStack(ItemID.OVERLOAD_1, 0, plugin));
     items.add(new ItemStack(ItemID.ABSORPTION_1, 0, plugin));
-    plugin.getClientThread().invokeLater(() -> items.forEach(itemStack -> itemStack.setStackable(true)));
+    plugin.getClientThread()
+        .invokeLater(() -> items.forEach(itemStack -> itemStack.setStackable(true)));
   }
 
   @Override
   public boolean onVarbitChanged() {
-    boolean updated = false;
+    boolean updated = super.onVarbitChanged();
 
     int newPoints =
         plugin.getClient().getVarbitValue(Varbits.NMZ_POINTS)
@@ -41,17 +45,6 @@ public class NightmareZone extends MinigamesStorage {
     if (newPoints != points.getQuantity()) {
       points.setQuantity(newPoints);
       updated = true;
-    }
-
-    for (int i = 0; i < POTION_VARBITS.length; i++) {
-      int varbit = POTION_VARBITS[i];
-      int newValue = plugin.getClient().getVarbitValue(varbit);
-      ItemStack itemStack = items.get(i + 1);
-
-      if (itemStack.getQuantity() != newValue) {
-        itemStack.setQuantity(newValue);
-        updated = true;
-      }
     }
 
     return updated;

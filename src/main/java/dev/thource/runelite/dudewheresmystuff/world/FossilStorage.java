@@ -3,9 +3,10 @@ package dev.thource.runelite.dudewheresmystuff.world;
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
 import net.runelite.api.ItemID;
-import net.runelite.api.Varbits;
 
+/** FossilStorage is responsible for tracking the players fossil island fossil storage. */
 public class FossilStorage extends WorldStorage {
+
   private static final int[] VARBITS = {
       5828,
       5829,
@@ -44,6 +45,8 @@ public class FossilStorage extends WorldStorage {
 
     hasStaticItems = true;
 
+    varbits = VARBITS;
+
     items.add(new ItemStack(ItemID.UNIDENTIFIED_SMALL_FOSSIL, plugin));
     items.add(new ItemStack(ItemID.UNIDENTIFIED_MEDIUM_FOSSIL, plugin));
     items.add(new ItemStack(ItemID.UNIDENTIFIED_LARGE_FOSSIL, plugin));
@@ -79,25 +82,5 @@ public class FossilStorage extends WorldStorage {
     items.add(new ItemStack(ItemID.RARE_FOSSILISED_PELVIS, plugin));
     items.add(new ItemStack(ItemID.RARE_FOSSILISED_SKULL, plugin));
     items.add(new ItemStack(ItemID.RARE_FOSSILISED_TUSK, plugin));
-  }
-
-  @Override
-  public boolean onVarbitChanged() {
-    boolean updated = false;
-
-    for (int i = 0; i < VARBITS.length; i++) {
-      int varbit = VARBITS[i];
-      ItemStack itemStack = items.get(i);
-
-      int newQuantity = plugin.getClient().getVarbitValue(varbit);
-      if (newQuantity == itemStack.getQuantity()) {
-        continue;
-      }
-
-      itemStack.setQuantity(newQuantity);
-      updated = true;
-    }
-
-    return updated;
   }
 }

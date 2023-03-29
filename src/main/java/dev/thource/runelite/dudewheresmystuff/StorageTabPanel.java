@@ -16,7 +16,7 @@ import net.runelite.client.ui.FontManager;
 
 /** StorageTabPanel is a base class that shows the player their data. */
 public abstract class StorageTabPanel<
-        T extends StorageType, S extends Storage<T>, M extends StorageManager<T, S>>
+    T extends StorageType, S extends Storage<T>, M extends StorageManager<T, S>>
     extends TabContentPanel {
 
   protected final transient DudeWheresMyStuffPlugin plugin;
@@ -50,7 +50,8 @@ public abstract class StorageTabPanel<
     sortItemsDropdown.addItem(ItemSortMode.VALUE);
     sortItemsDropdown.addItem(ItemSortMode.UNSORTED);
     sortItemsDropdown.setSelectedItem(plugin.getConfig().itemSortMode());
-    sortItemsDropdown.addItemListener(i -> plugin.getConfig().setItemSortMode((ItemSortMode) i.getItem()));
+    sortItemsDropdown.addItemListener(
+        i -> plugin.getConfig().setItemSortMode((ItemSortMode) i.getItem()));
     sortItemsDropdown.setPreferredSize(new Dimension(-1, 30));
     sortItemsContainer.add(sortItemsDropdown);
 
@@ -66,11 +67,13 @@ public abstract class StorageTabPanel<
         .thenComparing(s -> s.getType().getName());
   }
 
+  /** Sorts all the storage panels to be in the order specified by getStorageSorter. */
   public void reorderStoragePanels() {
     EnhancedSwingUtilities.fastRemoveAll(storagePanelContainer);
     storagePanels.clear();
 
     storageManager.getStorages().stream()
+        .filter(storage -> storage.getStoragePanel() != null)
         .filter(
             storage ->
                 plugin.getConfig().showEmptyStorages()

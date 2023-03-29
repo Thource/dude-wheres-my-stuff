@@ -10,16 +10,4 @@ public class StashStorageTabPanel
   public StashStorageTabPanel(DudeWheresMyStuffPlugin plugin, StashStorageManager storageManager) {
     super(plugin, storageManager);
   }
-
-  //  @Override
-  //  protected void rebuildList() {
-  //    super.rebuildList();
-  //
-  //    for (StoragePanel storagePanel : storagePanels) {
-  //      storagePanel
-  //          .getTitlePanel()
-  //          .setToolTipText(((StashStorage)
-  // storagePanel.getStorage()).getStashUnit().getChartText());
-  //    }
-  //  }
 }

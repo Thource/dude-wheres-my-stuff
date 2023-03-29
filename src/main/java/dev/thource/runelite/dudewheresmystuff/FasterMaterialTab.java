@@ -45,11 +45,12 @@ import net.runelite.client.ui.ColorScheme;
  * This class represents a Material Design inspired tab.
  *
  * <p>Each tab will communicate with it's containing group when it's clicked and that group will
- * display the tab's content on it's own display.
+ * display the tab's content on its own display.
  *
  * @author Psikoi
  */
 public class FasterMaterialTab extends JLabel {
+
   private static final Border SELECTED_BORDER =
       new CompoundBorder(
           BorderFactory.createMatteBorder(0, 0, 1, 0, ColorScheme.BRAND_ORANGE),
@@ -60,21 +61,17 @@ public class FasterMaterialTab extends JLabel {
   /* The tab's associated content display */
   @Getter private final JComponent content;
 
-  /* To be execuded when the tab is selected */
+  /* To be executed when the tab is selected */
   @Setter private transient BooleanSupplier onSelectEvent;
 
   @Getter private boolean selected;
 
-  public FasterMaterialTab(String string, FasterMaterialTabGroup group, JComponent content) {
+  FasterMaterialTab(String string, FasterMaterialTabGroup group, JComponent content) {
     super(string);
 
     this.content = content;
 
-    if (selected) {
-      select();
-    } else {
-      unselect();
-    }
+    unselect();
 
     addMouseListener(
         new MouseAdapter() {
@@ -104,7 +101,7 @@ public class FasterMaterialTab extends JLabel {
     }
   }
 
-  public FasterMaterialTab(ImageIcon icon, FasterMaterialTabGroup group, JComponent content) {
+  FasterMaterialTab(ImageIcon icon, FasterMaterialTabGroup group, JComponent content) {
     this("", group, content);
     setIcon(icon);
     setOpaque(true);
@@ -128,7 +125,7 @@ public class FasterMaterialTab extends JLabel {
         });
   }
 
-  public boolean select() {
+  boolean select() {
     if (onSelectEvent != null && !onSelectEvent.getAsBoolean()) {
       return false;
     }
@@ -139,7 +136,7 @@ public class FasterMaterialTab extends JLabel {
     return true;
   }
 
-  public void unselect() {
+  void unselect() {
     setBorder(UNSELECTED_BORDER);
     setForeground(Color.GRAY);
     selected = false;

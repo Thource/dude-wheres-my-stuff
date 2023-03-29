@@ -6,7 +6,6 @@ import dev.thource.runelite.dudewheresmystuff.SaveFieldFormatter;
 import dev.thource.runelite.dudewheresmystuff.SaveFieldLoader;
 import dev.thource.runelite.dudewheresmystuff.StorageManager;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
@@ -61,6 +60,7 @@ public class Deathbank extends DeathStorage {
   @Override
   protected void createStoragePanel(StorageManager<?, ?> storageManager) {
     super.createStoragePanel(storageManager);
+    assert storagePanel != null; // storagePanel can't be null here as it's set in super kl
 
     storagePanel.setTitle(deathbankType.getName());
     storagePanel.setSubTitle(locked ? "Locked" : "Unlocked");
@@ -70,6 +70,10 @@ public class Deathbank extends DeathStorage {
 
   @Override
   protected void createComponentPopupMenu(StorageManager<?, ?> storageManager) {
+    if (storagePanel == null) {
+      return;
+    }
+
     final JPopupMenu popupMenu = new JPopupMenu();
     popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
     storagePanel.setComponentPopupMenu(popupMenu);
@@ -104,7 +108,7 @@ public class Deathbank extends DeathStorage {
     popupMenu.add(clearDeathbank);
   }
 
-  public void setLocked(boolean locked) {
+  void setLocked(boolean locked) {
     this.locked = locked;
 
     SwingUtilities.invokeLater(() -> {
@@ -121,7 +125,7 @@ public class Deathbank extends DeathStorage {
 
   @Override
   public void softUpdate() {
-    if (lostAt != -1) {
+    if (storagePanel != null && lostAt != -1) {
       long timeSinceLost = System.currentTimeMillis() - lostAt;
       storagePanel.setFooterText(
           "Lost " + DurationFormatter.format(Math.abs(timeSinceLost)) + " ago");
@@ -131,7 +135,8 @@ public class Deathbank extends DeathStorage {
     super.softUpdate();
   }
 
-  static Deathbank load(DudeWheresMyStuffPlugin plugin, DeathStorageManager deathStorageManager, String profileKey, String uuid) {
+  static Deathbank load(DudeWheresMyStuffPlugin plugin, DeathStorageManager deathStorageManager,
+      String profileKey, String uuid) {
     Deathbank deathbank = new Deathbank(
         DeathbankType.UNKNOWN,
         plugin,
@@ -139,7 +144,8 @@ public class Deathbank extends DeathStorage {
     );
 
     deathbank.uuid = UUID.fromString(uuid);
-    deathbank.load(deathStorageManager.getConfigManager(), deathStorageManager.getConfigKey(), profileKey);
+    deathbank.load(deathStorageManager.getConfigManager(), deathStorageManager.getConfigKey(),
+        profileKey);
 
     return deathbank;
   }
@@ -147,6 +153,6 @@ public class Deathbank extends DeathStorage {
   @Override
   public boolean isWithdrawable() {
     // If the items were lost, then they can't be withdrawn
-    return lostAt == -1;
+    return super.isWithdrawable() && lostAt == -1;
   }
 }

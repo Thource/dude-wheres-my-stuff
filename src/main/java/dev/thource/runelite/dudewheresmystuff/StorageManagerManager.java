@@ -1,5 +1,7 @@
 package dev.thource.runelite.dudewheresmystuff;
 
+import static net.runelite.client.RuneLite.RUNELITE_DIR;
+
 import dev.thource.runelite.dudewheresmystuff.carryable.CarryableStorageManager;
 import dev.thource.runelite.dudewheresmystuff.coins.CoinsStorageManager;
 import dev.thource.runelite.dudewheresmystuff.coins.CoinsStorageType;
@@ -11,6 +13,7 @@ import dev.thource.runelite.dudewheresmystuff.minigames.MinigamesStorageManager;
 import dev.thource.runelite.dudewheresmystuff.playerownedhouse.PlayerOwnedHouseStorageManager;
 import dev.thource.runelite.dudewheresmystuff.stash.StashStorageManager;
 import dev.thource.runelite.dudewheresmystuff.world.WorldStorageManager;
+import java.awt.TrayIcon.MessageType;
 import java.awt.event.ItemListener;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -21,6 +24,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -38,11 +42,12 @@ import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.WidgetClosed;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.client.config.ConfigManager;
-import static net.runelite.client.RuneLite.RUNELITE_DIR;
 
+/** The manager of storage managers. */
 @Slf4j
 @Getter
 public class StorageManagerManager {
+
   public static final File EXPORT_DIR = new File(RUNELITE_DIR, "dudewheresmystuff");
 
   private final CarryableStorageManager carryableStorageManager;
@@ -102,18 +107,32 @@ public class StorageManagerManager {
     storageManagers.forEach(storageManager -> storageManager.onGameStateChanged(gameStateChanged));
   }
 
+  /**
+   * Loads the data for every storage.
+   *
+   * @param profileKey the profile key to load the data from
+   */
   public void load(String profileKey) {
     for (StorageManager<?, ?> storageManager : storageManagers) {
       storageManager.load(profileKey);
 
       SwingUtilities.invokeLater(
           () -> {
-            storageManager.getStorages().forEach(storage -> storage.getStoragePanel().update());
+            storageManager.getStorages().forEach(storage -> {
+              if (storage.getStoragePanel() != null) {
+                storage.getStoragePanel().update();
+              }
+            });
             storageManager.getStorageTabPanel().reorderStoragePanels();
           });
     }
   }
 
+  /**
+   * Saves the data for every storage.
+   *
+   * @param profileKey the profile key to save the data under
+   */
   public void save(String profileKey) {
     for (StorageManager<?, ?> storageManager : storageManagers) {
       storageManager.save(profileKey);
@@ -148,39 +167,45 @@ public class StorageManagerManager {
     storageManagers.forEach(manager -> manager.onChatMessage(chatMessage));
   }
 
+  /**
+   * Gets all the storages from each storage manager.
+   *
+   * @return a flat map of every storage from every storage manager (except for expired deathpiles,
+   *     lost deathbanks and the inventory/looting bag coin storages.)
+   */
   @SuppressWarnings("java:S1452")
   public Stream<? extends Storage<? extends Enum<? extends Enum<?>>>> getStorages() {
     return Stream.of(
-            getDeathStorageManager().storages.stream()
+            getDeathStorageManager().getStorages().stream()
                 .filter(s -> !(s instanceof DeathItems))
                 .filter(
                     s ->
                         (s instanceof Deathpile && !((Deathpile) s).hasExpired())
                             || (s instanceof Deathbank && ((Deathbank) s).getLostAt() == -1L)),
-            getCoinsStorageManager().storages.stream()
+            getCoinsStorageManager().getStorages().stream()
                 .filter(
                     storage ->
                         storage.getType() != CoinsStorageType.INVENTORY
                             && storage.getType() != CoinsStorageType.LOOTING_BAG),
-            getCarryableStorageManager().storages.stream(),
-            getStashStorageManager().storages.stream(),
-            getPlayerOwnedHouseStorageManager().storages.stream(),
-            getWorldStorageManager().storages.stream())
+            getCarryableStorageManager().getStorages().stream(),
+            getStashStorageManager().getStorages().stream(),
+            getPlayerOwnedHouseStorageManager().getStorages().stream(),
+            getWorldStorageManager().getStorages().stream())
         .flatMap(i -> i);
   }
 
   public List<ItemStack> getItems() {
-    return getStorages().filter(Storage::isEnabled).map(Storage::getItems).flatMap(List::stream).collect(Collectors.toList());
+    return getStorages().filter(Storage::isEnabled).map(Storage::getItems).flatMap(List::stream)
+        .collect(Collectors.toList());
   }
 
   /**
    * Gets all known withdrawable items
    *
-   * If the same item is in multiple storages, the item stacks are combined.
-   * "Same item" refers to items with the same canonical ID, but note that the
-   * actual ID of the stack will be set to the ID of one of the items
-   * arbitrarily. It is therefore recommended that callers do not use the IDs,
-   * only the canonical IDs.
+   * <p>If the same item is in multiple storages, the item stacks are combined. "Same item" refers
+   * to items with the same canonical ID, but note that the actual ID of the stack will be set to
+   * the ID of one of the items arbitrarily. It is therefore recommended that callers do not use the
+   * IDs, only the canonical IDs.
    *
    * @return The item stacks
    */
@@ -195,30 +220,36 @@ public class StorageManagerManager {
         .map(Storage::getItems)
         .flatMap(List::stream)
         .forEach((ItemStack stack) -> {
-      if (stack.getQuantity() == 0 || stack.getId() == -1) {
-        return;
-      }
+          if (stack.getQuantity() == 0 || stack.getId() == -1) {
+            return;
+          }
 
-      int id = stack.getCanonicalId();
+          int id = stack.getCanonicalId();
 
-      ItemStack existing = items.get(id);
-      if (existing == null) {
-        // No item yet, insert a copy so that we can modify their quantities later if necessary
-        items.put(id, new ItemStack(stack));
-      } else {
-        // This item was already in there. Update the quantity to include the new stack.
-        existing.setQuantity(stack.getQuantity() + existing.getQuantity());
-      }
-    });
+          ItemStack existing = items.get(id);
+          if (existing == null) {
+            // No item yet, insert a copy so that we can modify their quantities later if necessary
+            items.put(id, new ItemStack(stack));
+          } else {
+            // This item was already in there. Update the quantity to include the new stack.
+            existing.setQuantity(stack.getQuantity() + existing.getQuantity());
+          }
+        });
 
     return items.values();
   }
 
+  /**
+   * Sets the item sort mode across all storages.
+   *
+   * @param itemSortMode the new item sort mode
+   */
   public void setItemSortMode(ItemSortMode itemSortMode) {
     storageManagers.forEach(
         storageManager -> {
           storageManager.getStorages().stream()
               .map(Storage::getStoragePanel)
+              .filter(Objects::nonNull)
               .forEach(storagePanel -> storagePanel.setSortMode(itemSortMode));
 
           JComboBox<ItemSortMode> sortDropdown =
@@ -237,35 +268,34 @@ public class StorageManagerManager {
     storageManagers.forEach(manager -> manager.onMenuOptionClicked(menuOption));
   }
 
-  // Creates a CSV file containing all the items in any exportable storage
+  /** Creates a CSV file containing all the items in any exportable storage. */
   public void exportItems() {
     if (displayName.equals("")) {
       log.info("Can't export: no display name");
       return;
     }
-    File user_dir = new File(EXPORT_DIR, displayName);
-    String fileName = new SimpleDateFormat("'dudewheresmystuff-'yyyyMMdd'T'HHmmss'.csv'").format(new Date());
-    String filePath = user_dir + File.separator + fileName;
+    File userDir = new File(EXPORT_DIR, displayName);
+    String fileName = new SimpleDateFormat("yyyyMMdd'T'HHmmss'.csv'").format(
+        new Date());
+    String filePath = userDir + File.separator + fileName;
 
     Collection<ItemStack> items = getWithdrawableItems();
 
-    try
-    {
-      user_dir.mkdirs();
-
-      BufferedWriter writer = new BufferedWriter(new FileWriter(filePath));
+    //noinspection ResultOfMethodCallIgnored
+    userDir.mkdirs();
+    try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
       // Include a CSV header describing the columns
       writer.write("ID,Name,Quantity\n");
 
       for (ItemStack stack : items) {
-        String escaped_name = stack.getName().replace(",", "").replace("\n", "");
-        writer.write(String.format("%d,%s,%d\n", stack.getCanonicalId(), escaped_name, stack.getQuantity()));
+        String escapedName = stack.getName().replace(",", "").replace("\n", "");
+        writer.write(
+            String.format("%d,%s,%d%n", stack.getCanonicalId(), escapedName, stack.getQuantity()));
       }
-      writer.close();
-    }
-    catch (IOException e)
-    {
+      plugin.getNotifier().notify("Items successfully exported to: " + filePath, MessageType.INFO);
+    } catch (IOException e) {
       log.error("Unable to export: " + e.getMessage());
+      plugin.getNotifier().notify("Item export failed.", MessageType.ERROR);
     }
   }
 }

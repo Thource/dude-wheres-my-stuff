@@ -2,37 +2,40 @@ package dev.thource.runelite.dudewheresmystuff.world;
 
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
 import net.runelite.api.ItemID;
 import net.runelite.api.Varbits;
 
+/**
+ * BlastFurnace is responsible for tracking how many ores/bars the player has stored at Blast
+ * Furnace.
+ */
 public class BlastFurnace extends WorldStorage {
+
   private static final int[] VARBITS = {
-    Varbits.BLAST_FURNACE_COPPER_ORE,
-    Varbits.BLAST_FURNACE_TIN_ORE,
-    Varbits.BLAST_FURNACE_IRON_ORE,
-    Varbits.BLAST_FURNACE_COAL,
-    Varbits.BLAST_FURNACE_MITHRIL_ORE,
-    Varbits.BLAST_FURNACE_ADAMANTITE_ORE,
-    Varbits.BLAST_FURNACE_RUNITE_ORE,
-    Varbits.BLAST_FURNACE_SILVER_ORE,
-    Varbits.BLAST_FURNACE_GOLD_ORE,
-    Varbits.BLAST_FURNACE_BRONZE_BAR,
-    Varbits.BLAST_FURNACE_IRON_BAR,
-    Varbits.BLAST_FURNACE_STEEL_BAR,
-    Varbits.BLAST_FURNACE_MITHRIL_BAR,
-    Varbits.BLAST_FURNACE_ADAMANTITE_BAR,
-    Varbits.BLAST_FURNACE_RUNITE_BAR,
-    Varbits.BLAST_FURNACE_SILVER_BAR,
-    Varbits.BLAST_FURNACE_GOLD_BAR
+      Varbits.BLAST_FURNACE_COPPER_ORE,
+      Varbits.BLAST_FURNACE_TIN_ORE,
+      Varbits.BLAST_FURNACE_IRON_ORE,
+      Varbits.BLAST_FURNACE_COAL,
+      Varbits.BLAST_FURNACE_MITHRIL_ORE,
+      Varbits.BLAST_FURNACE_ADAMANTITE_ORE,
+      Varbits.BLAST_FURNACE_RUNITE_ORE,
+      Varbits.BLAST_FURNACE_SILVER_ORE,
+      Varbits.BLAST_FURNACE_GOLD_ORE,
+      Varbits.BLAST_FURNACE_BRONZE_BAR,
+      Varbits.BLAST_FURNACE_IRON_BAR,
+      Varbits.BLAST_FURNACE_STEEL_BAR,
+      Varbits.BLAST_FURNACE_MITHRIL_BAR,
+      Varbits.BLAST_FURNACE_ADAMANTITE_BAR,
+      Varbits.BLAST_FURNACE_RUNITE_BAR,
+      Varbits.BLAST_FURNACE_SILVER_BAR,
+      Varbits.BLAST_FURNACE_GOLD_BAR
   };
 
   protected BlastFurnace(DudeWheresMyStuffPlugin plugin) {
     super(WorldStorageType.BLAST_FURNACE, plugin);
 
     hasStaticItems = true;
+    varbits = VARBITS;
 
     items.add(new ItemStack(ItemID.COPPER_ORE, plugin));
     items.add(new ItemStack(ItemID.TIN_ORE, plugin));
@@ -51,25 +54,5 @@ public class BlastFurnace extends WorldStorage {
     items.add(new ItemStack(ItemID.RUNITE_BAR, plugin));
     items.add(new ItemStack(ItemID.SILVER_BAR, plugin));
     items.add(new ItemStack(ItemID.GOLD_BAR, plugin));
-  }
-
-  @Override
-  public boolean onVarbitChanged() {
-    boolean updated = false;
-
-    for (int i = 0; i < VARBITS.length; i++) {
-      int varbit = VARBITS[i];
-      ItemStack itemStack = items.get(i);
-
-      int newQuantity = plugin.getClient().getVarbitValue(varbit);
-      if (newQuantity == itemStack.getQuantity()) {
-        continue;
-      }
-
-      itemStack.setQuantity(newQuantity);
-      updated = true;
-    }
-
-    return updated;
   }
 }

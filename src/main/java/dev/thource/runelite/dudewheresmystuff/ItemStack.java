@@ -31,7 +31,6 @@ import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.GameState;
 import net.runelite.api.ItemComposition;
-import net.runelite.client.callback.ClientThread;
 import net.runelite.client.game.ItemManager;
 
 /** ItemStack represents an OSRS item with a quantity. */
@@ -51,7 +50,7 @@ public class ItemStack {
   /**
    * A constructor.
    *
-   * @param id OSRS item ID
+   * @param id     OSRS item ID
    * @param plugin plugin
    */
   public ItemStack(int id, DudeWheresMyStuffPlugin plugin) {
@@ -65,9 +64,9 @@ public class ItemStack {
   /**
    * A constructor.
    *
-   * @param id OSRS item ID
+   * @param id       OSRS item ID
    * @param quantity quantity
-   * @param plugin plugin
+   * @param plugin   plugin
    */
   public ItemStack(int id, long quantity, DudeWheresMyStuffPlugin plugin) {
     this(id, plugin);
@@ -93,8 +92,19 @@ public class ItemStack {
     this.canonicalId = itemStack.canonicalId;
   }
 
-  // WARNING: ItemStacks created using this constructor will not have an ItemIdentification
-  // attached.
+  /**
+   * A constructor.
+   *
+   * <p>WARNING: ItemStacks created using this constructor will not have an ItemIdentification
+   * attached.
+   *
+   * @param id        the item's id
+   * @param name      the item's name
+   * @param quantity  the quantity of the item
+   * @param gePrice   the GE price
+   * @param haPrice   the high alchemy price
+   * @param stackable if the item is stackable
+   */
   public ItemStack(
       int id, String name, long quantity, int gePrice, int haPrice, boolean stackable) {
     this.id = id;

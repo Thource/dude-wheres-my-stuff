@@ -2,7 +2,6 @@ package dev.thource.runelite.dudewheresmystuff.world;
 
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.ItemStorage;
-import dev.thource.runelite.dudewheresmystuff.Storage;
 import lombok.Getter;
 
 /**

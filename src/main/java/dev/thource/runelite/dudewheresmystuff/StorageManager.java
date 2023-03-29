@@ -47,14 +47,17 @@ public abstract class StorageManager<T extends StorageType, S extends Storage<T>
   }
 
   public long getTotalValue() {
-    return storages.stream().filter(Storage::isEnabled).mapToLong(Storage::getTotalValue).sum();
+    return storages.stream().filter(Storage::isWithdrawable).mapToLong(Storage::getTotalValue)
+        .sum();
   }
 
   protected void updateStorages(List<? extends S> storages) {
     if (!storages.isEmpty()) {
       storages.forEach(
           storage -> {
-            SwingUtilities.invokeLater(storage.getStoragePanel()::update);
+            if (storage.getStoragePanel() != null) {
+              SwingUtilities.invokeLater(storage.getStoragePanel()::update);
+            }
           });
 
       SwingUtilities.invokeLater(storageTabPanel::reorderStoragePanels);
@@ -113,9 +116,11 @@ public abstract class StorageManager<T extends StorageType, S extends Storage<T>
     }
   }
 
-  public void onGameStateChanged(GameStateChanged gameStateChanged) {}
+  public void onGameStateChanged(GameStateChanged gameStateChanged) {
+  }
 
-  public void onActorDeath(ActorDeath actorDeath) {}
+  public void onActorDeath(ActorDeath actorDeath) {
+  }
 
   public void reset() {
     storages.forEach(Storage::reset);
@@ -124,8 +129,11 @@ public abstract class StorageManager<T extends StorageType, S extends Storage<T>
 
   public abstract String getConfigKey();
 
-  /** Save all Storages.
-   * @param profileKey*/
+  /**
+   * Save all Storages.
+   *
+   * @param profileKey the profile key to save the storages with
+   */
   public void save(String profileKey) {
     if (!enabled) {
       return;
@@ -157,7 +165,8 @@ public abstract class StorageManager<T extends StorageType, S extends Storage<T>
 
   public abstract Tab getTab();
 
-  public void onItemDespawned(ItemDespawned itemDespawned) {}
+  public void onItemDespawned(ItemDespawned itemDespawned) {
+  }
 
   /** Pass onChatMessage through to enabled storages. */
   public void onChatMessage(ChatMessage chatMessage) {
@@ -169,6 +178,7 @@ public abstract class StorageManager<T extends StorageType, S extends Storage<T>
     }
   }
 
+  /** Pass onMenuOptionClicked through to enabled storages. */
   public void onMenuOptionClicked(MenuOptionClicked menuOption) {
     if (enabled) {
       updateStorages(

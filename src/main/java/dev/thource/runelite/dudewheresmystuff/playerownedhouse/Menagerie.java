@@ -17,6 +17,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.client.config.ConfigManager;
 
+/** Menagerie is responsible for tracking which pets the player has in their POH menagerie. */
 public class Menagerie extends PlayerOwnedHouseStorage {
 
   private static final List<Integer> ITEM_CONTAINER_ITEM_IDS =
@@ -247,22 +248,22 @@ public class Menagerie extends PlayerOwnedHouseStorage {
   }
 
   void rebuildPetsFromBits() {
-      varplayerItems.clear();
-      int varpIndex = 0;
-      for (List<Integer> itemIds : VARPLAYER_BITS_TO_ITEM_IDS_LIST) {
-        int value = varpIndex == 0 ? petBits1 : petBits2;
-        for (int i = 0; i < itemIds.size(); i++) {
-          if ((value & (1L << i)) == 0) {
-            continue;
-          }
-
-          varplayerItems.add(new ItemStack(itemIds.get(i), 1, plugin));
+    varplayerItems.clear();
+    int varpIndex = 0;
+    for (List<Integer> itemIds : VARPLAYER_BITS_TO_ITEM_IDS_LIST) {
+      int value = varpIndex == 0 ? petBits1 : petBits2;
+      for (int i = 0; i < itemIds.size(); i++) {
+        if ((value & (1L << i)) == 0) {
+          continue;
         }
 
-        varpIndex++;
+        varplayerItems.add(new ItemStack(itemIds.get(i), 1, plugin));
       }
 
-      updateItems();
+      varpIndex++;
+    }
+
+    updateItems();
   }
 
   @Override

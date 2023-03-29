@@ -49,7 +49,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import lombok.Getter;
 import lombok.Setter;
-import net.runelite.api.Client;
 import net.runelite.api.vars.AccountType;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
@@ -81,22 +80,19 @@ public class DudeWheresMyStuffPanel extends JPanel {
   private final JPanel display = new JPanel();
   private final FasterMaterialTabGroup tabGroup = new FasterMaterialTabGroup(display);
   private final boolean previewMode;
-  private StorageManagerManager storageManagerManager;
+  private final transient StorageManagerManager storageManagerManager;
   @Setter private boolean active;
   @Getter private String displayName = "";
   @Nullable private TabContentPanel activeTabPanel = null;
 
   DudeWheresMyStuffPanel(
       DudeWheresMyStuffPlugin plugin,
-      DudeWheresMyStuffConfig config,
-      ItemManager itemManager,
       ConfigManager configManager,
       StorageManagerManager storageManagerManager,
-      boolean previewMode,
-      Client client) {
+      boolean previewMode) {
     super();
 
-    this.itemManager = itemManager;
+    this.itemManager = plugin.getItemManager();
     this.storageManagerManager = storageManagerManager;
     this.previewMode = previewMode;
 
@@ -260,7 +256,6 @@ public class DudeWheresMyStuffPanel extends JPanel {
   }
 
   void logIn(boolean isMember, AccountType accountType, String displayName) {
-    ((DeathStorageTabPanel) storageTabPanelMap.get(Tab.DEATH)).setAccountType(accountType);
     storageTabPanelMap.forEach(
         (tab, storageTabPanel) -> {
           StorageManager<?, ?> storageManager = storageTabPanel.storageManager;
@@ -287,7 +282,7 @@ public class DudeWheresMyStuffPanel extends JPanel {
     return previewMode;
   }
 
-  public void reorderStoragePanels() {
+  void reorderStoragePanels() {
     storageManagerManager
         .getStorageManagers()
         .forEach(storageManager -> storageManager.getStorageTabPanel().reorderStoragePanels());
