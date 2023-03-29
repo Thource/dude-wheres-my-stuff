@@ -60,8 +60,8 @@ public class Deathbank extends DeathStorage {
   @Override
   protected void createStoragePanel(StorageManager<?, ?> storageManager) {
     super.createStoragePanel(storageManager);
-
     assert storagePanel != null; // storagePanel can't be null here as it's set in super kl
+
     storagePanel.setTitle(deathbankType.getName());
     storagePanel.setSubTitle(locked ? "Locked" : "Unlocked");
 

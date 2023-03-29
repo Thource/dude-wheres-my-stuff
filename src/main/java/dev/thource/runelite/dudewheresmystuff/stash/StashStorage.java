@@ -27,6 +27,7 @@ public class StashStorage extends ItemStorage<StashStorageType> {
   @Override
   protected void createStoragePanel(StorageManager<?, ?> storageManager) {
     super.createStoragePanel(storageManager);
+    assert storagePanel != null;
 
     storagePanel.setTitleToolTip(stashUnit.getChartText());
 
