@@ -247,7 +247,7 @@ public class StorageManagerManager {
       return;
     }
     File userDir = new File(EXPORT_DIR, displayName);
-    String fileName = new SimpleDateFormat("'dudewheresmystuff-'yyyyMMdd'T'HHmmss'.csv'").format(
+    String fileName = new SimpleDateFormat("yyyyMMdd'T'HHmmss'.csv'").format(
         new Date());
     String filePath = userDir + File.separator + fileName;
 

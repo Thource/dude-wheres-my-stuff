@@ -58,12 +58,11 @@ public class CoinsStorage extends ItemStorage<CoinsStorageType> {
   @Override
   public boolean onItemContainerChanged(ItemContainerChanged itemContainerChanged) {
     if (itemContainerWatcher != null
-        || type.getItemContainerId() == -1
         || type.getItemContainerId() != itemContainerChanged.getContainerId()) {
       return false;
     }
 
-    ItemContainer itemContainer = plugin.getClient().getItemContainer(type.getItemContainerId());
+    ItemContainer itemContainer = itemContainerChanged.getItemContainer();
     if (itemContainer == null) {
       return false;
     }
