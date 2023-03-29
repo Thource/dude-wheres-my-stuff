@@ -6,7 +6,7 @@ import dev.thource.runelite.dudewheresmystuff.StorageManager;
 import dev.thource.runelite.dudewheresmystuff.Tab;
 import lombok.extern.slf4j.Slf4j;
 
-/** MinigamesStorageManager is responsible for managing all MinigameStorages. */
+/** MinigamesStorageManager is responsible for managing all MinigamesStorages. */
 @Slf4j
 public class MinigamesStorageManager
     extends StorageManager<MinigamesStorageType, MinigamesStorage> {

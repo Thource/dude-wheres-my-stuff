@@ -35,7 +35,8 @@ public class PestControl extends MinigamesStorage {
 
   @Override
   public boolean onGameTick() {
-    // This can't go in onWidgetLoaded because for some reason the text isn't populated at that point
+    // This can't go in onWidgetLoaded because for some reason the text isn't populated at that
+    // point
     Widget widget = plugin.getClient().getWidget(229, 1);
     if (widget != null) {
       String widgetText = widget.getText().replace("<br>", " ").replace(",", "");

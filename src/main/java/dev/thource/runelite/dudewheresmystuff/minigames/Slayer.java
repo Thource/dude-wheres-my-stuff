@@ -15,17 +15,8 @@ public class Slayer extends MinigamesStorage {
   Slayer(DudeWheresMyStuffPlugin plugin) {
     super(MinigamesStorageType.SLAYER, plugin);
 
+    varbits = new int[]{Varbits.SLAYER_POINTS};
+
     items.add(points);
-  }
-
-  @Override
-  public boolean onVarbitChanged() {
-    int newPoints = plugin.getClient().getVarbitValue(Varbits.SLAYER_POINTS);
-    if (newPoints == points.getQuantity()) {
-      return false;
-    }
-
-    points.setQuantity(newPoints);
-    return true;
   }
 }

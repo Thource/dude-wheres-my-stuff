@@ -12,6 +12,9 @@ import net.runelite.api.events.ItemContainerChanged;
 
 public class ItemStorage<T extends StorageType> extends Storage<T> {
 
+  @Nullable protected int[] varbits = null;
+  // used when there are items before the varbit items
+  protected int varbitItemOffset = 0;
   @Nullable protected final ItemContainerWatcher itemContainerWatcher;
   @Getter protected List<ItemStack> items = new ArrayList<>();
   protected boolean hasStaticItems = false;
@@ -20,6 +23,30 @@ public class ItemStorage<T extends StorageType> extends Storage<T> {
     super(type, plugin);
 
     itemContainerWatcher = ItemContainerWatcher.getWatcher(type.getItemContainerId());
+  }
+
+  @Override
+  public boolean onVarbitChanged() {
+    if (varbits == null) {
+      return false;
+    }
+
+    boolean updated = false;
+
+    for (int i = 0; i < varbits.length; i++) {
+      int varbit = varbits[i];
+      ItemStack itemStack = items.get(i + varbitItemOffset);
+
+      int newPoints = plugin.getClient().getVarbitValue(varbit);
+      if (newPoints == itemStack.getQuantity()) {
+        continue;
+      }
+
+      itemStack.setQuantity(newPoints);
+      updated = true;
+    }
+
+    return updated;
   }
 
   @Override
