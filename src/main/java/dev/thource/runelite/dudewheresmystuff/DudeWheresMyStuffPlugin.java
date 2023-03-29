@@ -11,6 +11,8 @@ import dev.thource.runelite.dudewheresmystuff.stash.StashStorageManager;
 import dev.thource.runelite.dudewheresmystuff.world.WorldStorageManager;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
@@ -27,7 +29,6 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.ItemDespawned;
 import net.runelite.api.events.MenuOptionClicked;
-import net.runelite.api.events.PlayerChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetClosed;
 import net.runelite.api.events.WidgetLoaded;
@@ -36,6 +37,7 @@ import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneScapeProfile;
+import net.runelite.client.config.RuneScapeProfileType;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ClientShutdown;
 import net.runelite.client.events.ConfigChanged;
@@ -314,10 +316,54 @@ public class DudeWheresMyStuffPlugin extends Plugin {
     storageManagerManager.onChatMessage(chatMessage);
   }
 
+  private String toTitleCase(String str) {
+    if (str == null) {
+      return null;
+    }
+
+    Pattern pattern = Pattern.compile("(_|^)(\\w)([^_]*)");
+    Matcher matcher = pattern.matcher(str.toLowerCase());
+
+    StringBuilder builder = new StringBuilder();
+    while (matcher.find()) {
+      builder.append(matcher.group(1)).append(matcher.group(2).toUpperCase())
+          .append(matcher.group(3));
+    }
+    return builder.toString().replace("_", " ");
+  }
+
+  public String getDisplayName(String profileKey) {
+    RuneScapeProfile profile = configManager.getRSProfiles().stream()
+        .filter(p -> p.getKey().equals(profileKey))
+        .findFirst().orElse(null);
+
+    return getDisplayName(profile);
+  }
+
+  public String getDisplayName(RuneScapeProfile profile) {
+    if (profile == null) {
+      return "Unknown";
+    }
+
+    String displayName = profile.getDisplayName();
+    if (profile.getType() != RuneScapeProfileType.STANDARD) {
+      displayName += " - " + toTitleCase(profile.getType().toString());
+    }
+
+    return displayName;
+  }
+
   @Subscribe
   public void onRuneScapeProfileChanged(RuneScapeProfileChanged e) {
     save();
     load(configManager.getRSProfileKey());
+
+    String displayName = getDisplayName(configManager.getRSProfileKey());
+    if (Objects.equals(displayName, panelContainer.getPreviewPanel().getDisplayName())) {
+      disablePreviewMode(false);
+    }
+
+    panelContainer.getPanel().setDisplayName(displayName);
   }
 
   @Subscribe
@@ -330,21 +376,6 @@ public class DudeWheresMyStuffPlugin extends Plugin {
   }
 
   @Subscribe
-  void onPlayerChanged(PlayerChanged ev) {
-    if (ev.getPlayer() != client.getLocalPlayer()) {
-      return;
-    }
-
-    panelContainer.getPanel().setDisplayName(ev.getPlayer().getName());
-    SwingUtilities.invokeLater(panelContainer.getPanel()::softUpdate);
-
-    if (Objects.equals(
-        ev.getPlayer().getName(), panelContainer.getPreviewPanel().getDisplayName())) {
-      disablePreviewMode(false);
-    }
-  }
-
-  @Subscribe
   void onGameTick(GameTick gameTick) {
     if (clientState == ClientState.LOGGED_OUT) {
       return;
@@ -353,7 +384,7 @@ public class DudeWheresMyStuffPlugin extends Plugin {
     if (clientState == ClientState.LOGGING_IN) {
       final boolean isMember = client.getVarcIntValue(VarClientInt.MEMBERSHIP_STATUS) == 1;
       final AccountType accountType = client.getAccountType();
-      final String displayName = Objects.requireNonNull(client.getLocalPlayer()).getName();
+      final String displayName = getDisplayName(configManager.getRSProfileKey());
 
       // All saves should be migrated on plugin start, so this must be a new account
       if (configManager.getRSProfileConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP,
@@ -379,7 +410,7 @@ public class DudeWheresMyStuffPlugin extends Plugin {
 
         onVarbitChanged(new VarbitChanged());
 
-        panelContainer.getPanel().setDisplayName(client.getLocalPlayer().getName());
+        panelContainer.getPanel().setDisplayName(getDisplayName(configManager.getRSProfileKey()));
 
         pluginStartedAlreadyLoggedIn = false;
       }

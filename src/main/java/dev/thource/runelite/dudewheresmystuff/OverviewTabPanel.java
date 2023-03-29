@@ -291,18 +291,19 @@ class OverviewTabPanel extends TabContentPanel {
     JMenu previewMenu = new JMenu("Preview data");
 
     plugin.getProfilesWithData()
-        .filter(runeScapeProfile -> !runeScapeProfile.getDisplayName()
+        .filter(runeScapeProfile -> !plugin.getDisplayName(runeScapeProfile)
             .equals(pluginPanel.getDisplayName()))
         .forEach(
             profile -> {
-              final JMenuItem previewItem = new JMenuItem(profile.getDisplayName());
+              String displayName = plugin.getDisplayName(profile);
+              final JMenuItem previewItem = new JMenuItem(displayName);
               previewItem.addActionListener(
                   e -> {
-                    if (Objects.equals(pluginPanel.getDisplayName(), profile.getDisplayName())) {
+                    if (Objects.equals(pluginPanel.getDisplayName(), displayName)) {
                       return;
                     }
 
-                    plugin.enablePreviewMode(profile.getKey(), profile.getDisplayName());
+                    plugin.enablePreviewMode(profile.getKey(), displayName);
                   });
               previewMenu.add(previewItem);
             });

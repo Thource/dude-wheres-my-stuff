@@ -23,6 +23,7 @@ class FakeDataService {
     // Create a fake profile, real profiles have 8 character keys, so this has no chance of being
     // a duplicate
     configManager.setConfiguration("rsprofile", PROFILE, "displayName", "Thource");
+    configManager.setConfiguration("rsprofile", PROFILE, "type", "STANDARD");
     configManager.setConfiguration(
         DudeWheresMyStuffConfig.CONFIG_GROUP, PROFILE, "saveMigrated", true);
     configManager.setConfiguration(
