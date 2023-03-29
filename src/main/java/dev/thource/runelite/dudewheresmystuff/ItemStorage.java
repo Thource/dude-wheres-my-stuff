@@ -115,11 +115,11 @@ public class ItemStorage<T extends StorageType> extends Storage<T> {
 
   @Override
   public long getTotalValue() {
-    if (items.isEmpty()) { // avoids a NPE from .sum() on empty stream
-      return 0;
+    long sum = 0L;
+    for (ItemStack item : items) {
+      sum += item.getTotalGePrice();
     }
-
-    return items.stream().mapToLong(ItemStack::getTotalGePrice).sum();
+    return sum;
   }
 
   @Override
