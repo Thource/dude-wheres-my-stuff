@@ -498,9 +498,9 @@ public class DudeWheresMyStuffPlugin extends Plugin {
   void enablePreviewMode(String profileKey, String displayName) {
     this.previewProfileKey = profileKey;
 
-    previewDeathStorageManager.setStartPlayedMinutes(
-        configManager.getConfiguration(
-            DudeWheresMyStuffConfig.CONFIG_GROUP, profileKey, "minutesPlayed", int.class));
+    Integer playedMinutes = configManager.getConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP,
+        profileKey, "minutesPlayed", int.class);
+    previewDeathStorageManager.setStartPlayedMinutes(playedMinutes == null ? 0 : playedMinutes);
     clientThread.invoke(
         () -> {
           previewStorageManagerManager.load(profileKey);

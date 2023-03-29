@@ -31,6 +31,7 @@ import javax.swing.SwingUtilities;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
@@ -41,6 +42,7 @@ import net.runelite.api.Skill;
 import net.runelite.api.TileItem;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ActorDeath;
+import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.ItemDespawned;
@@ -359,6 +361,30 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
     }
   }
 
+  @Override
+  public void onChatMessage(ChatMessage chatMessage) {
+    super.onChatMessage(chatMessage);
+
+    if (chatMessage.getType() != ChatMessageType.GAMEMESSAGE || deathbank != null) {
+      return;
+    }
+
+    String message = Text.removeTags(chatMessage.getMessage());
+    if (!message.startsWith("You have items stored in an item retrieval service.")) {
+      return;
+    }
+
+    String finalMessage = message.replace(" ", "");
+    DeathbankType deathbankType = Arrays.stream(DeathbankType.values())
+        .filter(type -> type.getDeathWindowLocationText() != null)
+        .filter(type -> finalMessage.contains(type.getDeathWindowLocationText()))
+        .findFirst().orElse(DeathbankType.UNKNOWN);
+
+    createMysteryDeathbank(deathbankType);
+
+    updateStorages(Collections.singletonList(deathbank));
+  }
+
   private boolean checkItemsLostOnDeathWindow() {
     if (deathbank == null) {
       Widget deathbankTextWidget = client.getWidget(4, 3);
@@ -379,14 +405,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
                     .findFirst()
                     .orElse(DeathbankType.UNKNOWN);
 
-            deathbank = new Deathbank(type, plugin, this);
-            storages.add(deathbank);
-            SwingUtilities.invokeLater(() -> deathbank.createStoragePanel(this));
-            deathbank.setLastUpdated(System.currentTimeMillis());
-            deathbank.setLocked(
-                type != DeathbankType.ZULRAH
-                    || plugin.getClient().getAccountType() != AccountType.ULTIMATE_IRONMAN);
-            deathbank.getItems().add(new ItemStack(ItemID.MYSTERY_BOX, 1, plugin));
+            createMysteryDeathbank(type);
 
             return true;
           }
@@ -395,6 +414,17 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
     }
 
     return false;
+  }
+
+  private void createMysteryDeathbank(DeathbankType type) {
+    deathbank = new Deathbank(type, plugin, this);
+    storages.add(deathbank);
+    SwingUtilities.invokeLater(() -> deathbank.createStoragePanel(this));
+    deathbank.setLastUpdated(System.currentTimeMillis());
+    deathbank.setLocked(
+        type != DeathbankType.ZULRAH
+            || plugin.getClient().getAccountType() != AccountType.ULTIMATE_IRONMAN);
+    deathbank.getItems().add(new ItemStack(ItemID.MYSTERY_BOX, 1, plugin));
   }
 
   @Override
