@@ -67,7 +67,7 @@ public class MageTrainingArena extends MinigamesStorage {
   }
 
   @Override
-  public boolean onWidgetClosed(WidgetClosed widgetClosed) {
+  public void onWidgetClosed(WidgetClosed widgetClosed) {
     if (widgetClosed.getGroupId() == 197) {
       shopWidget = null;
     } else {
@@ -80,8 +80,6 @@ public class MageTrainingArena extends MinigamesStorage {
             pointDatum.widget = null;
           });
     }
-
-    return false;
   }
 
   boolean updateFromWidgets() {

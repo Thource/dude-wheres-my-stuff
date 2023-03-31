@@ -4,7 +4,6 @@ import com.google.inject.Inject;
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
 import dev.thource.runelite.dudewheresmystuff.StorageManager;
-import dev.thource.runelite.dudewheresmystuff.Tab;
 import java.util.Objects;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
@@ -155,8 +154,4 @@ public class StashStorageManager extends StorageManager<StashStorageType, StashS
     return "stash";
   }
 
-  @Override
-  public Tab getTab() {
-    return Tab.STASH_UNITS;
-  }
 }

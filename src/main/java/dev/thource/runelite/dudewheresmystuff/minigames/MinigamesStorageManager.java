@@ -3,7 +3,6 @@ package dev.thource.runelite.dudewheresmystuff.minigames;
 import com.google.inject.Inject;
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.StorageManager;
-import dev.thource.runelite.dudewheresmystuff.Tab;
 import lombok.extern.slf4j.Slf4j;
 
 /** MinigamesStorageManager is responsible for managing all MinigamesStorages. */
@@ -31,8 +30,4 @@ public class MinigamesStorageManager
     return "minigames";
   }
 
-  @Override
-  public Tab getTab() {
-    return Tab.MINIGAMES;
-  }
 }

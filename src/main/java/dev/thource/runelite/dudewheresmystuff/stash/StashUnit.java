@@ -34,6 +34,8 @@ import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement;
 import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirements;
 
 /** StashUnit is used to define which items live at which locations. */
+// Suppress duplicate string literal warning because this class is copied from runelite
+@SuppressWarnings("java:S1192")
 @Getter
 public enum StashUnit {
   NORTHEAST_CORNER_OF_THE_KHARAZI_JUNGLE(

@@ -31,6 +31,12 @@ public enum SidebarIcon {
     return tab.getName();
   }
 
+  /**
+   * Gets the icon to be used in the sidebar.
+   *
+   * @param itemManager item manager
+   * @return sidebar icon
+   */
   public BufferedImage getIcon(ItemManager itemManager) {
     if (tab == null) {
       return ImageUtil.loadImageResource(getClass(), "icon.png");

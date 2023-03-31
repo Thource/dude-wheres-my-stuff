@@ -7,7 +7,7 @@ class SearchStorageManager extends StorageManager<StorageType, Storage<StorageTy
   }
 
   @Override
-  public void load() {
+  public void load(String profileKey) {
     // No loading necessary
   }
 
@@ -21,8 +21,4 @@ class SearchStorageManager extends StorageManager<StorageType, Storage<StorageTy
     return null;
   }
 
-  @Override
-  public Tab getTab() {
-    return Tab.SEARCH;
-  }
 }

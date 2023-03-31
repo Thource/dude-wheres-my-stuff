@@ -79,12 +79,10 @@ public class PestControl extends MinigamesStorage {
   }
 
   @Override
-  public boolean onWidgetClosed(WidgetClosed widgetClosed) {
+  public void onWidgetClosed(WidgetClosed widgetClosed) {
     if (widgetClosed.getGroupId() == 243) {
       shopWidget = null;
     }
-
-    return false;
   }
 
   boolean updateFromWidget() {

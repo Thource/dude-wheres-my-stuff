@@ -3,7 +3,6 @@ package dev.thource.runelite.dudewheresmystuff.carryable;
 import com.google.inject.Inject;
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.StorageManager;
-import dev.thource.runelite.dudewheresmystuff.Tab;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -37,8 +36,4 @@ public class CarryableStorageManager
     return "carryable";
   }
 
-  @Override
-  public Tab getTab() {
-    return Tab.CARRYABLE_STORAGE;
-  }
 }

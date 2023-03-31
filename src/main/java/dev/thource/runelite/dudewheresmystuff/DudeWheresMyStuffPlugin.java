@@ -332,6 +332,12 @@ public class DudeWheresMyStuffPlugin extends Plugin {
     return builder.toString().replace("_", " ");
   }
 
+  /**
+   * Gets the display name for the supplied profileKey and appends the account type if not standard.
+   *
+   * @param profileKey the profile key
+   * @return display name, potentially with a suffix
+   */
   public String getDisplayName(String profileKey) {
     RuneScapeProfile profile = configManager.getRSProfiles().stream()
         .filter(p -> p.getKey().equals(profileKey))
@@ -340,6 +346,12 @@ public class DudeWheresMyStuffPlugin extends Plugin {
     return getDisplayName(profile);
   }
 
+  /**
+   * Gets the display name for the supplied profile and appends the account type if not standard.
+   *
+   * @param profile the profile
+   * @return display name, potentially with a suffix
+   */
   public String getDisplayName(RuneScapeProfile profile) {
     if (profile == null) {
       return "Unknown";
@@ -354,7 +366,7 @@ public class DudeWheresMyStuffPlugin extends Plugin {
   }
 
   @Subscribe
-  public void onRuneScapeProfileChanged(RuneScapeProfileChanged e) {
+  void onRuneScapeProfileChanged(RuneScapeProfileChanged e) {
     save();
     load(configManager.getRSProfileKey());
 

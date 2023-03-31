@@ -37,12 +37,10 @@ public class LastManStanding extends MinigamesStorage {
   }
 
   @Override
-  public boolean onWidgetClosed(WidgetClosed widgetClosed) {
+  public void onWidgetClosed(WidgetClosed widgetClosed) {
     if (widgetClosed.getGroupId() == 645) {
       shopWidget = null;
     }
-
-    return false;
   }
 
   boolean updateFromWidgets() {
