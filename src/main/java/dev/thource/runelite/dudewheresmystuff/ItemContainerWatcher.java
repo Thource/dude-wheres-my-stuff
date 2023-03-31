@@ -17,12 +17,11 @@ public class ItemContainerWatcher {
 
   private static final Map<Integer, ItemContainerWatcher> watcherMap;
 
-  @Getter
-  static ItemContainerWatcher inventoryWatcher =
+  @Getter static final ItemContainerWatcher inventoryWatcher =
       new ItemContainerWatcher(InventoryID.INVENTORY.getId());
 
-  @Getter static ItemContainerWatcher lootingBagWatcher = new ItemContainerWatcher(516);
-  @Getter static ItemContainerWatcher seedBoxWatcher = new ItemContainerWatcher(573);
+  @Getter static final ItemContainerWatcher lootingBagWatcher = new ItemContainerWatcher(516);
+  @Getter static final ItemContainerWatcher seedBoxWatcher = new ItemContainerWatcher(573);
   private static final ItemContainerWatcher[] all =
       new ItemContainerWatcher[]{inventoryWatcher, lootingBagWatcher, seedBoxWatcher};
   private static Client client;

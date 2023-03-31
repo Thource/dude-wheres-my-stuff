@@ -66,8 +66,8 @@ public class FasterMaterialTab extends JLabel {
 
   @Getter private boolean selected;
 
-  FasterMaterialTab(String string, FasterMaterialTabGroup group, JComponent content) {
-    super(string);
+  FasterMaterialTab(FasterMaterialTabGroup group, JComponent content) {
+    super("");
 
     this.content = content;
 
@@ -81,7 +81,7 @@ public class FasterMaterialTab extends JLabel {
           }
         });
 
-    if (!Strings.isNullOrEmpty(string)) {
+    if (!Strings.isNullOrEmpty("")) {
       addMouseListener(
           new MouseAdapter() {
             @Override
@@ -102,7 +102,7 @@ public class FasterMaterialTab extends JLabel {
   }
 
   FasterMaterialTab(ImageIcon icon, FasterMaterialTabGroup group, JComponent content) {
-    this("", group, content);
+    this(group, content);
     setIcon(icon);
     setOpaque(true);
     setVerticalAlignment(SwingConstants.CENTER);

@@ -3,7 +3,6 @@ package dev.thource.runelite.dudewheresmystuff.world;
 import com.google.inject.Inject;
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.StorageManager;
-import dev.thource.runelite.dudewheresmystuff.Tab;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -38,8 +37,4 @@ public class WorldStorageManager extends StorageManager<WorldStorageType, WorldS
     return "world";
   }
 
-  @Override
-  public Tab getTab() {
-    return Tab.WORLD;
-  }
 }

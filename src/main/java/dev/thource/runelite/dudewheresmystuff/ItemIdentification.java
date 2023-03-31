@@ -32,6 +32,8 @@ import lombok.AllArgsConstructor;
 import net.runelite.api.ItemID;
 import net.runelite.client.plugins.itemidentification.ItemIdentificationConfig;
 
+// Suppress duplicate string literal warning because this class is copied from runelite
+@SuppressWarnings("java:S1192")
 enum ItemIdentification {
   // Seeds
   GUAM_SEED(Type.SEED_HERB, "Guam", "G", ItemID.GUAM_SEED),

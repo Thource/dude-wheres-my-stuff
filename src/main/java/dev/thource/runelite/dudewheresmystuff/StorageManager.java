@@ -87,10 +87,8 @@ public abstract class StorageManager<T extends StorageType, S extends Storage<T>
   /** Pass onWidgetClosed through to enabled storages. */
   public void onWidgetClosed(WidgetClosed widgetClosed) {
     if (enabled) {
-      updateStorages(
-          storages.stream()
-              .filter(storage -> storage.isEnabled() && storage.onWidgetClosed(widgetClosed))
-              .collect(Collectors.toList()));
+      storages.stream().filter(Storage::isEnabled)
+          .forEach(storage -> storage.onWidgetClosed(widgetClosed));
     }
   }
 
@@ -142,10 +140,6 @@ public abstract class StorageManager<T extends StorageType, S extends Storage<T>
     storages.forEach(storage -> storage.save(configManager, profileKey, getConfigKey()));
   }
 
-  public void load() {
-    load(configManager.getRSProfileKey());
-  }
-
   /** Load all Storages. */
   public void load(String profileKey) {
     if (!enabled || profileKey == null) {
@@ -162,8 +156,6 @@ public abstract class StorageManager<T extends StorageType, S extends Storage<T>
   public void enable() {
     enabled = true;
   }
-
-  public abstract Tab getTab();
 
   public void onItemDespawned(ItemDespawned itemDespawned) {
   }

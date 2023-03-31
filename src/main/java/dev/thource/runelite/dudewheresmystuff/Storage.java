@@ -27,7 +27,7 @@ import net.runelite.client.config.ConfigManager;
 public abstract class Storage<T extends StorageType> {
 
   protected final DudeWheresMyStuffPlugin plugin;
-  protected T type;
+  protected final T type;
   protected boolean enabled = true;
   @Nullable protected StoragePanel storagePanel;
   @Nullable protected String lastSaveString;
@@ -112,9 +112,7 @@ public abstract class Storage<T extends StorageType> {
   }
 
   @SuppressWarnings("java:S1172") // the parameter is used in child classes
-  public boolean onWidgetClosed(WidgetClosed widgetClosed) {
-    return false;
-  }
+  public void onWidgetClosed(WidgetClosed widgetClosed) {}
 
   @SuppressWarnings("java:S1172") // the parameter is used in child classes
   public boolean onChatMessage(ChatMessage chatMessage) {
@@ -125,7 +123,7 @@ public abstract class Storage<T extends StorageType> {
     return false;
   }
 
-  @SuppressWarnings("java:S1172") // the parameter is used in child classes
+  @SuppressWarnings({"java:S1172", "unused"}) // the parameter is used in child classes
   public boolean onMenuOptionClicked(MenuOptionClicked menuOption) {
     return false;
   }

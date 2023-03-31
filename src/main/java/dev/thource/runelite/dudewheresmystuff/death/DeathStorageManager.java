@@ -8,7 +8,6 @@ import dev.thource.runelite.dudewheresmystuff.ItemStack;
 import dev.thource.runelite.dudewheresmystuff.ItemStackUtils;
 import dev.thource.runelite.dudewheresmystuff.Region;
 import dev.thource.runelite.dudewheresmystuff.StorageManager;
-import dev.thource.runelite.dudewheresmystuff.Tab;
 import dev.thource.runelite.dudewheresmystuff.carryable.CarryableStorageManager;
 import dev.thource.runelite.dudewheresmystuff.carryable.CarryableStorageType;
 import dev.thource.runelite.dudewheresmystuff.coins.CoinsStorageManager;
@@ -207,12 +206,35 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
     }
   }
 
+  // the use of | instead of || is not an accident, each function should be executed
+  @SuppressWarnings("java:S2178")
   @Override
   public void onGameTick() {
     super.onGameTick();
 
-    boolean updated = false;
+    updateStartPlayedMinutes();
 
+    if ((deathbank != null && checkIfDeathbankWindowIsEmpty()) | processDeath()
+        | checkItemsLostOnDeathWindow()) {
+      updateStorages(storages);
+    }
+
+    refreshInfoBoxes();
+    updateWorldMapPoints();
+  }
+
+  private boolean checkIfDeathbankWindowIsEmpty() {
+    Widget itemWindow = client.getWidget(602, 3);
+    // This checks if the item collection window has been emptied while it was open
+    if (itemWindow != null && client.getVarpValue(261) == -1) {
+      clearDeathbank(false);
+      return true;
+    }
+
+    return false;
+  }
+
+  private void updateStartPlayedMinutes() {
     int playedMinutes = client.getVarcIntValue(526);
     if (playedMinutes != startPlayedMinutes) {
       if (startPlayedMinutes == -1) {
@@ -232,7 +254,6 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
                 deathpile -> deathpile.getStoragePanel().getFooterLabel().setToolTipText(null));
       }
     }
-    refreshInfoBoxes();
 
     if (startPlayedMinutes > 0) {
       Integer savedPlayedMinutes =
@@ -242,29 +263,6 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
         configManager.setRSProfileConfiguration(
             DudeWheresMyStuffConfig.CONFIG_GROUP, "minutesPlayed", getPlayedMinutes());
       }
-    }
-
-    if (deathbank != null) {
-      Widget itemWindow = client.getWidget(602, 3);
-      // This checks if the item collection window has been emptied while it was open
-      if (itemWindow != null && client.getVarpValue(261) == -1) {
-        clearDeathbank(false);
-        updated = true;
-      }
-    }
-
-    updateWorldMapPoints();
-
-    if (processDeath()) {
-      updated = true;
-    }
-
-    if (checkItemsLostOnDeathWindow()) {
-      updated = true;
-    }
-
-    if (updated) {
-      updateStorages(storages);
     }
   }
 
@@ -672,11 +670,6 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
   @Override
   public String getConfigKey() {
     return "death";
-  }
-
-  @Override
-  public Tab getTab() {
-    return Tab.DEATH;
   }
 
   int getPlayedMinutes() {

@@ -5,6 +5,7 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
 /** DudeWheresMyStuffConfig manages the config for the plugin. */
+@SuppressWarnings("SameReturnValue")
 @ConfigGroup("dudewheresmystuff")
 public interface DudeWheresMyStuffConfig extends Config {
 

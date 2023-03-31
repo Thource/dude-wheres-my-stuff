@@ -3,7 +3,6 @@ package dev.thource.runelite.dudewheresmystuff.coins;
 import com.google.inject.Inject;
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.StorageManager;
-import dev.thource.runelite.dudewheresmystuff.Tab;
 import lombok.extern.slf4j.Slf4j;
 
 /** CoinsStorageManager is responsible for managing all CoinsStorages. */
@@ -36,8 +35,4 @@ public class CoinsStorageManager extends StorageManager<CoinsStorageType, CoinsS
     return "coins";
   }
 
-  @Override
-  public Tab getTab() {
-    return Tab.COINS;
-  }
 }
