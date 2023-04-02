@@ -23,6 +23,7 @@ public class MinigamesStorageManager
     storages.add(new MahoganyHomes(plugin));
     storages.add(new Slayer(plugin));
     storages.add(new PestControl(plugin));
+    storages.add(new GiantsFoundry(plugin));
   }
 
   @Override
