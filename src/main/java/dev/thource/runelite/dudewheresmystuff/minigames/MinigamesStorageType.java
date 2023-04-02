@@ -20,7 +20,8 @@ public enum MinigamesStorageType implements StorageType {
   TEMPOROSS("Tempoross", true, "tempoross"),
   SLAYER("Slayer", true, "slayer"),
   SOUL_WARS("Soul Wars", true, "soulwars"),
-  MAHOGANY_HOMES("Mahogany Homes", false, "mahoganyhomes");
+  MAHOGANY_HOMES("Mahogany Homes", false, "mahoganyhomes"),
+  GIANTS_FOUNDRY("Giants' Foundry", false, "giantsfoundry");
 
   private final String name;
   private final int itemContainerId = -1;
