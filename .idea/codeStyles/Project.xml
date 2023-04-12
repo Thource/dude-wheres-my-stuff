@@ -55,6 +55,7 @@
         </value>
       </option>
       <option name="JD_DO_NOT_WRAP_ONE_LINE_COMMENTS" value="true" />
+      <option name="JD_INDENT_ON_CONTINUATION" value="true" />
     </JavaCodeStyleSettings>
     <Objective-C>
       <option name="INDENT_NAMESPACE_MEMBERS" value="0" />

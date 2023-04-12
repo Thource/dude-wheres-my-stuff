@@ -1,7 +1,5 @@
 package dev.thource.runelite.dudewheresmystuff;
 
-import static net.runelite.client.RuneLite.RUNELITE_DIR;
-
 import dev.thource.runelite.dudewheresmystuff.carryable.CarryableStorageManager;
 import dev.thource.runelite.dudewheresmystuff.coins.CoinsStorageManager;
 import dev.thource.runelite.dudewheresmystuff.coins.CoinsStorageType;
@@ -15,17 +13,10 @@ import dev.thource.runelite.dudewheresmystuff.stash.StashStorageManager;
 import dev.thource.runelite.dudewheresmystuff.world.WorldStorageManager;
 import java.awt.TrayIcon.MessageType;
 import java.awt.event.ItemListener;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
-import java.util.TreeMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.swing.JComboBox;
@@ -48,8 +39,6 @@ import net.runelite.client.config.ConfigManager;
 @Getter
 public class StorageManagerManager {
 
-  public static final File EXPORT_DIR = new File(RUNELITE_DIR, "dudewheresmystuff");
-
   private final CarryableStorageManager carryableStorageManager;
   private final CoinsStorageManager coinsStorageManager;
   private final DeathStorageManager deathStorageManager;
@@ -58,7 +47,7 @@ public class StorageManagerManager {
   private final PlayerOwnedHouseStorageManager playerOwnedHouseStorageManager;
   private final WorldStorageManager worldStorageManager;
   @Setter private String displayName;
-  @Getter() private final List<StorageManager<?, ?>> storageManagers;
+  @Getter private final List<StorageManager<?, ?>> storageManagers;
 
   private final DudeWheresMyStuffPlugin plugin;
   private final ConfigManager configManager;
@@ -200,46 +189,6 @@ public class StorageManagerManager {
   }
 
   /**
-   * Gets all known withdrawable items
-   *
-   * <p>If the same item is in multiple storages, the item stacks are combined. "Same item" refers
-   * to items with the same canonical ID, but note that the actual ID of the stack will be set to
-   * the ID of one of the items arbitrarily. It is therefore recommended that callers do not use the
-   * IDs, only the canonical IDs.
-   *
-   * @return The item stacks
-   */
-  public Collection<ItemStack> getWithdrawableItems() {
-    // We need to deduplicate and combine item stacks if they're in multiple
-    // storages. This is a map from the stack's canonical (unnoted,
-    // un-placeholdered) ID to its stack.
-    TreeMap<Integer, ItemStack> items = new TreeMap<>();
-
-    getStorages()
-        .filter(Storage::isWithdrawable)
-        .map(Storage::getItems)
-        .flatMap(List::stream)
-        .forEach((ItemStack stack) -> {
-          if (stack.getQuantity() == 0 || stack.getId() == -1) {
-            return;
-          }
-
-          int id = stack.getCanonicalId();
-
-          ItemStack existing = items.get(id);
-          if (existing == null) {
-            // No item yet, insert a copy so that we can modify their quantities later if necessary
-            items.put(id, new ItemStack(stack));
-          } else {
-            // This item was already in there. Update the quantity to include the new stack.
-            existing.setQuantity(stack.getQuantity() + existing.getQuantity());
-          }
-        });
-
-    return items.values();
-  }
-
-  /**
    * Sets the item sort mode across all storages.
    *
    * @param itemSortMode the new item sort mode
@@ -270,30 +219,13 @@ public class StorageManagerManager {
 
   /** Creates a CSV file containing all the items in any exportable storage. */
   public void exportItems() {
-    if (displayName.equals("")) {
-      log.info("Can't export: no display name");
-      return;
-    }
-    File userDir = new File(EXPORT_DIR, displayName);
-    String fileName = new SimpleDateFormat("yyyyMMdd'T'HHmmss'.csv'").format(
-        new Date());
-    String filePath = userDir + File.separator + fileName;
+    DataExporter exporter = new DataExporter(displayName, this);
+    exporter.setMergeItems(plugin.getConfig().csvCombineItems());
 
-    Collection<ItemStack> items = getWithdrawableItems();
-
-    //noinspection ResultOfMethodCallIgnored
-    userDir.mkdirs();
-    try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
-      // Include a CSV header describing the columns
-      writer.write("ID,Name,Quantity\n");
-
-      for (ItemStack stack : items) {
-        String escapedName = stack.getName().replace(",", "").replace("\n", "");
-        writer.write(
-            String.format("%d,%s,%d%n", stack.getCanonicalId(), escapedName, stack.getQuantity()));
-      }
+    try {
+      String filePath = exporter.export();
       plugin.getNotifier().notify("Items successfully exported to: " + filePath, MessageType.INFO);
-    } catch (IOException e) {
+    } catch (IOException | IllegalArgumentException e) {
       log.error("Unable to export: " + e.getMessage());
       plugin.getNotifier().notify("Item export failed.", MessageType.ERROR);
     }
