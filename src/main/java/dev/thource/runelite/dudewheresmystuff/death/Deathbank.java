@@ -83,19 +83,21 @@ public class Deathbank extends DeathStorage {
         e -> {
           int result = JOptionPane.CANCEL_OPTION;
 
-          try {
-            result =
-                JOptionPane.showConfirmDialog(
-                    storagePanel,
-                    "Are you sure you want to delete your deathbank?\nThis cannot be undone.",
-                    "Confirm deletion",
-                    JOptionPane.OK_CANCEL_OPTION,
-                    JOptionPane.WARNING_MESSAGE);
-          } catch (Exception err) {
-            log.warn("Unexpected exception occurred while check for confirm required", err);
+          if (lostAt == -1L) {
+            try {
+              result =
+                  JOptionPane.showConfirmDialog(
+                      storagePanel,
+                      "Are you sure you want to delete your deathbank?\nThis cannot be undone.",
+                      "Confirm deletion",
+                      JOptionPane.OK_CANCEL_OPTION,
+                      JOptionPane.WARNING_MESSAGE);
+            } catch (Exception err) {
+              log.warn("Unexpected exception occurred while check for confirm required", err);
+            }
           }
 
-          if (result == JOptionPane.OK_OPTION) {
+          if (lostAt != -1L || result == JOptionPane.OK_OPTION) {
             if (this == deathStorageManager.getDeathbank()) {
               deathStorageManager.clearDeathbank(false);
             } else {
