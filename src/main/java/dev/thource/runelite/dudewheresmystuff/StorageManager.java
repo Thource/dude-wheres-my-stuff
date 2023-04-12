@@ -38,7 +38,7 @@ public abstract class StorageManager<T extends StorageType, S extends Storage<T>
   @Getter @Inject protected ItemIdentificationPlugin itemIdentificationPlugin;
   @Getter @Inject protected ItemIdentificationConfig itemIdentificationConfig;
   @Getter @Inject protected ClientThread clientThread;
-  protected boolean enabled = true;
+  @Getter protected boolean enabled = true;
   @Getter @Setter protected boolean isPreviewManager = false;
   @Getter @Setter protected StorageTabPanel<T, S, ? extends StorageManager<?, ?>> storageTabPanel;
 

@@ -60,6 +60,16 @@ public interface DudeWheresMyStuffConfig extends Config {
   }
 
   @ConfigItem(
+      keyName = "csvCombineItems",
+      name = "Combine items in CSV",
+      description = "When enabled, items from different storages will be combined into a single "
+          + "row in the exported CSV file. This means that the CSV won't contain which item is in "
+          + "which storage.")
+  default boolean csvCombineItems() {
+    return false;
+  }
+
+  @ConfigItem(
       keyName = "itemSortMode",
       name = "Item Sort Mode",
       description = "Which mode to use when sorting items",
