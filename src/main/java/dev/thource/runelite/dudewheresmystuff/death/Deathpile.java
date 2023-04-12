@@ -129,19 +129,21 @@ public class Deathpile extends DeathStorage {
         e -> {
           int result = JOptionPane.CANCEL_OPTION;
 
-          try {
-            result =
-                JOptionPane.showConfirmDialog(
-                    storagePanel,
-                    "Are you sure you want to delete this deathpile?\nThis cannot be undone.",
-                    "Confirm deletion",
-                    JOptionPane.OK_CANCEL_OPTION,
-                    JOptionPane.WARNING_MESSAGE);
-          } catch (Exception err) {
-            log.warn("Unexpected exception occurred while check for confirm required", err);
+          if (!hasExpired()) {
+            try {
+              result =
+                  JOptionPane.showConfirmDialog(
+                      storagePanel,
+                      "Are you sure you want to delete this deathpile?\nThis cannot be undone.",
+                      "Confirm deletion",
+                      JOptionPane.OK_CANCEL_OPTION,
+                      JOptionPane.WARNING_MESSAGE);
+            } catch (Exception err) {
+              log.warn("Unexpected exception occurred while check for confirm required", err);
+            }
           }
 
-          if (result == JOptionPane.OK_OPTION) {
+          if (hasExpired() || result == JOptionPane.OK_OPTION) {
             deathStorageManager.getStorages().remove(this);
             deathStorageManager.refreshMapPoints();
             deathStorageManager.getStorageTabPanel().reorderStoragePanels();
