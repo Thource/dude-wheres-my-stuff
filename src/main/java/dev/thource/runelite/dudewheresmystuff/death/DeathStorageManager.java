@@ -559,8 +559,10 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
   }
 
   void createDeathpile(WorldPoint location, List<ItemStack> items) {
+    int deathpileDuration = 60 - plugin.getConfig().deathpileContingencyMinutes();
     boolean useAccountPlayTime = deathpilesUseAccountPlayTime();
-    int expiryTime = useAccountPlayTime ? getPlayedMinutes() + 59 : 5900;
+    int expiryTime =
+        useAccountPlayTime ? getPlayedMinutes() + deathpileDuration : deathpileDuration * 100;
     Deathpile deathpile = new Deathpile(plugin, useAccountPlayTime, expiryTime, location, this,
         items);
     SwingUtilities.invokeLater(() -> deathpile.createStoragePanel(this));

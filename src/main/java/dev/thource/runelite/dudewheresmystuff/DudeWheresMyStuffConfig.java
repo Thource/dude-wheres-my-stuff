@@ -3,6 +3,7 @@ package dev.thource.runelite.dudewheresmystuff;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Range;
 
 /** DudeWheresMyStuffConfig manages the config for the plugin. */
 @SuppressWarnings("SameReturnValue")
@@ -67,6 +68,19 @@ public interface DudeWheresMyStuffConfig extends Config {
           + "which storage.")
   default boolean csvCombineItems() {
     return false;
+  }
+
+  @Range(
+      min = 1,
+      max = 59
+  )
+  @ConfigItem(
+      keyName = "deathpileContingencyMinutes",
+      name = "Deathpile contingency (minutes)",
+      description = "This amount of minutes is removed from the deathpile timer. If set to 15, any "
+          + "new deathpiles will start with 45 minutes until expiry.")
+  default int deathpileContingencyMinutes() {
+    return 1;
   }
 
   @ConfigItem(
