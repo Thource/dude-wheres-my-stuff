@@ -88,8 +88,8 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
   private DeathStorageManager(DudeWheresMyStuffPlugin plugin) {
     super(plugin);
 
-    playTimeInfoBox.setTooltip("Navigate to the quest tab and swap to the Character Summary tab "
-        + "(brown star) to track cross-client deathpiles.");
+    playTimeInfoBox.setTooltip("Navigate to the quest tab and swap to</br>the Character Summary tab"
+        + " (brown star) to</br>track cross-client deathpiles.");
 
     storages.add(new DeathItems(plugin, this));
   }
@@ -316,6 +316,8 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
 
     for (DeathpileInfoBox infoBox : deathpileInfoBoxes) {
       if (plugin.getConfig().deathpileInfoBox()) {
+        infoBox.refreshTooltip();
+
         if (!currentInfoBoxes.contains(infoBox)) {
           infoBoxManager.addInfoBox(infoBox);
         }

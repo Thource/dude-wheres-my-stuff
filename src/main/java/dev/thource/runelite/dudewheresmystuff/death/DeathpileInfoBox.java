@@ -7,17 +7,26 @@ import javax.annotation.Nonnull;
 import lombok.Getter;
 import net.runelite.api.ItemID;
 import net.runelite.client.ui.overlay.infobox.InfoBox;
+import net.runelite.client.util.QuantityFormatter;
 
 class DeathpileInfoBox extends InfoBox {
 
   @Getter private final Deathpile deathpile;
+  private final String regionName;
 
   public DeathpileInfoBox(@Nonnull DudeWheresMyStuffPlugin plugin, Deathpile deathpile) {
     super(plugin.getItemManager().getImage(ItemID.BONES), plugin);
     this.deathpile = deathpile;
 
     Region region = Region.get(deathpile.getWorldPoint().getRegionID());
-    setTooltip((region == null ? "Unknown" : region.getName()) + " deathpile");
+    regionName = (region == null ? "Unknown" : region.getName());
+    refreshTooltip();
+  }
+
+  void refreshTooltip() {
+    String deathpileValue = QuantityFormatter.quantityToStackSize(deathpile.getTotalValue());
+
+    setTooltip(regionName + " deathpile (" + deathpileValue + " gp)");
   }
 
   @Override
