@@ -69,9 +69,10 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
           12172, // Gauntlet
           12633 // death's office
       );
-
-  @Getter @Nullable private Deathbank deathbank = null;
+  private final CheckPlayTimeInfoBox playTimeInfoBox = new CheckPlayTimeInfoBox(plugin);
+  private final List<DeathpileInfoBox> deathpileInfoBoxes = new ArrayList<>();
   long startMs = 0L;
+  @Getter @Nullable private Deathbank deathbank = null;
   @Setter private CarryableStorageManager carryableStorageManager;
   @Setter private CoinsStorageManager coinsStorageManager;
   @Inject private WorldMapPointManager worldMapPointManager;
@@ -80,9 +81,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
   private WorldPoint deathLocation;
   private List<ItemStack> deathItems;
   private Item[] oldInventoryItems;
-  private final CheckPlayTimeInfoBox playTimeInfoBox = new CheckPlayTimeInfoBox(plugin);
   private DeathbankInfoBox deathbankInfoBox;
-  private final List<DeathpileInfoBox> deathpileInfoBoxes = new ArrayList<>();
 
   @Inject
   private DeathStorageManager(DudeWheresMyStuffPlugin plugin) {
@@ -347,9 +346,15 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
     }
   }
 
+  private boolean doesAnyActiveDeathpileUseAccountPlayTime() {
+    return getDeathpiles().filter(deathpile -> !deathpile.hasExpired())
+        .anyMatch(Deathpile::isUseAccountPlayTime);
+  }
+
   private void refreshCheckPlayTimeInfoBox() {
     boolean showInfoBox =
-        startPlayedMinutes <= 0 && plugin.getConfig().deathpilesUseAccountPlayTime();
+        startPlayedMinutes <= 0 && (plugin.getConfig().deathpilesUseAccountPlayTime()
+            || doesAnyActiveDeathpileUseAccountPlayTime());
     boolean isAdded = plugin.getInfoBoxManager().getInfoBoxes().contains(playTimeInfoBox);
 
     if (!showInfoBox && isAdded) {
