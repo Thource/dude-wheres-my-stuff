@@ -97,4 +97,9 @@ public class DudeWheresMyStuffPanelContainer extends PluginPanel {
       panel.reorderStoragePanels();
     }
   }
+
+  void setItemSortMode(ItemSortMode itemSortMode) {
+    panel.setItemSortMode(itemSortMode);
+    previewPanel.setItemSortMode(itemSortMode);
+  }
 }

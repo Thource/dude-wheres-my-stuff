@@ -12,14 +12,11 @@ import dev.thource.runelite.dudewheresmystuff.playerownedhouse.PlayerOwnedHouseS
 import dev.thource.runelite.dudewheresmystuff.stash.StashStorageManager;
 import dev.thource.runelite.dudewheresmystuff.world.WorldStorageManager;
 import java.awt.TrayIcon.MessageType;
-import java.awt.event.ItemListener;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import javax.swing.JComboBox;
 import javax.swing.SwingUtilities;
 import lombok.Getter;
 import lombok.Setter;
@@ -186,31 +183,6 @@ public class StorageManagerManager {
   public List<ItemStack> getItems() {
     return getStorages().filter(Storage::isEnabled).map(Storage::getItems).flatMap(List::stream)
         .collect(Collectors.toList());
-  }
-
-  /**
-   * Sets the item sort mode across all storages.
-   *
-   * @param itemSortMode the new item sort mode
-   */
-  public void setItemSortMode(ItemSortMode itemSortMode) {
-    storageManagers.forEach(
-        storageManager -> {
-          storageManager.getStorages().stream()
-              .map(Storage::getStoragePanel)
-              .filter(Objects::nonNull)
-              .forEach(storagePanel -> storagePanel.setSortMode(itemSortMode));
-
-          JComboBox<ItemSortMode> sortDropdown =
-              storageManager.getStorageTabPanel().getSortItemsDropdown();
-
-          final ItemListener[] itemListeners = sortDropdown.getItemListeners();
-
-          // We need to remove and re-add the item listeners to avoid recursion
-          Arrays.stream(itemListeners).forEach(sortDropdown::removeItemListener);
-          sortDropdown.setSelectedItem(itemSortMode);
-          Arrays.stream(itemListeners).forEach(sortDropdown::addItemListener);
-        });
   }
 
   public void onMenuOptionClicked(MenuOptionClicked menuOption) {

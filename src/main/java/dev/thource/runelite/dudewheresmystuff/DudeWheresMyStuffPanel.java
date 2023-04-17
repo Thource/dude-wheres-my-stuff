@@ -37,11 +37,15 @@ import dev.thource.runelite.dudewheresmystuff.world.WorldStorageTabPanel;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Image;
+import java.awt.event.ItemListener;
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
 import java.util.EnumMap;
+import java.util.Objects;
 import java.util.Optional;
 import javax.annotation.Nullable;
 import javax.swing.ImageIcon;
+import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
@@ -150,6 +154,29 @@ public class DudeWheresMyStuffPanel extends JPanel {
 
       Optional.ofNullable(uiTabs.get(tab)).ifPresent(materialTab -> materialTab.setVisible(false));
     }
+  }
+
+  void setItemSortMode(ItemSortMode itemSortMode) {
+    storageTabPanelMap.forEach((tab, panel) -> {
+      if (tab == Tab.OVERVIEW) {
+        return;
+      }
+
+      panel.getStorageManager().getStorages().stream()
+          .map(Storage::getStoragePanel)
+          .filter(Objects::nonNull)
+          .forEach(StoragePanel::update);
+
+      JComboBox<ItemSortMode> sortDropdown = panel.getSortItemsDropdown();
+      final ItemListener[] itemListeners = sortDropdown.getItemListeners();
+
+      // We need to remove and re-add the item listeners to avoid recursion
+      Arrays.stream(itemListeners).forEach(sortDropdown::removeItemListener);
+      sortDropdown.setSelectedItem(itemSortMode);
+      Arrays.stream(itemListeners).forEach(sortDropdown::addItemListener);
+    });
+
+    ((SearchTabPanel) storageTabPanelMap.get(Tab.SEARCH)).refreshItemSortMode();
   }
 
   private void addTab(Tab tab, TabContentPanel tabContentPanel) {

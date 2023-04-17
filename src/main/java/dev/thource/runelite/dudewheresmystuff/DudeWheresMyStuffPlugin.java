@@ -570,8 +570,7 @@ public class DudeWheresMyStuffPlugin extends Plugin {
   }
 
   public void setItemSortMode(ItemSortMode itemSortMode) {
-    storageManagerManager.setItemSortMode(itemSortMode);
-    previewStorageManagerManager.setItemSortMode(itemSortMode);
+    panelContainer.setItemSortMode(itemSortMode);
   }
 
   void deleteAllData() {

@@ -72,7 +72,6 @@ public class StoragePanel extends JPanel {
   @Getter private final transient Storage<?> storage;
   private final boolean displayEmptyStacks;
   @Getter private List<ItemBox> itemBoxes = new ArrayList<>();
-  private ItemSortMode itemSortMode = ItemSortMode.UNSORTED;
   @Nullable private JComponent popupButton;
 
   /**
@@ -269,6 +268,7 @@ public class StoragePanel extends JPanel {
   }
 
   protected List<ItemStack> getItems() {
+    ItemSortMode itemSortMode = plugin.getConfig().itemSortMode();
     List<ItemStack> items = new ArrayList<>(storage.getItems());
 
     if (itemSortMode == ItemSortMode.VALUE) {
@@ -371,18 +371,6 @@ public class StoragePanel extends JPanel {
 
       component.setForeground(brighten ? color.brighter() : color.darker());
     }
-  }
-
-  /**
-   * Changes which sorting method is used to sort the items within the panel.
-   *
-   * @param itemSortMode the new sort mode
-   */
-  public void setSortMode(ItemSortMode itemSortMode) {
-    this.itemSortMode = itemSortMode;
-
-    updateItems();
-    revalidate();
   }
 
   public String getTitleToolTip() {
