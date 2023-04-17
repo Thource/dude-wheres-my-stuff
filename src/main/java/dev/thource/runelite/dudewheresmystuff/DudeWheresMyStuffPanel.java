@@ -85,6 +85,7 @@ public class DudeWheresMyStuffPanel extends JPanel {
   private final FasterMaterialTabGroup tabGroup = new FasterMaterialTabGroup(display);
   private final boolean previewMode;
   private final transient StorageManagerManager storageManagerManager;
+  private final transient DudeWheresMyStuffPlugin plugin;
   @Setter private boolean active;
   @Getter private String displayName = "";
   @Nullable private TabContentPanel activeTabPanel = null;
@@ -96,6 +97,7 @@ public class DudeWheresMyStuffPanel extends JPanel {
       boolean previewMode) {
     super();
 
+    this.plugin = plugin;
     this.itemManager = plugin.getItemManager();
     this.storageManagerManager = storageManagerManager;
     this.previewMode = previewMode;
@@ -157,17 +159,20 @@ public class DudeWheresMyStuffPanel extends JPanel {
   }
 
   void setItemSortMode(ItemSortMode itemSortMode) {
-    storageTabPanelMap.forEach((tab, panel) -> {
+    storageTabPanelMap.forEach((tab, tabPanel) -> {
       if (tab == Tab.OVERVIEW) {
         return;
       }
 
-      panel.getStorageManager().getStorages().stream()
+      plugin.getClientThread().invoke(() -> tabPanel.getStorageManager().getStorages().stream()
           .map(Storage::getStoragePanel)
           .filter(Objects::nonNull)
-          .forEach(StoragePanel::update);
+          .forEach(panel -> {
+            panel.refreshItems();
+            SwingUtilities.invokeLater(panel::update);
+          }));
 
-      JComboBox<ItemSortMode> sortDropdown = panel.getSortItemsDropdown();
+      JComboBox<ItemSortMode> sortDropdown = tabPanel.getSortItemsDropdown();
       final ItemListener[] itemListeners = sortDropdown.getItemListeners();
 
       // We need to remove and re-add the item listeners to avoid recursion

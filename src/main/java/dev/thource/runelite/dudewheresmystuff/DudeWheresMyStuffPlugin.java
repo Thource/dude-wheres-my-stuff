@@ -514,21 +514,22 @@ public class DudeWheresMyStuffPlugin extends Plugin {
       if (Objects.equals(previewProfileKey, configManager.getRSProfileKey())) {
         storageManagerManager.reset();
 
-        SwingUtilities.invokeLater(
-            () ->
-                storageManagerManager
-                    .getStorageManagers()
-                    .forEach(
-                        storageManager -> {
-                          storageManager
-                              .getStorages()
-                              .forEach(storage -> {
-                                if (storage.getStoragePanel() != null) {
-                                  storage.getStoragePanel().update();
-                                }
-                              });
-                          storageManager.getStorageTabPanel().reorderStoragePanels();
-                        }));
+        storageManagerManager
+            .getStorageManagers()
+            .forEach(
+                storageManager -> {
+                  storageManager
+                      .getStorages()
+                      .forEach(storage -> {
+                        if (storage.getStoragePanel() != null) {
+                          storage.getStoragePanel().refreshItems();
+                          SwingUtilities.invokeLater(() -> storage.getStoragePanel().update());
+                        }
+                      });
+
+                  SwingUtilities.invokeLater(
+                      () -> storageManager.getStorageTabPanel().reorderStoragePanels());
+                });
       }
     }
 

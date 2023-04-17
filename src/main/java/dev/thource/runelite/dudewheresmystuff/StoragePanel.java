@@ -40,6 +40,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.annotation.Nullable;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -73,6 +74,7 @@ public class StoragePanel extends JPanel {
   private final boolean displayEmptyStacks;
   @Getter private List<ItemBox> itemBoxes = new ArrayList<>();
   @Nullable private JComponent popupButton;
+  private final List<ItemStack> items = new ArrayList<>();
 
   /**
    * A constructor.
@@ -240,7 +242,13 @@ public class StoragePanel extends JPanel {
 
   private void updatePrice() {
     if (priceLabel != null) {
-      long totalPrice = storage.getTotalValue();
+      long totalPrice = 0;
+      synchronized (items) {
+        for (ItemStack item : items) {
+          totalPrice += item.getTotalGePrice();
+        }
+      }
+
       priceLabel.setText(QuantityFormatter.quantityToStackSize(totalPrice) + " gp");
       priceLabel.setToolTipText(QuantityFormatter.formatNumber(totalPrice) + " gp");
     }
@@ -267,49 +275,57 @@ public class StoragePanel extends JPanel {
     }
   }
 
-  protected List<ItemStack> getItems() {
-    ItemSortMode itemSortMode = plugin.getConfig().itemSortMode();
-    List<ItemStack> items = new ArrayList<>(storage.getItems());
-
-    if (itemSortMode == ItemSortMode.VALUE) {
-      items.sort(
-          Comparator.comparingLong(ItemStack::getTotalGePrice)
-              .thenComparing(ItemStack::getTotalHaPrice)
-              .reversed());
-    }
-
-    if (itemSortMode != ItemSortMode.UNSORTED) {
-      items = ItemStackUtils.compound(items, true);
-    }
-
-    return items;
-  }
-
   private void updateItems() {
     if (storage.getType().isAutomatic() || storage.getLastUpdated() != -1) {
-      itemBoxes =
-          getItems().stream()
-              .filter(item -> displayEmptyStacks || item.getQuantity() > 0)
-              .map(
-                  itemStack -> {
-                    ListIterator<ItemBox> itemBoxesIterator = itemBoxes.listIterator();
-                    while (itemBoxesIterator.hasNext()) {
-                      ItemBox box = itemBoxesIterator.next();
-                      if (box.getItemId() == itemStack.getId()
-                          && box.getItemQuantity() == itemStack.getQuantity()) {
-                        itemBoxesIterator.remove();
-                        return box;
+      synchronized (items) {
+        itemBoxes =
+            items.stream()
+                .filter(item -> displayEmptyStacks || item.getQuantity() > 0)
+                .map(
+                    itemStack -> {
+                      ListIterator<ItemBox> itemBoxesIterator = itemBoxes.listIterator();
+                      while (itemBoxesIterator.hasNext()) {
+                        ItemBox box = itemBoxesIterator.next();
+                        if (box.getItemId() == itemStack.getId()
+                            && box.getItemQuantity() == itemStack.getQuantity()) {
+                          itemBoxesIterator.remove();
+                          return box;
+                        }
                       }
-                    }
 
-                    return new ItemBox(plugin, itemStack, displayEmptyStacks);
-                  })
-              .collect(Collectors.toList());
+                      return new ItemBox(plugin, itemStack, displayEmptyStacks);
+                    })
+                .collect(Collectors.toList());
+      }
     } else {
       itemBoxes.clear();
     }
 
     redrawItems();
+  }
+
+  protected List<ItemStack> getNewItems() {
+    ItemSortMode itemSortMode = plugin.getConfig().itemSortMode();
+    Stream<ItemStack> newItemStream = storage.getItems().stream().map(ItemStack::new);
+
+    if (itemSortMode == ItemSortMode.VALUE) {
+      newItemStream = newItemStream.sorted(Comparator.comparingLong(ItemStack::getTotalGePrice)
+          .thenComparing(ItemStack::getTotalHaPrice).reversed());
+    }
+
+    List<ItemStack> newItems = newItemStream.collect(Collectors.toList());
+    if (itemSortMode != ItemSortMode.UNSORTED) {
+      newItems = ItemStackUtils.compound(newItems, true);
+    }
+
+    return newItems;
+  }
+
+  public void refreshItems() {
+    synchronized (items) {
+      items.clear();
+      items.addAll(getNewItems());
+    }
   }
 
   /** Updates the total price and all items in the storage. */

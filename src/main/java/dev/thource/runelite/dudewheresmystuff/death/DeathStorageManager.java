@@ -436,6 +436,12 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
   @Override
   protected void updateStorages(List<? extends DeathStorage> storages) {
     if (!storages.isEmpty()) {
+      storages.forEach(storage -> {
+        if (storage.getStoragePanel() != null) {
+          storage.getStoragePanel().refreshItems();
+        }
+      });
+
       SwingUtilities.invokeLater(
           () -> storages.forEach(storage -> {
             if (storage.getStoragePanel() != null) {
@@ -541,11 +547,11 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
         .forEach(
             s -> {
               s.getCoinStack().setQuantity(0);
-              SwingUtilities.invokeLater(() -> {
-                if (s.getStoragePanel() != null) {
-                  s.getStoragePanel().update();
-                }
-              });
+
+              if (s.getStoragePanel() != null) {
+                s.getStoragePanel().refreshItems();
+                SwingUtilities.invokeLater(() -> s.getStoragePanel().update());
+              }
             });
     SwingUtilities.invokeLater(coinsStorageManager.getStorageTabPanel()::reorderStoragePanels);
 
@@ -557,11 +563,10 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
         .forEach(
             s -> {
               s.getItems().clear();
-              SwingUtilities.invokeLater(() -> {
-                if (s.getStoragePanel() != null) {
-                  s.getStoragePanel().update();
-                }
-              });
+              if (s.getStoragePanel() != null) {
+                s.getStoragePanel().refreshItems();
+                SwingUtilities.invokeLater(() -> s.getStoragePanel().update());
+              }
             });
     SwingUtilities.invokeLater(carryableStorageManager.getStorageTabPanel()::reorderStoragePanels);
   }

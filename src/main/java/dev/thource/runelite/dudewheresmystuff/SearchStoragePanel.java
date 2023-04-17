@@ -14,8 +14,8 @@ class SearchStoragePanel extends StoragePanel {
   }
 
   @Override
-  protected List<ItemStack> getItems() {
-    return super.getItems().stream()
+  protected List<ItemStack> getNewItems() {
+    return super.getNewItems().stream()
         .filter(
             item ->
                 searchText == null

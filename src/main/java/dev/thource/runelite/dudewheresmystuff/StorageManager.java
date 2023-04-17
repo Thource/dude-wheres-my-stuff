@@ -56,6 +56,7 @@ public abstract class StorageManager<T extends StorageType, S extends Storage<T>
       storages.forEach(
           storage -> {
             if (storage.getStoragePanel() != null) {
+              storage.getStoragePanel().refreshItems();
               SwingUtilities.invokeLater(storage.getStoragePanel()::update);
             }
           });
