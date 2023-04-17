@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Objects;
 import javax.annotation.Nullable;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
@@ -50,22 +49,11 @@ public abstract class Storage<T extends StorageType> {
     final JMenuItem reset = new JMenuItem("Reset");
     reset.addActionListener(
         e -> {
-          int result = JOptionPane.CANCEL_OPTION;
+          boolean confirmed = DudeWheresMyStuffPlugin.getConfirmation(storagePanel,
+              "Are you sure you want to reset your " + type.getName()
+                  + " data?\nThis cannot be undone.", "Confirm reset");
 
-          try {
-            result =
-                JOptionPane.showConfirmDialog(
-                    storagePanel,
-                    "Are you sure you want to reset your " + type.getName()
-                        + " data?\nThis cannot be undone.",
-                    "Confirm reset",
-                    JOptionPane.OK_CANCEL_OPTION,
-                    JOptionPane.WARNING_MESSAGE);
-          } catch (Exception err) {
-            log.warn("Unexpected exception occurred while check for confirm required", err);
-          }
-
-          if (result == JOptionPane.OK_OPTION) {
+          if (confirmed) {
             deleteData(storageManager);
             storagePanel.update();
             softUpdate();
@@ -112,7 +100,8 @@ public abstract class Storage<T extends StorageType> {
   }
 
   @SuppressWarnings("java:S1172") // the parameter is used in child classes
-  public void onWidgetClosed(WidgetClosed widgetClosed) {}
+  public void onWidgetClosed(WidgetClosed widgetClosed) {
+  }
 
   @SuppressWarnings("java:S1172") // the parameter is used in child classes
   public boolean onChatMessage(ChatMessage chatMessage) {

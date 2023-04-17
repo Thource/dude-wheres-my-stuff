@@ -9,12 +9,14 @@ import dev.thource.runelite.dudewheresmystuff.minigames.MinigamesStorageManager;
 import dev.thource.runelite.dudewheresmystuff.playerownedhouse.PlayerOwnedHouseStorageManager;
 import dev.thource.runelite.dudewheresmystuff.stash.StashStorageManager;
 import dev.thource.runelite.dudewheresmystuff.world.WorldStorageManager;
+import java.awt.Component;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 import javax.inject.Inject;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -333,7 +335,8 @@ public class DudeWheresMyStuffPlugin extends Plugin {
   }
 
   /**
-   * Gets the display name for the supplied profileKey and appends the account type if not standard.
+   * Gets the display name for the supplied profileKey and appends the account type if not
+   * standard.
    *
    * @param profileKey the profile key
    * @return display name, potentially with a suffix
@@ -581,5 +584,28 @@ public class DudeWheresMyStuffPlugin extends Plugin {
       }
     });
     configManager.sendConfig();
+  }
+
+  /**
+   * Displays a confirmation popup to the user and returns true if they confirmed it.
+   *
+   * @param parentComponent the calling component
+   * @param text            the description shown to the user
+   * @param confirmText     the text displayed on the confirmation button
+   * @return true if they clicked the confirmation button
+   */
+  public static boolean getConfirmation(Component parentComponent, String text,
+      String confirmText) {
+    int result = JOptionPane.CANCEL_OPTION;
+
+    try {
+      result =
+          JOptionPane.showConfirmDialog(parentComponent, text, confirmText,
+              JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+    } catch (Exception err) {
+      log.warn("Unexpected exception occurred while check for confirm required", err);
+    }
+
+    return result == JOptionPane.OK_OPTION;
   }
 }

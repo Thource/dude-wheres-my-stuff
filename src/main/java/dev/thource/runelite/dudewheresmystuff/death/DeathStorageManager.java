@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Objects;
@@ -813,7 +814,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
       Deathbank loadedDeathbank = Deathbank.load(plugin, this, profileKey,
           configurationKey.split("\\.")[2]);
       SwingUtilities.invokeLater(() -> loadedDeathbank.createStoragePanel(this));
-      if (loadedDeathbank.getLostAt() == -1L) {
+      if (loadedDeathbank.isActive()) {
         this.deathbank = loadedDeathbank;
       }
       storages.add(loadedDeathbank);
@@ -822,5 +823,46 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
 
   private boolean deathpilesUseAccountPlayTime() {
     return plugin.getConfig().deathpilesUseAccountPlayTime() && startPlayedMinutes != 0;
+  }
+
+  /**
+   * Deletes deathpiles from the plugin.
+   *
+   * @param includeActive if true, even non-expired deathpiles will be deleted.
+   */
+  public void deleteDeathpiles(boolean includeActive) {
+    Iterator<DeathStorage> iterator = storages.iterator();
+    while (iterator.hasNext()) {
+      DeathStorage storage = iterator.next();
+      if (!(storage instanceof Deathpile) || (!includeActive
+          && !((Deathpile) storage).hasExpired())) {
+        continue;
+      }
+
+      iterator.remove();
+      storage.deleteData(this);
+    }
+    SwingUtilities.invokeLater(storageTabPanel::reorderStoragePanels);
+  }
+
+
+  /**
+   * Deletes deathbanks from the plugin.
+   *
+   * @param includeActive if true, even non-lost deathbanks will be deleted.
+   */
+  public void deleteDeathbanks(boolean includeActive) {
+    Iterator<DeathStorage> iterator = storages.iterator();
+    while (iterator.hasNext()) {
+      DeathStorage storage = iterator.next();
+      if (!(storage instanceof Deathbank) || (!includeActive
+          && ((Deathbank) storage).isActive())) {
+        continue;
+      }
+
+      iterator.remove();
+      storage.deleteData(this);
+    }
+    SwingUtilities.invokeLater(storageTabPanel::reorderStoragePanels);
   }
 }

@@ -170,7 +170,7 @@ public class StorageManagerManager {
                 .filter(
                     s ->
                         (s instanceof Deathpile && !((Deathpile) s).hasExpired())
-                            || (s instanceof Deathbank && ((Deathbank) s).getLostAt() == -1L)),
+                            || (s instanceof Deathbank && ((Deathbank) s).isActive())),
             getCoinsStorageManager().getStorages().stream()
                 .filter(
                     storage ->

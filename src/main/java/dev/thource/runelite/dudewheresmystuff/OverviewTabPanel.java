@@ -36,7 +36,6 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JPopupMenu.Separator;
 import javax.swing.SwingUtilities;
@@ -55,6 +54,14 @@ class OverviewTabPanel extends TabContentPanel {
   private static final String GP_TOTAL = "%,d gp";
   private static final String DELETE_SAVE_WARNING =
       "Are you sure you want to delete your save data?\nThis cannot be undone.";
+  private static final String DELETE_ALL_DEATHPILES_WARNING = "Are you sure you want to delete all"
+      + " of your deathpiles (including any active ones)?\nThis cannot be undone.";
+  private static final String DELETE_ALL_EXPIRED_DEATHPILES_WARNING = "Are you sure you want to"
+      + " delete all of your expired deathpiles?\nThis cannot be undone.";
+  private static final String DELETE_ALL_DEATHBANKS_WARNING = "Are you sure you want to delete all"
+      + " of your deathbanks (including any active ones)?\nThis cannot be undone.";
+  private static final String DELETE_ALL_LOST_DEATHBANKS_WARNING = "Are you sure you want to"
+      + " delete all of your lost deathbanks?\nThis cannot be undone.";
   private static final String DELETE_ALL_SAVE_WARNING =
       "Are you sure you want to delete ALL of your save data?\nThis cannot be undone.";
   private static final String DELETE_ALL_SAVE_FINAL_WARNING = "Are you REALLY sure you want to "
@@ -126,6 +133,50 @@ class OverviewTabPanel extends TabContentPanel {
                       p.setVisible(false);
                       return p;
                     }));
+
+    createDeathStoragePopupMenu();
+  }
+
+  private void createDeathStoragePopupMenu() {
+    JMenuItem deleteAllDeathpiles = new JMenuItem("Delete all deathpiles");
+    deleteAllDeathpiles.addActionListener(
+        e -> {
+          if (DudeWheresMyStuffPlugin.getConfirmation(this, DELETE_ALL_DEATHPILES_WARNING,
+              CONFIRM_DELETION_TEXT)) {
+            storageManagerManager.getDeathStorageManager().deleteDeathpiles(true);
+          }
+        });
+    JMenuItem deleteExpiredDeathpiles = new JMenuItem("Delete expired deathpiles");
+    deleteExpiredDeathpiles.addActionListener(
+        e -> {
+          if (DudeWheresMyStuffPlugin.getConfirmation(this, DELETE_ALL_EXPIRED_DEATHPILES_WARNING,
+              CONFIRM_DELETION_TEXT)) {
+            storageManagerManager.getDeathStorageManager().deleteDeathpiles(false);
+          }
+        });
+    JMenuItem deleteAllDeathbanks = new JMenuItem("Delete all deathbanks");
+    deleteAllDeathbanks.addActionListener(
+        e -> {
+          if (DudeWheresMyStuffPlugin.getConfirmation(this, DELETE_ALL_DEATHBANKS_WARNING,
+              CONFIRM_DELETION_TEXT)) {
+            storageManagerManager.getDeathStorageManager().deleteDeathbanks(true);
+          }
+        });
+    JMenuItem deleteLostDeathbanks = new JMenuItem("Delete lost deathbanks");
+    deleteLostDeathbanks.addActionListener(
+        e -> {
+          if (DudeWheresMyStuffPlugin.getConfirmation(this, DELETE_ALL_LOST_DEATHBANKS_WARNING,
+              CONFIRM_DELETION_TEXT)) {
+            storageManagerManager.getDeathStorageManager().deleteDeathbanks(false);
+          }
+        });
+
+    JPopupMenu popupMenu = new JPopupMenu();
+    popupMenu.add(deleteAllDeathpiles);
+    popupMenu.add(deleteExpiredDeathpiles);
+    popupMenu.add(deleteAllDeathbanks);
+    popupMenu.add(deleteLostDeathbanks);
+    overviews.get(Tab.DEATH).setComponentPopupMenu(popupMenu);
   }
 
   @Override
@@ -220,35 +271,12 @@ class OverviewTabPanel extends TabContentPanel {
       final JMenuItem deleteAllData = new JMenuItem("Delete all data");
       deleteAllData.addActionListener(
           e -> {
-            int result = JOptionPane.OK_OPTION;
+            if (DudeWheresMyStuffPlugin.getConfirmation(this, DELETE_ALL_SAVE_WARNING,
+                CONFIRM_DELETION_TEXT) && DudeWheresMyStuffPlugin.getConfirmation(this,
+                DELETE_ALL_SAVE_FINAL_WARNING, CONFIRM_DELETION_TEXT)) {
+              plugin.deleteAllData();
 
-            try {
-              result =
-                  JOptionPane.showConfirmDialog(
-                      this,
-                      DELETE_ALL_SAVE_WARNING,
-                      CONFIRM_DELETION_TEXT,
-                      JOptionPane.OK_CANCEL_OPTION,
-                      JOptionPane.WARNING_MESSAGE);
-            } catch (Exception err) {
-              log.warn("Unexpected exception occurred while check for confirm required",
-                  err);
-            }
-
-            if (result == JOptionPane.OK_OPTION) {
-              result =
-                  JOptionPane.showConfirmDialog(
-                      this,
-                      DELETE_ALL_SAVE_FINAL_WARNING,
-                      CONFIRM_DELETION_TEXT,
-                      JOptionPane.OK_CANCEL_OPTION,
-                      JOptionPane.WARNING_MESSAGE);
-
-              if (result == JOptionPane.OK_OPTION) {
-                plugin.deleteAllData();
-
-                resetSummaryContextMenu();
-              }
+              resetSummaryContextMenu();
             }
           });
       popupMenu.add(deleteAllData);
@@ -265,21 +293,8 @@ class OverviewTabPanel extends TabContentPanel {
     final JMenuItem clearDeathbank = new JMenuItem("Delete data");
     clearDeathbank.addActionListener(
         e -> {
-          int result = JOptionPane.OK_OPTION;
-
-          try {
-            result =
-                JOptionPane.showConfirmDialog(
-                    this,
-                    DELETE_SAVE_WARNING,
-                    CONFIRM_DELETION_TEXT,
-                    JOptionPane.OK_CANCEL_OPTION,
-                    JOptionPane.WARNING_MESSAGE);
-          } catch (Exception err) {
-            log.warn("Unexpected exception occurred while check for confirm required", err);
-          }
-
-          if (result == JOptionPane.OK_OPTION) {
+          if (DudeWheresMyStuffPlugin.getConfirmation(this, DELETE_SAVE_WARNING,
+              CONFIRM_DELETION_TEXT)) {
             plugin.disablePreviewMode(true);
             resetSummaryContextMenu();
           }
