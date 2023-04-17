@@ -804,7 +804,16 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
         getConfigKey() + "." + DeathStorageType.DEATHPILE.getConfigKey() + ".")) {
       Deathpile deathpile = Deathpile.load(plugin, this, profileKey,
           configurationKey.split("\\.")[2]);
-      SwingUtilities.invokeLater(() -> deathpile.createStoragePanel(this));
+      SwingUtilities.invokeLater(() -> {
+        deathpile.createStoragePanel(this);
+
+        if (deathpile.getStoragePanel() != null) {
+          plugin.getClientThread().invoke(() -> {
+            deathpile.getStoragePanel().refreshItems();
+            SwingUtilities.invokeLater(() -> deathpile.getStoragePanel().update());
+          });
+        }
+      });
       storages.add(deathpile);
     }
 
@@ -818,9 +827,22 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
         getConfigKey() + "." + DeathStorageType.DEATHBANK.getConfigKey() + ".")) {
       Deathbank loadedDeathbank = Deathbank.load(plugin, this, profileKey,
           configurationKey.split("\\.")[2]);
-      SwingUtilities.invokeLater(() -> loadedDeathbank.createStoragePanel(this));
+
+      if (loadedDeathbank == null) {
+        continue;
+      }
+
       if (loadedDeathbank.isActive()) {
-        this.deathbank = loadedDeathbank;
+        if (deathbank != null) {
+          if (deathbank.getLastUpdated() <= loadedDeathbank.getLastUpdated()) {
+            deathbank.setLostAt(System.currentTimeMillis());
+            deathbank = loadedDeathbank;
+          } else {
+            loadedDeathbank.setLostAt(System.currentTimeMillis());
+          }
+        } else {
+          deathbank = loadedDeathbank;
+        }
       }
       storages.add(loadedDeathbank);
     }
