@@ -40,10 +40,14 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import javax.annotation.Nullable;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.border.EmptyBorder;
 import lombok.Getter;
 import net.runelite.client.ui.ColorScheme;
@@ -69,6 +73,7 @@ public class StoragePanel extends JPanel {
   private final boolean displayEmptyStacks;
   @Getter private List<ItemBox> itemBoxes = new ArrayList<>();
   private ItemSortMode itemSortMode = ItemSortMode.UNSORTED;
+  @Nullable private JComponent popupButton;
 
   /**
    * A constructor.
@@ -113,6 +118,31 @@ public class StoragePanel extends JPanel {
     titlePanel.add(Box.createHorizontalGlue());
     titlePanel.add(Box.createRigidArea(new Dimension(TITLE_PADDING, 0)));
 
+    titlePanel.addMouseListener(new MouseAdapter() {
+      private final Component rigidArea = Box.createRigidArea(new Dimension(TITLE_PADDING, 0));
+
+      @Override
+      public void mouseEntered(MouseEvent e) {
+        if (popupButton == null) {
+          return;
+        }
+
+        titlePanel.add(rigidArea);
+        titlePanel.add(popupButton);
+        titlePanel.revalidate();
+      }
+
+      @Override
+      public void mouseExited(MouseEvent e) {
+        if (popupButton == null || titlePanel.getVisibleRect().contains(e.getPoint())) {
+          return;
+        }
+
+        titlePanel.remove(rigidArea);
+        titlePanel.remove(popupButton);
+        titlePanel.revalidate();
+      }
+    });
     MouseAdapter toggleListener =
         new MouseAdapter() {
           @Override
@@ -155,6 +185,32 @@ public class StoragePanel extends JPanel {
     add(footerPanel, BorderLayout.SOUTH);
 
     update();
+  }
+
+  @Override
+  public void setComponentPopupMenu(JPopupMenu popup) {
+    super.setComponentPopupMenu(popup);
+    if (popup == null) {
+      if (popupButton != null) {
+        titlePanel.remove(popupButton);
+        popupButton = null;
+      }
+
+      return;
+    }
+
+    if (popupButton != null) {
+      return;
+    }
+
+    popupButton = new JButton("…");
+    popupButton.setPreferredSize(new Dimension(20, -1));
+    popupButton.addMouseListener(new MouseAdapter() {
+      @Override
+      public void mousePressed(MouseEvent mouseEvent) {
+        getComponentPopupMenu().show(popupButton, mouseEvent.getX(), mouseEvent.getY());
+      }
+    });
   }
 
   public String getTitle() {
