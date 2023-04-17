@@ -94,7 +94,7 @@ public class Deathpile extends DeathStorage {
     }
 
     JLabel footerLabel = storagePanel.getFooterLabel();
-    if (expiredAt == -1L) {
+    if (hasExpired()) {
       if (!useAccountPlayTime) {
         footerLabel.setIconTextGap(66);
         footerLabel.setHorizontalTextPosition(SwingConstants.LEFT);
@@ -127,23 +127,11 @@ public class Deathpile extends DeathStorage {
     final JMenuItem deleteDeathpile = new JMenuItem("Delete Deathpile");
     deleteDeathpile.addActionListener(
         e -> {
-          int result = JOptionPane.CANCEL_OPTION;
+          boolean confirmed = hasExpired() || DudeWheresMyStuffPlugin.getConfirmation(storagePanel,
+              "Are you sure you want to delete this deathpile?\nThis cannot be undone.",
+              "Confirm deletion");
 
-          if (!hasExpired()) {
-            try {
-              result =
-                  JOptionPane.showConfirmDialog(
-                      storagePanel,
-                      "Are you sure you want to delete this deathpile?\nThis cannot be undone.",
-                      "Confirm deletion",
-                      JOptionPane.OK_CANCEL_OPTION,
-                      JOptionPane.WARNING_MESSAGE);
-            } catch (Exception err) {
-              log.warn("Unexpected exception occurred while check for confirm required", err);
-            }
-          }
-
-          if (hasExpired() || result == JOptionPane.OK_OPTION) {
+          if (confirmed) {
             deathStorageManager.getStorages().remove(this);
             deathStorageManager.refreshMapPoints();
             deathStorageManager.getStorageTabPanel().reorderStoragePanels();

@@ -8,7 +8,6 @@ import dev.thource.runelite.dudewheresmystuff.StorageManager;
 import java.util.ArrayList;
 import java.util.UUID;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
@@ -81,23 +80,11 @@ public class Deathbank extends DeathStorage {
     final JMenuItem clearDeathbank = new JMenuItem("Delete Deathbank");
     clearDeathbank.addActionListener(
         e -> {
-          int result = JOptionPane.CANCEL_OPTION;
+          boolean confirmed = lostAt != -1L || DudeWheresMyStuffPlugin.getConfirmation(storagePanel,
+              "Are you sure you want to delete this deathbank?\nThis cannot be undone.",
+              "Confirm deletion");
 
-          if (lostAt == -1L) {
-            try {
-              result =
-                  JOptionPane.showConfirmDialog(
-                      storagePanel,
-                      "Are you sure you want to delete your deathbank?\nThis cannot be undone.",
-                      "Confirm deletion",
-                      JOptionPane.OK_CANCEL_OPTION,
-                      JOptionPane.WARNING_MESSAGE);
-            } catch (Exception err) {
-              log.warn("Unexpected exception occurred while check for confirm required", err);
-            }
-          }
-
-          if (lostAt != -1L || result == JOptionPane.OK_OPTION) {
+          if (confirmed) {
             if (this == deathStorageManager.getDeathbank()) {
               deathStorageManager.clearDeathbank(false);
             } else {
@@ -152,9 +139,18 @@ public class Deathbank extends DeathStorage {
     return deathbank;
   }
 
+  /**
+   * Checks if the deathbank has not been lost.
+   *
+   * @return true if lostAt == -1
+   */
+  public boolean isActive() {
+    return lostAt == -1L;
+  }
+
   @Override
   public boolean isWithdrawable() {
     // If the items were lost, then they can't be withdrawn
-    return super.isWithdrawable() && lostAt == -1;
+    return super.isWithdrawable() && isActive();
   }
 }
