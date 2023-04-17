@@ -102,6 +102,12 @@ public class StorageManagerManager {
     for (StorageManager<?, ?> storageManager : storageManagers) {
       storageManager.load(profileKey);
 
+      storageManager.getStorages().forEach(storage -> {
+        if (storage.getStoragePanel() != null) {
+          storage.getStoragePanel().refreshItems();
+        }
+      });
+
       SwingUtilities.invokeLater(
           () -> {
             storageManager.getStorages().forEach(storage -> {

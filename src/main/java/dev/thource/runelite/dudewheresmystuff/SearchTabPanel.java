@@ -10,6 +10,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -84,17 +85,24 @@ class SearchTabPanel
     if (searchBar.getText().length() >= 3) {
       searchStatusPanel.setVisible(false);
 
-      storagePanels.forEach(
-          panel -> {
-            ((SearchStoragePanel) panel).setSearchText(searchBar.getText());
-            panel.update();
-          });
-      reorderStoragePanels();
+      plugin.getClientThread().invoke(() -> {
+        storagePanels.forEach(
+            panel -> {
+              ((SearchStoragePanel) panel).setSearchText(searchBar.getText());
+              panel.refreshItems();
+            });
 
-      if (storagePanelContainer.getComponentCount() == 0) {
-        searchStatusLabel.setText(NO_RESULTS_TEXT);
-        searchStatusPanel.setVisible(true);
-      }
+        SwingUtilities.invokeLater(() -> {
+          storagePanels.forEach(StoragePanel::update);
+
+          reorderStoragePanels();
+
+          if (storagePanelContainer.getComponentCount() == 0) {
+            searchStatusLabel.setText(NO_RESULTS_TEXT);
+            searchStatusPanel.setVisible(true);
+          }
+        });
+      });
     } else {
       searchStatusLabel.setText(EMPTY_SEARCH_TEXT);
       searchStatusPanel.setVisible(true);
@@ -160,6 +168,9 @@ class SearchTabPanel
   }
 
   public void refreshItemSortMode() {
-    storagePanels.forEach(StoragePanel::update);
+    plugin.getClientThread().invoke(() -> storagePanels.forEach(panel -> {
+      panel.refreshItems();
+      SwingUtilities.invokeLater(panel::update);
+    }));
   }
 }

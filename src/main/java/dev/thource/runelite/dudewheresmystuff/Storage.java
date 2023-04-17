@@ -55,9 +55,15 @@ public abstract class Storage<T extends StorageType> {
 
           if (confirmed) {
             deleteData(storageManager);
-            storagePanel.update();
-            softUpdate();
-            storageManager.getStorageTabPanel().reorderStoragePanels();
+            plugin.getClientThread().invoke(() -> {
+              storagePanel.refreshItems();
+
+              SwingUtilities.invokeLater(() -> {
+                storagePanel.update();
+                softUpdate();
+                storageManager.getStorageTabPanel().reorderStoragePanels();
+              });
+            });
           }
         });
     popupMenu.add(reset);

@@ -6,6 +6,7 @@ import dev.thource.runelite.dudewheresmystuff.StoragePanel;
 import java.util.Objects;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.config.ConfigManager;
@@ -54,12 +55,16 @@ public class DeathItems extends DeathStorage {
 
   @Override
   public void softUpdate() {
-    items.clear();
-    items.addAll(deathStorageManager.getDeathItems());
+    plugin.getClientThread().invoke(() -> {
+      items.clear();
+      items.addAll(deathStorageManager.getDeathItems());
 
-    if (storagePanel != null) {
-      storagePanel.update();
-    }
+      if (storagePanel != null) {
+        storagePanel.refreshItems();
+
+        SwingUtilities.invokeLater(() -> storagePanel.update());
+      }
+    });
   }
 
   @Override
