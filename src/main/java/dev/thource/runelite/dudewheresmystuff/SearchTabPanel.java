@@ -158,4 +158,8 @@ class SearchTabPanel
 
     super.softUpdate();
   }
+
+  public void refreshItemSortMode() {
+    storagePanels.forEach(StoragePanel::update);
+  }
 }
