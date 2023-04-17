@@ -136,6 +136,11 @@ public class Deathbank extends DeathStorage {
     deathbank.load(deathStorageManager.getConfigManager(), deathStorageManager.getConfigKey(),
         profileKey);
 
+    if (deathbank.getItems().isEmpty()) {
+      deathbank.deleteData(deathStorageManager);
+      return null;
+    }
+
     return deathbank;
   }
 
