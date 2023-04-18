@@ -135,7 +135,7 @@ public class StoragePanel extends JPanel {
 
       @Override
       public void mouseExited(MouseEvent e) {
-        if (popupButton == null || titlePanel.getVisibleRect().contains(e.getPoint())) {
+        if (popupButton == null || !isShowing() || titlePanel.getVisibleRect().contains(e.getPoint())) {
           return;
         }
 

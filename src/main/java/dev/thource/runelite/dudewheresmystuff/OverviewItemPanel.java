@@ -160,7 +160,7 @@ class OverviewItemPanel extends JPanel {
 
       @Override
       public void mouseExited(MouseEvent e) {
-        if (popupButton == null || getVisibleRect().contains(e.getPoint())) {
+        if (popupButton == null || !isShowing() || getVisibleRect().contains(e.getPoint())) {
           return;
         }
 
