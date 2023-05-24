@@ -849,7 +849,8 @@ public enum StashUnit {
       "South-east corner of Lava Dragon Isle",
       STASHUnit.SOUTHEAST_CORNER_OF_LAVA_DRAGON_ISLE,
       new int[]{
-          ItemID.DRAGON_MED_HELM, ItemID.TOKTZKETXIL, ItemID.BRINE_SABRE, ItemID.RUNE_PLATEBODY
+          ItemID.DRAGON_MED_HELM, ItemID.TOKTZKETXIL, ItemID.BRINE_SABRE, ItemID.RUNE_PLATEBODY,
+          ItemID.AMULET_OF_GLORY
       },
       ItemRequirements.item(ItemID.DRAGON_MED_HELM),
       ItemRequirements.item(ItemID.TOKTZKETXIL),
