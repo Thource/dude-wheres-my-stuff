@@ -96,15 +96,19 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
 
   @Override
   public void onItemContainerChanged(ItemContainerChanged itemContainerChanged) {
-    if (enabled) {
-      if (itemContainerChanged.getContainerId() == InventoryID.INVENTORY.getId()) {
-        if (updateInventoryItems(itemContainerChanged.getItemContainer().getItems())) {
-          updateStorages(Collections.singletonList(deathbank));
-        }
-      } else if (itemContainerChanged.getContainerId() == 525) {
-        updateDeathbankItems(itemContainerChanged.getItemContainer().getItems());
+    if (!enabled) {
+      return;
+    }
+
+    if (itemContainerChanged.getContainerId() == InventoryID.INVENTORY.getId()) {
+      if (updateInventoryItems(itemContainerChanged.getItemContainer().getItems())) {
         updateStorages(Collections.singletonList(deathbank));
       }
+    } else if (itemContainerChanged.getContainerId() == 525 && client.getWidget(672, 0) == null) {
+      updateDeathbankItems(itemContainerChanged.getItemContainer().getItems());
+
+      SwingUtilities.invokeLater(() -> plugin.getClientThread()
+          .invoke(() -> updateStorages(Collections.singletonList(deathbank))));
     }
   }
 
@@ -216,7 +220,9 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
 
     if ((deathbank != null && checkIfDeathbankWindowIsEmpty()) | processDeath()
         | checkItemsLostOnDeathWindow()) {
-      updateStorages(storages);
+
+      SwingUtilities.invokeLater(
+          () -> plugin.getClientThread().invoke(() -> updateStorages(storages)));
     }
 
     refreshInfoBoxes();
@@ -425,12 +431,17 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
   private void createMysteryDeathbank(DeathbankType type) {
     deathbank = new Deathbank(type, plugin, this);
     storages.add(deathbank);
-    SwingUtilities.invokeLater(() -> deathbank.createStoragePanel(this));
     deathbank.setLastUpdated(System.currentTimeMillis());
     deathbank.setLocked(
         type != DeathbankType.ZULRAH
             || plugin.getClient().getAccountType() != AccountType.ULTIMATE_IRONMAN);
     deathbank.getItems().add(new ItemStack(ItemID.MYSTERY_BOX, 1, plugin));
+
+    SwingUtilities.invokeLater(() -> {
+      deathbank.createStoragePanel(this);
+
+      plugin.getClientThread().invoke(() -> updateStorages(Collections.singletonList(deathbank)));
+    });
   }
 
   @Override
@@ -832,6 +843,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
         continue;
       }
 
+      SwingUtilities.invokeLater(() -> loadedDeathbank.createStoragePanel(this));
       if (loadedDeathbank.isActive()) {
         if (deathbank != null) {
           if (deathbank.getLastUpdated() <= loadedDeathbank.getLastUpdated()) {
