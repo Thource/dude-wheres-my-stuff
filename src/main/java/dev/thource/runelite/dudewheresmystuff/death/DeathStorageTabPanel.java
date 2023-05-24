@@ -16,27 +16,6 @@ public class DeathStorageTabPanel
   }
 
   @Override
-  public void reorderStoragePanels() {
-    EnhancedSwingUtilities.fastRemoveAll(storagePanelContainer);
-    storagePanels.clear();
-
-    storageManager.getStorages().stream()
-        .filter(storage -> !(storage instanceof Deathbank)
-            || storage.getLastUpdated() != -1) // Hide deathbank if it has no data
-        .filter(storage -> storage.getStoragePanel() != null)
-        .filter(storage -> plugin.getConfig().showEmptyStorages() || !storage.getStoragePanel()
-            .getItemBoxes().isEmpty())
-        .sorted(getStorageSorter())
-        .forEach(
-            storage -> {
-              storagePanelContainer.add(storage.getStoragePanel());
-              storagePanels.add(storage.getStoragePanel());
-            });
-
-    storagePanelContainer.revalidate();
-  }
-
-  @Override
   protected Comparator<DeathStorage> getStorageSorter() {
     return Comparator.comparingLong(
         s -> {

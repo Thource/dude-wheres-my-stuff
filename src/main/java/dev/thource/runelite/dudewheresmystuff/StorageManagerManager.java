@@ -43,11 +43,10 @@ public class StorageManagerManager {
   private final StashStorageManager stashStorageManager;
   private final PlayerOwnedHouseStorageManager playerOwnedHouseStorageManager;
   private final WorldStorageManager worldStorageManager;
-  @Setter private String displayName;
   @Getter private final List<StorageManager<?, ?>> storageManagers;
-
   private final DudeWheresMyStuffPlugin plugin;
   private final ConfigManager configManager;
+  @Setter private String displayName;
 
   @SuppressWarnings("java:S107")
   StorageManagerManager(
@@ -102,21 +101,26 @@ public class StorageManagerManager {
     for (StorageManager<?, ?> storageManager : storageManagers) {
       storageManager.load(profileKey);
 
-      storageManager.getStorages().forEach(storage -> {
-        if (storage.getStoragePanel() != null) {
-          storage.getStoragePanel().refreshItems();
-        }
-      });
-
+      // Bounce into swing and back into the client thread to give StoragePanels a chance to be created
       SwingUtilities.invokeLater(
-          () -> {
+          () -> plugin.getClientThread().invoke(() -> {
             storageManager.getStorages().forEach(storage -> {
               if (storage.getStoragePanel() != null) {
-                storage.getStoragePanel().update();
+                storage.getStoragePanel().refreshItems();
               }
             });
-            storageManager.getStorageTabPanel().reorderStoragePanels();
-          });
+
+            SwingUtilities.invokeLater(
+                () -> {
+                  storageManager.getStorages().forEach(storage -> {
+                    if (storage.getStoragePanel() != null) {
+                      storage.getStoragePanel().update();
+                    }
+                  });
+                  storageManager.getStorageTabPanel().reorderStoragePanels();
+                });
+          })
+      );
     }
   }
 
