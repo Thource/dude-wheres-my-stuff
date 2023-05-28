@@ -61,7 +61,13 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
  * items, coins and minigame points.
  */
 @Slf4j
-@PluginDescriptor(name = "Dude, Where's My Stuff?")
+@PluginDescriptor(
+    name = "Dude, Where's My Stuff?",
+    description = "Helps you keep track of your stuff (items, gp, minigame points) by recording "
+        + "and showing you where they are in an easy to view way.",
+    tags = {"uim", "storage", "deathbank", "deathstorage", "death", "deathpile", "coins", "poh",
+        "stash", "minigames", "leprechaun", "fossils"}
+)
 @PluginDependency(ItemIdentificationPlugin.class)
 public class DudeWheresMyStuffPlugin extends Plugin {
 
@@ -106,6 +112,29 @@ public class DudeWheresMyStuffPlugin extends Plugin {
   private boolean pluginStartedAlreadyLoggedIn;
   private String profileKey;
   @Getter private String previewProfileKey;
+
+  /**
+   * Displays a confirmation popup to the user and returns true if they confirmed it.
+   *
+   * @param parentComponent the calling component
+   * @param text            the description shown to the user
+   * @param confirmText     the text displayed on the confirmation button
+   * @return true if they clicked the confirmation button
+   */
+  public static boolean getConfirmation(Component parentComponent, String text,
+      String confirmText) {
+    int result = JOptionPane.CANCEL_OPTION;
+
+    try {
+      result =
+          JOptionPane.showConfirmDialog(parentComponent, text, confirmText,
+              JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+    } catch (Exception err) {
+      log.warn("Unexpected exception occurred while check for confirm required", err);
+    }
+
+    return result == JOptionPane.OK_OPTION;
+  }
 
   Stream<RuneScapeProfile> getProfilesWithData() {
     return configManager
@@ -584,28 +613,5 @@ public class DudeWheresMyStuffPlugin extends Plugin {
       }
     });
     configManager.sendConfig();
-  }
-
-  /**
-   * Displays a confirmation popup to the user and returns true if they confirmed it.
-   *
-   * @param parentComponent the calling component
-   * @param text            the description shown to the user
-   * @param confirmText     the text displayed on the confirmation button
-   * @return true if they clicked the confirmation button
-   */
-  public static boolean getConfirmation(Component parentComponent, String text,
-      String confirmText) {
-    int result = JOptionPane.CANCEL_OPTION;
-
-    try {
-      result =
-          JOptionPane.showConfirmDialog(parentComponent, text, confirmText,
-              JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
-    } catch (Exception err) {
-      log.warn("Unexpected exception occurred while check for confirm required", err);
-    }
-
-    return result == JOptionPane.OK_OPTION;
   }
 }
