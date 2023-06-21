@@ -17,7 +17,8 @@ public class CoinsStorageManager extends StorageManager<CoinsStorageType, CoinsS
       if (type == CoinsStorageType.SERVANT_MONEYBAG
           || type == CoinsStorageType.SHILO_FURNACE
           || type == CoinsStorageType.GRAND_EXCHANGE
-          || type == CoinsStorageType.LOOTING_BAG) {
+          || type == CoinsStorageType.LOOTING_BAG
+          || type == CoinsStorageType.BOUNTY_HUNTER) {
         continue;
       }
 
@@ -28,6 +29,7 @@ public class CoinsStorageManager extends StorageManager<CoinsStorageType, CoinsS
     storages.add(new ShiloFurnace(plugin));
     storages.add(new GrandExchange(plugin));
     storages.add(new LootingBag(plugin));
+    storages.add(new BountyHunterCoffer(plugin));
   }
 
   @Override
