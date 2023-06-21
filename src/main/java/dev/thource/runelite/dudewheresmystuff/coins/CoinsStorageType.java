@@ -18,7 +18,8 @@ public enum CoinsStorageType implements StorageType {
   INVENTORY("Inventory", -1, InventoryID.INVENTORY.getId(), true, "inventory", false),
   LOOTING_BAG("Looting Bag", -1, 516, false, "lootingbag", true),
   GRAND_EXCHANGE("Grand Exchange", -1, -1, false, "grandexchange", false),
-  SHILO_FURNACE("Shilo Furnace", -1, -1, false, "shilofurnace", true);
+  SHILO_FURNACE("Shilo Furnace", -1, -1, false, "shilofurnace", true),
+  BOUNTY_HUNTER("Bounty Hunter", -1, -1, false, "bountyhunter", true);
 
   private final String name;
   private final int varbitId;
