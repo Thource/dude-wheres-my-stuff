@@ -271,8 +271,8 @@ public class Menagerie extends PlayerOwnedHouseStorage {
     int oldPetBits1 = petBits1;
     int oldPetBits2 = petBits2;
 
-    petBits1 = plugin.getClient().getVarbitValue(864);
-    petBits2 = plugin.getClient().getVarbitValue(1416);
+    petBits1 = plugin.getClient().getVarpValue(864);
+    petBits2 = plugin.getClient().getVarpValue(1416);
 
     if (petBits1 != oldPetBits1 || petBits2 != oldPetBits2) {
       rebuildPetsFromBits();
