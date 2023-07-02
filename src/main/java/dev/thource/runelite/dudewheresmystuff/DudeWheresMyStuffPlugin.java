@@ -10,6 +10,8 @@ import dev.thource.runelite.dudewheresmystuff.playerownedhouse.PlayerOwnedHouseS
 import dev.thource.runelite.dudewheresmystuff.stash.StashStorageManager;
 import dev.thource.runelite.dudewheresmystuff.world.WorldStorageManager;
 import java.awt.Component;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Matcher;
@@ -26,6 +28,7 @@ import net.runelite.api.ItemContainer;
 import net.runelite.api.VarClientInt;
 import net.runelite.api.events.ActorDeath;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
@@ -46,6 +49,7 @@ import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.ConfigSync;
 import net.runelite.client.events.RuneScapeProfileChanged;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -54,6 +58,7 @@ import net.runelite.client.plugins.itemidentification.ItemIdentificationConfig;
 import net.runelite.client.plugins.itemidentification.ItemIdentificationPlugin;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
+import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 /**
@@ -88,7 +93,11 @@ public class DudeWheresMyStuffPlugin extends Plugin {
   @Getter @Inject private ItemManager itemManager;
   @Getter @Inject private DudeWheresMyStuffConfig config;
   @Inject private ConfigManager configManager;
+  @Inject private OverlayManager overlayManager;
+  @Inject private KeyManager keyManager;
 
+  @Inject private ItemCountOverlay itemCountOverlay;
+  @Inject private ItemCountInputListener itemCountInputListener;
   @Inject private DeathStorageManager deathStorageManager;
   @Inject private DeathStorageManager previewDeathStorageManager;
   @Inject private CoinsStorageManager coinsStorageManager;
@@ -244,6 +253,10 @@ public class DudeWheresMyStuffPlugin extends Plugin {
     }
 
     deathStorageManager.refreshInfoBoxes();
+
+    overlayManager.add(itemCountOverlay);
+    itemCountInputListener.setItemCountOverlay(itemCountOverlay);
+    keyManager.registerKeyListener(itemCountInputListener);
   }
 
   private void reset() {
@@ -262,6 +275,18 @@ public class DudeWheresMyStuffPlugin extends Plugin {
 
     infoBoxManager.removeIf(
         infoBox -> infoBox.getName().startsWith(this.getClass().getSimpleName()));
+
+    overlayManager.remove(itemCountOverlay);
+    keyManager.unregisterKeyListener(itemCountInputListener);
+  }
+
+  @Subscribe
+  public void onFocusChanged(FocusChanged focusChanged)
+  {
+    if (!focusChanged.isFocused())
+    {
+      itemCountOverlay.setKeybindPressed(false);
+    }
   }
 
   @Subscribe
@@ -613,5 +638,30 @@ public class DudeWheresMyStuffPlugin extends Plugin {
       }
     });
     configManager.sendConfig();
+  }
+
+  public long getWithdrawableItemCount(int id) {
+    int canonicalId = itemManager.canonicalize(id);
+
+    return storageManagerManager.getStorages()
+        .filter(Storage::isWithdrawable)
+        .mapToLong(storage -> storage.getItemCount(canonicalId)).sum();
+  }
+
+  public Map<Storage<?>, Long> getDetailedWithdrawableItemCount(int id) {
+    int canonicalId = itemManager.canonicalize(id);
+
+    HashMap<Storage<?>, Long> map = new HashMap<>();
+
+    storageManagerManager.getStorages()
+        .filter(Storage::isWithdrawable).forEach(storage -> {
+          long count = storage.getItemCount(canonicalId);
+
+          if (count > 0) {
+            map.put(storage, count);
+          }
+        });
+
+    return map;
   }
 }

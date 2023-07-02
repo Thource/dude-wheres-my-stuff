@@ -268,4 +268,9 @@ public abstract class Storage<T extends StorageType> {
   public List<ItemStack> getItems() {
     return new ArrayList<>();
   }
+
+  public long getItemCount(int canonicalId) {
+    return getItems().stream().filter(stack -> stack.getCanonicalId() == canonicalId)
+        .mapToLong(ItemStack::getQuantity).sum();
+  }
 }
