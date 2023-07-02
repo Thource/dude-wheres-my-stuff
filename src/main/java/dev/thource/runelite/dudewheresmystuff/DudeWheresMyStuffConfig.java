@@ -3,6 +3,7 @@ package dev.thource.runelite.dudewheresmystuff;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Keybind;
 import net.runelite.client.config.Range;
 
 /** DudeWheresMyStuffConfig manages the config for the plugin. */
@@ -81,6 +82,26 @@ public interface DudeWheresMyStuffConfig extends Config {
           + "new deathpiles will start with 45 minutes until expiry.")
   default int deathpileContingencyMinutes() {
     return 1;
+  }
+
+  @ConfigItem(
+      keyName = "storedItemCountTooltip",
+      name = "Item Count Tooltip Mode",
+      description = "Adds a tooltip when you hover items that tells you how many of those item you "
+          + "have stored. \"Simple\" mode shows a sum, \"Detailed\" mode tells you where they are "
+          + "stored."
+  )
+  default StoredItemCountTooltipMode storedItemCountTooltip() {
+    return StoredItemCountTooltipMode.OFF;
+  }
+
+  @ConfigItem(
+      keyName = "storedItemCountTooltipKeybind",
+      name = "Item Count Tooltip Keybind",
+      description = "Hold this key down to display the item count tooltip."
+  )
+  default Keybind storedItemCountTooltipKeybind() {
+    return null;
   }
 
   @ConfigItem(
