@@ -727,11 +727,6 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
             .filter(s -> s.getType() == CarryableStorageType.SEED_BOX)
             .findFirst()
             .ifPresent(seedBox -> seedBox.getItems().forEach(itemStacksIterator::add));
-      } else if (itemStack.getId() == ItemID.RUNE_POUCH) {
-        carryableStorageManager.getStorages().stream()
-            .filter(s -> s.getType() == CarryableStorageType.RUNE_POUCH)
-            .findFirst()
-            .ifPresent(runePouch -> runePouch.getItems().forEach(itemStacksIterator::add));
       } else if (itemStack.getId() == ItemID.BOLT_POUCH) {
         carryableStorageManager.getStorages().stream()
             .filter(s -> s.getType() == CarryableStorageType.BOLT_POUCH)
