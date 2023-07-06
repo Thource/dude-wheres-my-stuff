@@ -716,47 +716,11 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
             .flatMap(s -> s.getItems().stream())
             .collect(Collectors.toList());
 
-    boolean lootingBagPresent = false;
-
-    ListIterator<ItemStack> itemStacksIterator = itemStacks.listIterator();
-    while (itemStacksIterator.hasNext()) {
-      ItemStack itemStack = itemStacksIterator.next();
-
-      if (itemStack.getId() == ItemID.SEED_BOX || itemStack.getId() == ItemID.OPEN_SEED_BOX) {
-        carryableStorageManager.getStorages().stream()
-            .filter(s -> s.getType() == CarryableStorageType.SEED_BOX)
-            .findFirst()
-            .ifPresent(seedBox -> seedBox.getItems().forEach(itemStacksIterator::add));
-      } else if (itemStack.getId() == ItemID.BOLT_POUCH) {
-        carryableStorageManager.getStorages().stream()
-            .filter(s -> s.getType() == CarryableStorageType.BOLT_POUCH)
-            .findFirst()
-            .ifPresent(boltPouch -> boltPouch.getItems().forEach(itemStacksIterator::add));
-      } else if (itemStack.getId() == ItemID.GNOMISH_FIRELIGHTER_20278) {
-        carryableStorageManager.getStorages().stream()
-            .filter(s -> s.getType() == CarryableStorageType.GNOMISH_FIRELIGHTER)
-            .findFirst()
-            .ifPresent(gnomishFirelighter -> gnomishFirelighter.getItems()
-                .forEach(itemStacksIterator::add));
-      } else if (itemStack.getId() == ItemID.LOOTING_BAG
-          || itemStack.getId() == ItemID.LOOTING_BAG_22586) {
-        lootingBagPresent = true;
-        itemStacksIterator.remove();
-      }
-    }
-
-    if (lootingBagPresent) {
-      carryableStorageManager.getStorages().stream()
-          .filter(s -> s.getType() == CarryableStorageType.LOOTING_BAG)
-          .findFirst()
-          .ifPresent(lootingBag -> itemStacks.addAll(lootingBag.getItems()));
-    }
-
     return ItemStackUtils.compound(
-        itemStacks.stream()
-            .filter(i -> i.getId() != -1 && i.getQuantity() > 0)
-            .collect(Collectors.toList()),
-        false);
+        ItemStackUtils.filterDestroyedOnDeath(
+            ItemStackUtils.explodeStorageItems(itemStacks, carryableStorageManager)
+        ).stream().filter(i -> i.getId() != -1 && i.getQuantity() > 0).collect(Collectors.toList()
+        ), false);
   }
 
   @Override

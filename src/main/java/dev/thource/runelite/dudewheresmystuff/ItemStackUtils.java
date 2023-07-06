@@ -1,11 +1,66 @@
 package dev.thource.runelite.dudewheresmystuff;
 
+import dev.thource.runelite.dudewheresmystuff.carryable.CarryableStorageManager;
+import dev.thource.runelite.dudewheresmystuff.carryable.CarryableStorageType;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
+import net.runelite.api.ItemID;
 
 /** ItemStackUtils provides methods that interact with Lists of ItemStack. */
 public class ItemStackUtils {
+
+  public static final List<Integer> ITEM_IDS_DESTROYED_ON_DEATH = Collections.unmodifiableList(
+      Arrays.asList(
+          ItemID.LOOTING_BAG,
+          ItemID.LOOTING_BAG_22586,
+          ItemID.CLUE_BOX,
+          ItemID.FLAMTAER_BAG,
+          ItemID.FLAMTAER_BAG_25630,
+          ItemID.LUNAR_HELM,
+          ItemID.LUNAR_TORSO,
+          ItemID.LUNAR_LEGS,
+          ItemID.LUNAR_GLOVES,
+          ItemID.LUNAR_BOOTS,
+          ItemID.LUNAR_CAPE,
+          ItemID.LUNAR_AMULET,
+          ItemID.LUNAR_RING,
+          ItemID.LUNAR_STAFF,
+          ItemID.RING_OF_CHAROS,
+          ItemID.RING_OF_CHAROSA,
+          ItemID.CHRONICLE,
+          ItemID.STEEL_GAUNTLETS,
+          ItemID.COOKING_GAUNTLETS,
+          ItemID.GOLDSMITH_GAUNTLETS,
+          ItemID.CHAOS_GAUNTLETS,
+          ItemID.MAGIC_BUTTERFLY_NET,
+          ItemID.JAR_GENERATOR,
+          ItemID.AMULET_OF_THE_DAMNED,
+          ItemID.SHATTERED_RELICS_BRONZE_TROPHY,
+          ItemID.SHATTERED_RELICS_IRON_TROPHY,
+          ItemID.SHATTERED_RELICS_STEEL_TROPHY,
+          ItemID.SHATTERED_RELICS_MITHRIL_TROPHY,
+          ItemID.SHATTERED_RELICS_ADAMANT_TROPHY,
+          ItemID.SHATTERED_RELICS_RUNE_TROPHY,
+          ItemID.SHATTERED_RELICS_DRAGON_TROPHY,
+          ItemID.TRAILBLAZER_BRONZE_TROPHY,
+          ItemID.TRAILBLAZER_IRON_TROPHY,
+          ItemID.TRAILBLAZER_STEEL_TROPHY,
+          ItemID.TRAILBLAZER_MITHRIL_TROPHY,
+          ItemID.TRAILBLAZER_ADAMANT_TROPHY,
+          ItemID.TRAILBLAZER_RUNE_TROPHY,
+          ItemID.TRAILBLAZER_DRAGON_TROPHY,
+          ItemID.TWISTED_BRONZE_TROPHY,
+          ItemID.TWISTED_IRON_TROPHY,
+          ItemID.TWISTED_STEEL_TROPHY,
+          ItemID.TWISTED_MITHRIL_TROPHY,
+          ItemID.TWISTED_ADAMANT_TROPHY,
+          ItemID.TWISTED_RUNE_TROPHY,
+          ItemID.TWISTED_DRAGON_TROPHY
+      )
+  );
 
   private ItemStackUtils() {
   }
@@ -132,5 +187,57 @@ public class ItemStackUtils {
     for (ItemStack itemStack : itemsToRemove) {
       ItemStackUtils.removeItemStack(itemsToModify, itemStack, false);
     }
+  }
+
+  public static List<ItemStack> explodeStorageItems(List<ItemStack> itemStacks,
+      CarryableStorageManager carryableStorageManager) {
+    ArrayList<ItemStack> explodedItemStacks = new ArrayList<>();
+    itemStacks.forEach(itemStack -> explodedItemStacks.add(new ItemStack(itemStack)));
+
+    boolean isLootingBagPresent = false;
+    ListIterator<ItemStack> itemStacksIterator = explodedItemStacks.listIterator();
+    while (itemStacksIterator.hasNext()) {
+      ItemStack itemStack = itemStacksIterator.next();
+
+      if (itemStack.getId() == ItemID.SEED_BOX || itemStack.getId() == ItemID.OPEN_SEED_BOX) {
+        carryableStorageManager.getStorages().stream()
+            .filter(s -> s.getType() == CarryableStorageType.SEED_BOX)
+            .findFirst()
+            .ifPresent(seedBox -> seedBox.getItems().forEach(itemStacksIterator::add));
+      } else if (itemStack.getId() == ItemID.BOLT_POUCH) {
+        carryableStorageManager.getStorages().stream()
+            .filter(s -> s.getType() == CarryableStorageType.BOLT_POUCH)
+            .findFirst()
+            .ifPresent(boltPouch -> boltPouch.getItems().forEach(itemStacksIterator::add));
+      } else if (itemStack.getId() == ItemID.GNOMISH_FIRELIGHTER_20278) {
+        carryableStorageManager.getStorages().stream()
+            .filter(s -> s.getType() == CarryableStorageType.GNOMISH_FIRELIGHTER)
+            .findFirst()
+            .ifPresent(gnomishFirelighter -> gnomishFirelighter.getItems()
+                .forEach(itemStacksIterator::add));
+      } else if (itemStack.getId() == ItemID.LOOTING_BAG
+          || itemStack.getId() == ItemID.LOOTING_BAG_22586) {
+        isLootingBagPresent = true;
+      }
+    }
+
+    if (isLootingBagPresent) {
+      carryableStorageManager.getStorages().stream()
+          .filter(s -> s.getType() == CarryableStorageType.LOOTING_BAG)
+          .findFirst()
+          .ifPresent(lootingBag -> explodedItemStacks.addAll(lootingBag.getItems()));
+    }
+
+    return explodedItemStacks;
+  }
+
+  public static List<ItemStack> filterDestroyedOnDeath(List<ItemStack> itemStacks) {
+    ArrayList<ItemStack> filteredItemStacks = new ArrayList<>();
+    itemStacks.forEach(itemStack -> filteredItemStacks.add(new ItemStack(itemStack)));
+
+    filteredItemStacks.removeIf(
+        itemStack -> ITEM_IDS_DESTROYED_ON_DEATH.contains(itemStack.getId()));
+
+    return filteredItemStacks;
   }
 }
