@@ -101,7 +101,7 @@ public interface DudeWheresMyStuffConfig extends Config {
       description = "Hold this key down to display the item count tooltip."
   )
   default Keybind storedItemCountTooltipKeybind() {
-    return null;
+    return Keybind.NOT_SET;
   }
 
   @ConfigItem(
