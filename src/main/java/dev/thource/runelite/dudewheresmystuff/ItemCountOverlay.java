@@ -10,6 +10,7 @@ import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.Point;
 import net.runelite.api.widgets.WidgetItem;
+import net.runelite.client.config.Keybind;
 import net.runelite.client.ui.overlay.WidgetItemOverlay;
 import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
@@ -39,7 +40,11 @@ public class ItemCountOverlay extends WidgetItemOverlay {
       return;
     }
 
-    if (dudeWheresMyStuffConfig.storedItemCountTooltipKeybind() != null && !keybindPressed) {
+    if (dudeWheresMyStuffConfig.storedItemCountTooltipKeybind().getKeyCode()
+        != Keybind.NOT_SET.getKeyCode()
+        || dudeWheresMyStuffConfig.storedItemCountTooltipKeybind().getModifiers()
+        != Keybind.NOT_SET.getModifiers()
+        && !keybindPressed) {
       return;
     }
 

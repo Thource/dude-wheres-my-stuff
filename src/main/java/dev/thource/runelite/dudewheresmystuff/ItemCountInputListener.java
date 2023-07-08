@@ -8,8 +8,8 @@ import net.runelite.client.input.KeyListener;
 
 public class ItemCountInputListener implements KeyListener {
 
-  @Setter @Nullable private ItemCountOverlay itemCountOverlay;
   private final DudeWheresMyStuffConfig dudeWheresMyStuffConfig;
+  @Setter @Nullable private ItemCountOverlay itemCountOverlay;
 
   @Inject
   private ItemCountInputListener(DudeWheresMyStuffConfig dudeWheresMyStuffConfig) {
@@ -23,7 +23,7 @@ public class ItemCountInputListener implements KeyListener {
 
   @Override
   public void keyPressed(KeyEvent keyEvent) {
-    if (itemCountOverlay == null || dudeWheresMyStuffConfig.storedItemCountTooltipKeybind() == null) {
+    if (itemCountOverlay == null) {
       return;
     }
 
@@ -34,7 +34,7 @@ public class ItemCountInputListener implements KeyListener {
 
   @Override
   public void keyReleased(KeyEvent keyEvent) {
-    if (itemCountOverlay == null || dudeWheresMyStuffConfig.storedItemCountTooltipKeybind() == null) {
+    if (itemCountOverlay == null) {
       return;
     }
 
