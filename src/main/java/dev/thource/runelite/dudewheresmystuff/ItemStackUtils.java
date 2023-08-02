@@ -58,7 +58,9 @@ public class ItemStackUtils {
           ItemID.TWISTED_MITHRIL_TROPHY,
           ItemID.TWISTED_ADAMANT_TROPHY,
           ItemID.TWISTED_RUNE_TROPHY,
-          ItemID.TWISTED_DRAGON_TROPHY
+          ItemID.TWISTED_DRAGON_TROPHY,
+          ItemID.CRYSTAL_SAW_SEED,
+          ItemID.CRYSTAL_SAW
       )
   );
 
