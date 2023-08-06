@@ -47,7 +47,7 @@ public class BottomlessBucket extends CarryableStorage {
       return false;
     }
 
-    String widgetText = widget.getText().replace("<br>", " ");
+    String widgetText = widget.getText().replace("<br>", " ").replace(",", "");
     if (!widgetText.contains("compost bucket")) {
       return false;
     }
@@ -129,7 +129,7 @@ public class BottomlessBucket extends CarryableStorage {
       return true;
     }
 
-    Matcher matcher = chargesPattern.matcher(chatMessage.getMessage());
+    Matcher matcher = chargesPattern.matcher(chatMessage.getMessage().replace(",", ""));
     int charges = 1;
     if (matcher.find()) {
       charges = NumberUtils.toInt(matcher.group(1));

@@ -6,6 +6,7 @@ import dev.thource.runelite.dudewheresmystuff.SaveFieldFormatter;
 import dev.thource.runelite.dudewheresmystuff.SaveFieldLoader;
 import dev.thource.runelite.dudewheresmystuff.carryable.BottomlessBucket;
 import java.util.ArrayList;
+import javax.swing.SwingUtilities;
 import lombok.Setter;
 import net.runelite.api.ItemID;
 import net.runelite.client.config.ConfigManager;
@@ -357,6 +358,11 @@ public class Leprechaun extends WorldStorage {
     bottomlessBucket.setQuantity(bottomlessBucketType == 0 ? 0 : 1);
     if (bottomlessBucketStorage != null) {
       bottomlessBucketStorage.updateCompost(bottomlessBucketType, bottomlessBucketCharges);
+
+      if (bottomlessBucketStorage.getStoragePanel() != null) {
+        bottomlessBucketStorage.getStoragePanel().refreshItems();
+        SwingUtilities.invokeLater(bottomlessBucketStorage.getStoragePanel()::update);
+      }
     }
     return true;
   }
