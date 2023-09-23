@@ -14,17 +14,8 @@ import net.runelite.api.events.ItemContainerChanged;
 @Getter
 public class CarryableStorage extends ItemStorage<CarryableStorageType> {
 
-  protected final int emptyOnDeathVarbit;
-
   protected CarryableStorage(CarryableStorageType type, DudeWheresMyStuffPlugin plugin) {
     super(type, plugin);
-    emptyOnDeathVarbit = -1;
-  }
-
-  protected CarryableStorage(CarryableStorageType type, DudeWheresMyStuffPlugin plugin,
-      int emptyOnDeathVarbit) {
-    super(type, plugin);
-    this.emptyOnDeathVarbit = emptyOnDeathVarbit;
   }
 
   @Override

@@ -32,7 +32,7 @@ public class RunePouch extends CarryableStorage {
   private int[] runeQuantities = new int[MAX_RUNE_TYPES];
 
   RunePouch(DudeWheresMyStuffPlugin plugin) {
-    super(CarryableStorageType.RUNE_POUCH, plugin, 15311);
+    super(CarryableStorageType.RUNE_POUCH, plugin);
   }
 
   @Override
