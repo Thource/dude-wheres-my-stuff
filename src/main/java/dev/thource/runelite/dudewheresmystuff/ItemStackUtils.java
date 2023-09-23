@@ -1,5 +1,6 @@
 package dev.thource.runelite.dudewheresmystuff;
 
+import dev.thource.runelite.dudewheresmystuff.carryable.CarryableStorage;
 import dev.thource.runelite.dudewheresmystuff.carryable.CarryableStorageManager;
 import dev.thource.runelite.dudewheresmystuff.carryable.CarryableStorageType;
 import java.util.ArrayList;
@@ -201,46 +202,22 @@ public class ItemStackUtils {
     while (itemStacksIterator.hasNext()) {
       ItemStack itemStack = itemStacksIterator.next();
 
-      if (itemStack.getId() == ItemID.SEED_BOX || itemStack.getId() == ItemID.OPEN_SEED_BOX) {
-        carryableStorageManager.getStorages().stream()
-            .filter(s -> s.getType() == CarryableStorageType.SEED_BOX)
-            .findFirst()
-            .ifPresent(seedBox -> {
-              if (seedBox.getPlugin().getClient().getVarbitValue(seedBox.getEmptyOnDeathVarbit())
-                  == 1) {
-                seedBox.getItems().forEach(itemStacksIterator::add);
-              }
-            });
-      } else if (itemStack.getId() == ItemID.BOLT_POUCH) {
-        carryableStorageManager.getStorages().stream()
-            .filter(s -> s.getType() == CarryableStorageType.BOLT_POUCH)
-            .findFirst()
-            .ifPresent(boltPouch -> {
-              if (boltPouch.getPlugin().getClient()
-                  .getVarbitValue(boltPouch.getEmptyOnDeathVarbit()) == 1) {
-                boltPouch.getItems().forEach(itemStacksIterator::add);
-              }
-            });
-      } else if (itemStack.getId() == ItemID.RUNE_POUCH || itemStack.getId() == ItemID.RUNE_POUCH_L
-          || itemStack.getId() == ItemID.DIVINE_RUNE_POUCH
-          || itemStack.getId() == ItemID.DIVINE_RUNE_POUCH_L) {
-        carryableStorageManager.getStorages().stream()
-            .filter(s -> s.getType() == CarryableStorageType.RUNE_POUCH)
-            .findFirst()
-            .ifPresent(runePouch -> {
-              if (runePouch.getPlugin().getClient()
-                  .getVarbitValue(runePouch.getEmptyOnDeathVarbit()) == 1) {
-                runePouch.getItems().forEach(itemStacksIterator::add);
-              }
-            });
-      } else if (itemStack.getId() == ItemID.GNOMISH_FIRELIGHTER_20278) {
-        carryableStorageManager.getStorages().stream()
-            .filter(s -> s.getType() == CarryableStorageType.GNOMISH_FIRELIGHTER)
-            .findFirst()
-            .ifPresent(gnomishFirelighter -> gnomishFirelighter.getItems()
-                .forEach(itemStacksIterator::add));
-      } else if (itemStack.getId() == ItemID.LOOTING_BAG
-          || itemStack.getId() == ItemID.LOOTING_BAG_22586) {
+      for (CarryableStorage storage : carryableStorageManager.getStorages()) {
+        CarryableStorageType storageType = storage.getType();
+
+        if (storageType == CarryableStorageType.LOOTING_BAG || storageType.getContainerIds()
+            .isEmpty() || !storageType.getContainerIds().contains(itemStack.getId())) {
+          continue;
+        }
+
+        if (storageType.getEmptyOnDeathVarbit() == -1
+            || storage.getPlugin().getClient().getVarbitValue(storageType.getEmptyOnDeathVarbit())
+            == 1) {
+          storage.getItems().forEach(itemStacksIterator::add);
+        }
+      }
+
+      if (CarryableStorageType.LOOTING_BAG.getContainerIds().contains(itemStack.getId())) {
         isLootingBagPresent = true;
       }
     }

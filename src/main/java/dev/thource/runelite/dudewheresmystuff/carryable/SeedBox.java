@@ -30,7 +30,7 @@ public class SeedBox extends CarryableStorage {
   };
 
   SeedBox(DudeWheresMyStuffPlugin plugin) {
-    super(CarryableStorageType.SEED_BOX, plugin, 15314);
+    super(CarryableStorageType.SEED_BOX, plugin);
   }
 
   @Override

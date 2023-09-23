@@ -109,7 +109,7 @@ public class BoltPouch extends CarryableStorage {
   };
 
   BoltPouch(DudeWheresMyStuffPlugin plugin) {
-    super(CarryableStorageType.BOLT_POUCH, plugin, 15313);
+    super(CarryableStorageType.BOLT_POUCH, plugin);
 
     items.add(new ItemStack(-1, 0, plugin));
     items.add(new ItemStack(-1, 0, plugin));
