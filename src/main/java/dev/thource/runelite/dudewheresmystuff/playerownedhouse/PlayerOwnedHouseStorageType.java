@@ -528,6 +528,7 @@ public enum PlayerOwnedHouseStorageType implements StorageType {
           ItemID.BLACK_DHIDE_CHAPS_G,
           ItemID.BLACK_DHIDE_CHAPS_T,
           ItemID.DRAGON_FULL_HELM_G,
+          ItemID.DRAGON_SQ_SHIELD_G,
           ItemID.DRAGON_KITESHIELD_G,
           ItemID.DRAGON_PLATEBODY_G,
           ItemID.DRAGON_PLATELEGS_G,
