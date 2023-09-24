@@ -26,6 +26,7 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.VarClientInt;
+import net.runelite.api.Varbits;
 import net.runelite.api.events.ActorDeath;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.FocusChanged;
@@ -37,7 +38,6 @@ import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetClosed;
 import net.runelite.api.events.WidgetLoaded;
-import net.runelite.api.vars.AccountType;
 import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
@@ -281,10 +281,8 @@ public class DudeWheresMyStuffPlugin extends Plugin {
   }
 
   @Subscribe
-  public void onFocusChanged(FocusChanged focusChanged)
-  {
-    if (!focusChanged.isFocused())
-    {
+  public void onFocusChanged(FocusChanged focusChanged) {
+    if (!focusChanged.isFocused()) {
       itemCountOverlay.setKeybindPressed(false);
     }
   }
@@ -452,7 +450,7 @@ public class DudeWheresMyStuffPlugin extends Plugin {
 
     if (clientState == ClientState.LOGGING_IN) {
       final boolean isMember = client.getVarcIntValue(VarClientInt.MEMBERSHIP_STATUS) == 1;
-      final AccountType accountType = client.getAccountType();
+      final int accountType = client.getVarbitValue(Varbits.ACCOUNT_TYPE);
       final String displayName = getDisplayName(configManager.getRSProfileKey());
 
       // All saves should be migrated on plugin start, so this must be a new account
@@ -464,8 +462,8 @@ public class DudeWheresMyStuffPlugin extends Plugin {
 
       configManager.setRSProfileConfiguration(
           DudeWheresMyStuffConfig.CONFIG_GROUP, CONFIG_KEY_IS_MEMBER, isMember);
-      configManager.setRSProfileConfiguration(
-          DudeWheresMyStuffConfig.CONFIG_GROUP, "accountType", accountType.ordinal());
+      configManager.setRSProfileConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP, "accountType",
+          accountType);
 
       panelContainer.getPanel().logIn(isMember, accountType, displayName);
       clientState = ClientState.LOGGED_IN;
@@ -611,14 +609,13 @@ public class DudeWheresMyStuffPlugin extends Plugin {
               .logIn(
                   configManager.getConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP, profileKey,
                       CONFIG_KEY_IS_MEMBER, boolean.class),
-                  AccountType.values()[
-                      (int)
-                          configManager.getConfiguration(
-                              DudeWheresMyStuffConfig.CONFIG_GROUP,
-                              profileKey,
-                              "accountType",
-                              int.class)],
-                  displayName);
+                  configManager.getConfiguration(
+                      DudeWheresMyStuffConfig.CONFIG_GROUP,
+                      profileKey,
+                      "accountType",
+                      int.class),
+                  displayName
+              );
 
           panelContainer.enablePreviewMode();
         });

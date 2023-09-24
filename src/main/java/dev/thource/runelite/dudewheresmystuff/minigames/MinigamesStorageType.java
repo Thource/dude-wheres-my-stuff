@@ -4,7 +4,6 @@ import dev.thource.runelite.dudewheresmystuff.StorageType;
 import java.util.List;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import net.runelite.api.vars.AccountType;
 
 /** MinigamesStorageType is used to identify MinigameStorages. */
 @RequiredArgsConstructor
@@ -29,5 +28,5 @@ public enum MinigamesStorageType implements StorageType {
   private final boolean automatic;
   private final String configKey;
   private final boolean membersOnly = true;
-  private final List<AccountType> accountTypeBlacklist = null;
+  private final List<Integer> accountTypeBlacklist = null;
 }

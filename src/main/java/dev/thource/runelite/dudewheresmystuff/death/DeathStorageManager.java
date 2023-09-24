@@ -40,13 +40,13 @@ import net.runelite.api.Quest;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.TileItem;
+import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ActorDeath;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.ItemDespawned;
-import net.runelite.api.vars.AccountType;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.ui.overlay.infobox.InfoBox;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
@@ -434,7 +434,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
     deathbank.setLastUpdated(System.currentTimeMillis());
     deathbank.setLocked(
         type != DeathbankType.ZULRAH
-            || plugin.getClient().getAccountType() != AccountType.ULTIMATE_IRONMAN);
+            || client.getVarbitValue(Varbits.ACCOUNT_TYPE) != 2); // uim
     deathbank.getItems().add(new ItemStack(ItemID.MYSTERY_BOX, 1, plugin));
 
     SwingUtilities.invokeLater(() -> {
@@ -543,9 +543,9 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
       deathbank.setLastUpdated(System.currentTimeMillis());
       deathbank.setLocked(
           deathbankType.get() != DeathbankType.ZULRAH
-              || plugin.getClient().getAccountType() != AccountType.ULTIMATE_IRONMAN);
+              || client.getVarbitValue(Varbits.ACCOUNT_TYPE) != 2); // not uim
       deathbank.getItems().addAll(deathItems);
-    } else if (client.getAccountType() == AccountType.ULTIMATE_IRONMAN) {
+    } else if (client.getVarbitValue(Varbits.ACCOUNT_TYPE) == 2) { // uim
       createDeathpile(deathLocation, deathItems);
     }
 

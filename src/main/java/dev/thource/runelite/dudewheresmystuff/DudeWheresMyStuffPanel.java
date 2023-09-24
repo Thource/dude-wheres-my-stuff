@@ -53,7 +53,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import lombok.Getter;
 import lombok.Setter;
-import net.runelite.api.vars.AccountType;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.ColorScheme;
@@ -287,7 +286,7 @@ public class DudeWheresMyStuffPanel extends JPanel {
     setDisplayName("");
   }
 
-  void logIn(boolean isMember, AccountType accountType, String displayName) {
+  void logIn(boolean isMember, int accountType, String displayName) {
     storageTabPanelMap.forEach(
         (tab, storageTabPanel) -> {
           StorageManager<?, ?> storageManager = storageTabPanel.storageManager;

@@ -7,7 +7,6 @@ import javax.annotation.Nullable;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.runelite.api.ItemID;
-import net.runelite.api.vars.AccountType;
 
 /** PlayerOwnedHouseStorageType is used to identify PlayerOwnedHouseStorages. */
 @RequiredArgsConstructor
@@ -1386,5 +1385,5 @@ public enum PlayerOwnedHouseStorageType implements StorageType {
   private final String configKey;
   private final boolean membersOnly = true;
   @Nullable private final List<Integer> storableItemIds;
-  private final List<AccountType> accountTypeBlacklist = null;
+  private final List<Integer> accountTypeBlacklist = null;
 }

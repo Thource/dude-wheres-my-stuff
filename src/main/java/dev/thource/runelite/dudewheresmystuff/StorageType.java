@@ -1,7 +1,6 @@
 package dev.thource.runelite.dudewheresmystuff;
 
 import java.util.List;
-import net.runelite.api.vars.AccountType;
 
 /** StorageType is used to identify Storages. */
 public interface StorageType {
@@ -16,5 +15,5 @@ public interface StorageType {
 
   boolean isMembersOnly();
 
-  List<AccountType> getAccountTypeBlacklist();
+  List<Integer> getAccountTypeBlacklist();
 }

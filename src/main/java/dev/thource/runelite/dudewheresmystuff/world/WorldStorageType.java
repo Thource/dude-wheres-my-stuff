@@ -7,7 +7,6 @@ import java.util.List;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.runelite.api.InventoryID;
-import net.runelite.api.vars.AccountType;
 
 /** WorldStorageType is used to identify WorldStorages. */
 @RequiredArgsConstructor
@@ -20,7 +19,7 @@ public enum WorldStorageType implements StorageType {
       false,
       "bank",
       false,
-      Collections.singletonList(AccountType.ULTIMATE_IRONMAN)),
+      Collections.singletonList(2)), // uim
   GROUP_STORAGE(
       "Group Storage",
       InventoryID.GROUP_STORAGE.getId(),
@@ -28,10 +27,10 @@ public enum WorldStorageType implements StorageType {
       "groupstorage",
       false,
       Arrays.asList(
-          AccountType.ULTIMATE_IRONMAN,
-          AccountType.HARDCORE_IRONMAN,
-          AccountType.IRONMAN,
-          AccountType.NORMAL)),
+          0, // normal
+          1, // iron
+          2, // uim
+          3)), // hcim
   BLAST_FURNACE("Blast Furnace", -1, true, "blastfurnace", true, null),
   LOG_STORAGE("Log Storage", -1, false, "logstorage", true, null),
   FOSSIL_STORAGE("Fossil Storage", -1, true, "fossilstorage", true, null),
@@ -42,7 +41,7 @@ public enum WorldStorageType implements StorageType {
       false,
       "seedvault",
       true,
-      Collections.singletonList(AccountType.ULTIMATE_IRONMAN)),
+      Collections.singletonList(2)), // uim
   ANNETTE("Annette", -1, true, "annette", true, null),
   ELNOCK_INQUISITOR("Elnock Inquisitor", -1, true, "elnock", true, null),
   PICKAXE_STATUE("Pickaxe Statue", -1, true, "pickaxestatue", true, null),
@@ -54,5 +53,5 @@ public enum WorldStorageType implements StorageType {
   private final boolean automatic;
   private final String configKey;
   private final boolean membersOnly;
-  private final List<AccountType> accountTypeBlacklist;
+  private final List<Integer> accountTypeBlacklist;
 }
