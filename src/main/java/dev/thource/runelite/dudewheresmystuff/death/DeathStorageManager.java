@@ -570,7 +570,8 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
         .filter(
             s ->
                 s.getType() == CarryableStorageType.LOOTING_BAG
-                    || s.getType() == CarryableStorageType.SEED_BOX)
+                    || (s.getType().getEmptyOnDeathVarbit() != -1
+                    && client.getVarbitValue(s.getType().getEmptyOnDeathVarbit()) == 1))
         .forEach(
             s -> {
               s.getItems().clear();
