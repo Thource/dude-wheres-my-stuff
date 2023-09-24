@@ -9,7 +9,6 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.runelite.api.InventoryID;
 import net.runelite.api.ItemID;
-import net.runelite.api.vars.AccountType;
 
 /** CarryableStorageType is used to identify CarryableStorages. */
 @RequiredArgsConstructor
@@ -42,7 +41,7 @@ public enum CarryableStorageType implements StorageType {
   private final boolean automatic;
   private final String configKey;
   private final boolean membersOnly;
-  private final List<AccountType> accountTypeBlacklist = null;
+  private final List<Integer> accountTypeBlacklist = null;
   // ids of container items (the id of the rune pouch item, for example)
   private final List<Integer> containerIds;
   private final int emptyOnDeathVarbit;

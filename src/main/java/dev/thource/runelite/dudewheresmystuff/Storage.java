@@ -17,7 +17,6 @@ import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.WidgetClosed;
 import net.runelite.api.events.WidgetLoaded;
-import net.runelite.api.vars.AccountType;
 import net.runelite.client.config.ConfigManager;
 
 /** Storage serves as a base class for all trackable data in the plugin. */
@@ -227,7 +226,7 @@ public abstract class Storage<T extends StorageType> {
   }
 
   /** Disables the storage. */
-  public void disable(boolean isMember, AccountType accountType) {
+  public void disable(boolean isMember, int accountType) {
     if ((type.isMembersOnly() && !isMember)
         || (type.getAccountTypeBlacklist() != null
         && type.getAccountTypeBlacklist().contains(accountType))) {

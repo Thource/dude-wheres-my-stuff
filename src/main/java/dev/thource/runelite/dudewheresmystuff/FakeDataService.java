@@ -3,7 +3,6 @@ package dev.thource.runelite.dudewheresmystuff;
 import dev.thource.runelite.dudewheresmystuff.playerownedhouse.PlayerOwnedHouseStorageType;
 import dev.thource.runelite.dudewheresmystuff.stash.StashUnit;
 import java.util.stream.Collectors;
-import net.runelite.api.vars.AccountType;
 import net.runelite.client.config.ConfigManager;
 
 class FakeDataService {
@@ -33,7 +32,7 @@ class FakeDataService {
         DudeWheresMyStuffConfig.CONFIG_GROUP,
         PROFILE,
         "accountType",
-        AccountType.ULTIMATE_IRONMAN.ordinal());
+        2); // uim
 
     createDeathData(configManager);
     createCoinsData(configManager);
