@@ -3,6 +3,7 @@ package dev.thource.runelite.dudewheresmystuff;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.ConfigSection;
 import net.runelite.client.config.Keybind;
 import net.runelite.client.config.Range;
 
@@ -10,6 +11,13 @@ import net.runelite.client.config.Range;
 @SuppressWarnings("SameReturnValue")
 @ConfigGroup("dudewheresmystuff")
 public interface DudeWheresMyStuffConfig extends Config {
+
+  @ConfigSection(
+      name = "Deathpiles Options",
+      description = "Settings deathpiles",
+      position = 100
+  )
+  String deathpileOptionsSection = "Deathpiles Options";
 
   String CONFIG_GROUP = "dudewheresmystuff";
 
@@ -39,25 +47,32 @@ public interface DudeWheresMyStuffConfig extends Config {
           + "enabled, an infobox will be displayed prompting you to swap to the \"Character "
           + "summary\" tab when the plugin doesn't know your play time.<br><br>If the plugin "
           + "doesn't know your play time at the time of your death, the deathpile will default to "
-          + "non cross-client tracking mode.")
+          + "non cross-client tracking mode.",
+      section = deathpileOptionsSection,
+      position = 101
+  )
+
   default boolean deathpilesUseAccountPlayTime() {
     return false;
   }
 
+  @ConfigItem(
+      keyName = "deathpileInfoBox",
+      name = "Show infoboxes for deathpiles",
+      description = "When enabled, infoboxes will be displayed while you have active deathpiles.",
+      section = deathpileOptionsSection,
+      position = 102
+  )
+
+  default boolean deathpileInfoBox() {
+    return true;
+  }
   @ConfigItem(
       keyName = "deathbankInfoBox",
       name = "Show infobox for deathbank",
       description = "When enabled, an infobox will be displayed while you have an active "
           + "deathbank.")
   default boolean deathbankInfoBox() {
-    return true;
-  }
-
-  @ConfigItem(
-      keyName = "deathpileInfoBox",
-      name = "Show infoboxes for deathpiles",
-      description = "When enabled, infoboxes will be displayed while you have active deathpiles.")
-  default boolean deathpileInfoBox() {
     return true;
   }
 
@@ -79,7 +94,10 @@ public interface DudeWheresMyStuffConfig extends Config {
       keyName = "deathpileContingencyMinutes",
       name = "Deathpile contingency (minutes)",
       description = "This amount of minutes is removed from the deathpile timer. If set to 15, any "
-          + "new deathpiles will start with 45 minutes until expiry.")
+          + "new deathpiles will start with 45 minutes until expiry.",
+      section = deathpileOptionsSection,
+      position = 102
+  )
   default int deathpileContingencyMinutes() {
     return 1;
   }
@@ -112,6 +130,33 @@ public interface DudeWheresMyStuffConfig extends Config {
   default ItemSortMode itemSortMode() {
     return ItemSortMode.UNSORTED;
   }
+
+  @ConfigItem(
+      keyName = "warnDeathpileExpiring",
+      name = "Deathpile expiring soon warning",
+      description = "Displays a text warning on sceen when a deathpile is expiring soon.",
+      section = deathpileOptionsSection,
+      position = 103
+  )
+  default boolean warnDeathPileExpiring() {return false;}
+
+  @ConfigItem(
+      keyName = "warnDeathpileExpiringTime",
+      name = "Deathpile expiring warning time",
+      description = "The remaining on your oldest death pile before you start getting alerted.",
+      section = deathpileOptionsSection,
+      position = 104
+  )
+  default int timeUntilDeathpileExpires() {return 5;}
+
+  @ConfigItem(
+      keyName = "warnDeathpileExpiringFontSize",
+      name = "Deathpile expiring font size",
+      description = "Font size for the deathpile expiring warning.",
+      section = deathpileOptionsSection,
+      position = 105
+  )
+  default int warnDeathpileExpiringFontSize() {return 32;}
 
   @ConfigItem(keyName = "itemSortMode", name = "", description = "", hidden = true)
   void setItemSortMode(ItemSortMode itemSortMode);

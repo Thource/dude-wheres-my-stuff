@@ -5,6 +5,8 @@ import com.google.inject.name.Named;
 import dev.thource.runelite.dudewheresmystuff.carryable.CarryableStorageManager;
 import dev.thource.runelite.dudewheresmystuff.coins.CoinsStorageManager;
 import dev.thource.runelite.dudewheresmystuff.death.DeathStorageManager;
+import dev.thource.runelite.dudewheresmystuff.death.Deathpile;
+import dev.thource.runelite.dudewheresmystuff.death.SoonestDeathpileOverlay;
 import dev.thource.runelite.dudewheresmystuff.minigames.MinigamesStorageManager;
 import dev.thource.runelite.dudewheresmystuff.playerownedhouse.PlayerOwnedHouseStorageManager;
 import dev.thource.runelite.dudewheresmystuff.stash.StashStorageManager;
@@ -95,7 +97,7 @@ public class DudeWheresMyStuffPlugin extends Plugin {
   @Inject private ConfigManager configManager;
   @Inject private OverlayManager overlayManager;
   @Inject private KeyManager keyManager;
-
+  @Inject private SoonestDeathpileOverlay soonestDeathpileOverlay;
   @Inject private ItemCountOverlay itemCountOverlay;
   @Inject private ItemCountInputListener itemCountInputListener;
   @Inject private DeathStorageManager deathStorageManager;
@@ -120,6 +122,9 @@ public class DudeWheresMyStuffPlugin extends Plugin {
   private ClientState clientState = ClientState.LOGGED_OUT;
   private boolean pluginStartedAlreadyLoggedIn;
   private String profileKey;
+  public String soonestExpiringDeathpileMessage = null;
+  public int soonestExpiringDeathpileMinutesLeft;
+  public boolean soonestExpiringDeathpileColor = false;
   @Getter private String previewProfileKey;
 
   /**
@@ -254,6 +259,8 @@ public class DudeWheresMyStuffPlugin extends Plugin {
 
     deathStorageManager.refreshInfoBoxes();
 
+    overlayManager.add(soonestDeathpileOverlay);
+
     overlayManager.add(itemCountOverlay);
     itemCountInputListener.setItemCountOverlay(itemCountOverlay);
     keyManager.registerKeyListener(itemCountInputListener);
@@ -276,6 +283,7 @@ public class DudeWheresMyStuffPlugin extends Plugin {
     infoBoxManager.removeIf(
         infoBox -> infoBox.getName().startsWith(this.getClass().getSimpleName()));
 
+    overlayManager.remove(soonestDeathpileOverlay);
     overlayManager.remove(itemCountOverlay);
     keyManager.unregisterKeyListener(itemCountInputListener);
   }
@@ -444,6 +452,14 @@ public class DudeWheresMyStuffPlugin extends Plugin {
 
   @Subscribe
   void onGameTick(GameTick gameTick) {
+    Deathpile soonestExpiringDeathpile = deathStorageManager.findSoonestExpiringDeathpile();
+
+    if (soonestExpiringDeathpile != null){
+      soonestExpiringDeathpileMessage = deathStorageManager.findSoonestExpiringDeathpileString();
+      soonestExpiringDeathpileColor = !soonestExpiringDeathpileColor;
+      soonestExpiringDeathpileMinutesLeft = (int) Math.floor((soonestExpiringDeathpile.getExpiryMs() - System.currentTimeMillis()) / 60000f);
+    }
+
     if (clientState == ClientState.LOGGED_OUT) {
       return;
     }
