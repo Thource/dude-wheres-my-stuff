@@ -450,16 +450,24 @@ public class DudeWheresMyStuffPlugin extends Plugin {
     }
   }
 
-  @Subscribe
-  void onGameTick(GameTick gameTick) {
+  void updateSoonestDeathPileOverlay() {
     Deathpile soonestExpiringDeathpile = deathStorageManager.findSoonestExpiringDeathpile();
 
-    if (soonestExpiringDeathpile != null){
+    if (soonestExpiringDeathpile != null) {
       soonestExpiringDeathpileMessage = deathStorageManager.findSoonestExpiringDeathpileString();
+      // Switches between two overlay colors
       soonestExpiringDeathpileColor = !soonestExpiringDeathpileColor;
-      soonestExpiringDeathpileMinutesLeft = (int) Math.floor((soonestExpiringDeathpile.getExpiryMs() - System.currentTimeMillis()) / 60000f);
+      soonestExpiringDeathpileMinutesLeft = (int) Math.floor(
+          (soonestExpiringDeathpile.getExpiryMs() - System.currentTimeMillis()) / 60_000f);
+    } else {
+      // Reset / clear variables if there's no death pile
+      soonestExpiringDeathpileMessage = null;
+      soonestExpiringDeathpileMinutesLeft = -1;
     }
+  }
 
+  @Subscribe
+  void onGameTick(GameTick gameTick) {
     if (clientState == ClientState.LOGGED_OUT) {
       return;
     }
@@ -502,6 +510,8 @@ public class DudeWheresMyStuffPlugin extends Plugin {
 
       return;
     }
+
+    updateSoonestDeathPileOverlay();
 
     ItemContainerWatcher.onGameTick(this);
     storageManagerManager.onGameTick();

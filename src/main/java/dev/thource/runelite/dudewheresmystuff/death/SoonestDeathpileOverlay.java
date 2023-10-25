@@ -11,7 +11,6 @@ import javax.inject.Inject;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.components.TitleComponent;
 
 public class SoonestDeathpileOverlay extends Overlay {
 
@@ -33,17 +32,19 @@ public class SoonestDeathpileOverlay extends Overlay {
     return renderText(graphics);
   }
 
-  // If there is a Death pile expiring soon that matchs the config criteria
+  // If there is a Death pile expiring soon that matches the config criteria
   private boolean shouldRenderOverlay() {
     return plugin.soonestExpiringDeathpileMessage != null &&
         plugin.soonestExpiringDeathpileMinutesLeft <= config.timeUntilDeathpileExpires() &&
         config.warnDeathPileExpiring();
   }
 
-  private Dimension renderText (Graphics2D graphics){
-    Font font = FontManager.getRunescapeFont().deriveFont(Font.PLAIN, config.warnDeathpileExpiringFontSize());
+  private Dimension renderText(Graphics2D graphics) {
+    Font font = FontManager.getRunescapeFont()
+        .deriveFont(Font.PLAIN, config.warnDeathpileExpiringFontSize());
     graphics.setFont(font);
-    String deathpileExpiringText = "Your deathpile " + plugin.soonestExpiringDeathpileMessage.toLowerCase();
+    String deathpileExpiringText =
+        "Your deathpile " + plugin.soonestExpiringDeathpileMessage.toLowerCase();
 
     // Alternates between two colors, this could be customized later
     Color textColor = plugin.soonestExpiringDeathpileColor ? Color.RED : Color.WHITE;
@@ -54,7 +55,7 @@ public class SoonestDeathpileOverlay extends Overlay {
     int textWidth = metrics.stringWidth(deathpileExpiringText);
     int textHeight = metrics.getHeight();
 
-    graphics.drawString(deathpileExpiringText,0,0 + textHeight);
+    graphics.drawString(deathpileExpiringText, 0, 0 + textHeight);
 
     return new Dimension(textWidth, textHeight);
   }
