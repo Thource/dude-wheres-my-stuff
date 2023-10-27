@@ -77,7 +77,6 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 )
 @PluginDependency(ItemIdentificationPlugin.class)
 public class DudeWheresMyStuffPlugin extends Plugin {
-
   private static final String CONFIG_KEY_IS_MEMBER = "isMember";
   private static final String CONFIG_KEY_SAVE_MIGRATED = "saveMigrated";
 
@@ -122,10 +121,8 @@ public class DudeWheresMyStuffPlugin extends Plugin {
   private ClientState clientState = ClientState.LOGGED_OUT;
   private boolean pluginStartedAlreadyLoggedIn;
   private String profileKey;
-  public String soonestExpiringDeathpileMessage = null;
-  public int soonestExpiringDeathpileMinutesLeft;
-  public boolean soonestExpiringDeathpileColor = false;
   @Getter private String previewProfileKey;
+  @Getter public Deathpile soonestDeathpile;
 
   /**
    * Displays a confirmation popup to the user and returns true if they confirmed it.
@@ -450,24 +447,9 @@ public class DudeWheresMyStuffPlugin extends Plugin {
     }
   }
 
-  void updateSoonestDeathPileOverlay() {
-    Deathpile soonestExpiringDeathpile = deathStorageManager.findSoonestExpiringDeathpile();
-
-    if (soonestExpiringDeathpile != null) {
-      soonestExpiringDeathpileMessage = deathStorageManager.findSoonestExpiringDeathpileString();
-      // Switches between two overlay colors
-      soonestExpiringDeathpileColor = !soonestExpiringDeathpileColor;
-      soonestExpiringDeathpileMinutesLeft = (int) Math.floor(
-          (soonestExpiringDeathpile.getExpiryMs() - System.currentTimeMillis()) / 60_000f);
-    } else {
-      // Reset / clear variables if there's no death pile
-      soonestExpiringDeathpileMessage = null;
-      soonestExpiringDeathpileMinutesLeft = -1;
-    }
-  }
-
   @Subscribe
   void onGameTick(GameTick gameTick) {
+
     if (clientState == ClientState.LOGGED_OUT) {
       return;
     }
@@ -511,7 +493,8 @@ public class DudeWheresMyStuffPlugin extends Plugin {
       return;
     }
 
-    updateSoonestDeathPileOverlay();
+    soonestDeathpile = deathStorageManager.getSoonestExpiringDeathpile();
+    soonestDeathpileOverlay.updateSoonestDeathpile();
 
     ItemContainerWatcher.onGameTick(this);
     storageManagerManager.onGameTick();
