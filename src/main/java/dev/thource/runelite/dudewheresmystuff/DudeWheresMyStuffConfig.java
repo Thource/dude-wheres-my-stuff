@@ -143,7 +143,7 @@ public interface DudeWheresMyStuffConfig extends Config {
   @ConfigItem(
       keyName = "warnDeathpileExpiringTime",
       name = "Deathpile expiry warning time",
-      description = "The remaining on your oldest death pile before you start getting alerted.",
+      description = "The minutes remaining on your oldest death pile before you start getting alerted.",
       section = deathpileOptionsSection,
       position = 104
   )
