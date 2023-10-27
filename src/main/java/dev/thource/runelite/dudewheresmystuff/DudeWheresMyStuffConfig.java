@@ -134,7 +134,7 @@ public interface DudeWheresMyStuffConfig extends Config {
   @ConfigItem(
       keyName = "warnDeathpileExpiring",
       name = "Deathpile expiring soon warning",
-      description = "Displays a text warning on sceen when a deathpile is expiring soon.",
+      description = "Displays a text warning on screen when a deathpile is expiring soon.",
       section = deathpileOptionsSection,
       position = 103
   )
@@ -142,7 +142,7 @@ public interface DudeWheresMyStuffConfig extends Config {
 
   @ConfigItem(
       keyName = "warnDeathpileExpiringTime",
-      name = "Deathpile expiring warning time",
+      name = "Deathpile expiry warning time",
       description = "The remaining on your oldest death pile before you start getting alerted.",
       section = deathpileOptionsSection,
       position = 104
@@ -151,8 +151,8 @@ public interface DudeWheresMyStuffConfig extends Config {
 
   @ConfigItem(
       keyName = "warnDeathpileExpiringFontSize",
-      name = "Deathpile expiring font size",
-      description = "Font size for the deathpile expiring warning.",
+      name = "Deathpile expiry font size",
+      description = "Font size for the deathpile expiry warning.",
       section = deathpileOptionsSection,
       position = 105
   )
