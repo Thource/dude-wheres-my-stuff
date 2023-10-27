@@ -133,7 +133,7 @@ public interface DudeWheresMyStuffConfig extends Config {
 
   @ConfigItem(
       keyName = "warnDeathpileExpiring",
-      name = "Deathpile expiring soon warning",
+      name = "Deathpile expiry warning",
       description = "Displays a text warning on screen when a deathpile is expiring soon.",
       section = deathpileOptionsSection,
       position = 103
