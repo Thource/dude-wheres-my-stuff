@@ -279,7 +279,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
     }
   }
 
-  private Stream<Deathpile> getDeathpiles() {
+  Stream<Deathpile> getDeathpiles() {
     return storages.stream()
         .filter(Deathpile.class::isInstance)
         .map(Deathpile.class::cast);
@@ -310,6 +310,20 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
     }
   }
 
+  private void refreshInfoBoxImage(DeathpileInfoBox infoBox) {
+    if (!infoBox.isImageDirty()) {
+      return;
+    }
+
+    InfoBoxManager infoBoxManager = plugin.getInfoBoxManager();
+    List<InfoBox> currentInfoBoxes = infoBoxManager.getInfoBoxes();
+    if (currentInfoBoxes.contains(infoBox)) {
+      infoBoxManager.updateInfoBoxImage(infoBox);
+    }
+
+    infoBox.setImageDirty(false);
+  }
+
   private void refreshDeathpileInfoBoxes() {
     InfoBoxManager infoBoxManager = plugin.getInfoBoxManager();
     List<InfoBox> currentInfoBoxes = infoBoxManager.getInfoBoxes();
@@ -330,6 +344,8 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
     for (DeathpileInfoBox infoBox : deathpileInfoBoxes) {
       if (plugin.getConfig().deathpileInfoBox()) {
         infoBox.refreshTooltip();
+
+        refreshInfoBoxImage(infoBox);
 
         if (!currentInfoBoxes.contains(infoBox)) {
           infoBoxManager.addInfoBox(infoBox);
