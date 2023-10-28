@@ -5,6 +5,8 @@ import com.google.inject.name.Named;
 import dev.thource.runelite.dudewheresmystuff.carryable.CarryableStorageManager;
 import dev.thource.runelite.dudewheresmystuff.coins.CoinsStorageManager;
 import dev.thource.runelite.dudewheresmystuff.death.DeathStorageManager;
+import dev.thource.runelite.dudewheresmystuff.death.Deathpile;
+import dev.thource.runelite.dudewheresmystuff.death.SoonestDeathpileOverlay;
 import dev.thource.runelite.dudewheresmystuff.minigames.MinigamesStorageManager;
 import dev.thource.runelite.dudewheresmystuff.playerownedhouse.PlayerOwnedHouseStorageManager;
 import dev.thource.runelite.dudewheresmystuff.stash.StashStorageManager;
@@ -75,7 +77,6 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 )
 @PluginDependency(ItemIdentificationPlugin.class)
 public class DudeWheresMyStuffPlugin extends Plugin {
-
   private static final String CONFIG_KEY_IS_MEMBER = "isMember";
   private static final String CONFIG_KEY_SAVE_MIGRATED = "saveMigrated";
 
@@ -95,7 +96,7 @@ public class DudeWheresMyStuffPlugin extends Plugin {
   @Inject private ConfigManager configManager;
   @Inject private OverlayManager overlayManager;
   @Inject private KeyManager keyManager;
-
+  @Inject private SoonestDeathpileOverlay soonestDeathpileOverlay;
   @Inject private ItemCountOverlay itemCountOverlay;
   @Inject private ItemCountInputListener itemCountInputListener;
   @Inject private DeathStorageManager deathStorageManager;
@@ -121,6 +122,7 @@ public class DudeWheresMyStuffPlugin extends Plugin {
   private boolean pluginStartedAlreadyLoggedIn;
   private String profileKey;
   @Getter private String previewProfileKey;
+  @Getter public Deathpile soonestDeathpile;
 
   /**
    * Displays a confirmation popup to the user and returns true if they confirmed it.
@@ -254,6 +256,8 @@ public class DudeWheresMyStuffPlugin extends Plugin {
 
     deathStorageManager.refreshInfoBoxes();
 
+    overlayManager.add(soonestDeathpileOverlay);
+
     overlayManager.add(itemCountOverlay);
     itemCountInputListener.setItemCountOverlay(itemCountOverlay);
     keyManager.registerKeyListener(itemCountInputListener);
@@ -276,6 +280,7 @@ public class DudeWheresMyStuffPlugin extends Plugin {
     infoBoxManager.removeIf(
         infoBox -> infoBox.getName().startsWith(this.getClass().getSimpleName()));
 
+    overlayManager.remove(soonestDeathpileOverlay);
     overlayManager.remove(itemCountOverlay);
     keyManager.unregisterKeyListener(itemCountInputListener);
   }
@@ -444,6 +449,7 @@ public class DudeWheresMyStuffPlugin extends Plugin {
 
   @Subscribe
   void onGameTick(GameTick gameTick) {
+
     if (clientState == ClientState.LOGGED_OUT) {
       return;
     }
@@ -486,6 +492,9 @@ public class DudeWheresMyStuffPlugin extends Plugin {
 
       return;
     }
+
+    soonestDeathpile = deathStorageManager.getSoonestExpiringDeathpile();
+    soonestDeathpileOverlay.updateSoonestDeathpile();
 
     ItemContainerWatcher.onGameTick(this);
     storageManagerManager.onGameTick();

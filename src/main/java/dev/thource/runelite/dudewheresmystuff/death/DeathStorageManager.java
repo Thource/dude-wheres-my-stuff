@@ -229,6 +229,13 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
     updateWorldMapPoints();
   }
 
+  public Deathpile getSoonestExpiringDeathpile() {
+    return getDeathpiles()
+        .filter(deathpile -> !deathpile.hasExpired())
+        .min(Comparator.comparing(Deathpile::getExpiryMs))
+        .orElse(null);
+  }
+
   private boolean checkIfDeathbankWindowIsEmpty() {
     Widget itemWindow = client.getWidget(602, 3);
     // This checks if the item collection window has been emptied while it was open
