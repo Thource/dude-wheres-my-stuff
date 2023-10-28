@@ -1,5 +1,6 @@
 package dev.thource.runelite.dudewheresmystuff;
 
+import dev.thource.runelite.dudewheresmystuff.death.DeathpileExpiryWarningType;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -12,14 +13,13 @@ import net.runelite.client.config.Range;
 @ConfigGroup("dudewheresmystuff")
 public interface DudeWheresMyStuffConfig extends Config {
 
+  String CONFIG_GROUP = "dudewheresmystuff";
   @ConfigSection(
       name = "Deathpiles Options",
       description = "Settings deathpiles",
       position = 100
   )
-  String deathpileOptionsSection = "Deathpiles Options";
-
-  String CONFIG_GROUP = "dudewheresmystuff";
+  String DEATHPILE_OPTIONS_SECTION = "Deathpiles Options";
 
   @ConfigItem(
       keyName = "showEmptyStorages",
@@ -38,45 +38,6 @@ public interface DudeWheresMyStuffConfig extends Config {
   }
 
   @ConfigItem(
-      keyName = "deathpilesUseAccountPlayTime",
-      name = "Cross-client deathpile tracking",
-      description = "When enabled, deathpile expiry will be based on account play time, this means "
-          + "that if you play for 5 minutes on another client (like mobile) your deathpile timer "
-          + "will still be accurate.<br><br>Using this option requires you to set your quest tab "
-          + "to the \"Character summary\" tab (brown star icon) once per login. With this option "
-          + "enabled, an infobox will be displayed prompting you to swap to the \"Character "
-          + "summary\" tab when the plugin doesn't know your play time.<br><br>If the plugin "
-          + "doesn't know your play time at the time of your death, the deathpile will default to "
-          + "non cross-client tracking mode.",
-      section = deathpileOptionsSection,
-      position = 101
-  )
-
-  default boolean deathpilesUseAccountPlayTime() {
-    return false;
-  }
-
-  @ConfigItem(
-      keyName = "deathpileInfoBox",
-      name = "Show infoboxes for deathpiles",
-      description = "When enabled, infoboxes will be displayed while you have active deathpiles.",
-      section = deathpileOptionsSection,
-      position = 102
-  )
-
-  default boolean deathpileInfoBox() {
-    return true;
-  }
-  @ConfigItem(
-      keyName = "deathbankInfoBox",
-      name = "Show infobox for deathbank",
-      description = "When enabled, an infobox will be displayed while you have an active "
-          + "deathbank.")
-  default boolean deathbankInfoBox() {
-    return true;
-  }
-
-  @ConfigItem(
       keyName = "csvCombineItems",
       name = "Combine items in CSV",
       description = "When enabled, items from different storages will be combined into a single "
@@ -84,22 +45,6 @@ public interface DudeWheresMyStuffConfig extends Config {
           + "which storage.")
   default boolean csvCombineItems() {
     return false;
-  }
-
-  @Range(
-      min = 1,
-      max = 59
-  )
-  @ConfigItem(
-      keyName = "deathpileContingencyMinutes",
-      name = "Deathpile contingency (minutes)",
-      description = "This amount of minutes is removed from the deathpile timer. If set to 15, any "
-          + "new deathpiles will start with 45 minutes until expiry.",
-      section = deathpileOptionsSection,
-      position = 102
-  )
-  default int deathpileContingencyMinutes() {
-    return 1;
   }
 
   @ConfigItem(
@@ -123,6 +68,118 @@ public interface DudeWheresMyStuffConfig extends Config {
   }
 
   @ConfigItem(
+      keyName = "deathpilesUseAccountPlayTime",
+      name = "Cross-client deathpile tracking",
+      description = "When enabled, deathpile expiry will be based on account play time, this means "
+          + "that if you play for 5 minutes on another client (like mobile) your deathpile timer "
+          + "will still be accurate.<br><br>Using this option requires you to set your quest tab "
+          + "to the \"Character summary\" tab (brown star icon) once per login. With this option "
+          + "enabled, an infobox will be displayed prompting you to swap to the \"Character "
+          + "summary\" tab when the plugin doesn't know your play time.<br><br>If the plugin "
+          + "doesn't know your play time at the time of your death, the deathpile will default to "
+          + "non cross-client tracking mode.",
+      section = DEATHPILE_OPTIONS_SECTION,
+      position = 101
+  )
+
+  default boolean deathpilesUseAccountPlayTime() {
+    return false;
+  }
+
+  @ConfigItem(
+      keyName = "deathpileInfoBox",
+      name = "Show infoboxes for deathpiles",
+      description = "When enabled, infoboxes will be displayed while you have active deathpiles.",
+      section = DEATHPILE_OPTIONS_SECTION,
+      position = 102
+  )
+  default boolean deathpileInfoBox() {
+    return true;
+  }
+
+  @ConfigItem(
+      keyName = "deathbankInfoBox",
+      name = "Show infobox for deathbank",
+      description = "When enabled, an infobox will be displayed while you have an active "
+          + "deathbank.",
+      section = DEATHPILE_OPTIONS_SECTION,
+      position = 103)
+  default boolean deathbankInfoBox() {
+    return true;
+  }
+
+  @Range(
+      min = 1,
+      max = 59
+  )
+  @ConfigItem(
+      keyName = "deathpileContingencyMinutes",
+      name = "Deathpile contingency (minutes)",
+      description = "This amount of minutes is removed from the deathpile timer. If set to 15, any "
+          + "new deathpiles will start with 45 minutes until expiry.",
+      section = DEATHPILE_OPTIONS_SECTION,
+      position = 104
+  )
+  default int deathpileContingencyMinutes() {
+    return 1;
+  }
+
+  @ConfigItem(
+      keyName = "flashExpiringDeathpileInfoboxes",
+      name = "Flash expiring infoboxes",
+      description = "Flash the infoboxes of expiring deathpiles red.",
+      section = DEATHPILE_OPTIONS_SECTION,
+      position = 105
+  )
+  default boolean flashExpiringDeathpileInfoboxes() {
+    return true;
+  }
+
+  @ConfigItem(
+      keyName = "flashExpiringDeathpileTiles",
+      name = "Flash expiring tiles",
+      description = "Flash the tile borders of expiring deathpiles red.",
+      section = DEATHPILE_OPTIONS_SECTION,
+      position = 106
+  )
+  default boolean flashExpiringDeathpileTiles() {
+    return true;
+  }
+
+  @ConfigItem(
+      keyName = "showDeathpileExpiryText",
+      name = "Show expiry text",
+      description = "Show on-screen text when your oldest deathpile is expiring.",
+      section = DEATHPILE_OPTIONS_SECTION,
+      position = 107
+  )
+  default boolean showDeathpileExpiryText() {
+    return false;
+  }
+
+  @ConfigItem(
+      keyName = "deathpileExpiryWarningTime",
+      name = "Deathpile expiry warning time",
+      description = "The minutes remaining on your oldest death pile before you start getting alerted.",
+      section = DEATHPILE_OPTIONS_SECTION,
+      position = 108
+  )
+  default int deathpileExpiryWarningTime() {
+    return 5;
+  }
+
+  @ConfigItem(
+      keyName = "deathpileExpiryWarningFontSize",
+      name = "Deathpile expiry font size",
+      description = "Font size for the deathpile expiry text warning.",
+      section = DEATHPILE_OPTIONS_SECTION,
+      position = 109
+  )
+  default int deathpileExpiryWarningFontSize() {
+    return 32;
+  }
+
+  @ConfigItem(
       keyName = "itemSortMode",
       name = "Item Sort Mode",
       description = "Which mode to use when sorting items",
@@ -130,33 +187,6 @@ public interface DudeWheresMyStuffConfig extends Config {
   default ItemSortMode itemSortMode() {
     return ItemSortMode.UNSORTED;
   }
-
-  @ConfigItem(
-      keyName = "warnDeathpileExpiring",
-      name = "Deathpile expiry warning",
-      description = "Displays a text warning on screen when a deathpile is expiring soon.",
-      section = deathpileOptionsSection,
-      position = 103
-  )
-  default boolean warnDeathPileExpiring() {return false;}
-
-  @ConfigItem(
-      keyName = "warnDeathpileExpiringTime",
-      name = "Deathpile expiry warning time",
-      description = "The minutes remaining on your oldest death pile before you start getting alerted.",
-      section = deathpileOptionsSection,
-      position = 104
-  )
-  default int timeUntilDeathpileExpires() {return 5;}
-
-  @ConfigItem(
-      keyName = "warnDeathpileExpiringFontSize",
-      name = "Deathpile expiry font size",
-      description = "Font size for the deathpile expiry warning.",
-      section = deathpileOptionsSection,
-      position = 105
-  )
-  default int warnDeathpileExpiringFontSize() {return 32;}
 
   @ConfigItem(keyName = "itemSortMode", name = "", description = "", hidden = true)
   void setItemSortMode(ItemSortMode itemSortMode);

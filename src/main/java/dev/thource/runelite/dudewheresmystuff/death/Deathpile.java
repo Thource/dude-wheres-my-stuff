@@ -7,8 +7,10 @@ import dev.thource.runelite.dudewheresmystuff.Region;
 import dev.thource.runelite.dudewheresmystuff.SaveFieldFormatter;
 import dev.thource.runelite.dudewheresmystuff.SaveFieldLoader;
 import dev.thource.runelite.dudewheresmystuff.StorageManager;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -32,7 +34,8 @@ public class Deathpile extends DeathStorage {
 
   private static final ImageIcon WARNING_ICON =
       new ImageIcon(ImageUtil.loadImageResource(DudeWheresMyStuffPlugin.class, "warning.png"));
-
+  private final DeathStorageManager deathStorageManager;
+  @Setter protected DeathWorldMapPoint worldMapPoint;
   private WorldPoint worldPoint;
   private boolean useAccountPlayTime;
   // when useAccountPlayTime is true, expiryTime is the account played minutes that the deathpile
@@ -41,8 +44,7 @@ public class Deathpile extends DeathStorage {
   // the deathpile expires, ticking down only while the player is logged in.
   private int expiryTime;
   private long expiredAt = -1L;
-  @Setter protected DeathWorldMapPoint worldMapPoint;
-  private final DeathStorageManager deathStorageManager;
+  @Getter private Color color = Color.WHITE;
 
   Deathpile(
       DudeWheresMyStuffPlugin plugin,
@@ -57,6 +59,38 @@ public class Deathpile extends DeathStorage {
     this.worldPoint = worldPoint;
     this.deathStorageManager = deathStorageManager;
     this.items.addAll(deathItems);
+    this.color = generateColor();
+  }
+
+  static Deathpile load(DudeWheresMyStuffPlugin plugin, DeathStorageManager deathStorageManager,
+      String profileKey, String uuid) {
+    Deathpile deathpile = new Deathpile(
+        plugin,
+        true,
+        0,
+        null,
+        deathStorageManager,
+        new ArrayList<>()
+    );
+
+    deathpile.uuid = UUID.fromString(uuid);
+    deathpile.load(deathStorageManager.getConfigManager(), deathStorageManager.getConfigKey(),
+        profileKey);
+
+    return deathpile;
+  }
+
+  private Color generateColor() {
+    if (worldPoint == null) {
+      return Color.WHITE;
+    }
+
+    Random rand = new Random(
+        worldPoint.getX() * 200L + worldPoint.getY() * 354L + worldPoint.getPlane() * 42L);
+
+    float saturation = 0.7f + rand.nextFloat() * 0.3f;
+    float hue = rand.nextFloat();
+    return Color.getHSBColor(hue, saturation, 0.8f);
   }
 
   @Override
@@ -79,6 +113,7 @@ public class Deathpile extends DeathStorage {
     useAccountPlayTime = SaveFieldLoader.loadBoolean(values, useAccountPlayTime);
     expiryTime = SaveFieldLoader.loadInt(values, expiryTime);
     expiredAt = SaveFieldLoader.loadLong(values, expiredAt);
+    color = generateColor();
   }
 
   @Override
@@ -282,24 +317,6 @@ public class Deathpile extends DeathStorage {
     }
 
     storagePanel.setFooterText(getExpireText());
-  }
-
-  static Deathpile load(DudeWheresMyStuffPlugin plugin, DeathStorageManager deathStorageManager,
-      String profileKey, String uuid) {
-    Deathpile deathpile = new Deathpile(
-        plugin,
-        true,
-        0,
-        null,
-        deathStorageManager,
-        new ArrayList<>()
-    );
-
-    deathpile.uuid = UUID.fromString(uuid);
-    deathpile.load(deathStorageManager.getConfigManager(), deathStorageManager.getConfigKey(),
-        profileKey);
-
-    return deathpile;
   }
 
   @Override
