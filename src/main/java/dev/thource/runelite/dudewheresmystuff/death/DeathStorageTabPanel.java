@@ -29,7 +29,7 @@ public class DeathStorageTabPanel
             }
 
             return Long.MIN_VALUE + storage.getExpiryMs();
-          } else if (s instanceof DeathItems) {
+          } else if (s instanceof DeathItems || s instanceof DeathsOffice) {
             return Long.MIN_VALUE;
           } else {
             Deathbank deathbank = (Deathbank) s;

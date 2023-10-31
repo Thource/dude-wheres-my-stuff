@@ -21,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 @Setter
 public class Deathbank extends DeathStorage {
 
+  protected UUID uuid = UUID.randomUUID();
   private boolean locked = false;
   @Getter private long lostAt = -1L;
   private DeathbankType deathbankType;
@@ -36,10 +37,36 @@ public class Deathbank extends DeathStorage {
     this.deathStorageManager = deathStorageManager;
   }
 
+  static Deathbank load(DudeWheresMyStuffPlugin plugin, DeathStorageManager deathStorageManager,
+      String profileKey, String uuid) {
+    Deathbank deathbank = new Deathbank(
+        DeathbankType.UNKNOWN,
+        plugin,
+        deathStorageManager
+    );
+
+    deathbank.uuid = UUID.fromString(uuid);
+    deathbank.load(deathStorageManager.getConfigManager(), deathStorageManager.getConfigKey(),
+        profileKey);
+
+    if (deathbank.getItems().isEmpty()) {
+      deathbank.deleteData(deathStorageManager);
+      return null;
+    }
+
+    return deathbank;
+  }
+
+  @Override
+  protected String getConfigKey(String managerConfigKey) {
+    return super.getConfigKey(managerConfigKey) + "." + uuid;
+  }
+
   @Override
   protected ArrayList<String> getSaveValues() {
     ArrayList<String> saveValues = super.getSaveValues();
 
+    saveValues.add(SaveFieldFormatter.format(uuid));
     saveValues.add(SaveFieldFormatter.format(locked));
     saveValues.add(SaveFieldFormatter.format(lostAt));
     saveValues.add(SaveFieldFormatter.format(deathbankType));
@@ -51,6 +78,7 @@ public class Deathbank extends DeathStorage {
   protected void loadValues(ArrayList<String> values) {
     super.loadValues(values);
 
+    uuid = SaveFieldLoader.loadUUID(values, uuid);
     locked = SaveFieldLoader.loadBoolean(values, locked);
     lostAt = SaveFieldLoader.loadLong(values, lostAt);
     deathbankType = SaveFieldLoader.loadDeathbankType(values, deathbankType);
@@ -122,26 +150,6 @@ public class Deathbank extends DeathStorage {
     }
 
     super.softUpdate();
-  }
-
-  static Deathbank load(DudeWheresMyStuffPlugin plugin, DeathStorageManager deathStorageManager,
-      String profileKey, String uuid) {
-    Deathbank deathbank = new Deathbank(
-        DeathbankType.UNKNOWN,
-        plugin,
-        deathStorageManager
-    );
-
-    deathbank.uuid = UUID.fromString(uuid);
-    deathbank.load(deathStorageManager.getConfigManager(), deathStorageManager.getConfigKey(),
-        profileKey);
-
-    if (deathbank.getItems().isEmpty()) {
-      deathbank.deleteData(deathStorageManager);
-      return null;
-    }
-
-    return deathbank;
   }
 
   /**

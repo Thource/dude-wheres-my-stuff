@@ -72,6 +72,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
       );
   private final CheckPlayTimeInfoBox playTimeInfoBox = new CheckPlayTimeInfoBox(plugin);
   private final List<ExpiringDeathStorageInfoBox> expiringDeathStorageInfoBoxes = new ArrayList<>();
+  @Getter private final DeathsOffice deathsOffice;
   long startMs = 0L;
   @Getter @Nullable private Deathbank deathbank = null;
   @Getter @Nullable private Grave grave = null;
@@ -93,6 +94,8 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
         + " (brown star) to</br>track cross-client deathpiles.");
 
     storages.add(new DeathItems(plugin, this));
+    deathsOffice = new DeathsOffice(plugin, this);
+    storages.add(deathsOffice);
   }
 
   @Override
@@ -850,16 +853,14 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
     loadDeathpiles(profileKey);
     loadGraves(profileKey);
     loadDeathbanks(profileKey);
+    deathsOffice.load(configManager, getConfigKey(), profileKey);
   }
 
 
   @Override
   public void reset() {
     oldInventoryItems = null;
-    storages.clear();
-    DeathItems deathItemsStorage = new DeathItems(plugin, this);
-    SwingUtilities.invokeLater(() -> deathItemsStorage.createStoragePanel(this));
-    storages.add(deathItemsStorage);
+    storages.removeIf(s -> s instanceof ExpiringDeathStorage || s instanceof Deathbank);
     deathbank = null;
     enable();
     refreshMapPoints();

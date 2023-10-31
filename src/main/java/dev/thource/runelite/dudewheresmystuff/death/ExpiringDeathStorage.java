@@ -29,9 +29,13 @@ public abstract class ExpiringDeathStorage extends DeathStorage {
 
   private static final ImageIcon WARNING_ICON =
       new ImageIcon(ImageUtil.loadImageResource(DudeWheresMyStuffPlugin.class, "warning.png"));
-
+  @Getter protected final DeathStorageManager deathStorageManager;
   @Getter protected WorldPoint worldPoint;
-
+  @Getter @Setter protected int expiryTime;
+  protected long expiredAt = -1L;
+  @Getter @Setter protected DeathWorldMapPoint worldMapPoint;
+  @Getter protected Color color = Color.WHITE;
+  protected UUID uuid = UUID.randomUUID();
   // when useAccountPlayTime is true, expiryTime is the account played minutes that the
   // deathpile will expire at.
   // when useAccountPlayTime is false, expiryTime is the amount of ticks left until
@@ -39,13 +43,6 @@ public abstract class ExpiringDeathStorage extends DeathStorage {
   //
   // This is unused for graves, because grave timers are 100% accurate and provided by jagex
   @Getter private boolean useAccountPlayTime;
-
-  @Getter @Setter protected int expiryTime;
-  protected long expiredAt = -1L;
-  @Getter @Setter protected DeathWorldMapPoint worldMapPoint;
-  @Getter protected final DeathStorageManager deathStorageManager;
-
-  @Getter protected Color color = Color.WHITE;
 
   ExpiringDeathStorage(
       DudeWheresMyStuffPlugin plugin,
@@ -71,9 +68,15 @@ public abstract class ExpiringDeathStorage extends DeathStorage {
   }
 
   @Override
+  protected String getConfigKey(String managerConfigKey) {
+    return super.getConfigKey(managerConfigKey) + "." + uuid;
+  }
+
+  @Override
   protected ArrayList<String> getSaveValues() {
     ArrayList<String> saveValues = super.getSaveValues();
 
+    saveValues.add(SaveFieldFormatter.format(uuid));
     saveValues.add(SaveFieldFormatter.format(worldPoint));
     saveValues.add(SaveFieldFormatter.format(useAccountPlayTime));
     saveValues.add(SaveFieldFormatter.format(expiryTime));
@@ -86,6 +89,7 @@ public abstract class ExpiringDeathStorage extends DeathStorage {
   protected void loadValues(ArrayList<String> values) {
     super.loadValues(values);
 
+    uuid = SaveFieldLoader.loadUUID(values, uuid);
     worldPoint = SaveFieldLoader.loadWorldPoint(values, worldPoint);
     useAccountPlayTime = SaveFieldLoader.loadBoolean(values, useAccountPlayTime);
     expiryTime = SaveFieldLoader.loadInt(values, expiryTime);
@@ -147,7 +151,8 @@ public abstract class ExpiringDeathStorage extends DeathStorage {
     delete.addActionListener(
         e -> {
           boolean confirmed = hasExpired() || DudeWheresMyStuffPlugin.getConfirmation(storagePanel,
-              "Are you sure you want to delete this " + this.getName().toLowerCase() + "?\nThis cannot be undone.",
+              "Are you sure you want to delete this " + this.getName().toLowerCase()
+                  + "?\nThis cannot be undone.",
               "Confirm deletion");
 
           if (confirmed) {
