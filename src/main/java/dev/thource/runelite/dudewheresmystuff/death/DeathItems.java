@@ -51,6 +51,16 @@ public class DeathItems extends DeathStorage {
           deathStorageManager.getStorageTabPanel().reorderStoragePanels();
         });
     popupMenu.add(createDeathpile);
+
+    final JMenuItem createGrave = new JMenuItem("Create Grave");
+    createGrave.addActionListener(
+        e -> {
+          WorldPoint location =
+              Objects.requireNonNull(plugin.getClient().getLocalPlayer()).getWorldLocation();
+          deathStorageManager.createGrave(location, items);
+          deathStorageManager.getStorageTabPanel().reorderStoragePanels();
+        });
+    popupMenu.add(createGrave);
   }
 
   @Override

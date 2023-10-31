@@ -15,11 +15,11 @@ public interface DudeWheresMyStuffConfig extends Config {
 
   String CONFIG_GROUP = "dudewheresmystuff";
   @ConfigSection(
-      name = "Deathpiles Options",
-      description = "Settings deathpiles",
+      name = "Deathpiles / Graves Options",
+      description = "Settings for deathpiles and graves",
       position = 100
   )
-  String DEATHPILE_OPTIONS_SECTION = "Deathpiles Options";
+  String DEATHPILE_OPTIONS_SECTION = "Deathpiles / Graves Options";
 
   @ConfigItem(
       keyName = "showEmptyStorages",
@@ -68,16 +68,25 @@ public interface DudeWheresMyStuffConfig extends Config {
   }
 
   @ConfigItem(
+      keyName = "deathbankInfoBox",
+      name = "Show infobox for deathbank",
+      description = "When enabled, an infobox will be displayed while you have an active "
+          + "deathbank.")
+  default boolean deathbankInfoBox() {
+    return true;
+  }
+
+  @ConfigItem(
       keyName = "deathpilesUseAccountPlayTime",
-      name = "Cross-client deathpile tracking",
-      description = "When enabled, deathpile expiry will be based on account play time, this means "
-          + "that if you play for 5 minutes on another client (like mobile) your deathpile timer "
-          + "will still be accurate.<br><br>Using this option requires you to set your quest tab "
-          + "to the \"Character summary\" tab (brown star icon) once per login. With this option "
-          + "enabled, an infobox will be displayed prompting you to swap to the \"Character "
-          + "summary\" tab when the plugin doesn't know your play time.<br><br>If the plugin "
-          + "doesn't know your play time at the time of your death, the deathpile will default to "
-          + "non cross-client tracking mode.",
+      name = "Cross-client tracking",
+      description = "When enabled, deathpile/grave expiry will be based on account play time, this "
+          + "means that if you play for 5 minutes on another client (like mobile) your "
+          + "deathpile/grave timer will still be accurate.<br><br>Using this option requires you "
+          + "to set your quest tab to the \"Character summary\" tab (brown star icon) once per "
+          + "login. With this option enabled, an infobox will be displayed prompting you to swap "
+          + "to the \"Character summary\" tab when the plugin doesn't know your play time.<br><br>"
+          + "If the plugin doesn't know your play time at the time of your death, the "
+          + "deathpile/grave will default to non cross-client tracking mode.",
       section = DEATHPILE_OPTIONS_SECTION,
       position = 101
   )
@@ -88,23 +97,13 @@ public interface DudeWheresMyStuffConfig extends Config {
 
   @ConfigItem(
       keyName = "deathpileInfoBox",
-      name = "Show infoboxes for deathpiles",
-      description = "When enabled, infoboxes will be displayed while you have active deathpiles.",
+      name = "Show infoboxes",
+      description = "When enabled, infoboxes will be displayed while you have active deathpiles / "
+      + "graves.",
       section = DEATHPILE_OPTIONS_SECTION,
       position = 102
   )
   default boolean deathpileInfoBox() {
-    return true;
-  }
-
-  @ConfigItem(
-      keyName = "deathbankInfoBox",
-      name = "Show infobox for deathbank",
-      description = "When enabled, an infobox will be displayed while you have an active "
-          + "deathbank.",
-      section = DEATHPILE_OPTIONS_SECTION,
-      position = 103)
-  default boolean deathbankInfoBox() {
     return true;
   }
 
@@ -114,9 +113,9 @@ public interface DudeWheresMyStuffConfig extends Config {
   )
   @ConfigItem(
       keyName = "deathpileContingencyMinutes",
-      name = "Deathpile contingency (minutes)",
-      description = "This amount of minutes is removed from the deathpile timer. If set to 15, any "
-          + "new deathpiles will start with 45 minutes until expiry.",
+      name = "Contingency (minutes)",
+      description = "This amount of minutes is removed from the deathpile / grave timer. If set to "
+          + "15, any new deathpiles / graves will start with 45 minutes until expiry.",
       section = DEATHPILE_OPTIONS_SECTION,
       position = 104
   )
@@ -127,7 +126,7 @@ public interface DudeWheresMyStuffConfig extends Config {
   @ConfigItem(
       keyName = "flashExpiringDeathpileInfoboxes",
       name = "Flash expiring infoboxes",
-      description = "Flash the infoboxes of expiring deathpiles red.",
+      description = "Flash the infoboxes of expiring deathpiles / graves red.",
       section = DEATHPILE_OPTIONS_SECTION,
       position = 105
   )
@@ -138,7 +137,7 @@ public interface DudeWheresMyStuffConfig extends Config {
   @ConfigItem(
       keyName = "flashExpiringDeathpileTiles",
       name = "Flash expiring tiles",
-      description = "Flash the tile borders of expiring deathpiles red.",
+      description = "Flash the tile borders of expiring deathpiles / graves red.",
       section = DEATHPILE_OPTIONS_SECTION,
       position = 106
   )
@@ -149,7 +148,7 @@ public interface DudeWheresMyStuffConfig extends Config {
   @ConfigItem(
       keyName = "showDeathpileExpiryText",
       name = "Show expiry text",
-      description = "Show on-screen text when your oldest deathpile is expiring.",
+      description = "Show on-screen text when your oldest deathpile / grave is expiring.",
       section = DEATHPILE_OPTIONS_SECTION,
       position = 107
   )
@@ -159,8 +158,8 @@ public interface DudeWheresMyStuffConfig extends Config {
 
   @ConfigItem(
       keyName = "deathpileExpiryWarningTime",
-      name = "Deathpile expiry warning time",
-      description = "The minutes remaining on your oldest death pile before you start getting alerted.",
+      name = "Expiry warning time",
+      description = "The minutes remaining on your oldest deathpile / grave before you start getting alerted.",
       section = DEATHPILE_OPTIONS_SECTION,
       position = 108
   )
@@ -170,8 +169,8 @@ public interface DudeWheresMyStuffConfig extends Config {
 
   @ConfigItem(
       keyName = "deathpileExpiryWarningFontSize",
-      name = "Deathpile expiry font size",
-      description = "Font size for the deathpile expiry text warning.",
+      name = "Expiry font size",
+      description = "Font size for the deathpile / grave expiry text warning.",
       section = DEATHPILE_OPTIONS_SECTION,
       position = 109
   )

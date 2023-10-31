@@ -55,9 +55,9 @@ class OverviewTabPanel extends TabContentPanel {
   private static final String DELETE_SAVE_WARNING =
       "Are you sure you want to delete your save data?\nThis cannot be undone.";
   private static final String DELETE_ALL_DEATHPILES_WARNING = "Are you sure you want to delete all"
-      + " of your deathpiles (including any active ones)?\nThis cannot be undone.";
+      + " of your deathpiles/graves (including any active ones)?\nThis cannot be undone.";
   private static final String DELETE_ALL_EXPIRED_DEATHPILES_WARNING = "Are you sure you want to"
-      + " delete all of your expired deathpiles?\nThis cannot be undone.";
+      + " delete all of your expired deathpiles/graves?\nThis cannot be undone.";
   private static final String DELETE_ALL_DEATHBANKS_WARNING = "Are you sure you want to delete all"
       + " of your deathbanks (including any active ones)?\nThis cannot be undone.";
   private static final String DELETE_ALL_LOST_DEATHBANKS_WARNING = "Are you sure you want to"
@@ -138,20 +138,20 @@ class OverviewTabPanel extends TabContentPanel {
   }
 
   private void createDeathStoragePopupMenu() {
-    JMenuItem deleteAllDeathpiles = new JMenuItem("Delete all deathpiles");
+    JMenuItem deleteAllDeathpiles = new JMenuItem("Delete all deathpiles/graves");
     deleteAllDeathpiles.addActionListener(
         e -> {
           if (DudeWheresMyStuffPlugin.getConfirmation(this, DELETE_ALL_DEATHPILES_WARNING,
               CONFIRM_DELETION_TEXT)) {
-            storageManagerManager.getDeathStorageManager().deleteDeathpiles(true);
+            storageManagerManager.getDeathStorageManager().deleteExpiringDeathStorages(true);
           }
         });
-    JMenuItem deleteExpiredDeathpiles = new JMenuItem("Delete expired deathpiles");
+    JMenuItem deleteExpiredDeathpiles = new JMenuItem("Delete expired deathpiles/graves");
     deleteExpiredDeathpiles.addActionListener(
         e -> {
           if (DudeWheresMyStuffPlugin.getConfirmation(this, DELETE_ALL_EXPIRED_DEATHPILES_WARNING,
               CONFIRM_DELETION_TEXT)) {
-            storageManagerManager.getDeathStorageManager().deleteDeathpiles(false);
+            storageManagerManager.getDeathStorageManager().deleteExpiringDeathStorages(false);
           }
         });
     JMenuItem deleteAllDeathbanks = new JMenuItem("Delete all deathbanks");

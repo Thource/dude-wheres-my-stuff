@@ -20,13 +20,13 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
-public class DeathpileTilesOverlay extends Overlay {
+public class ExpiringDeathStorageTilesOverlay extends Overlay {
 
   private final Client client;
   private final DeathStorageManager deathStorageManager;
-  private DudeWheresMyStuffConfig config;
+  private final DudeWheresMyStuffConfig config;
 
-  public DeathpileTilesOverlay(DudeWheresMyStuffConfig config, Client client,
+  public ExpiringDeathStorageTilesOverlay(DudeWheresMyStuffConfig config, Client client,
       DeathStorageManager deathStorageManager) {
     this.config = config;
     this.client = client;
@@ -37,35 +37,35 @@ public class DeathpileTilesOverlay extends Overlay {
     setLayer(OverlayLayer.ABOVE_SCENE);
   }
 
-  private String getExpiryText(Deathpile deathpile) {
-    if (deathpile.isUseAccountPlayTime()
-        && deathpile.getDeathStorageManager().getStartPlayedMinutes() <= 0) {
+  private String getExpiryText(ExpiringDeathStorage expiringDeathStorage) {
+    if (expiringDeathStorage.isUseAccountPlayTime()
+        && expiringDeathStorage.getDeathStorageManager().getStartPlayedMinutes() <= 0) {
       return "??";
     }
 
     int minutesLeft =
-        (int) Math.floor((deathpile.getExpiryMs() - System.currentTimeMillis()) / 60000f);
+        (int) Math.floor(
+            (expiringDeathStorage.getExpiryMs() - System.currentTimeMillis()) / 60000f);
 
     return (minutesLeft > 0 ? minutesLeft : "<1") + "m";
   }
 
   @Override
   public Dimension render(Graphics2D graphics) {
-    deathStorageManager.getDeathpiles()
-        .filter(deathpile -> !deathpile.hasExpired())
-        .forEach(deathpile -> {
-          Color tileColor = deathpile.getColor();
+    deathStorageManager.getExpiringDeathStorages()
+        .filter(storage -> !storage.hasExpired())
+        .forEach(storage -> {
+          Color tileColor = storage.getColor();
 
           if (config.flashExpiringDeathpileTiles()
-              && (int) Math.floor((deathpile.getExpiryMs() - System.currentTimeMillis()) / 60_000f)
+              && (int) Math.floor((storage.getExpiryMs() - System.currentTimeMillis()) / 60_000f)
               <= config.deathpileExpiryWarningTime()
-              && (int) Math.floor((deathpile.getExpiryMs() - System.currentTimeMillis()) / 600f) % 2
-              == 0) {
+              && client.getTickCount() % 2 == 0) {
             tileColor = Color.RED;
           }
 
-          drawTile(graphics, deathpile.getWorldPoint(), tileColor,
-              "Deathpile (" + getExpiryText(deathpile) + ")", new BasicStroke(2));
+          drawTile(graphics, storage.getWorldPoint(), tileColor,
+              storage.getName() + " (" + getExpiryText(storage) + ")", new BasicStroke(2));
         });
 
     return null;

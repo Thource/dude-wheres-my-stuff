@@ -7,44 +7,53 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import net.runelite.api.Client;
+import net.runelite.api.Varbits;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 
-public class ExpiringDeathpileOverlay extends Overlay {
+public class ExpiringDeathStorageTextOverlay extends Overlay {
 
   private final DudeWheresMyStuffConfig config;
   private final DeathStorageManager deathStorageManager;
-  private Deathpile deathpile;
+  private ExpiringDeathStorage storage;
   private String regionName = null;
+  private final Client client;
 
-  public ExpiringDeathpileOverlay(DudeWheresMyStuffConfig config,
-      DeathStorageManager deathStorageManager) {
+  public ExpiringDeathStorageTextOverlay(DudeWheresMyStuffConfig config,
+      DeathStorageManager deathStorageManager, Client client) {
     this.config = config;
     this.deathStorageManager = deathStorageManager;
+    this.client = client;
 
     setPosition(OverlayPosition.ABOVE_CHATBOX_RIGHT);
   }
 
   // Updates every game tick
-  public void updateSoonestDeathpile() {
-    Deathpile newDeathpile = deathStorageManager.getSoonestExpiringDeathpile();
-    if (newDeathpile == deathpile) {
+  public void updateSoonestExpiringDeathStorage() {
+    ExpiringDeathStorage newStorage;
+    if (client.getVarbitValue(Varbits.ACCOUNT_TYPE) == 2) {
+      newStorage = deathStorageManager.getSoonestExpiringDeathpile();
+    } else {
+      newStorage = deathStorageManager.getGrave();
+    }
+    if (newStorage == storage) {
       return;
     }
 
-    deathpile = newDeathpile;
-    if (deathpile != null) {
-      Region region = Region.get(deathpile.getWorldPoint().getRegionID());
+    storage = newStorage;
+    if (storage != null) {
+      Region region = Region.get(storage.getWorldPoint().getRegionID());
       regionName = (region == null ? null : region.getName());
     }
   }
 
-  // If there is a Death pile expiring soon that matches the config criteria
+  // If there is a storage expiring soon that matches the config criteria
   private boolean shouldRenderOverlay() {
-    return deathpile != null
+    return storage != null
         && config.showDeathpileExpiryText()
-        && (int) Math.floor((deathpile.getExpiryMs() - System.currentTimeMillis()) / 60_000f)
+        && (int) Math.floor((storage.getExpiryMs() - System.currentTimeMillis()) / 60_000f)
         <= config.deathpileExpiryWarningTime();
   }
 
@@ -62,24 +71,22 @@ public class ExpiringDeathpileOverlay extends Overlay {
         .deriveFont(Font.PLAIN, config.deathpileExpiryWarningFontSize());
     graphics.setFont(font);
 
-    String deathpileExpiringText = "Your deathpile ";
+    String text = "Your " + storage.getName().toLowerCase() + " ";
     if (regionName != null) {
-      deathpileExpiringText += "in " + regionName + " ";
+      text += "in " + regionName + " ";
     }
-    deathpileExpiringText += deathpile.getExpireText().toLowerCase();
+    text += storage.getExpireText().toLowerCase();
 
     // Alternates between two colors, this could be customized by the user later
-    Color textColor =
-        (int) Math.floor((deathpile.getExpiryMs() - System.currentTimeMillis()) / 600f) % 2 == 0
-            ? Color.RED : Color.WHITE;
+    Color textColor = client.getTickCount() % 2 == 0 ? Color.RED : Color.WHITE;
     graphics.setColor(textColor);
 
     FontMetrics metrics = graphics.getFontMetrics(font);
 
-    int textWidth = metrics.stringWidth(deathpileExpiringText);
+    int textWidth = metrics.stringWidth(text);
     int textHeight = metrics.getHeight();
 
-    graphics.drawString(deathpileExpiringText, 0, textHeight);
+    graphics.drawString(text, 0, textHeight);
 
     return new Dimension(textWidth, textHeight);
   }

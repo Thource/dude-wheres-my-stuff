@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 public enum DeathStorageType implements StorageType {
   DEATH_ITEMS("Death Items", -1, true, "", false),
   DEATHPILE("Deathpile", -1, true, "deathpile", false),
+  GRAVE("Grave", -1, true, "grave", false),
   DEATHBANK("Deathbank", -1, false, "deathbank", true);
 
   private final String name;
