@@ -15,30 +15,7 @@ import lombok.Getter;
 @Getter
 public class DeathStorage extends ItemStorage<DeathStorageType> {
 
-  protected UUID uuid = UUID.randomUUID();
-
   protected DeathStorage(DeathStorageType type, DudeWheresMyStuffPlugin plugin) {
     super(type, plugin);
-  }
-
-  @Override
-  protected ArrayList<String> getSaveValues() {
-    ArrayList<String> saveValues = super.getSaveValues();
-
-    saveValues.add(SaveFieldFormatter.format(uuid));
-
-    return saveValues;
-  }
-
-  @Override
-  protected void loadValues(ArrayList<String> values) {
-    super.loadValues(values);
-
-    uuid = SaveFieldLoader.loadUUID(values, uuid);
-  }
-
-  @Override
-  protected String getConfigKey(String managerConfigKey) {
-    return super.getConfigKey(managerConfigKey) + "." + uuid;
   }
 }

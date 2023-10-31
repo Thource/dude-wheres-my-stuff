@@ -3,6 +3,7 @@ package dev.thource.runelite.dudewheresmystuff.death;
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -101,6 +102,10 @@ public class Grave extends ExpiringDeathStorage {
 
   void expire() {
     expiredAt = System.currentTimeMillis();
+
+    deathStorageManager.getDeathsOffice().getItems().addAll(items);
+    deathStorageManager.updateStorages(
+        Collections.singletonList(deathStorageManager.getDeathsOffice()));
 
     SwingUtilities.invokeLater(() -> {
       if (storagePanel == null) {
