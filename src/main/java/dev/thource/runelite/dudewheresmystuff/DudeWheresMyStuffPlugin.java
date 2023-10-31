@@ -5,8 +5,8 @@ import com.google.inject.name.Named;
 import dev.thource.runelite.dudewheresmystuff.carryable.CarryableStorageManager;
 import dev.thource.runelite.dudewheresmystuff.coins.CoinsStorageManager;
 import dev.thource.runelite.dudewheresmystuff.death.DeathStorageManager;
-import dev.thource.runelite.dudewheresmystuff.death.ExpiringDeathpileOverlay;
-import dev.thource.runelite.dudewheresmystuff.death.DeathpileTilesOverlay;
+import dev.thource.runelite.dudewheresmystuff.death.ExpiringDeathStorageTextOverlay;
+import dev.thource.runelite.dudewheresmystuff.death.ExpiringDeathStorageTilesOverlay;
 import dev.thource.runelite.dudewheresmystuff.minigames.MinigamesStorageManager;
 import dev.thource.runelite.dudewheresmystuff.playerownedhouse.PlayerOwnedHouseStorageManager;
 import dev.thource.runelite.dudewheresmystuff.stash.StashStorageManager;
@@ -98,8 +98,8 @@ public class DudeWheresMyStuffPlugin extends Plugin {
   @Inject private OverlayManager overlayManager;
   @Inject private KeyManager keyManager;
 
-  private DeathpileTilesOverlay deathpileTilesOverlay;
-  private ExpiringDeathpileOverlay expiringDeathpileOverlay;
+  private ExpiringDeathStorageTilesOverlay expiringDeathStorageTilesOverlay;
+  private ExpiringDeathStorageTextOverlay expiringDeathStorageTextOverlay;
   @Inject private ItemCountOverlay itemCountOverlay;
   @Inject private ItemCountInputListener itemCountInputListener;
   @Inject private DeathStorageManager deathStorageManager;
@@ -160,8 +160,8 @@ public class DudeWheresMyStuffPlugin extends Plugin {
   @Override
   protected void startUp() {
     if (panelContainer == null) {
-      deathpileTilesOverlay = new DeathpileTilesOverlay(config, client, deathStorageManager);
-      expiringDeathpileOverlay = new ExpiringDeathpileOverlay(config, deathStorageManager);
+      expiringDeathStorageTilesOverlay = new ExpiringDeathStorageTilesOverlay(config, client, deathStorageManager);
+      expiringDeathStorageTextOverlay = new ExpiringDeathStorageTextOverlay(config, deathStorageManager, client);
       deathStorageManager.setCarryableStorageManager(carryableStorageManager);
       deathStorageManager.setCoinsStorageManager(coinsStorageManager);
       worldStorageManager
@@ -260,8 +260,8 @@ public class DudeWheresMyStuffPlugin extends Plugin {
 
     deathStorageManager.refreshInfoBoxes();
 
-    overlayManager.add(expiringDeathpileOverlay);
-    overlayManager.add(deathpileTilesOverlay);
+    overlayManager.add(expiringDeathStorageTextOverlay);
+    overlayManager.add(expiringDeathStorageTilesOverlay);
     overlayManager.add(itemCountOverlay);
     itemCountInputListener.setItemCountOverlay(itemCountOverlay);
     keyManager.registerKeyListener(itemCountInputListener);
@@ -284,8 +284,8 @@ public class DudeWheresMyStuffPlugin extends Plugin {
     infoBoxManager.removeIf(
         infoBox -> infoBox.getName().startsWith(this.getClass().getSimpleName()));
 
-    overlayManager.remove(expiringDeathpileOverlay);
-    overlayManager.remove(deathpileTilesOverlay);
+    overlayManager.remove(expiringDeathStorageTextOverlay);
+    overlayManager.remove(expiringDeathStorageTilesOverlay);
     overlayManager.remove(itemCountOverlay);
     keyManager.unregisterKeyListener(itemCountInputListener);
   }
@@ -497,7 +497,7 @@ public class DudeWheresMyStuffPlugin extends Plugin {
       return;
     }
 
-    expiringDeathpileOverlay.updateSoonestDeathpile();
+    expiringDeathStorageTextOverlay.updateSoonestExpiringDeathStorage();
 
     ItemContainerWatcher.onGameTick(this);
     storageManagerManager.onGameTick();

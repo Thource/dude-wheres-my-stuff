@@ -19,16 +19,16 @@ public class DeathStorageTabPanel
   protected Comparator<DeathStorage> getStorageSorter() {
     return Comparator.comparingLong(
         s -> {
-          if (s instanceof Deathpile) {
-            Deathpile deathpile = (Deathpile) s;
+          if (s instanceof ExpiringDeathStorage) {
+            ExpiringDeathStorage storage = (ExpiringDeathStorage) s;
 
-            // Move expired deathpiles to the bottom of the list and sort them the opposite way
-            // (newest first)
-            if (deathpile.hasExpired()) {
-              return Long.MAX_VALUE - deathpile.getExpiryMs();
+            // Move expired deathpiles/graves to the bottom of the list and sort them the opposite
+            // way (newest first)
+            if (storage.hasExpired()) {
+              return Long.MAX_VALUE - storage.getExpiryMs();
             }
 
-            return Long.MIN_VALUE + deathpile.getExpiryMs();
+            return Long.MIN_VALUE + storage.getExpiryMs();
           } else if (s instanceof DeathItems) {
             return Long.MIN_VALUE;
           } else {
