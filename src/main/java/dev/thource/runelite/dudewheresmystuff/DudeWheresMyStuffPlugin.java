@@ -160,8 +160,10 @@ public class DudeWheresMyStuffPlugin extends Plugin {
   @Override
   protected void startUp() {
     if (panelContainer == null) {
-      expiringDeathStorageTilesOverlay = new ExpiringDeathStorageTilesOverlay(config, client, deathStorageManager);
-      expiringDeathStorageTextOverlay = new ExpiringDeathStorageTextOverlay(config, deathStorageManager, client);
+      expiringDeathStorageTilesOverlay = new ExpiringDeathStorageTilesOverlay(config, client,
+          deathStorageManager);
+      expiringDeathStorageTextOverlay = new ExpiringDeathStorageTextOverlay(config,
+          deathStorageManager, client);
       deathStorageManager.setCarryableStorageManager(carryableStorageManager);
       deathStorageManager.setCoinsStorageManager(coinsStorageManager);
       worldStorageManager
@@ -351,6 +353,10 @@ public class DudeWheresMyStuffPlugin extends Plugin {
       case "deathbankInfoBox":
       case "deathpileInfoBox":
         deathStorageManager.refreshInfoBoxes();
+        break;
+      case "showDeathStorageRiskWarning":
+        SwingUtilities.invokeLater(
+            () -> deathStorageManager.getStorageTabPanel().reorderStoragePanels());
         break;
       default:
         // do nothing
