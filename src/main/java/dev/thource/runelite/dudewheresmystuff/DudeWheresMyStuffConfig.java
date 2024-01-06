@@ -77,6 +77,17 @@ public interface DudeWheresMyStuffConfig extends Config {
   }
 
   @ConfigItem(
+      keyName = "showDeathStorageRiskWarning",
+      name = "Display death storage risk warning",
+      description = "When enabled, a banner is displayed at the top of the death storage tab, "
+          + "warning against relying solely on the plugin for death storages."
+  )
+
+  default boolean showDeathStorageRiskWarning() {
+    return true;
+  }
+
+  @ConfigItem(
       keyName = "deathpilesUseAccountPlayTime",
       name = "Cross-client tracking",
       description = "When enabled, deathpile/grave expiry will be based on account play time, this "
