@@ -51,7 +51,7 @@ import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.util.ImageUtil;
 
-class OverviewItemPanel extends JPanel {
+public class OverviewItemPanel extends JPanel {
 
   private static final ImageIcon ARROW_RIGHT_ICON;
 
@@ -86,7 +86,7 @@ class OverviewItemPanel extends JPanel {
         title);
   }
 
-  OverviewItemPanel(
+  public OverviewItemPanel(
       ItemManager itemManager,
       @Nullable Runnable onTabSwitched,
       BooleanSupplier isSelectable,
@@ -220,7 +220,7 @@ class OverviewItemPanel extends JPanel {
     });
   }
 
-  void updateStatus(String text) {
+  public void updateStatus(String text) {
     statusLabel.setText(text);
 
     arrowLabel.setVisible(isSelectable.getAsBoolean());
@@ -248,5 +248,9 @@ class OverviewItemPanel extends JPanel {
 
   void setTitle(String title) {
     this.titleLabel.setText(title);
+  }
+
+  public void setTitleColor(Color color) {
+    titleLabel.setForeground(color);
   }
 }
