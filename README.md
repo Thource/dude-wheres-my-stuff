@@ -1,5 +1,7 @@
 # Dude, Where's My Stuff?
 
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/D1D5TCSF0)
+
 [![](https://img.shields.io/endpoint?url=https://i.pluginhub.info/shields/rank/plugin/dude-wheres-my-stuff)](https://runelite.net/plugin-hub/show/dude-wheres-my-stuff)
 [![](https://img.shields.io/endpoint?url=https://i.pluginhub.info/shields/installs/plugin/dude-wheres-my-stuff)](https://runelite.net/plugin-hub/show/dude-wheres-my-stuff)
 
