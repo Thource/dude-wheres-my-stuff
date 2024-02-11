@@ -330,7 +330,7 @@ public enum Region {
   MG_LAST_MAN_STANDING_WILD_VARROCK(
       "LMS - Wild Varrock", 13918, 13919, 13920, 14174, 14175, 14176, 14430, 14431, 14432),
   MG_MAGE_TRAINING_ARENA("Mage Training Arena", 13462, 13463),
-  MG_NIGHTMARE_ZONE("Nightmare Zone", 9033),
+  MG_NIGHTMARE_ZONE("KBD Lair", 9033),
   MG_PEST_CONTROL("Pest Control", 10536),
   MG_PORT_SARIM_RAT_PITS("Port Sarim Rat Pits", 11926),
   MG_PYRAMID_PLUNDER("Pyramid Plunder", 7749),
