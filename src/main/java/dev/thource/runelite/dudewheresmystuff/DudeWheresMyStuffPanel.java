@@ -81,7 +81,7 @@ public class DudeWheresMyStuffPanel extends JPanel {
   private final transient ItemManager itemManager;
   /* This is the panel the tabs' respective panels will be displayed on. */
   private final JPanel display = new JPanel();
-  private final FasterMaterialTabGroup tabGroup = new FasterMaterialTabGroup(display);
+  private final FasterMaterialTabGroup tabGroup;
   private final boolean previewMode;
   private final transient StorageManagerManager storageManagerManager;
   private final transient DudeWheresMyStuffPlugin plugin;
@@ -100,6 +100,7 @@ public class DudeWheresMyStuffPanel extends JPanel {
     this.itemManager = plugin.getItemManager();
     this.storageManagerManager = storageManagerManager;
     this.previewMode = previewMode;
+    this.tabGroup = new FasterMaterialTabGroup(display, plugin);
 
     setLayout(new BorderLayout());
     setBorder(new EmptyBorder(0, 0, 0, 0));

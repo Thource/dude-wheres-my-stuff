@@ -3,15 +3,42 @@ package dev.thource.runelite.dudewheresmystuff;
 import java.awt.Component;
 import java.awt.Container;
 import javax.swing.SwingUtilities;
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.ChatMessageType;
+import net.runelite.client.chat.ChatColorType;
+import net.runelite.client.chat.ChatMessageBuilder;
+import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.util.SwingUtil;
 
 /** EnhancedSwingUtilities fixes some inefficiencies with SwingUtilities. */
+@Slf4j
 public class EnhancedSwingUtilities {
 
   private EnhancedSwingUtilities() {
   }
 
-  public static void fastRemoveAll(Container c) {
+  public static void fastRemoveAll(Container c, ChatMessageManager chatMessageManager) {
+    if (!SwingUtilities.isEventDispatchThread()) {
+      log.error("fastRemoveAll called outside of the EDT?");
+      new Throwable().printStackTrace();
+
+      final ChatMessageBuilder message = new ChatMessageBuilder()
+          .append(ChatColorType.HIGHLIGHT)
+          .append("Dude, Wheres My Stuff? has just encountered an error!")
+          .append(ChatColorType.NORMAL)
+          .append(" Please help me fix this issue by sending your runelite client.log file to "
+              + "Thource on Discord or attach it to "
+              + "https://github.com/Thource/dude-wheres-my-stuff/issues/160");
+
+      chatMessageManager.queue(QueuedMessage.builder()
+          .type(ChatMessageType.CONSOLE)
+          .runeLiteFormattedMessage(message.build())
+          .build());
+
+      return;
+    }
+
     fastRemoveAll(c, true);
   }
 

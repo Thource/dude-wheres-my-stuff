@@ -42,6 +42,7 @@ import net.runelite.api.events.WidgetClosed;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneScapeProfile;
 import net.runelite.client.config.RuneScapeProfileType;
@@ -97,6 +98,7 @@ public class DudeWheresMyStuffPlugin extends Plugin {
   @Inject private ConfigManager configManager;
   @Inject private OverlayManager overlayManager;
   @Inject private KeyManager keyManager;
+  @Getter @Inject private ChatMessageManager chatMessageManager;
 
   private ExpiringDeathStorageTilesOverlay expiringDeathStorageTilesOverlay;
   private ExpiringDeathStorageTextOverlay expiringDeathStorageTextOverlay;
