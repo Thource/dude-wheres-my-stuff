@@ -255,7 +255,7 @@ public class StoragePanel extends JPanel {
   }
 
   private void redrawItems() {
-    EnhancedSwingUtilities.fastRemoveAll(itemContainer);
+    EnhancedSwingUtilities.fastRemoveAll(itemContainer, plugin.getChatMessageManager());
     itemContainer.setLayout(null);
 
     if (itemBoxes.stream().anyMatch(itemBox -> itemBox.getItemId() != -1)) {

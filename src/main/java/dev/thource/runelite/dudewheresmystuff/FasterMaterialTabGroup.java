@@ -55,9 +55,11 @@ public class FasterMaterialTabGroup extends JPanel {
   private final JPanel display;
   /* A list of all the tabs contained in this group. */
   private final List<FasterMaterialTab> tabs = new ArrayList<>();
+  private final transient DudeWheresMyStuffPlugin plugin;
 
-  FasterMaterialTabGroup(JPanel display) {
+  FasterMaterialTabGroup(JPanel display, DudeWheresMyStuffPlugin plugin) {
     this.display = display;
+    this.plugin = plugin;
     if (display != null) {
       this.display.setLayout(new BorderLayout());
     }
@@ -87,7 +89,7 @@ public class FasterMaterialTabGroup extends JPanel {
 
     // If the display is available, switch from the old to the new display
     if (display != null) {
-      EnhancedSwingUtilities.fastRemoveAll(display);
+      EnhancedSwingUtilities.fastRemoveAll(display, plugin.getChatMessageManager());
       display.add(selectedTab.getContent());
       display.revalidate();
       display.repaint();

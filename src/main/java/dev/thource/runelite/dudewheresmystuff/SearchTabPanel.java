@@ -107,7 +107,7 @@ class SearchTabPanel
       searchStatusLabel.setText(EMPTY_SEARCH_TEXT);
       searchStatusPanel.setVisible(true);
 
-      EnhancedSwingUtilities.fastRemoveAll(storagePanelContainer);
+      EnhancedSwingUtilities.fastRemoveAll(storagePanelContainer, plugin.getChatMessageManager());
       storagePanelContainer.revalidate();
     }
 
@@ -116,7 +116,7 @@ class SearchTabPanel
 
   @Override
   public void reorderStoragePanels() {
-    EnhancedSwingUtilities.fastRemoveAll(storagePanelContainer);
+    EnhancedSwingUtilities.fastRemoveAll(storagePanelContainer, plugin.getChatMessageManager());
     storagePanels.stream()
         .filter(panel -> !panel.getItemBoxes().isEmpty())
         .sorted(Comparator.comparing(panel -> panel.getStorage().getName()))
