@@ -47,7 +47,8 @@ public enum WorldStorageType implements StorageType {
   PICKAXE_STATUE("Pickaxe Statue", -1, true, "pickaxestatue", true, null),
   NULODION("Nulodion", -1, false, "nulodion", true, null),
   FORESTRY_SHOP("Forestry Shop", -1, false, "forestryshop", true,
-      Arrays.asList(0, 1, 3, 4, 5, 6)); // uim only
+      Arrays.asList(0, 1, 3, 4, 5, 6)), // uim only
+  SANDSTORM("Sandstorm", -1, false, "sandstorm", true, null);
 
   private final String name;
   private final int itemContainerId;
