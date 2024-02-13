@@ -114,7 +114,21 @@ public class ItemStackUtils {
    * @param itemToAdd ItemStack to add
    */
   public static void addItemStack(List<ItemStack> items, ItemStack itemToAdd) {
-    if (itemToAdd.isStackable()) {
+    addItemStack(items, itemToAdd, false);
+  }
+
+  /**
+   * Adds an ItemStack to the supplied List of ItemStacks. If the item is stackable and already
+   * exists in the list, it will merge quantities. If there's an empty slot, it will fill it,
+   * otherwise it'll be added to the end of the list.
+   *
+   * @param items         ItemStacks to be added to
+   * @param itemToAdd     ItemStack to add
+   * @param forceStacking Whether to stack non-stackable items (like in the bank)
+   */
+  public static void addItemStack(List<ItemStack> items, ItemStack itemToAdd,
+      boolean forceStacking) {
+    if (itemToAdd.isStackable() || forceStacking) {
       for (ItemStack item : items) {
         if (item.getId() != itemToAdd.getId()) {
           continue;
