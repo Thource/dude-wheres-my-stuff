@@ -17,6 +17,10 @@ public enum DeathpileColorScheme {
   REDSCALE("Redscale", DeathpileColorSchemeType.REDSCALE),
   GREENSCALE("Greenscale", DeathpileColorSchemeType.GREENSCALE),
   BLUESCALE("Bluescale", DeathpileColorSchemeType.BLUESCALE),
+  MAGMA("Magma", DeathpileColorSchemeType.MAGMA),
+  INFERNO("Inferno", DeathpileColorSchemeType.INFERNO),
+  PLASMA("Plasma", DeathpileColorSchemeType.PLASMA),
+  VIRIDIS("Viridis", DeathpileColorSchemeType.VIRIDIS),
   WHITE("White", DeathpileColorSchemeType.WHITE),
   YELLOW("Yellow", DeathpileColorSchemeType.YELLOW);
 
@@ -24,6 +28,14 @@ public enum DeathpileColorScheme {
   private final DeathpileColorSchemeType type;
 
   Color generateColor(Random random) {
+    if (this.type == DeathpileColorSchemeType.MAGMA
+        || this.type == DeathpileColorSchemeType.INFERNO
+        || this.type == DeathpileColorSchemeType.PLASMA
+        || this.type == DeathpileColorSchemeType.VIRIDIS) {
+      random.nextFloat();
+      return ColormapGetter.getColor(this.type, random.nextFloat());
+    }
+
     if (this.type == DeathpileColorSchemeType.FULL_COLOR) {
       float saturation = 0.7f + random.nextFloat() * 0.3f;
       float hue = random.nextFloat();

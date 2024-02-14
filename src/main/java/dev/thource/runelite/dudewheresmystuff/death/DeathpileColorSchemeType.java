@@ -7,6 +7,10 @@ enum DeathpileColorSchemeType {
   REDSCALE,
   GREENSCALE,
   BLUESCALE,
+  MAGMA,
+  INFERNO,
+  PLASMA,
+  VIRIDIS,
   WHITE,
   YELLOW
 }
