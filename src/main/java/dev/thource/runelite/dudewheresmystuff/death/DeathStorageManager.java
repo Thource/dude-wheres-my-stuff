@@ -412,10 +412,8 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
         if (!currentInfoBoxes.contains(infoBox)) {
           infoBoxManager.addInfoBox(infoBox);
         }
-      } else {
-        if (currentInfoBoxes.contains(infoBox)) {
-          infoBoxManager.removeInfoBox(infoBox);
-        }
+      } else if (currentInfoBoxes.contains(infoBox)) {
+        infoBoxManager.removeInfoBox(infoBox);
       }
     }
   }
@@ -1028,5 +1026,9 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
     if (expiringDeathStorage instanceof Grave && expiringDeathStorage == grave) {
       grave = null;
     }
+  }
+
+  public void refreshDeathpileColors() {
+    getDeathpiles().forEach(Deathpile::refreshColor);
   }
 }

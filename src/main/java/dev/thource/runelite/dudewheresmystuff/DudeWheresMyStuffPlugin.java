@@ -360,6 +360,9 @@ public class DudeWheresMyStuffPlugin extends Plugin {
         SwingUtilities.invokeLater(
             () -> deathStorageManager.getStorageTabPanel().reorderStoragePanels());
         break;
+      case "deathpileColorScheme":
+        deathStorageManager.refreshDeathpileColors();
+        break;
       default:
         // do nothing
     }
