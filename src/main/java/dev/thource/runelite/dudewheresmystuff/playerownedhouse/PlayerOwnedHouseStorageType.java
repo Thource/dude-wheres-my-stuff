@@ -1376,6 +1376,25 @@ public enum PlayerOwnedHouseStorageType implements StorageType {
           ItemID.ICTHLARINS_SHROUD_TIER_4,
           ItemID.ICTHLARINS_SHROUD_TIER_5)),
   MENAGERIE("Menagerie", 517, "menagerie", null),
+  BOSS_LAIR_DISPLAY(
+      "Boss Lair Display",
+      33405,
+      "bossLairDisplay",
+      Arrays.asList(
+          ItemID.JAR_OF_DIRT,
+          ItemID.JAR_OF_SWAMP,
+          ItemID.JAR_OF_SAND,
+          ItemID.JAR_OF_SOULS,
+          ItemID.JAR_OF_MIASMA,
+          ItemID.JAR_OF_DARKNESS,
+          ItemID.JAR_OF_STONE,
+          ItemID.JAR_OF_DECAY,
+          ItemID.JAR_OF_CHEMICALS,
+          ItemID.JAR_OF_EYES,
+          ItemID.JAR_OF_DREAMS,
+          ItemID.JAR_OF_SPIRITS,
+          ItemID.JAR_OF_SMOKE
+      )),
   ;
 
   private final String name;
