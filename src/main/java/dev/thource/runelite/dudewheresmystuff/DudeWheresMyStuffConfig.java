@@ -1,6 +1,6 @@
 package dev.thource.runelite.dudewheresmystuff;
 
-import dev.thource.runelite.dudewheresmystuff.death.DeathpileExpiryWarningType;
+import dev.thource.runelite.dudewheresmystuff.death.DeathpileColorScheme;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -49,7 +49,7 @@ public interface DudeWheresMyStuffConfig extends Config {
 
   @ConfigItem(
       keyName = "storedItemCountTooltip",
-      name = "Item Count Tooltip Mode",
+      name = "Item count tooltip mode",
       description = "Adds a tooltip when you hover items that tells you how many of those item you "
           + "have stored. \"Simple\" mode shows a sum, \"Detailed\" mode tells you where they are "
           + "stored."
@@ -60,7 +60,7 @@ public interface DudeWheresMyStuffConfig extends Config {
 
   @ConfigItem(
       keyName = "storedItemCountTooltipKeybind",
-      name = "Item Count Tooltip Keybind",
+      name = "Item count tooltip keybind",
       description = "Hold this key down to display the item count tooltip."
   )
   default Keybind storedItemCountTooltipKeybind() {
@@ -85,6 +85,18 @@ public interface DudeWheresMyStuffConfig extends Config {
 
   default boolean showDeathStorageRiskWarning() {
     return true;
+  }
+
+  @ConfigItem(
+      keyName = "deathpileColorScheme",
+      name = "Color scheme",
+      description = "Which color scheme should be used for deathpiles.",
+      section = DEATHPILE_OPTIONS_SECTION,
+      position = 100
+  )
+
+  default DeathpileColorScheme deathpileColorScheme() {
+    return DeathpileColorScheme.FULL_COLOR;
   }
 
   @ConfigItem(
