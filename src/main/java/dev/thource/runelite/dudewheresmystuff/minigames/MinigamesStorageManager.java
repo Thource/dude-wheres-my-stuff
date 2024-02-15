@@ -24,6 +24,7 @@ public class MinigamesStorageManager
     storages.add(new Slayer(plugin));
     storages.add(new PestControl(plugin));
     storages.add(new GiantsFoundry(plugin));
+    storages.add(new VolcanicMine(plugin));
   }
 
   @Override
