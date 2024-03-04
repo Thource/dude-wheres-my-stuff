@@ -1031,4 +1031,8 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
   public void refreshDeathpileColors() {
     getDeathpiles().forEach(Deathpile::refreshColor);
   }
+
+  public void onPostMenuSort() {
+    getDeathpiles().forEach(Deathpile::onPostMenuSort);
+  }
 }

@@ -37,6 +37,7 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.ItemDespawned;
 import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.events.PostMenuSort;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetClosed;
 import net.runelite.api.events.WidgetLoaded;
@@ -568,6 +569,15 @@ public class DudeWheresMyStuffPlugin extends Plugin {
     }
 
     storageManagerManager.onItemDespawned(itemDespawned);
+  }
+
+  @Subscribe
+  void onPostMenuSort(PostMenuSort postMenuSort) {
+    if (clientState == ClientState.LOGGED_OUT) {
+      return;
+    }
+
+    deathStorageManager.onPostMenuSort();
   }
 
   @Provides

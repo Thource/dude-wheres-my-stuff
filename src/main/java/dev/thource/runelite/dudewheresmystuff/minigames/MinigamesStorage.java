@@ -16,9 +16,7 @@ abstract class MinigamesStorage extends ItemStorage<MinigamesStorageType> {
   }
 
   @Override
-  protected void createStoragePanel(StorageManager<?, ?> storageManager) {
-    storagePanel = new StoragePanel(plugin, this, false, true);
-
-    createComponentPopupMenu(storageManager);
+  protected StoragePanel newStoragePanel() {
+    return new StoragePanel(plugin, this, false, true);
   }
 }

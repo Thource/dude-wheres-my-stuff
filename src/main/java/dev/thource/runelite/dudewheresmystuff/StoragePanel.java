@@ -69,9 +69,9 @@ public class StoragePanel extends JPanel {
   private final JPanel itemContainer = new JPanel();
   private final JPanel footerPanel = new JPanel();
   @Getter private final JLabel footerLabel = new JLabel();
-  private final transient DudeWheresMyStuffPlugin plugin;
-  @Getter private final transient Storage<?> storage;
-  private final boolean displayEmptyStacks;
+  protected final transient DudeWheresMyStuffPlugin plugin;
+  @Getter protected final transient Storage<?> storage;
+  protected final boolean displayEmptyStacks;
   @Getter private List<ItemBox> itemBoxes = new ArrayList<>();
   @Nullable private JComponent popupButton;
   private final List<ItemStack> items = new ArrayList<>();
@@ -254,7 +254,11 @@ public class StoragePanel extends JPanel {
     }
   }
 
-  private void redrawItems() {
+  protected ItemBox createItemBox(ItemStack itemStack) {
+    return new ItemBox(plugin, itemStack, displayEmptyStacks);
+  }
+
+  protected void redrawItems() {
     EnhancedSwingUtilities.fastRemoveAll(itemContainer, plugin.getChatMessageManager());
     itemContainer.setLayout(null);
 
@@ -269,7 +273,7 @@ public class StoragePanel extends JPanel {
         if (i < itemBoxes.size()) {
           itemContainer.add(itemBoxes.get(i));
         } else {
-          itemContainer.add(new ItemBox(plugin, null, displayEmptyStacks));
+          itemContainer.add(createItemBox(null));
         }
       }
     }
@@ -293,7 +297,7 @@ public class StoragePanel extends JPanel {
                         }
                       }
 
-                      return new ItemBox(plugin, itemStack, displayEmptyStacks);
+                      return createItemBox(itemStack);
                     })
                 .collect(Collectors.toList());
       }
