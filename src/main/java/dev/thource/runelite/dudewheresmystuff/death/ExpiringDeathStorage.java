@@ -147,6 +147,11 @@ public abstract class ExpiringDeathStorage extends DeathStorage {
     popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
     storagePanel.setComponentPopupMenu(popupMenu);
 
+    createMenuOptions(popupMenu);
+    createDebugMenuOptions(storageManager, popupMenu);
+  }
+
+  protected void createMenuOptions(JPopupMenu popupMenu) {
     final JMenuItem delete = new JMenuItem("Delete " + this.getName());
     delete.addActionListener(
         e -> {
@@ -160,8 +165,6 @@ public abstract class ExpiringDeathStorage extends DeathStorage {
           }
         });
     popupMenu.add(delete);
-
-    createDebugMenuOptions(storageManager, popupMenu);
   }
 
   private void createDebugMenuOptions(StorageManager<?, ?> storageManager, JPopupMenu popupMenu) {

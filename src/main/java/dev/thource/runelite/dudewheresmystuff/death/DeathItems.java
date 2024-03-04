@@ -23,12 +23,16 @@ public class DeathItems extends DeathStorage {
   }
 
   @Override
+  protected StoragePanel newStoragePanel() {
+    return new StoragePanel(plugin, this, false, false);
+  }
+
+  @Override
   protected void createStoragePanel(StorageManager<?, ?> storageManager) {
-    storagePanel = new StoragePanel(plugin, this, false, false);
+    super.createStoragePanel(storageManager);
 
+    assert storagePanel != null;
     storagePanel.collapse(true);
-
-    createComponentPopupMenu(storageManager);
   }
 
   @Override

@@ -9,14 +9,15 @@ import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.util.AsyncBufferedImage;
 import net.runelite.client.util.QuantityFormatter;
 
-class ItemBox extends JPanel {
+public class ItemBox extends JPanel {
 
   private static final String HTML_CLOSE_TAG = "</html>";
+  protected final ItemImageLabel imageLabel;
 
   @Getter private int itemId = -1;
   @Getter private long itemQuantity = 1;
 
-  ItemBox(
+  protected ItemBox(
       DudeWheresMyStuffPlugin plugin, @Nullable ItemStack itemStack, boolean displayEmptyStacks) {
     setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
@@ -26,7 +27,7 @@ class ItemBox extends JPanel {
       itemId = itemStack.getId();
       itemQuantity = itemStack.getQuantity();
 
-      final ItemImageLabel imageLabel = new ItemImageLabel(plugin);
+      imageLabel = new ItemImageLabel(plugin, this);
       imageLabel.setToolTipText(buildToolTip(itemStack));
       imageLabel.setVerticalAlignment(SwingConstants.CENTER);
       imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -42,6 +43,8 @@ class ItemBox extends JPanel {
       itemImage.addTo(imageLabel);
 
       add(imageLabel);
+    } else {
+      imageLabel = null;
     }
   }
 

@@ -86,8 +86,12 @@ public abstract class Storage<T extends StorageType> {
     reset();
   }
 
+  protected StoragePanel newStoragePanel() {
+    return new StoragePanel(plugin, this, true, false);
+  }
+
   protected void createStoragePanel(StorageManager<?, ?> storageManager) {
-    storagePanel = new StoragePanel(plugin, this, true, false);
+    storagePanel = newStoragePanel();
 
     createComponentPopupMenu(storageManager);
   }
