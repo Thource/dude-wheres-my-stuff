@@ -981,7 +981,7 @@ public enum StashUnit {
   CHAOS_TEMPLE_IN_THE_SOUTHEASTERN_WILDERNESS(
       "Chaos temple",
       "Chaos Temple in the south-eastern Wilderness",
-      STASHUnit.CHAOS_TEMPLE_IN_THE_SOUTHEASTERN_WILDERNESS,
+      STASHUnit.EAST_OF_THE_LEVEL_19_WILDERNESS_OBELISK,
       new int[]{ItemID.RUNE_PLATELEGS, ItemID.IRON_PLATEBODY, ItemID.BLUE_DHIDE_VAMBRACES},
       ItemRequirements.item(ItemID.RUNE_PLATELEGS),
       ItemRequirements.item(ItemID.IRON_PLATEBODY),
