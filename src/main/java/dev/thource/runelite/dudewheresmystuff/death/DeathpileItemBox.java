@@ -39,6 +39,10 @@ public class DeathpileItemBox extends ItemBox {
   }
 
   void resetPriority() {
+    if (!prioritized) {
+      return;
+    }
+
     prioritized = false;
     priority = 0;
 
@@ -48,6 +52,10 @@ public class DeathpileItemBox extends ItemBox {
   }
 
   void setPriority(int priority) {
+    if (prioritized && priority != this.priority) {
+      return;
+    }
+
     prioritized = true;
     this.priority = priority;
 

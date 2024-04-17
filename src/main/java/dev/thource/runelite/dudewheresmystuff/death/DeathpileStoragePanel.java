@@ -29,8 +29,8 @@ public class DeathpileStoragePanel extends StoragePanel {
   }
 
   @Override
-  protected void redrawItems() {
-    super.redrawItems();
+  protected void updateItems() {
+    super.updateItems();
 
     setItemBoxesPriorities();
   }

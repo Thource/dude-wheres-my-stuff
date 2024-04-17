@@ -279,7 +279,7 @@ public class StoragePanel extends JPanel {
     }
   }
 
-  private void updateItems() {
+  protected void updateItems() {
     if (storage.getType().isAutomatic() || storage.getLastUpdated() != -1) {
       synchronized (items) {
         itemBoxes =
