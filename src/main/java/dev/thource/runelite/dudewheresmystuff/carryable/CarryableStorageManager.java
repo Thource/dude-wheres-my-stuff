@@ -30,6 +30,7 @@ public class CarryableStorageManager
     storages.add(new GnomishFirelighter(plugin));
     storages.add(new MasterScrollBook(plugin));
     storages.add(new HuntsmansKit(plugin));
+    storages.add(new ForestryKit(plugin));
   }
 
   @Override
