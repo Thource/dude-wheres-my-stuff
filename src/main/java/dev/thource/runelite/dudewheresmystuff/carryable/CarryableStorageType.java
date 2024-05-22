@@ -34,6 +34,8 @@ public enum CarryableStorageType implements StorageType {
       Collections.singletonList(ItemID.GNOMISH_FIRELIGHTER_20278), -1),
   MASTER_SCROLL_BOOK("Master Scroll Book", -1, true, "masterscrollbook", true, new ArrayList<>(),
       -1),
+  HUNTSMANS_KIT("Huntsman's Kit", 855, false, "huntsmanskit", true,
+      Collections.singletonList(ItemID.HUNTSMANS_KIT), -1),
   FORESTRY_KIT("Forestry Kit", 814, false, "forestrykit", true,
       Arrays.asList(ItemID.FORESTRY_KIT, ItemID.FORESTRY_BASKET, ItemID.OPEN_FORESTRY_BASKET), -1);
 
