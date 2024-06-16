@@ -14,11 +14,17 @@ import net.runelite.client.config.Range;
 public interface DudeWheresMyStuffConfig extends Config {
 
   String CONFIG_GROUP = "dudewheresmystuff";
+
+  @ConfigSection(
+      name = "Data Export Options",
+      description = "Settings for data exports",
+      position = 100)
+  String DATA_EXPORT_OPTIONS = "Data Export Options";
+
   @ConfigSection(
       name = "Deathpiles / Graves Options",
       description = "Settings for deathpiles and graves",
-      position = 100
-  )
+      position = 100)
   String DEATHPILE_OPTIONS_SECTION = "Deathpiles / Graves Options";
 
   @ConfigItem(
@@ -38,22 +44,52 @@ public interface DudeWheresMyStuffConfig extends Config {
   }
 
   @ConfigItem(
-      keyName = "csvCombineItems",
-      name = "Combine items in CSV",
-      description = "When enabled, items from different storages will be combined into a single "
-          + "row in the exported CSV file. This means that the CSV won't contain which item is in "
-          + "which storage.")
-  default boolean csvCombineItems() {
+      keyName = "exportCombineItems",
+      name = "Combine items in Export",
+      section = DATA_EXPORT_OPTIONS,
+      position = 2,
+      description =
+          "When enabled, items from different storages will be combined into a single "
+              + "row in the exported CSV file. This means that the CSV won't contain which item is in "
+              + "which storage.")
+  default boolean exportCombineItems() {
     return false;
   }
 
   @ConfigItem(
+      keyName = "googleSpreadSheetId",
+      name = "Google Spreadsheet ID",
+      section = DATA_EXPORT_OPTIONS,
+      position = 101,
+      description =
+          "Google spreadsheet ID if you have an existing sheet. The target sheet must have been created by the plugin. If you do not provide this, we will create one and populate this field.")
+  default String googleSpreadSheetId() {
+    return "";
+  }
+
+  @ConfigItem(keyName = "googleSpreadSheetId", name = "", description = "", hidden = true)
+  void setGoogleSpreadSheetId(String spreadSheetId);
+
+  @ConfigItem(
+      keyName = "googleSpreadSheetUrl",
+      name = "Google Spreadsheet URL",
+      section = DATA_EXPORT_OPTIONS,
+      position = 101,
+      description = "Google spreadsheet URL to the sheet. Auto populated.")
+  default String googleSpreadSheetUrl() {
+    return "";
+  }
+
+  @ConfigItem(keyName = "googleSpreadSheetUrl", name = "", description = "", hidden = true)
+  void setGoogleSpreadSheetUrl(String spreadSheetUrl);
+
+  @ConfigItem(
       keyName = "storedItemCountTooltip",
       name = "Item count tooltip mode",
-      description = "Adds a tooltip when you hover items that tells you how many of those item you "
-          + "have stored. \"Simple\" mode shows a sum, \"Detailed\" mode tells you where they are "
-          + "stored."
-  )
+      description =
+          "Adds a tooltip when you hover items that tells you how many of those item you "
+              + "have stored. \"Simple\" mode shows a sum, \"Detailed\" mode tells you where they are "
+              + "stored.")
   default StoredItemCountTooltipMode storedItemCountTooltip() {
     return StoredItemCountTooltipMode.OFF;
   }
@@ -61,8 +97,7 @@ public interface DudeWheresMyStuffConfig extends Config {
   @ConfigItem(
       keyName = "storedItemCountTooltipKeybind",
       name = "Item count tooltip keybind",
-      description = "Hold this key down to display the item count tooltip."
-  )
+      description = "Hold this key down to display the item count tooltip.")
   default Keybind storedItemCountTooltipKeybind() {
     return Keybind.NOT_SET;
   }
@@ -70,8 +105,8 @@ public interface DudeWheresMyStuffConfig extends Config {
   @ConfigItem(
       keyName = "deathbankInfoBox",
       name = "Show infobox for deathbank",
-      description = "When enabled, an infobox will be displayed while you have an active "
-          + "deathbank.")
+      description =
+          "When enabled, an infobox will be displayed while you have an active " + "deathbank.")
   default boolean deathbankInfoBox() {
     return true;
   }
@@ -79,10 +114,9 @@ public interface DudeWheresMyStuffConfig extends Config {
   @ConfigItem(
       keyName = "showDeathStorageRiskWarning",
       name = "Display death storage risk warning",
-      description = "When enabled, a banner is displayed at the top of the death storage tab, "
-          + "warning against relying solely on the plugin for death storages."
-  )
-
+      description =
+          "When enabled, a banner is displayed at the top of the death storage tab, "
+              + "warning against relying solely on the plugin for death storages.")
   default boolean showDeathStorageRiskWarning() {
     return true;
   }
@@ -92,9 +126,7 @@ public interface DudeWheresMyStuffConfig extends Config {
       name = "Color scheme",
       description = "Which color scheme should be used for deathpiles.",
       section = DEATHPILE_OPTIONS_SECTION,
-      position = 100
-  )
-
+      position = 100)
   default DeathpileColorScheme deathpileColorScheme() {
     return DeathpileColorScheme.FULL_COLOR;
   }
@@ -102,18 +134,17 @@ public interface DudeWheresMyStuffConfig extends Config {
   @ConfigItem(
       keyName = "deathpilesUseAccountPlayTime",
       name = "Cross-client tracking",
-      description = "When enabled, deathpile/grave expiry will be based on account play time, this "
-          + "means that if you play for 5 minutes on another client (like mobile) your "
-          + "deathpile/grave timer will still be accurate.<br><br>Using this option requires you "
-          + "to set your quest tab to the \"Character summary\" tab (brown star icon) once per "
-          + "login. With this option enabled, an infobox will be displayed prompting you to swap "
-          + "to the \"Character summary\" tab when the plugin doesn't know your play time.<br><br>"
-          + "If the plugin doesn't know your play time at the time of your death, the "
-          + "deathpile/grave will default to non cross-client tracking mode.",
+      description =
+          "When enabled, deathpile/grave expiry will be based on account play time, this "
+              + "means that if you play for 5 minutes on another client (like mobile) your "
+              + "deathpile/grave timer will still be accurate.<br><br>Using this option requires you "
+              + "to set your quest tab to the \"Character summary\" tab (brown star icon) once per "
+              + "login. With this option enabled, an infobox will be displayed prompting you to swap "
+              + "to the \"Character summary\" tab when the plugin doesn't know your play time.<br><br>"
+              + "If the plugin doesn't know your play time at the time of your death, the "
+              + "deathpile/grave will default to non cross-client tracking mode.",
       section = DEATHPILE_OPTIONS_SECTION,
-      position = 101
-  )
-
+      position = 101)
   default boolean deathpilesUseAccountPlayTime() {
     return false;
   }
@@ -121,27 +152,24 @@ public interface DudeWheresMyStuffConfig extends Config {
   @ConfigItem(
       keyName = "deathpileInfoBox",
       name = "Show infoboxes",
-      description = "When enabled, infoboxes will be displayed while you have active deathpiles / "
-      + "graves.",
+      description =
+          "When enabled, infoboxes will be displayed while you have active deathpiles / "
+              + "graves.",
       section = DEATHPILE_OPTIONS_SECTION,
-      position = 102
-  )
+      position = 102)
   default boolean deathpileInfoBox() {
     return true;
   }
 
-  @Range(
-      min = 1,
-      max = 59
-  )
+  @Range(min = 1, max = 59)
   @ConfigItem(
       keyName = "deathpileContingencyMinutes",
       name = "Contingency (minutes)",
-      description = "This amount of minutes is removed from the deathpile / grave timer. If set to "
-          + "15, any new deathpiles / graves will start with 45 minutes until expiry.",
+      description =
+          "This amount of minutes is removed from the deathpile / grave timer. If set to "
+              + "15, any new deathpiles / graves will start with 45 minutes until expiry.",
       section = DEATHPILE_OPTIONS_SECTION,
-      position = 104
-  )
+      position = 104)
   default int deathpileContingencyMinutes() {
     return 1;
   }
@@ -151,8 +179,7 @@ public interface DudeWheresMyStuffConfig extends Config {
       name = "Flash expiring infoboxes",
       description = "Flash the infoboxes of expiring deathpiles / graves red.",
       section = DEATHPILE_OPTIONS_SECTION,
-      position = 105
-  )
+      position = 105)
   default boolean flashExpiringDeathpileInfoboxes() {
     return true;
   }
@@ -162,8 +189,7 @@ public interface DudeWheresMyStuffConfig extends Config {
       name = "Flash expiring tiles",
       description = "Flash the tile borders of expiring deathpiles / graves red.",
       section = DEATHPILE_OPTIONS_SECTION,
-      position = 106
-  )
+      position = 106)
   default boolean flashExpiringDeathpileTiles() {
     return true;
   }
@@ -173,8 +199,7 @@ public interface DudeWheresMyStuffConfig extends Config {
       name = "Show expiry text",
       description = "Show on-screen text when your oldest deathpile / grave is expiring.",
       section = DEATHPILE_OPTIONS_SECTION,
-      position = 107
-  )
+      position = 107)
   default boolean showDeathpileExpiryText() {
     return false;
   }
@@ -182,10 +207,10 @@ public interface DudeWheresMyStuffConfig extends Config {
   @ConfigItem(
       keyName = "deathpileExpiryWarningTime",
       name = "Expiry warning time",
-      description = "The minutes remaining on your oldest deathpile / grave before you start getting alerted.",
+      description =
+          "The minutes remaining on your oldest deathpile / grave before you start getting alerted.",
       section = DEATHPILE_OPTIONS_SECTION,
-      position = 108
-  )
+      position = 108)
   default int deathpileExpiryWarningTime() {
     return 5;
   }
@@ -195,8 +220,7 @@ public interface DudeWheresMyStuffConfig extends Config {
       name = "Expiry font size",
       description = "Font size for the deathpile / grave expiry text warning.",
       section = DEATHPILE_OPTIONS_SECTION,
-      position = 109
-  )
+      position = 109)
   default int deathpileExpiryWarningFontSize() {
     return 32;
   }

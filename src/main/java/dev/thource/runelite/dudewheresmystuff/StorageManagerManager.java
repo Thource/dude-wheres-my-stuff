@@ -1,5 +1,6 @@
 package dev.thource.runelite.dudewheresmystuff;
 
+import com.google.api.client.auth.oauth2.TokenResponseException;
 import dev.thource.runelite.dudewheresmystuff.carryable.CarryableStorageManager;
 import dev.thource.runelite.dudewheresmystuff.coins.CoinsStorageManager;
 import dev.thource.runelite.dudewheresmystuff.coins.CoinsStorageType;
@@ -7,6 +8,13 @@ import dev.thource.runelite.dudewheresmystuff.death.DeathItems;
 import dev.thource.runelite.dudewheresmystuff.death.DeathStorageManager;
 import dev.thource.runelite.dudewheresmystuff.death.Deathbank;
 import dev.thource.runelite.dudewheresmystuff.death.Deathpile;
+import dev.thource.runelite.dudewheresmystuff.export.DataDestination;
+import dev.thource.runelite.dudewheresmystuff.export.DataExportWriter;
+import dev.thource.runelite.dudewheresmystuff.export.DataExporter;
+import dev.thource.runelite.dudewheresmystuff.export.exporters.StorageManagerExporter;
+import dev.thource.runelite.dudewheresmystuff.export.utils.GoogleSheetConnectionUtils;
+import dev.thource.runelite.dudewheresmystuff.export.writers.CsvWriter;
+import dev.thource.runelite.dudewheresmystuff.export.writers.GoogleSheetsWriter;
 import dev.thource.runelite.dudewheresmystuff.minigames.MinigamesStorageManager;
 import dev.thource.runelite.dudewheresmystuff.playerownedhouse.PlayerOwnedHouseStorageManager;
 import dev.thource.runelite.dudewheresmystuff.stash.StashStorageManager;
@@ -101,26 +109,36 @@ public class StorageManagerManager {
     for (StorageManager<?, ?> storageManager : storageManagers) {
       storageManager.load(profileKey);
 
-      // Bounce into swing and back into the client thread to give StoragePanels a chance to be created
+      // Bounce into swing and back into the client thread to give StoragePanels a chance to be
+      // created
       SwingUtilities.invokeLater(
-          () -> plugin.getClientThread().invoke(() -> {
-            storageManager.getStorages().forEach(storage -> {
-              if (storage.getStoragePanel() != null) {
-                storage.getStoragePanel().refreshItems();
-              }
-            });
+          () ->
+              plugin
+                  .getClientThread()
+                  .invoke(
+                      () -> {
+                        storageManager
+                            .getStorages()
+                            .forEach(
+                                storage -> {
+                                  if (storage.getStoragePanel() != null) {
+                                    storage.getStoragePanel().refreshItems();
+                                  }
+                                });
 
-            SwingUtilities.invokeLater(
-                () -> {
-                  storageManager.getStorages().forEach(storage -> {
-                    if (storage.getStoragePanel() != null) {
-                      storage.getStoragePanel().update();
-                    }
-                  });
-                  storageManager.getStorageTabPanel().reorderStoragePanels();
-                });
-          })
-      );
+                        SwingUtilities.invokeLater(
+                            () -> {
+                              storageManager
+                                  .getStorages()
+                                  .forEach(
+                                      storage -> {
+                                        if (storage.getStoragePanel() != null) {
+                                          storage.getStoragePanel().update();
+                                        }
+                                      });
+                              storageManager.getStorageTabPanel().reorderStoragePanels();
+                            });
+                      }));
     }
   }
 
@@ -191,7 +209,10 @@ public class StorageManagerManager {
   }
 
   public List<ItemStack> getItems() {
-    return getStorages().filter(Storage::isEnabled).map(Storage::getItems).flatMap(List::stream)
+    return getStorages()
+        .filter(Storage::isEnabled)
+        .map(Storage::getItems)
+        .flatMap(List::stream)
         .collect(Collectors.toList());
   }
 
@@ -200,16 +221,46 @@ public class StorageManagerManager {
   }
 
   /** Creates a CSV file containing all the items in any exportable storage. */
-  public void exportItems() {
-    DataExporter exporter = new DataExporter(displayName, this);
-    exporter.setMergeItems(plugin.getConfig().csvCombineItems());
+  public void exportItems(DataDestination destination) {
+    StorageManagerManager s = this;
+    Thread t =
+        new Thread(
+            () -> {
+              DataExportWriter writer;
 
-    try {
-      String filePath = exporter.export();
-      plugin.getNotifier().notify("Items successfully exported to: " + filePath, MessageType.INFO);
-    } catch (IOException | IllegalArgumentException e) {
-      log.error("Unable to export: " + e.getMessage());
-      plugin.getNotifier().notify("Item export failed.", MessageType.ERROR);
-    }
+              if ((destination == DataDestination.CSV)) {
+                writer = new CsvWriter(displayName);
+              } else if ((destination == DataDestination.GOOGLE_SHEETS)) {
+                writer = new GoogleSheetsWriter(plugin, displayName);
+              } else {
+                throw new RuntimeException(
+                    "Could not find a writer that likes the destination selected");
+              }
+
+              DataExporter exporter = new StorageManagerExporter(writer, s);
+              try {
+                export(exporter, writer);
+              } catch (IOException | IllegalArgumentException e) {
+                log.error("Unable to export: " + e.getMessage());
+                plugin.getNotifier().notify("Item export failed.", MessageType.ERROR);
+              } catch (Exception ex) {
+                if (ex instanceof TokenResponseException) {
+                  GoogleSheetConnectionUtils.invalidateCredentials();
+                  try {
+                    export(exporter, writer);
+                  } catch (IOException e) {
+                    throw new RuntimeException(e);
+                  }
+                }
+              }
+            });
+    t.start();
+  }
+
+  private void export(DataExporter exporter, DataExportWriter writer)
+      throws IOException, IllegalArgumentException {
+    String filePath = exporter.export(plugin.getConfig().exportCombineItems());
+    writer.close();
+    plugin.getNotifier().notify("Items successfully exported to: " + filePath, MessageType.INFO);
   }
 }

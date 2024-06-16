@@ -14,6 +14,7 @@ and showing you where they are in an easy to view way.
 
 * View storage for alt characters
 * Overview of your storages, including total account wealth
+* Export to CSV or Google Sheets
 
 ![Overview](readme/overview.png)
 
@@ -61,6 +62,21 @@ and showing you where they are in an easy to view way.
 * Storage-wide search for items
 
 ![Item Search](readme/search.png)
+
+* Export
+
+You are able to select whether or not you are exporting to CSV or Google Sheets. Exporting to Google
+Sheets should open a browser window to login.
+
+![Export Options](readme/export.png)
+
+If you are in a GIM or want to ensure that you reuse a specific Google Sheet, you can populate the
+Google Spreadsheet ID Config. If this is not provided, a new sheet will be made. You will need write
+permissions to the Google Sheet.
+
+The **Target Google Sheet must have been created by the plugin.**
+
+![Export Options](readme/export_settings.png)
 
 ## Planned features
 

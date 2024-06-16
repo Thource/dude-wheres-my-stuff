@@ -27,6 +27,7 @@
 package dev.thource.runelite.dudewheresmystuff;
 
 import com.google.common.collect.ImmutableMap;
+import dev.thource.runelite.dudewheresmystuff.export.DataDestination;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Map;
@@ -54,19 +55,24 @@ class OverviewTabPanel extends TabContentPanel {
   private static final String GP_TOTAL = "%,d gp";
   private static final String DELETE_SAVE_WARNING =
       "Are you sure you want to delete your save data?\nThis cannot be undone.";
-  private static final String DELETE_ALL_DEATHPILES_WARNING = "Are you sure you want to delete all"
-      + " of your deathpiles/graves (including any active ones)?\nThis cannot be undone.";
-  private static final String DELETE_ALL_EXPIRED_DEATHPILES_WARNING = "Are you sure you want to"
-      + " delete all of your expired deathpiles/graves?\nThis cannot be undone.";
-  private static final String DELETE_ALL_DEATHBANKS_WARNING = "Are you sure you want to delete all"
-      + " of your deathbanks (including any active ones)?\nThis cannot be undone.";
-  private static final String DELETE_ALL_LOST_DEATHBANKS_WARNING = "Are you sure you want to"
-      + " delete all of your lost deathbanks?\nThis cannot be undone.";
+  private static final String DELETE_ALL_DEATHPILES_WARNING =
+      "Are you sure you want to delete all"
+          + " of your deathpiles/graves (including any active ones)?\nThis cannot be undone.";
+  private static final String DELETE_ALL_EXPIRED_DEATHPILES_WARNING =
+      "Are you sure you want to"
+          + " delete all of your expired deathpiles/graves?\nThis cannot be undone.";
+  private static final String DELETE_ALL_DEATHBANKS_WARNING =
+      "Are you sure you want to delete all"
+          + " of your deathbanks (including any active ones)?\nThis cannot be undone.";
+  private static final String DELETE_ALL_LOST_DEATHBANKS_WARNING =
+      "Are you sure you want to" + " delete all of your lost deathbanks?\nThis cannot be undone.";
   private static final String DELETE_ALL_SAVE_WARNING =
       "Are you sure you want to delete ALL of your save data?\nThis cannot be undone.";
-  private static final String DELETE_ALL_SAVE_FINAL_WARNING = "Are you REALLY sure you want to "
-      + "delete ALL of your save data?\nThis REALLY cannot be undone.";
-  private static final String EXPORT_ITEMS_TEXT = "Export items to CSV";
+  private static final String DELETE_ALL_SAVE_FINAL_WARNING =
+      "Are you REALLY sure you want to "
+          + "delete ALL of your save data?\nThis REALLY cannot be undone.";
+  private static final String EXPORT_ITEMS_TO_CSV_TEXT = "Export items to CSV";
+  private static final String EXPORT_ITEMS_TO_GOOGLE_SHEETS_TEXT = "Export items to Google Sheets";
   private static final String CONFIRM_DELETION_TEXT = "Confirm deletion";
 
   @Getter private final Map<Tab, OverviewItemPanel> overviews;
@@ -141,32 +147,32 @@ class OverviewTabPanel extends TabContentPanel {
     JMenuItem deleteAllDeathpiles = new JMenuItem("Delete all deathpiles/graves");
     deleteAllDeathpiles.addActionListener(
         e -> {
-          if (DudeWheresMyStuffPlugin.getConfirmation(this, DELETE_ALL_DEATHPILES_WARNING,
-              CONFIRM_DELETION_TEXT)) {
+          if (DudeWheresMyStuffPlugin.getConfirmation(
+              this, DELETE_ALL_DEATHPILES_WARNING, CONFIRM_DELETION_TEXT)) {
             storageManagerManager.getDeathStorageManager().deleteExpiringDeathStorages(true);
           }
         });
     JMenuItem deleteExpiredDeathpiles = new JMenuItem("Delete expired deathpiles/graves");
     deleteExpiredDeathpiles.addActionListener(
         e -> {
-          if (DudeWheresMyStuffPlugin.getConfirmation(this, DELETE_ALL_EXPIRED_DEATHPILES_WARNING,
-              CONFIRM_DELETION_TEXT)) {
+          if (DudeWheresMyStuffPlugin.getConfirmation(
+              this, DELETE_ALL_EXPIRED_DEATHPILES_WARNING, CONFIRM_DELETION_TEXT)) {
             storageManagerManager.getDeathStorageManager().deleteExpiringDeathStorages(false);
           }
         });
     JMenuItem deleteAllDeathbanks = new JMenuItem("Delete all deathbanks");
     deleteAllDeathbanks.addActionListener(
         e -> {
-          if (DudeWheresMyStuffPlugin.getConfirmation(this, DELETE_ALL_DEATHBANKS_WARNING,
-              CONFIRM_DELETION_TEXT)) {
+          if (DudeWheresMyStuffPlugin.getConfirmation(
+              this, DELETE_ALL_DEATHBANKS_WARNING, CONFIRM_DELETION_TEXT)) {
             storageManagerManager.getDeathStorageManager().deleteDeathbanks(true);
           }
         });
     JMenuItem deleteLostDeathbanks = new JMenuItem("Delete lost deathbanks");
     deleteLostDeathbanks.addActionListener(
         e -> {
-          if (DudeWheresMyStuffPlugin.getConfirmation(this, DELETE_ALL_LOST_DEATHBANKS_WARNING,
-              CONFIRM_DELETION_TEXT)) {
+          if (DudeWheresMyStuffPlugin.getConfirmation(
+              this, DELETE_ALL_LOST_DEATHBANKS_WARNING, CONFIRM_DELETION_TEXT)) {
             storageManagerManager.getDeathStorageManager().deleteDeathbanks(false);
           }
         });
@@ -253,13 +259,23 @@ class OverviewTabPanel extends TabContentPanel {
             addDeleteAllDataMenuOption(popupMenu);
           }
           addExportToCsvMenuOption(popupMenu);
+          addExportToGoogleSheetsMenuOption(popupMenu);
         });
   }
 
   private void addExportToCsvMenuOption(JPopupMenu popupMenu) {
     if (!Objects.equals(pluginPanel.getDisplayName(), "")) {
-      final JMenuItem exportItems = new JMenuItem(EXPORT_ITEMS_TEXT);
-      exportItems.addActionListener(e -> storageManagerManager.exportItems());
+      final JMenuItem exportItems = new JMenuItem(EXPORT_ITEMS_TO_CSV_TEXT);
+      exportItems.addActionListener(e -> storageManagerManager.exportItems(DataDestination.CSV));
+      popupMenu.add(exportItems);
+    }
+  }
+
+  private void addExportToGoogleSheetsMenuOption(JPopupMenu popupMenu) {
+    if (!Objects.equals(pluginPanel.getDisplayName(), "")) {
+      final JMenuItem exportItems = new JMenuItem(EXPORT_ITEMS_TO_GOOGLE_SHEETS_TEXT);
+      exportItems.addActionListener(
+          e -> storageManagerManager.exportItems(DataDestination.GOOGLE_SHEETS));
       popupMenu.add(exportItems);
     }
   }
@@ -271,9 +287,10 @@ class OverviewTabPanel extends TabContentPanel {
       final JMenuItem deleteAllData = new JMenuItem("Delete all data");
       deleteAllData.addActionListener(
           e -> {
-            if (DudeWheresMyStuffPlugin.getConfirmation(this, DELETE_ALL_SAVE_WARNING,
-                CONFIRM_DELETION_TEXT) && DudeWheresMyStuffPlugin.getConfirmation(this,
-                DELETE_ALL_SAVE_FINAL_WARNING, CONFIRM_DELETION_TEXT)) {
+            if (DudeWheresMyStuffPlugin.getConfirmation(
+                    this, DELETE_ALL_SAVE_WARNING, CONFIRM_DELETION_TEXT)
+                && DudeWheresMyStuffPlugin.getConfirmation(
+                    this, DELETE_ALL_SAVE_FINAL_WARNING, CONFIRM_DELETION_TEXT)) {
               plugin.deleteAllData();
 
               resetSummaryContextMenu();
@@ -293,8 +310,8 @@ class OverviewTabPanel extends TabContentPanel {
     final JMenuItem clearDeathbank = new JMenuItem("Delete data");
     clearDeathbank.addActionListener(
         e -> {
-          if (DudeWheresMyStuffPlugin.getConfirmation(this, DELETE_SAVE_WARNING,
-              CONFIRM_DELETION_TEXT)) {
+          if (DudeWheresMyStuffPlugin.getConfirmation(
+              this, DELETE_SAVE_WARNING, CONFIRM_DELETION_TEXT)) {
             plugin.disablePreviewMode(true);
             resetSummaryContextMenu();
           }
@@ -305,9 +322,11 @@ class OverviewTabPanel extends TabContentPanel {
   private void addPreviewModeMenuOption(JPopupMenu popupMenu) {
     JMenu previewMenu = new JMenu("Preview data");
 
-    plugin.getProfilesWithData()
-        .filter(runeScapeProfile -> !plugin.getDisplayName(runeScapeProfile)
-            .equals(pluginPanel.getDisplayName()))
+    plugin
+        .getProfilesWithData()
+        .filter(
+            runeScapeProfile ->
+                !plugin.getDisplayName(runeScapeProfile).equals(pluginPanel.getDisplayName()))
         .forEach(
             profile -> {
               String displayName = plugin.getDisplayName(profile);
