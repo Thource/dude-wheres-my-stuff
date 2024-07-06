@@ -54,7 +54,7 @@ public class ItemStack {
   /**
    * A constructor.
    *
-   * @param id OSRS item ID
+   * @param id     OSRS item ID
    * @param plugin plugin
    */
   public ItemStack(int id, DudeWheresMyStuffPlugin plugin) {
@@ -68,9 +68,9 @@ public class ItemStack {
   /**
    * A constructor.
    *
-   * @param id OSRS item ID
+   * @param id OSRS  item ID
    * @param quantity quantity
-   * @param plugin plugin
+   * @param plugin   plugin
    */
   public ItemStack(int id, long quantity, DudeWheresMyStuffPlugin plugin) {
     this(id, plugin);
@@ -102,11 +102,11 @@ public class ItemStack {
    * <p>WARNING: ItemStacks created using this constructor will not have an ItemIdentification
    * attached.
    *
-   * @param id the item's id
-   * @param name the item's name
-   * @param quantity the quantity of the item
-   * @param gePrice the GE price
-   * @param haPrice the high alchemy price
+   * @param id        the item's id
+   * @param name      the item's name
+   * @param quantity  the quantity of the item
+   * @param gePrice   the GE price
+   * @param haPrice   the high alchemy price
    * @param stackable if the item is stackable
    */
   public ItemStack(
