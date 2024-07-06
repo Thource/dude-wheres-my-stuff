@@ -14,6 +14,13 @@ import net.runelite.client.config.Range;
 public interface DudeWheresMyStuffConfig extends Config {
 
   String CONFIG_GROUP = "dudewheresmystuff";
+
+  @ConfigSection(
+      name = "Data Export Options",
+      description = "Settings for data exports",
+      position = 100)
+  String DATA_EXPORT_OPTIONS = "Data Export Options";
+
   @ConfigSection(
       name = "Deathpiles / Graves Options",
       description = "Settings for deathpiles and graves",
@@ -38,22 +45,51 @@ public interface DudeWheresMyStuffConfig extends Config {
   }
 
   @ConfigItem(
-      keyName = "csvCombineItems",
-      name = "Combine items in CSV",
-      description = "When enabled, items from different storages will be combined into a single "
-          + "row in the exported CSV file. This means that the CSV won't contain which item is in "
-          + "which storage.")
-  default boolean csvCombineItems() {
+      keyName = "exportCombineItems",
+      name = "Combine items in Export",
+      section = DATA_EXPORT_OPTIONS,
+      position = 2,
+      description =
+          "When enabled, items from different storages will be combined into a single "
+              + "row in the exported CSV file. This means that the CSV won't contain which item is in "
+              + "which storage.")
+  default boolean exportCombineItems() {
     return false;
   }
+
+  @ConfigItem(
+      keyName = "googleSpreadSheetId",
+      name = "Google Spreadsheet ID",
+      section = DATA_EXPORT_OPTIONS,
+      position = 101,
+      description =
+          "Google spreadsheet ID if you have an existing sheet. The target sheet must have been created by the plugin. If you do not provide this, we will create one and populate this field.")
+  default String googleSpreadSheetId() {
+    return "";
+  }
+
+  @ConfigItem(keyName = "googleSpreadSheetId", name = "", description = "", hidden = true)
+  void setGoogleSpreadSheetId(String spreadSheetId);
+
+  @ConfigItem(
+      keyName = "googleSpreadSheetUrl",
+      name = "Google Spreadsheet URL",
+      section = DATA_EXPORT_OPTIONS,
+      position = 101,
+      description = "Google spreadsheet URL to the sheet. Auto populated.")
+  default String googleSpreadSheetUrl() {
+    return "";
+  }
+
+  @ConfigItem(keyName = "googleSpreadSheetUrl", name = "", description = "", hidden = true)
+  void setGoogleSpreadSheetUrl(String spreadSheetUrl);
 
   @ConfigItem(
       keyName = "storedItemCountTooltip",
       name = "Item count tooltip mode",
       description = "Adds a tooltip when you hover items that tells you how many of those item you "
           + "have stored. \"Simple\" mode shows a sum, \"Detailed\" mode tells you where they are "
-          + "stored."
-  )
+          + "stored.")
   default StoredItemCountTooltipMode storedItemCountTooltip() {
     return StoredItemCountTooltipMode.OFF;
   }
@@ -82,7 +118,6 @@ public interface DudeWheresMyStuffConfig extends Config {
       description = "When enabled, a banner is displayed at the top of the death storage tab, "
           + "warning against relying solely on the plugin for death storages."
   )
-
   default boolean showDeathStorageRiskWarning() {
     return true;
   }
@@ -94,7 +129,6 @@ public interface DudeWheresMyStuffConfig extends Config {
       section = DEATHPILE_OPTIONS_SECTION,
       position = 100
   )
-
   default DeathpileColorScheme deathpileColorScheme() {
     return DeathpileColorScheme.FULL_COLOR;
   }
@@ -113,7 +147,6 @@ public interface DudeWheresMyStuffConfig extends Config {
       section = DEATHPILE_OPTIONS_SECTION,
       position = 101
   )
-
   default boolean deathpilesUseAccountPlayTime() {
     return false;
   }
@@ -122,7 +155,7 @@ public interface DudeWheresMyStuffConfig extends Config {
       keyName = "deathpileInfoBox",
       name = "Show infoboxes",
       description = "When enabled, infoboxes will be displayed while you have active deathpiles / "
-      + "graves.",
+          + "graves.",
       section = DEATHPILE_OPTIONS_SECTION,
       position = 102
   )
