@@ -81,3 +81,14 @@ The **Target Google Sheet must have been created by the plugin.**
 ## Planned features
 
 Check out the Github issues: https://github.com/Thource/dude-wheres-my-stuff/issues
+
+## Developer Notes
+
+### Verifying Dependency Metadata
+
+Because this plugin integrates with the sheets api directly, we may need to occassionally update the
+verification metadata file. This can be done by running:
+
+```bash
+$ ./gradlew --write-verification-metadata sha256
+```
