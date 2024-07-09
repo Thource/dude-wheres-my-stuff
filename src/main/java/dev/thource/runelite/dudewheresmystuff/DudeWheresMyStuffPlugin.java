@@ -349,7 +349,10 @@ public class DudeWheresMyStuffPlugin extends Plugin {
         });
         break;
       case "itemSortMode":
-        setItemSortMode(ItemSortMode.valueOf(configChanged.getNewValue()));
+        ItemSortMode newValue = configChanged.getNewValue() != null ?
+            ItemSortMode.valueOf(configChanged.getNewValue()):
+            ItemSortMode.UNSORTED;
+        setItemSortMode(newValue);
         break;
       case "deathpilesUseAccountPlayTime":
       case "deathbankInfoBox":
