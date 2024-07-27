@@ -10,7 +10,7 @@ import net.runelite.api.InventoryID;
 @RequiredArgsConstructor
 @Getter
 public enum CoinsStorageType implements StorageType {
-  BANK("Bank", -1, InventoryID.BANK.getId(), true, "bank", false),
+  BANK("Bank", -1, InventoryID.BANK.getId(), false, "bank", false),
   NMZ("Nightmare Zone", 3948, -1, true, "nightmarezone", true, 1000),
   LMS("Last Man Standing", 5305, -1, true, "lastmanstanding", false, 1000),
   SERVANT_MONEYBAG("Servant's Moneybag", -1, -1, false, "servantsmoneybag", true),
