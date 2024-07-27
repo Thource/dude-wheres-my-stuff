@@ -190,7 +190,8 @@ public class StorageManagerManager {
                 .filter(
                     storage ->
                         storage.getType() != CoinsStorageType.INVENTORY
-                            && storage.getType() != CoinsStorageType.LOOTING_BAG),
+                            && storage.getType() != CoinsStorageType.LOOTING_BAG
+                            && storage.getType() != CoinsStorageType.BANK),
             getCarryableStorageManager().getStorages().stream(),
             getStashStorageManager().getStorages().stream(),
             getPlayerOwnedHouseStorageManager().getStorages().stream(),
