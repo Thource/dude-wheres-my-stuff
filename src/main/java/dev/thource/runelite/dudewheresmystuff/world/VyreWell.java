@@ -31,7 +31,7 @@ public class VyreWell extends WorldStorage {
     boolean updated = super.onVarbitChanged();
 
     if (updated) {
-      bloodRunes.setQuantity(vialsOfBlood.getQuantity() * 300L);
+      bloodRunes.setQuantity(vialsOfBlood.getQuantity() * 200L);
     }
 
     return updated;
