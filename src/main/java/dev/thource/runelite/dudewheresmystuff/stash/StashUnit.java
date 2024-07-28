@@ -65,7 +65,13 @@ public enum StashUnit {
       new int[]{ItemID.STEEL_PLATEBODY, ItemID.MAPLE_SHORTBOW, ItemID.TEAM1_CAPE},
       ItemRequirements.item(ItemID.STEEL_PLATEBODY),
       ItemRequirements.item(ItemID.MAPLE_SHORTBOW),
-      ItemRequirements.range(ItemID.TEAM1_CAPE, ItemID.TEAM50_CAPE)),
+      ItemRequirements.any(
+          "Any team cape",
+          ItemRequirements.range(ItemID.TEAM1_CAPE, ItemID.TEAM50_CAPE),
+          ItemRequirements.item(ItemID.TEAM_CAPE_I),
+          ItemRequirements.item(ItemID.TEAM_CAPE_X),
+          ItemRequirements.item(ItemID.TEAM_CAPE_ZERO)
+      )),
   SOUTHEAST_CORNER_OF_THE_MONASTERY(
       "Edgeville Monastery",
       "South-east corner of the Monastery",
@@ -109,7 +115,11 @@ public enum StashUnit {
           "Climbing boots",
           ItemRequirements.item(ItemID.CLIMBING_BOOTS),
           ItemRequirements.item(ItemID.CLIMBING_BOOTS_G)),
-      ItemRequirements.item(ItemID.RING_OF_VISIBILITY)),
+      ItemRequirements.any(
+          "Ring of visibility or ring of shadows",
+          ItemRequirements.item(ItemID.RING_OF_VISIBILITY),
+          ItemRequirements.item(ItemID.RING_OF_SHADOWS),
+          ItemRequirements.item(ItemID.RING_OF_SHADOWS_UNCHARGED))),
   AGILITY_PYRAMID(
       "Agility Pyramid",
       "Agility Pyramid",
@@ -691,7 +701,11 @@ public enum StashUnit {
       STASHUnit.OUTSIDE_THE_SLAYER_TOWER_GARGOYLE_ROOM,
       new int[]{ItemID.SEERCULL, ItemID.COMBAT_BRACELET4, ItemID.HELM_OF_NEITIZNOT},
       ItemRequirements.item(ItemID.SEERCULL),
-      ItemRequirements.range(ItemID.COMBAT_BRACELET4, ItemID.COMBAT_BRACELET),
+      ItemRequirements.any(
+          "Combat bracelet",
+          ItemRequirements.range(ItemID.COMBAT_BRACELET4, ItemID.COMBAT_BRACELET),
+          ItemRequirements.item(ItemID.COMBAT_BRACELET5),
+          ItemRequirements.item(ItemID.COMBAT_BRACELET6)),
       ItemRequirements.item(ItemID.HELM_OF_NEITIZNOT)),
   OUTSIDE_THE_FISHING_GUILD(
       "Fishing Guild",
@@ -979,7 +993,7 @@ public enum StashUnit {
       ItemRequirements.item(ItemID.GREEN_DHIDE_CHAPS),
       ItemRequirements.item(ItemID.IRON_MED_HELM)),
   CHAOS_TEMPLE_IN_THE_SOUTHEASTERN_WILDERNESS(
-      "Chaos temple",
+      "East of the Level 19 Wilderness Obelisk",
       "Chaos Temple in the south-eastern Wilderness",
       STASHUnit.EAST_OF_THE_LEVEL_19_WILDERNESS_OBELISK,
       new int[]{ItemID.RUNE_PLATELEGS, ItemID.IRON_PLATEBODY, ItemID.BLUE_DHIDE_VAMBRACES},
@@ -1071,8 +1085,11 @@ public enum StashUnit {
           "Dragon or Crystal axe",
           ItemRequirements.item(ItemID.DRAGON_AXE),
           ItemRequirements.item(ItemID.DRAGON_AXE_OR),
+          ItemRequirements.item(ItemID.DRAGON_FELLING_AXE),
           ItemRequirements.item(ItemID.CRYSTAL_AXE),
           ItemRequirements.item(ItemID.CRYSTAL_AXE_INACTIVE),
+          ItemRequirements.item(ItemID.CRYSTAL_FELLING_AXE),
+          ItemRequirements.item(ItemID.CRYSTAL_FELLING_AXE_INACTIVE),
           ItemRequirements.item(ItemID.INFERNAL_AXE),
           ItemRequirements.item(ItemID.INFERNAL_AXE_UNCHARGED),
           ItemRequirements.item(ItemID.INFERNAL_AXE_OR),
@@ -1110,7 +1127,7 @@ public enum StashUnit {
       ItemRequirements.item(ItemID.BLACK_PLATEBODY),
       ItemRequirements.item(ItemID.IRON_KITESHIELD)),
   MUDSKIPPER_POINT(
-      "Mudskipper Point",
+      "Mudskipper Point (AIQ)",
       "Mudskipper Point",
       STASHUnit.MUDSKIPPER_POINT,
       new int[]{ItemID.BLACK_CAPE, ItemID.LEATHER_CHAPS, ItemID.STEEL_MACE},
@@ -1279,7 +1296,42 @@ public enum StashUnit {
           ItemRequirements.item(ItemID.FARMERS_STRAWHAT),
           ItemRequirements.item(ItemID.FARMERS_STRAWHAT_13647)),
       ItemRequirements.item(ItemID.SHAYZIEN_BODY_5),
-      ItemRequirements.item(ItemID.PYROMANCER_ROBE));
+      ItemRequirements.item(ItemID.PYROMANCER_ROBE)),
+  FORTIS_GRAND_MUSEUM(
+      "Fortis Grand Museum",
+      "Near the entrance of the Civitas illa Fortis Grand Museum",
+      STASHUnit.FORTIS_GRAND_MUSEUM,
+      new int[]{ItemID.EMERALD_NECKLACE, ItemID.BLUE_SKIRT, ItemID.TURQUOISE_ROBE_TOP},
+      ItemRequirements.item(ItemID.EMERALD_NECKLACE),
+      ItemRequirements.item(ItemID.BLUE_SKIRT),
+      ItemRequirements.item(ItemID.TURQUOISE_ROBE_TOP)),
+  CAM_TORUM_ENTRANCE(
+      "Cam Torum",
+      "South of the gates to Cam Torum",
+      STASHUnit.CAM_TORUM_ENTRANCE,
+      new int[]{ItemID.BLUE_MOON_HELM, ItemID.BLUE_MOON_CHESTPLATE, ItemID.BLUE_MOON_TASSETS, ItemID.BLUE_MOON_SPEAR},
+      ItemRequirements.any(
+          "Blue moon helm",
+          ItemRequirements.item(ItemID.BLUE_MOON_HELM),
+          ItemRequirements.item(ItemID.BLUE_MOON_HELM_29041)),
+      ItemRequirements.any("Blue moon chestplate",
+          ItemRequirements.item(ItemID.BLUE_MOON_CHESTPLATE),
+          ItemRequirements.item(ItemID.BLUE_MOON_CHESTPLATE_29037)),
+      ItemRequirements.any("Blue moon tassets",
+          ItemRequirements.item(ItemID.BLUE_MOON_TASSETS),
+          ItemRequirements.item(ItemID.BLUE_MOON_TASSETS_29039)),
+      ItemRequirements.item(ItemID.BLUE_MOON_SPEAR)
+  ),
+  TEMPLE_SOUTHEAST_OF_THE_BAZAAR(
+      "Civitas illa Fortis",
+      "Outside the temple in Civitas illa Fortis",
+      STASHUnit.TEMPLE_SOUTHEAST_OF_THE_BAZAAR,
+      new int[]{ItemID.SUNFIRE_FANATIC_HELM, ItemID.SUNFIRE_FANATIC_CUIRASS, ItemID.SUNFIRE_FANATIC_CHAUSSES},
+      ItemRequirements.any(
+          "Any piece of Sunfire Fanatic armour",
+          ItemRequirements.item(ItemID.SUNFIRE_FANATIC_HELM),
+          ItemRequirements.item(ItemID.SUNFIRE_FANATIC_CUIRASS),
+          ItemRequirements.item(ItemID.SUNFIRE_FANATIC_CHAUSSES)));
 
   private final String locationName;
   private final String chartText;
