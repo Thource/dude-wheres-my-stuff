@@ -61,7 +61,8 @@ public class Menagerie extends PlayerOwnedHouseStorage {
           ItemID.FISHBOWL_6670,
           ItemID.FISHBOWL_6671,
           ItemID.FISHBOWL_6672,
-          ItemID.TOY_CAT);
+          ItemID.TOY_CAT,
+          ItemID.BROAV);
   public static final List<List<Integer>> VARPLAYER_BITS_TO_ITEM_IDS_LIST;
 
   static {
@@ -122,7 +123,14 @@ public class Menagerie extends PlayerOwnedHouseStorage {
             ItemID.NEXLING,
             ItemID.ABYSSAL_PROTECTOR,
             ItemID.TUMEKENS_GUARDIAN,
-            ItemID.MUPHIN));
+            ItemID.MUPHIN,
+            ItemID.BARON,
+            ItemID.BUTCH,
+            ItemID.LILVIATHAN,
+            ItemID.WISP,
+            ItemID.SCURRY,
+            ItemID.SMOL_HEREDIT,
+            ItemID.QUETZIN));
 
     VARPLAYER_BITS_TO_ITEM_IDS_LIST = builder.build();
   }
