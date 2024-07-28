@@ -26,7 +26,7 @@ public class PlayerOwnedHouseStorage extends ItemStorage<PlayerOwnedHouseStorage
     items.clear();
     for (Item item : itemContainerChanged.getItemContainer().getItems()) {
       if (type.getStorableItemIds() == null || type.getStorableItemIds().contains(item.getId())) {
-        items.add(new ItemStack(item.getId(), 1, plugin));
+        items.add(new ItemStack(item.getId(), item.getQuantity(), plugin));
       }
     }
 
