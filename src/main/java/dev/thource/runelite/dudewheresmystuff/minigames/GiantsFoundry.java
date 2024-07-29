@@ -15,8 +15,7 @@ public class GiantsFoundry extends MinigamesStorage {
 
   private static final Pattern HAND_IN_PATTERN = Pattern.compile("at quality: (\\d+)");
 
-  private final ItemStack points =
-      new ItemStack(ItemID.COLOSSAL_BLADE, "Points", 0, 0, 0, true);
+  private final ItemStack points = new ItemStack(ItemID.COLOSSAL_BLADE, "Points", 0, 0, 0, true);
   private boolean didJustHandIn = false;
 
   GiantsFoundry(DudeWheresMyStuffPlugin plugin) {

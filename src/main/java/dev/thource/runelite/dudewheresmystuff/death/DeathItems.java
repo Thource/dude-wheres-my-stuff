@@ -33,7 +33,8 @@ public class DeathItems extends DeathStorage {
 
   @Override
   protected void createComponentPopupMenu(StorageManager<?, ?> storageManager) {
-    if (!plugin.isDeveloperMode() || deathStorageManager.isPreviewManager()
+    if (!plugin.isDeveloperMode()
+        || deathStorageManager.isPreviewManager()
         || storagePanel == null) {
       return;
     }
@@ -65,21 +66,23 @@ public class DeathItems extends DeathStorage {
 
   @Override
   public void softUpdate() {
-    plugin.getClientThread().invoke(() -> {
-      items.clear();
-      items.addAll(deathStorageManager.getDeathItems());
+    plugin
+        .getClientThread()
+        .invoke(
+            () -> {
+              items.clear();
+              items.addAll(deathStorageManager.getDeathItems());
 
-      if (storagePanel != null) {
-        storagePanel.refreshItems();
+              if (storagePanel != null) {
+                storagePanel.refreshItems();
 
-        SwingUtilities.invokeLater(() -> storagePanel.update());
-      }
-    });
+                SwingUtilities.invokeLater(() -> storagePanel.update());
+              }
+            });
   }
 
   @Override
-  public void save(ConfigManager configManager, String profileKey,
-      String managerConfigKey) {
+  public void save(ConfigManager configManager, String profileKey, String managerConfigKey) {
     // No saving
   }
 

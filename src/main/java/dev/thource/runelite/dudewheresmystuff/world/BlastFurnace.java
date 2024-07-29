@@ -12,23 +12,23 @@ import net.runelite.api.Varbits;
 public class BlastFurnace extends WorldStorage {
 
   private static final int[] VARBITS = {
-      Varbits.BLAST_FURNACE_COPPER_ORE,
-      Varbits.BLAST_FURNACE_TIN_ORE,
-      Varbits.BLAST_FURNACE_IRON_ORE,
-      Varbits.BLAST_FURNACE_COAL,
-      Varbits.BLAST_FURNACE_MITHRIL_ORE,
-      Varbits.BLAST_FURNACE_ADAMANTITE_ORE,
-      Varbits.BLAST_FURNACE_RUNITE_ORE,
-      Varbits.BLAST_FURNACE_SILVER_ORE,
-      Varbits.BLAST_FURNACE_GOLD_ORE,
-      Varbits.BLAST_FURNACE_BRONZE_BAR,
-      Varbits.BLAST_FURNACE_IRON_BAR,
-      Varbits.BLAST_FURNACE_STEEL_BAR,
-      Varbits.BLAST_FURNACE_MITHRIL_BAR,
-      Varbits.BLAST_FURNACE_ADAMANTITE_BAR,
-      Varbits.BLAST_FURNACE_RUNITE_BAR,
-      Varbits.BLAST_FURNACE_SILVER_BAR,
-      Varbits.BLAST_FURNACE_GOLD_BAR
+    Varbits.BLAST_FURNACE_COPPER_ORE,
+    Varbits.BLAST_FURNACE_TIN_ORE,
+    Varbits.BLAST_FURNACE_IRON_ORE,
+    Varbits.BLAST_FURNACE_COAL,
+    Varbits.BLAST_FURNACE_MITHRIL_ORE,
+    Varbits.BLAST_FURNACE_ADAMANTITE_ORE,
+    Varbits.BLAST_FURNACE_RUNITE_ORE,
+    Varbits.BLAST_FURNACE_SILVER_ORE,
+    Varbits.BLAST_FURNACE_GOLD_ORE,
+    Varbits.BLAST_FURNACE_BRONZE_BAR,
+    Varbits.BLAST_FURNACE_IRON_BAR,
+    Varbits.BLAST_FURNACE_STEEL_BAR,
+    Varbits.BLAST_FURNACE_MITHRIL_BAR,
+    Varbits.BLAST_FURNACE_ADAMANTITE_BAR,
+    Varbits.BLAST_FURNACE_RUNITE_BAR,
+    Varbits.BLAST_FURNACE_SILVER_BAR,
+    Varbits.BLAST_FURNACE_GOLD_BAR
   };
 
   protected BlastFurnace(DudeWheresMyStuffPlugin plugin) {

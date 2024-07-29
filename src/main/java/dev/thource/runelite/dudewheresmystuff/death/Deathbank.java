@@ -37,17 +37,16 @@ public class Deathbank extends DeathStorage {
     this.deathStorageManager = deathStorageManager;
   }
 
-  static Deathbank load(DudeWheresMyStuffPlugin plugin, DeathStorageManager deathStorageManager,
-      String profileKey, String uuid) {
-    Deathbank deathbank = new Deathbank(
-        DeathbankType.UNKNOWN,
-        plugin,
-        deathStorageManager
-    );
+  static Deathbank load(
+      DudeWheresMyStuffPlugin plugin,
+      DeathStorageManager deathStorageManager,
+      String profileKey,
+      String uuid) {
+    Deathbank deathbank = new Deathbank(DeathbankType.UNKNOWN, plugin, deathStorageManager);
 
     deathbank.uuid = UUID.fromString(uuid);
-    deathbank.load(deathStorageManager.getConfigManager(), deathStorageManager.getConfigKey(),
-        profileKey);
+    deathbank.load(
+        deathStorageManager.getConfigManager(), deathStorageManager.getConfigKey(), profileKey);
 
     if (deathbank.getItems().isEmpty()) {
       deathbank.deleteData(deathStorageManager);
@@ -108,9 +107,12 @@ public class Deathbank extends DeathStorage {
     final JMenuItem clearDeathbank = new JMenuItem("Delete Deathbank");
     clearDeathbank.addActionListener(
         e -> {
-          boolean confirmed = lostAt != -1L || DudeWheresMyStuffPlugin.getConfirmation(storagePanel,
-              "Are you sure you want to delete this deathbank?\nThis cannot be undone.",
-              "Confirm deletion");
+          boolean confirmed =
+              lostAt != -1L
+                  || DudeWheresMyStuffPlugin.getConfirmation(
+                      storagePanel,
+                      "Are you sure you want to delete this deathbank?\nThis cannot be undone.",
+                      "Confirm deletion");
 
           if (confirmed) {
             if (this == deathStorageManager.getDeathbank()) {
@@ -128,11 +130,12 @@ public class Deathbank extends DeathStorage {
   void setLocked(boolean locked) {
     this.locked = locked;
 
-    SwingUtilities.invokeLater(() -> {
-      if (storagePanel != null) {
-        storagePanel.setSubTitle(locked ? "Locked" : "Unlocked");
-      }
-    });
+    SwingUtilities.invokeLater(
+        () -> {
+          if (storagePanel != null) {
+            storagePanel.setSubTitle(locked ? "Locked" : "Unlocked");
+          }
+        });
   }
 
   @Override

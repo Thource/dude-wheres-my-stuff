@@ -5,9 +5,7 @@ import dev.thource.runelite.dudewheresmystuff.ItemStack;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ItemID;
 
-/**
- * ForestryKit is responsible for tracking what the player has stored in their Forestry Kit.
- */
+/** ForestryKit is responsible for tracking what the player has stored in their Forestry Kit. */
 @Slf4j
 public class ForestryKit extends CarryableStorage {
 

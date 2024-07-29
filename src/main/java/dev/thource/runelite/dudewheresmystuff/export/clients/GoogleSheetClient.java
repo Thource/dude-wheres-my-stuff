@@ -76,7 +76,8 @@ public class GoogleSheetClient {
               RuntimeException e =
                   new RuntimeException(
                       String.format(
-                          "Failed to retrieve sheet that should have been created for spreadsheetId: %s",
+                          "Failed to retrieve sheet that should have been created for"
+                              + " spreadsheetId: %s",
                           spreadsheetId));
               log.error("Unexpected Exception While Writing Headers", e);
               return e;
