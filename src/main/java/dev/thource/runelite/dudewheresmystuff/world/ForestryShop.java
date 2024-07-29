@@ -15,15 +15,15 @@ import org.apache.commons.lang3.math.NumberUtils;
 public class ForestryShop extends WorldStorage {
 
   private final Pattern[] checkPatterns = {
-      Pattern.compile("Oak\\s+logs:\\s+(\\d+)"),
-      Pattern.compile("Willow\\s+logs:\\s+(\\d+)"),
-      Pattern.compile("Yew\\s+logs:\\s+(\\d+)"),
-      Pattern.compile("Maple\\s+logs:\\s+(\\d+)"),
-      Pattern.compile("Magic\\s+logs:\\s+(\\d+)"),
-      Pattern.compile("Teak\\s+logs:\\s+(\\d+)"),
-      Pattern.compile("Mahogany\\s+logs:\\s+(\\d+)"),
-      Pattern.compile("Redwood\\s+logs:\\s+(\\d+)"),
-      Pattern.compile("Arctic\\s+pine\\s+logs:\\s+(\\d+)")
+    Pattern.compile("Oak\\s+logs:\\s+(\\d+)"),
+    Pattern.compile("Willow\\s+logs:\\s+(\\d+)"),
+    Pattern.compile("Yew\\s+logs:\\s+(\\d+)"),
+    Pattern.compile("Maple\\s+logs:\\s+(\\d+)"),
+    Pattern.compile("Magic\\s+logs:\\s+(\\d+)"),
+    Pattern.compile("Teak\\s+logs:\\s+(\\d+)"),
+    Pattern.compile("Mahogany\\s+logs:\\s+(\\d+)"),
+    Pattern.compile("Redwood\\s+logs:\\s+(\\d+)"),
+    Pattern.compile("Arctic\\s+pine\\s+logs:\\s+(\\d+)")
   };
 
   protected ForestryShop(DudeWheresMyStuffPlugin plugin) {

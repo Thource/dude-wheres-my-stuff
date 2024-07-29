@@ -9,13 +9,13 @@ class FakeDataService {
 
   public static final String PROFILE = "rsprofile.ZZZ";
 
-  private FakeDataService() {
-  }
+  private FakeDataService() {}
 
   static void createData(ConfigManager configManager) {
     // Wipe the fake profile data
-    for (String configKey : configManager.getRSProfileConfigurationKeys(
-        DudeWheresMyStuffConfig.CONFIG_GROUP, PROFILE, "")) {
+    for (String configKey :
+        configManager.getRSProfileConfigurationKeys(
+            DudeWheresMyStuffConfig.CONFIG_GROUP, PROFILE, "")) {
       configManager.unsetConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP, PROFILE, configKey);
     }
 
@@ -29,10 +29,7 @@ class FakeDataService {
         DudeWheresMyStuffConfig.CONFIG_GROUP, PROFILE, "minutesPlayed", 600);
     configManager.setConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP, PROFILE, "isMember", true);
     configManager.setConfiguration(
-        DudeWheresMyStuffConfig.CONFIG_GROUP,
-        PROFILE,
-        "accountType",
-        2); // uim
+        DudeWheresMyStuffConfig.CONFIG_GROUP, PROFILE, "accountType", 2); // uim
 
     createDeathData(configManager);
     createCoinsData(configManager);
@@ -61,8 +58,8 @@ class FakeDataService {
             (System.currentTimeMillis() - (1000 * 60 * 4))
                 + ";"
                 + type.getStorableItemIds().stream()
-                .map(id -> id + "x" + 1)
-                .collect(Collectors.joining(",")));
+                    .map(id -> id + "x" + 1)
+                    .collect(Collectors.joining(",")));
       }
     }
   }
@@ -89,28 +86,24 @@ class FakeDataService {
         "death.deathpile.5d7f983f-3501-4010-8522-a45c3173ffb3",
         "995x26000000,5295x185,22875x3,5296x278,5343x19,952x15,7409x1,13353x1;"
             + "5d7f983f-3501-4010-8522-a45c3173ffb3;3203,3824,0;true;0;"
-            + (System.currentTimeMillis() - (1000 * 60 * 25))
-    );
+            + (System.currentTimeMillis() - (1000 * 60 * 25)));
     configManager.setConfiguration(
         DudeWheresMyStuffConfig.CONFIG_GROUP,
         PROFILE,
         "death.deathpile.5a5d74b6-d279-4fa9-95e7-ee0c14f957d2",
         "562x7756,556x12148,560x5336,554x10885,3031x3789,168x642,2459x936,2999x272;"
-            + "5a5d74b6-d279-4fa9-95e7-ee0c14f957d2;2205,3212,0;false;500"
-    );
+            + "5a5d74b6-d279-4fa9-95e7-ee0c14f957d2;2205,3212,0;false;500");
     configManager.setConfiguration(
         DudeWheresMyStuffConfig.CONFIG_GROUP,
         PROFILE,
         "death.deathpile.cebe31f5-0047-40c2-bddf-9f2f37a3664b",
         "1523,150x4838,142x1697,3031x3789,7937x144000,2362x1030,1618x155;"
-            + "cebe31f5-0047-40c2-bddf-9f2f37a3664b;3222,3218,0;true;619"
-    );
+            + "cebe31f5-0047-40c2-bddf-9f2f37a3664b;3222,3218,0;true;619");
     configManager.setConfiguration(
         DudeWheresMyStuffConfig.CONFIG_GROUP,
         PROFILE,
         "death.deathbank.9267fafd-517d-45db-8d88-ede39393f176",
-        "1678391322175;4214x1,11802x1,;9267fafd-517d-45db-8d88-ede39393f176;true;-1;HESPORI"
-    );
+        "1678391322175;4214x1,11802x1,;9267fafd-517d-45db-8d88-ede39393f176;true;-1;HESPORI");
     configManager.setConfiguration(
         DudeWheresMyStuffConfig.CONFIG_GROUP,
         PROFILE,
@@ -119,8 +112,8 @@ class FakeDataService {
             + "5297x121,5296x588,5302x212,5298x92,5301x20,561x1135,560x4804,11865x1,6570x1,"
             + "6585x1,12508x1,12954x1,10388x1,7462x1,11773x1,12851x1;"
             + "b6dcb979-ad92-4641-8540-6efee365c629;false;"
-            + (System.currentTimeMillis() - (1000 * 60 * 60 * 24 * 9)) + ";HESPORI"
-    );
+            + (System.currentTimeMillis() - (1000 * 60 * 60 * 24 * 9))
+            + ";HESPORI");
   }
 
   private static void createCoinsData(ConfigManager configManager) {
@@ -239,20 +232,11 @@ class FakeDataService {
         "world.fossilstorage",
         "10,4,5,6,4,3,2,34,23,12,5,4,6,45,3,43,23,21,12,4,6,4,11,16,1,2,7,9,4,8");
     configManager.setConfiguration(
-        DudeWheresMyStuffConfig.CONFIG_GROUP,
-        PROFILE,
-        "world.vyrewell",
-        "10000,3000000");
+        DudeWheresMyStuffConfig.CONFIG_GROUP, PROFILE, "world.vyrewell", "10000,3000000");
     configManager.setConfiguration(
-        DudeWheresMyStuffConfig.CONFIG_GROUP,
-        PROFILE,
-        "world.annette",
-        "82");
+        DudeWheresMyStuffConfig.CONFIG_GROUP, PROFILE, "world.annette", "82");
     configManager.setConfiguration(
-        DudeWheresMyStuffConfig.CONFIG_GROUP,
-        PROFILE,
-        "world.elnock",
-        "0,1,1,948");
+        DudeWheresMyStuffConfig.CONFIG_GROUP, PROFILE, "world.elnock", "0,1,1,948");
   }
 
   private static void createMinigamesData(ConfigManager configManager) {
@@ -269,7 +253,9 @@ class FakeDataService {
         "minigames.lastmanstanding",
         System.currentTimeMillis() - (1000 * 60 * 60 * 5) + ";43");
     configManager.setConfiguration(
-        DudeWheresMyStuffConfig.CONFIG_GROUP, PROFILE, "minigames.nightmarezone",
+        DudeWheresMyStuffConfig.CONFIG_GROUP,
+        PROFILE,
+        "minigames.nightmarezone",
         "435645,12,8,120,30");
     configManager.setConfiguration(
         DudeWheresMyStuffConfig.CONFIG_GROUP,
@@ -287,10 +273,7 @@ class FakeDataService {
         "minigames.mahoganyhomes",
         System.currentTimeMillis() - (1000 * 60 * 23) + ";782");
     configManager.setConfiguration(
-        DudeWheresMyStuffConfig.CONFIG_GROUP,
-        PROFILE,
-        "minigames.slayer",
-        "1043");
+        DudeWheresMyStuffConfig.CONFIG_GROUP, PROFILE, "minigames.slayer", "1043");
     configManager.setConfiguration(
         DudeWheresMyStuffConfig.CONFIG_GROUP,
         PROFILE,

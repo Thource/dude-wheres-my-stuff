@@ -15,15 +15,18 @@ import net.runelite.api.ItemContainer;
 /** ItemContainerWatcher makes it easy to detect changes to ItemContainers. */
 public class ItemContainerWatcher {
 
-  @Getter static final ItemContainerWatcher inventoryWatcher =
+  @Getter
+  static final ItemContainerWatcher inventoryWatcher =
       new ItemContainerWatcher(InventoryID.INVENTORY.getId());
+
   @Getter static final ItemContainerWatcher lootingBagWatcher = new ItemContainerWatcher(516);
   @Getter static final ItemContainerWatcher seedBoxWatcher = new ItemContainerWatcher(573);
   @Getter static final ItemContainerWatcher deathsOfficeWatcher = new ItemContainerWatcher(636);
   private static final Map<Integer, ItemContainerWatcher> watcherMap;
   private static final ItemContainerWatcher[] all =
-      new ItemContainerWatcher[]{inventoryWatcher, lootingBagWatcher, seedBoxWatcher,
-          deathsOfficeWatcher};
+      new ItemContainerWatcher[] {
+        inventoryWatcher, lootingBagWatcher, seedBoxWatcher, deathsOfficeWatcher
+      };
   private static Client client;
 
   static {

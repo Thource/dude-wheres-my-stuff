@@ -110,12 +110,16 @@ public abstract class ExpiringDeathStorage extends DeathStorage {
         footerLabel.setHorizontalTextPosition(SwingConstants.LEFT);
         footerLabel.setIcon(WARNING_ICON);
         footerLabel.setToolTipText(
-            "This " + this.getName().toLowerCase() + " is using tick-based tracking, which means "
+            "This "
+                + this.getName().toLowerCase()
+                + " is using tick-based tracking, which means "
                 + "that the timer could be out of sync. To use the more accurate play time based "
                 + "timers, enable cross-client timers in the plugin settings.");
       } else if (deathStorageManager.getStartPlayedMinutes() <= 0) {
         footerLabel.setToolTipText(
-            "This " + this.getName().toLowerCase() + " is using play time based tracking, but the "
+            "This "
+                + this.getName().toLowerCase()
+                + " is using play time based tracking, but the "
                 + "plugin doesn't know what your current play time is. To update your play time, "
                 + "swap the quest interface to the \"Character summary\" tab (brown star).");
       }
@@ -150,10 +154,14 @@ public abstract class ExpiringDeathStorage extends DeathStorage {
     final JMenuItem delete = new JMenuItem("Delete " + this.getName());
     delete.addActionListener(
         e -> {
-          boolean confirmed = hasExpired() || DudeWheresMyStuffPlugin.getConfirmation(storagePanel,
-              "Are you sure you want to delete this " + this.getName().toLowerCase()
-                  + "?\nThis cannot be undone.",
-              "Confirm deletion");
+          boolean confirmed =
+              hasExpired()
+                  || DudeWheresMyStuffPlugin.getConfirmation(
+                      storagePanel,
+                      "Are you sure you want to delete this "
+                          + this.getName().toLowerCase()
+                          + "?\nThis cannot be undone.",
+                      "Confirm deletion");
 
           if (confirmed) {
             deathStorageManager.deleteStorage(this);
@@ -175,8 +183,8 @@ public abstract class ExpiringDeathStorage extends DeathStorage {
           e -> {
             int minutes = 0;
             try {
-              minutes = Integer.parseInt(
-                  JOptionPane.showInputDialog("Enter expiry in minutes from now"));
+              minutes =
+                  Integer.parseInt(JOptionPane.showInputDialog("Enter expiry in minutes from now"));
             } catch (NumberFormatException nfe) {
               // Do nothing
             }
@@ -193,8 +201,7 @@ public abstract class ExpiringDeathStorage extends DeathStorage {
             expiredAt = -1L;
             softUpdate();
             storageManager.getStorageTabPanel().reorderStoragePanels();
-          }
-      );
+          });
 
       JMenuItem expire = new JMenuItem("Expire");
       debugMenu.add(expire);
@@ -204,8 +211,7 @@ public abstract class ExpiringDeathStorage extends DeathStorage {
             expiryTime = 0;
             softUpdate();
             storageManager.getStorageTabPanel().reorderStoragePanels();
-          }
-      );
+          });
     }
   }
 
@@ -220,15 +226,16 @@ public abstract class ExpiringDeathStorage extends DeathStorage {
       if (expiryTime <= 0) {
         expiredAt = System.currentTimeMillis();
 
-        SwingUtilities.invokeLater(() -> {
-          if (storagePanel == null) {
-            return;
-          }
+        SwingUtilities.invokeLater(
+            () -> {
+              if (storagePanel == null) {
+                return;
+              }
 
-          JLabel footerLabel = storagePanel.getFooterLabel();
-          footerLabel.setIcon(null);
-          footerLabel.setToolTipText(null);
-        });
+              JLabel footerLabel = storagePanel.getFooterLabel();
+              footerLabel.setIcon(null);
+              footerLabel.setToolTipText(null);
+            });
       }
 
       return true;

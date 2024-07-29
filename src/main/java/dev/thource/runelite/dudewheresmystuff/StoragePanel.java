@@ -79,9 +79,9 @@ public class StoragePanel extends JPanel {
   /**
    * A constructor.
    *
-   * @param plugin             the plugin
-   * @param storage            the storage that this panel represents
-   * @param showPrice          if prices should be shown
+   * @param plugin the plugin
+   * @param storage the storage that this panel represents
+   * @param showPrice if prices should be shown
    * @param displayEmptyStacks if empty stacks should be shown
    */
   public StoragePanel(
@@ -119,31 +119,34 @@ public class StoragePanel extends JPanel {
     titlePanel.add(Box.createHorizontalGlue());
     titlePanel.add(Box.createRigidArea(new Dimension(TITLE_PADDING, 0)));
 
-    titlePanel.addMouseListener(new MouseAdapter() {
-      private final Component rigidArea = Box.createRigidArea(new Dimension(TITLE_PADDING, 0));
+    titlePanel.addMouseListener(
+        new MouseAdapter() {
+          private final Component rigidArea = Box.createRigidArea(new Dimension(TITLE_PADDING, 0));
 
-      @Override
-      public void mouseEntered(MouseEvent e) {
-        if (popupButton == null) {
-          return;
-        }
+          @Override
+          public void mouseEntered(MouseEvent e) {
+            if (popupButton == null) {
+              return;
+            }
 
-        titlePanel.add(rigidArea);
-        titlePanel.add(popupButton);
-        titlePanel.revalidate();
-      }
+            titlePanel.add(rigidArea);
+            titlePanel.add(popupButton);
+            titlePanel.revalidate();
+          }
 
-      @Override
-      public void mouseExited(MouseEvent e) {
-        if (popupButton == null || !isShowing() || titlePanel.getVisibleRect().contains(e.getPoint())) {
-          return;
-        }
+          @Override
+          public void mouseExited(MouseEvent e) {
+            if (popupButton == null
+                || !isShowing()
+                || titlePanel.getVisibleRect().contains(e.getPoint())) {
+              return;
+            }
 
-        titlePanel.remove(rigidArea);
-        titlePanel.remove(popupButton);
-        titlePanel.revalidate();
-      }
-    });
+            titlePanel.remove(rigidArea);
+            titlePanel.remove(popupButton);
+            titlePanel.revalidate();
+          }
+        });
     MouseAdapter toggleListener =
         new MouseAdapter() {
           @Override
@@ -206,12 +209,13 @@ public class StoragePanel extends JPanel {
 
     popupButton = new JButton("…");
     popupButton.setPreferredSize(new Dimension(20, -1));
-    popupButton.addMouseListener(new MouseAdapter() {
-      @Override
-      public void mousePressed(MouseEvent mouseEvent) {
-        getComponentPopupMenu().show(popupButton, mouseEvent.getX(), mouseEvent.getY());
-      }
-    });
+    popupButton.addMouseListener(
+        new MouseAdapter() {
+          @Override
+          public void mousePressed(MouseEvent mouseEvent) {
+            getComponentPopupMenu().show(popupButton, mouseEvent.getX(), mouseEvent.getY());
+          }
+        });
   }
 
   public String getTitle() {
@@ -309,8 +313,11 @@ public class StoragePanel extends JPanel {
     Stream<ItemStack> newItemStream = storage.getItems().stream().map(ItemStack::new);
 
     if (itemSortMode == ItemSortMode.VALUE) {
-      newItemStream = newItemStream.sorted(Comparator.comparingLong(ItemStack::getTotalGePrice)
-          .thenComparing(ItemStack::getTotalHaPrice).reversed());
+      newItemStream =
+          newItemStream.sorted(
+              Comparator.comparingLong(ItemStack::getTotalGePrice)
+                  .thenComparing(ItemStack::getTotalHaPrice)
+                  .reversed());
     }
 
     List<ItemStack> newItems = newItemStream.collect(Collectors.toList());

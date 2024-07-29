@@ -13,21 +13,7 @@ import net.runelite.api.ItemID;
 public class MasterScrollBook extends CarryableStorage {
 
   private static final int[] VARBITS = {
-      5672,
-      5673,
-      5674,
-      5675,
-      5676,
-      5677,
-      5678,
-      5679,
-      5680,
-      5681,
-      5682,
-      5683,
-      5684,
-      6056,
-      8253,
+    5672, 5673, 5674, 5675, 5676, 5677, 5678, 5679, 5680, 5681, 5682, 5683, 5684, 6056, 8253,
   };
 
   MasterScrollBook(DudeWheresMyStuffPlugin plugin) {

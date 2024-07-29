@@ -14,30 +14,75 @@ import net.runelite.api.ItemID;
 @RequiredArgsConstructor
 @Getter
 public enum CarryableStorageType implements StorageType {
-  INVENTORY("Inventory", InventoryID.INVENTORY.getId(), true, "inventory", false, new ArrayList<>(),
+  INVENTORY(
+      "Inventory", InventoryID.INVENTORY.getId(), true, "inventory", false, new ArrayList<>(), -1),
+  EQUIPMENT(
+      "Equipment", InventoryID.EQUIPMENT.getId(), true, "equipment", false, new ArrayList<>(), -1),
+  LOOTING_BAG(
+      "Looting Bag",
+      516,
+      false,
+      "lootingbag",
+      true,
+      Arrays.asList(ItemID.LOOTING_BAG, ItemID.LOOTING_BAG_22586),
       -1),
-  EQUIPMENT("Equipment", InventoryID.EQUIPMENT.getId(), true, "equipment", false, new ArrayList<>(),
-      -1),
-  LOOTING_BAG("Looting Bag", 516, false, "lootingbag", true,
-      Arrays.asList(ItemID.LOOTING_BAG, ItemID.LOOTING_BAG_22586), -1),
-  SEED_BOX("Seed Box", 573, false, "seedbox", true,
-      Arrays.asList(ItemID.SEED_BOX, ItemID.OPEN_SEED_BOX), 15314),
-  RUNE_POUCH("Rune Pouch", -1, true, "runepouch", true,
-      Arrays.asList(ItemID.RUNE_POUCH, ItemID.RUNE_POUCH_L, ItemID.DIVINE_RUNE_POUCH,
-          ItemID.DIVINE_RUNE_POUCH_L), 15311),
-  BOTTOMLESS_BUCKET("Bottomless Compost Bucket", -1, false, "bottomlessbucket", true,
-      new ArrayList<>(), -1),
+  SEED_BOX(
+      "Seed Box",
+      573,
+      false,
+      "seedbox",
+      true,
+      Arrays.asList(ItemID.SEED_BOX, ItemID.OPEN_SEED_BOX),
+      15314),
+  RUNE_POUCH(
+      "Rune Pouch",
+      -1,
+      true,
+      "runepouch",
+      true,
+      Arrays.asList(
+          ItemID.RUNE_POUCH,
+          ItemID.RUNE_POUCH_L,
+          ItemID.DIVINE_RUNE_POUCH,
+          ItemID.DIVINE_RUNE_POUCH_L),
+      15311),
+  BOTTOMLESS_BUCKET(
+      "Bottomless Compost Bucket", -1, false, "bottomlessbucket", true, new ArrayList<>(), -1),
   PLANK_SACK("Plank Sack", -1, false, "planksack", true, new ArrayList<>(), -1),
-  BOLT_POUCH("Bolt Pouch", -1, true, "boltpouch", true,
-      Collections.singletonList(ItemID.BOLT_POUCH), 15313),
-  GNOMISH_FIRELIGHTER("Gnomish Firelighter", -1, false, "gnomishfirelighter", true,
-      Collections.singletonList(ItemID.GNOMISH_FIRELIGHTER_20278), -1),
-  MASTER_SCROLL_BOOK("Master Scroll Book", -1, true, "masterscrollbook", true, new ArrayList<>(),
+  BOLT_POUCH(
+      "Bolt Pouch",
+      -1,
+      true,
+      "boltpouch",
+      true,
+      Collections.singletonList(ItemID.BOLT_POUCH),
+      15313),
+  GNOMISH_FIRELIGHTER(
+      "Gnomish Firelighter",
+      -1,
+      false,
+      "gnomishfirelighter",
+      true,
+      Collections.singletonList(ItemID.GNOMISH_FIRELIGHTER_20278),
       -1),
-  HUNTSMANS_KIT("Huntsman's Kit", 855, false, "huntsmanskit", true,
-      Collections.singletonList(ItemID.HUNTSMANS_KIT), -1),
-  FORESTRY_KIT("Forestry Kit", 814, false, "forestrykit", true,
-      Arrays.asList(ItemID.FORESTRY_KIT, ItemID.FORESTRY_BASKET, ItemID.OPEN_FORESTRY_BASKET), -1);
+  MASTER_SCROLL_BOOK(
+      "Master Scroll Book", -1, true, "masterscrollbook", true, new ArrayList<>(), -1),
+  HUNTSMANS_KIT(
+      "Huntsman's Kit",
+      855,
+      false,
+      "huntsmanskit",
+      true,
+      Collections.singletonList(ItemID.HUNTSMANS_KIT),
+      -1),
+  FORESTRY_KIT(
+      "Forestry Kit",
+      814,
+      false,
+      "forestrykit",
+      true,
+      Arrays.asList(ItemID.FORESTRY_KIT, ItemID.FORESTRY_BASKET, ItemID.OPEN_FORESTRY_BASKET),
+      -1);
 
   private final String name;
   private final int itemContainerId;

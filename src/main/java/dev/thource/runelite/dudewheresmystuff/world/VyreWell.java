@@ -18,7 +18,7 @@ public class VyreWell extends WorldStorage {
 
     hasStaticItems = true;
 
-    varbits = new int[]{6455};
+    varbits = new int[] {6455};
 
     vialsOfBlood = new ItemStack(ItemID.VIAL_OF_BLOOD_22446, plugin);
     items.add(vialsOfBlood);

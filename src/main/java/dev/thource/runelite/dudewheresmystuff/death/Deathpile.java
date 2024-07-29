@@ -22,24 +22,26 @@ public class Deathpile extends ExpiringDeathStorage {
       WorldPoint worldPoint,
       DeathStorageManager deathStorageManager,
       List<ItemStack> deathItems) {
-    super(plugin, useAccountPlayTime, worldPoint, deathStorageManager, deathItems,
+    super(
+        plugin,
+        useAccountPlayTime,
+        worldPoint,
+        deathStorageManager,
+        deathItems,
         DeathStorageType.DEATHPILE);
     refreshColor();
   }
 
-  static Deathpile load(DudeWheresMyStuffPlugin plugin, DeathStorageManager deathStorageManager,
-      String profileKey, String uuid) {
-    Deathpile deathpile = new Deathpile(
-        plugin,
-        true,
-        null,
-        deathStorageManager,
-        new ArrayList<>()
-    );
+  static Deathpile load(
+      DudeWheresMyStuffPlugin plugin,
+      DeathStorageManager deathStorageManager,
+      String profileKey,
+      String uuid) {
+    Deathpile deathpile = new Deathpile(plugin, true, null, deathStorageManager, new ArrayList<>());
 
     deathpile.uuid = UUID.fromString(uuid);
-    deathpile.load(deathStorageManager.getConfigManager(), deathStorageManager.getConfigKey(),
-        profileKey);
+    deathpile.load(
+        deathStorageManager.getConfigManager(), deathStorageManager.getConfigKey(), profileKey);
 
     return deathpile;
   }
@@ -49,8 +51,9 @@ public class Deathpile extends ExpiringDeathStorage {
       return Color.WHITE;
     }
 
-    Random rand = new Random(
-        worldPoint.getX() * 200L + worldPoint.getY() * 354L + worldPoint.getPlane() * 42L);
+    Random rand =
+        new Random(
+            worldPoint.getX() * 200L + worldPoint.getY() * 354L + worldPoint.getPlane() * 42L);
 
     return plugin.getConfig().deathpileColorScheme().generateColor(rand);
   }

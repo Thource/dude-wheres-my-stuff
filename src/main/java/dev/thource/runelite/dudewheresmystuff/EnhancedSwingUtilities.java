@@ -15,26 +15,28 @@ import net.runelite.client.util.SwingUtil;
 @Slf4j
 public class EnhancedSwingUtilities {
 
-  private EnhancedSwingUtilities() {
-  }
+  private EnhancedSwingUtilities() {}
 
   public static void fastRemoveAll(Container c, ChatMessageManager chatMessageManager) {
     if (!SwingUtilities.isEventDispatchThread()) {
       log.error("fastRemoveAll called outside of the EDT?");
       new Throwable().printStackTrace();
 
-      final ChatMessageBuilder message = new ChatMessageBuilder()
-          .append(ChatColorType.HIGHLIGHT)
-          .append("Dude, Wheres My Stuff? has just encountered an error!")
-          .append(ChatColorType.NORMAL)
-          .append(" Please help me fix this issue by sending your runelite client.log file to "
-              + "Thource on Discord or attach it to "
-              + "https://github.com/Thource/dude-wheres-my-stuff/issues/160");
+      final ChatMessageBuilder message =
+          new ChatMessageBuilder()
+              .append(ChatColorType.HIGHLIGHT)
+              .append("Dude, Wheres My Stuff? has just encountered an error!")
+              .append(ChatColorType.NORMAL)
+              .append(
+                  " Please help me fix this issue by sending your runelite client.log file to "
+                      + "Thource on Discord or attach it to "
+                      + "https://github.com/Thource/dude-wheres-my-stuff/issues/160");
 
-      chatMessageManager.queue(QueuedMessage.builder()
-          .type(ChatMessageType.CONSOLE)
-          .runeLiteFormattedMessage(message.build())
-          .build());
+      chatMessageManager.queue(
+          QueuedMessage.builder()
+              .type(ChatMessageType.CONSOLE)
+              .runeLiteFormattedMessage(message.build())
+              .build());
 
       return;
     }

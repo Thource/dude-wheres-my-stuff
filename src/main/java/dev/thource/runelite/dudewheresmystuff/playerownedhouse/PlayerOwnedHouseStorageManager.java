@@ -29,5 +29,4 @@ public class PlayerOwnedHouseStorageManager
   public String getConfigKey() {
     return "poh";
   }
-
 }

@@ -21,7 +21,7 @@ import net.runelite.client.ui.components.IconTextField;
 
 class SearchTabPanel
     extends StorageTabPanel<
-    StorageType, Storage<StorageType>, StorageManager<StorageType, Storage<StorageType>>> {
+        StorageType, Storage<StorageType>, StorageManager<StorageType, Storage<StorageType>>> {
 
   private static final String EMPTY_SEARCH_TEXT =
       "<html>Type at least 3 characters in the search bar to find your stuff</html>";
@@ -85,24 +85,28 @@ class SearchTabPanel
     if (searchBar.getText().length() >= 3) {
       searchStatusPanel.setVisible(false);
 
-      plugin.getClientThread().invoke(() -> {
-        storagePanels.forEach(
-            panel -> {
-              ((SearchStoragePanel) panel).setSearchText(searchBar.getText());
-              panel.refreshItems();
-            });
+      plugin
+          .getClientThread()
+          .invoke(
+              () -> {
+                storagePanels.forEach(
+                    panel -> {
+                      ((SearchStoragePanel) panel).setSearchText(searchBar.getText());
+                      panel.refreshItems();
+                    });
 
-        SwingUtilities.invokeLater(() -> {
-          storagePanels.forEach(StoragePanel::update);
+                SwingUtilities.invokeLater(
+                    () -> {
+                      storagePanels.forEach(StoragePanel::update);
 
-          reorderStoragePanels();
+                      reorderStoragePanels();
 
-          if (storagePanelContainer.getComponentCount() == 0) {
-            searchStatusLabel.setText(NO_RESULTS_TEXT);
-            searchStatusPanel.setVisible(true);
-          }
-        });
-      });
+                      if (storagePanelContainer.getComponentCount() == 0) {
+                        searchStatusLabel.setText(NO_RESULTS_TEXT);
+                        searchStatusPanel.setVisible(true);
+                      }
+                    });
+              });
     } else {
       searchStatusLabel.setText(EMPTY_SEARCH_TEXT);
       searchStatusPanel.setVisible(true);
@@ -168,9 +172,14 @@ class SearchTabPanel
   }
 
   public void refreshItemSortMode() {
-    plugin.getClientThread().invoke(() -> storagePanels.forEach(panel -> {
-      panel.refreshItems();
-      SwingUtilities.invokeLater(panel::update);
-    }));
+    plugin
+        .getClientThread()
+        .invoke(
+            () ->
+                storagePanels.forEach(
+                    panel -> {
+                      panel.refreshItems();
+                      SwingUtilities.invokeLater(panel::update);
+                    }));
   }
 }

@@ -13,15 +13,13 @@ import net.runelite.api.coords.WorldPoint;
  */
 public class SaveFieldLoader {
 
-  private SaveFieldLoader() {
-  }
+  private SaveFieldLoader() {}
 
   /**
-   * Pulls a string from the string list, converts it to a long and returns it or the default
-   * value.
+   * Pulls a string from the string list, converts it to a long and returns it or the default value.
    *
    * @param stringList the string list
-   * @param dfault     the fallback value to return
+   * @param dfault the fallback value to return
    * @return the converted first string of the string list, or the fallback value
    */
   public static long loadLong(List<String> stringList, long dfault) {
@@ -37,11 +35,10 @@ public class SaveFieldLoader {
   }
 
   /**
-   * Pulls a string from the string list, converts it to a UUID and returns it or the default
-   * value.
+   * Pulls a string from the string list, converts it to a UUID and returns it or the default value.
    *
    * @param stringList the string list
-   * @param dfault     the fallback value to return
+   * @param dfault the fallback value to return
    * @return the converted first string of the string list, or the fallback value
    */
   @SuppressWarnings("checkstyle:AbbreviationAsWordInName")
@@ -89,11 +86,11 @@ public class SaveFieldLoader {
    * default value.
    *
    * @param stringList the string list
-   * @param dfault     the fallback value to return
+   * @param dfault the fallback value to return
    * @return the converted first string of the string list, or the fallback value
    */
-  public static List<ItemStack> loadItems(List<String> stringList, List<ItemStack> dfault,
-      DudeWheresMyStuffPlugin plugin) {
+  public static List<ItemStack> loadItems(
+      List<String> stringList, List<ItemStack> dfault, DudeWheresMyStuffPlugin plugin) {
     if (stringList.isEmpty()) {
       return dfault;
     }
@@ -107,8 +104,8 @@ public class SaveFieldLoader {
 
       try {
         itemStacks.add(
-            new ItemStack(Integer.parseInt(stackDataSplit[0]), Long.parseLong(stackDataSplit[1]),
-                plugin));
+            new ItemStack(
+                Integer.parseInt(stackDataSplit[0]), Long.parseLong(stackDataSplit[1]), plugin));
       } catch (NumberFormatException e) {
         // do nothing
       }
@@ -122,7 +119,7 @@ public class SaveFieldLoader {
    * value.
    *
    * @param stringList the string list
-   * @param dfault     the fallback value to return
+   * @param dfault the fallback value to return
    * @return the converted first string of the string list, or the fallback value
    */
   public static boolean loadBoolean(List<String> stringList, boolean dfault) {
@@ -138,11 +135,10 @@ public class SaveFieldLoader {
    * default value.
    *
    * @param stringList the string list
-   * @param dfault     the fallback value to return
+   * @param dfault the fallback value to return
    * @return the converted first string of the string list, or the fallback value
    */
-  public static DeathbankType loadDeathbankType(List<String> stringList,
-      DeathbankType dfault) {
+  public static DeathbankType loadDeathbankType(List<String> stringList, DeathbankType dfault) {
     if (stringList.isEmpty()) {
       return dfault;
     }
@@ -159,7 +155,7 @@ public class SaveFieldLoader {
    * value.
    *
    * @param stringList the string list
-   * @param dfault     the fallback value to return
+   * @param dfault the fallback value to return
    * @return the converted first string of the string list, or the fallback value
    */
   public static WorldPoint loadWorldPoint(List<String> stringList, WorldPoint dfault) {
@@ -173,7 +169,9 @@ public class SaveFieldLoader {
     }
 
     try {
-      return new WorldPoint(Integer.parseInt(splitData[0]), Integer.parseInt(splitData[1]),
+      return new WorldPoint(
+          Integer.parseInt(splitData[0]),
+          Integer.parseInt(splitData[1]),
           Integer.parseInt(splitData[2]));
     } catch (NumberFormatException e) {
       return dfault;
@@ -181,11 +179,10 @@ public class SaveFieldLoader {
   }
 
   /**
-   * Pulls a string from the string list, converts it to an int and returns it or the default
-   * value.
+   * Pulls a string from the string list, converts it to an int and returns it or the default value.
    *
    * @param stringList the string list
-   * @param dfault     the fallback value to return
+   * @param dfault the fallback value to return
    * @return the converted first string of the string list, or the fallback value
    */
   public static int loadInt(List<String> stringList, int dfault) {

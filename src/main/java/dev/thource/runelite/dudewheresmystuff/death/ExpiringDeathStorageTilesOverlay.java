@@ -26,8 +26,8 @@ public class ExpiringDeathStorageTilesOverlay extends Overlay {
   private final DeathStorageManager deathStorageManager;
   private final DudeWheresMyStuffConfig config;
 
-  public ExpiringDeathStorageTilesOverlay(DudeWheresMyStuffConfig config, Client client,
-      DeathStorageManager deathStorageManager) {
+  public ExpiringDeathStorageTilesOverlay(
+      DudeWheresMyStuffConfig config, Client client, DeathStorageManager deathStorageManager) {
     this.config = config;
     this.client = client;
     this.deathStorageManager = deathStorageManager;
@@ -44,34 +44,45 @@ public class ExpiringDeathStorageTilesOverlay extends Overlay {
     }
 
     int minutesLeft =
-        (int) Math.floor(
-            (expiringDeathStorage.getExpiryMs() - System.currentTimeMillis()) / 60000f);
+        (int)
+            Math.floor((expiringDeathStorage.getExpiryMs() - System.currentTimeMillis()) / 60000f);
 
     return (minutesLeft > 0 ? minutesLeft : "<1") + "m";
   }
 
   @Override
   public Dimension render(Graphics2D graphics) {
-    deathStorageManager.getExpiringDeathStorages()
+    deathStorageManager
+        .getExpiringDeathStorages()
         .filter(storage -> !storage.hasExpired())
-        .forEach(storage -> {
-          Color tileColor = storage.getColor();
+        .forEach(
+            storage -> {
+              Color tileColor = storage.getColor();
 
-          if (config.flashExpiringDeathpileTiles()
-              && (int) Math.floor((storage.getExpiryMs() - System.currentTimeMillis()) / 60_000f)
-              <= config.deathpileExpiryWarningTime()
-              && client.getTickCount() % 2 == 0) {
-            tileColor = Color.RED;
-          }
+              if (config.flashExpiringDeathpileTiles()
+                  && (int)
+                          Math.floor((storage.getExpiryMs() - System.currentTimeMillis()) / 60_000f)
+                      <= config.deathpileExpiryWarningTime()
+                  && client.getTickCount() % 2 == 0) {
+                tileColor = Color.RED;
+              }
 
-          drawTile(graphics, storage.getWorldPoint(), tileColor,
-              storage.getName() + " (" + getExpiryText(storage) + ")", new BasicStroke(2));
-        });
+              drawTile(
+                  graphics,
+                  storage.getWorldPoint(),
+                  tileColor,
+                  storage.getName() + " (" + getExpiryText(storage) + ")",
+                  new BasicStroke(2));
+            });
 
     return null;
   }
 
-  private void drawTile(Graphics2D graphics, WorldPoint point, Color color, @Nullable String label,
+  private void drawTile(
+      Graphics2D graphics,
+      WorldPoint point,
+      Color color,
+      @Nullable String label,
       Stroke borderStroke) {
     WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
 
@@ -86,15 +97,17 @@ public class ExpiringDeathStorageTilesOverlay extends Overlay {
 
     Polygon poly = Perspective.getCanvasTilePoly(client, lp);
     if (poly != null) {
-      OverlayUtil.renderPolygon(graphics, poly, color, new Color(0, 0, 0, 0.3f),
-          borderStroke);
+      OverlayUtil.renderPolygon(graphics, poly, color, new Color(0, 0, 0, 0.3f), borderStroke);
     }
 
     if (!Strings.isNullOrEmpty(label)) {
       Point canvasTextLocation = Perspective.getCanvasTextLocation(client, graphics, lp, label, 0);
       if (canvasTextLocation != null) {
-        OverlayUtil.renderTextLocation(graphics,
-            new Point(canvasTextLocation.getX(), canvasTextLocation.getY() + 20), label, color);
+        OverlayUtil.renderTextLocation(
+            graphics,
+            new Point(canvasTextLocation.getX(), canvasTextLocation.getY() + 20),
+            label,
+            color);
       }
     }
   }

@@ -13,13 +13,7 @@ import net.runelite.api.InventoryID;
 @Getter
 public enum WorldStorageType implements StorageType {
   LEPRECHAUN("Tool Leprechaun", -1, true, "leprechaun", true, null),
-  BANK(
-      "Bank",
-      InventoryID.BANK.getId(),
-      false,
-      "bank",
-      false,
-      Collections.singletonList(2)), // uim
+  BANK("Bank", InventoryID.BANK.getId(), false, "bank", false, Collections.singletonList(2)), // uim
   GROUP_STORAGE(
       "Group Storage",
       InventoryID.GROUP_STORAGE.getId(),
@@ -46,7 +40,12 @@ public enum WorldStorageType implements StorageType {
   ELNOCK_INQUISITOR("Elnock Inquisitor", -1, true, "elnock", true, null),
   PICKAXE_STATUE("Pickaxe Statue", -1, true, "pickaxestatue", true, null),
   NULODION("Nulodion", -1, false, "nulodion", true, null),
-  FORESTRY_SHOP("Forestry Shop", -1, false, "forestryshop", true,
+  FORESTRY_SHOP(
+      "Forestry Shop",
+      -1,
+      false,
+      "forestryshop",
+      true,
       Arrays.asList(0, 1, 3, 4, 5, 6)), // uim only
   SANDSTORM("Sandstorm", -1, false, "sandstorm", true, null);
 

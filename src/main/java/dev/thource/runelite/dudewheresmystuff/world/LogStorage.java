@@ -18,8 +18,10 @@ import org.apache.commons.lang3.math.NumberUtils;
  */
 public class LogStorage extends WorldStorage {
 
-  private final Pattern checkPattern = Pattern.compile("This crate currently contains (\\d+) logs,"
-      + " (\\d+) oak logs, (\\d+) willow logs, (\\d+) yew logs and (\\d+) magic logs.");
+  private final Pattern checkPattern =
+      Pattern.compile(
+          "This crate currently contains (\\d+) logs,"
+              + " (\\d+) oak logs, (\\d+) willow logs, (\\d+) yew logs and (\\d+) magic logs.");
 
   private final Pattern depositPattern =
       Pattern.compile("You put the (.*) in the crate. You now have (\\d+) stored.");

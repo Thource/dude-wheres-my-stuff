@@ -17,8 +17,10 @@ import org.apache.commons.lang3.math.NumberUtils;
  */
 public class Sandstorm extends WorldStorage {
 
-  private final Pattern checkPattern = Pattern.compile("I have (\\d+) of your buckets and "
-      + "you've ground enough sandstone for (\\d+) buckets of sand.");
+  private final Pattern checkPattern =
+      Pattern.compile(
+          "I have (\\d+) of your buckets and "
+              + "you've ground enough sandstone for (\\d+) buckets of sand.");
 
   private final Pattern sandstoneDepositPattern =
       Pattern.compile("sandstone (?:equivalent to|for) (\\d+|one) buckets? of sand");
@@ -51,9 +53,10 @@ public class Sandstorm extends WorldStorage {
       if (widget != null && widget.getText().startsWith("If ya need any more sand")) {
         justWithdrawn = true;
 
-        Optional<ItemStack> addedBuckets = ItemContainerWatcher.getInventoryWatcher()
-            .getItemsAddedLastTick().stream().filter(itemStack -> itemStack.getId() == 1784)
-            .findFirst();
+        Optional<ItemStack> addedBuckets =
+            ItemContainerWatcher.getInventoryWatcher().getItemsAddedLastTick().stream()
+                .filter(itemStack -> itemStack.getId() == 1784)
+                .findFirst();
 
         if (addedBuckets.isPresent()) {
           buckets.setQuantity(buckets.getQuantity() - addedBuckets.get().getQuantity());

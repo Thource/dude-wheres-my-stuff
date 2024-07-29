@@ -48,21 +48,29 @@ public abstract class Storage<T extends StorageType> {
     final JMenuItem reset = new JMenuItem("Reset");
     reset.addActionListener(
         e -> {
-          boolean confirmed = DudeWheresMyStuffPlugin.getConfirmation(storagePanel,
-              "Are you sure you want to reset your " + type.getName()
-                  + " data?\nThis cannot be undone.", "Confirm reset");
+          boolean confirmed =
+              DudeWheresMyStuffPlugin.getConfirmation(
+                  storagePanel,
+                  "Are you sure you want to reset your "
+                      + type.getName()
+                      + " data?\nThis cannot be undone.",
+                  "Confirm reset");
 
           if (confirmed) {
             deleteData(storageManager);
-            plugin.getClientThread().invoke(() -> {
-              storagePanel.refreshItems();
+            plugin
+                .getClientThread()
+                .invoke(
+                    () -> {
+                      storagePanel.refreshItems();
 
-              SwingUtilities.invokeLater(() -> {
-                storagePanel.update();
-                softUpdate();
-                storageManager.getStorageTabPanel().reorderStoragePanels();
-              });
-            });
+                      SwingUtilities.invokeLater(
+                          () -> {
+                            storagePanel.update();
+                            softUpdate();
+                            storageManager.getStorageTabPanel().reorderStoragePanels();
+                          });
+                    });
           }
         });
     popupMenu.add(reset);
@@ -74,14 +82,17 @@ public abstract class Storage<T extends StorageType> {
    * @param storageManager the storage manager that relates to this storage
    */
   public void deleteData(StorageManager<?, ?> storageManager) {
-    String profileKey = storageManager.isPreviewManager() ? plugin.getPreviewProfileKey()
-        : storageManager.getConfigManager().getRSProfileKey();
+    String profileKey =
+        storageManager.isPreviewManager()
+            ? plugin.getPreviewProfileKey()
+            : storageManager.getConfigManager().getRSProfileKey();
 
-    storageManager.getConfigManager().unsetConfiguration(
-        DudeWheresMyStuffConfig.CONFIG_GROUP,
-        profileKey,
-        getConfigKey(storageManager.getConfigKey())
-    );
+    storageManager
+        .getConfigManager()
+        .unsetConfiguration(
+            DudeWheresMyStuffConfig.CONFIG_GROUP,
+            profileKey,
+            getConfigKey(storageManager.getConfigKey()));
     reset();
   }
 
@@ -105,8 +116,7 @@ public abstract class Storage<T extends StorageType> {
   }
 
   @SuppressWarnings("java:S1172") // the parameter is used in child classes
-  public void onWidgetClosed(WidgetClosed widgetClosed) {
-  }
+  public void onWidgetClosed(WidgetClosed widgetClosed) {}
 
   @SuppressWarnings("java:S1172") // the parameter is used in child classes
   public boolean onChatMessage(ChatMessage chatMessage) {
@@ -125,8 +135,8 @@ public abstract class Storage<T extends StorageType> {
   /**
    * Can the items in this storage be withdrawn?
    *
-   * <p>Should be overridden by subclasses. Should be false for things like minigame points,
-   * expired deathbanks, or deposit-only storages such as balloon log storage.
+   * <p>Should be overridden by subclasses. Should be false for things like minigame points, expired
+   * deathbanks, or deposit-only storages such as balloon log storage.
    *
    * <p>NOTE: this abstraction does not work for storages where some items are real and others are
    * not. For example, the ores in blast furnace storage cannot be withdrawn but bars can. Also,
@@ -171,8 +181,11 @@ public abstract class Storage<T extends StorageType> {
     }
 
     this.lastSaveString = saveString;
-    configManager.setConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP, profileKey,
-        getConfigKey(managerConfigKey), saveString);
+    configManager.setConfiguration(
+        DudeWheresMyStuffConfig.CONFIG_GROUP,
+        profileKey,
+        getConfigKey(managerConfigKey),
+        saveString);
   }
 
   public String getSaveString() {
@@ -229,7 +242,7 @@ public abstract class Storage<T extends StorageType> {
   public void disable(boolean isMember, int accountType) {
     if ((type.isMembersOnly() && !isMember)
         || (type.getAccountTypeBlacklist() != null
-        && type.getAccountTypeBlacklist().contains(accountType))) {
+            && type.getAccountTypeBlacklist().contains(accountType))) {
       disable();
     }
   }
@@ -269,7 +282,9 @@ public abstract class Storage<T extends StorageType> {
   }
 
   public long getItemCount(int canonicalId) {
-    return getItems().stream().filter(stack -> stack.getCanonicalId() == canonicalId)
-        .mapToLong(ItemStack::getQuantity).sum();
+    return getItems().stream()
+        .filter(stack -> stack.getCanonicalId() == canonicalId)
+        .mapToLong(ItemStack::getQuantity)
+        .sum();
   }
 }

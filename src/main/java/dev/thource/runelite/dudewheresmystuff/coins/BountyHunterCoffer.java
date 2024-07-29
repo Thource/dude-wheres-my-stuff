@@ -13,10 +13,9 @@ import org.apache.commons.lang3.math.NumberUtils;
 public class BountyHunterCoffer extends CoinsStorage {
 
   private static final Pattern depositWithdrawPattern =
-
       Pattern.compile(
-          "You (?:withdrew|added) \\d+ coins (?:from|to) your coffer. There are now (\\d+) coins in it. You need to "
-              + "have at least \\d+ coins in your coffer to participate.");
+          "You (?:withdrew|added) \\d+ coins (?:from|to) your coffer. There are now (\\d+) coins"
+              + " in it. You need to have at least \\d+ coins in your coffer to participate.");
 
   BountyHunterCoffer(DudeWheresMyStuffPlugin plugin) {
     super(CoinsStorageType.BOUNTY_HUNTER, plugin);

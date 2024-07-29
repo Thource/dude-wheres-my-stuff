@@ -12,23 +12,23 @@ import net.runelite.client.config.ConfigManager;
 public class PickaxeStatue extends WorldStorage {
 
   private static final int[] PICKAXE_IDS = {
-      ItemID.BRONZE_PICKAXE,
-      ItemID.IRON_PICKAXE,
-      ItemID.STEEL_PICKAXE,
-      ItemID.BLACK_PICKAXE,
-      ItemID.MITHRIL_PICKAXE,
-      ItemID.ADAMANT_PICKAXE,
-      ItemID.RUNE_PICKAXE,
-      ItemID.GILDED_PICKAXE, // unconfirmed
-      ItemID.DRAGON_PICKAXE,
-      ItemID.DRAGON_PICKAXE_12797, // unconfirmed
-      ItemID.DRAGON_PICKAXE_OR, // unconfirmed
-      ItemID.DRAGON_PICKAXE_OR_25376, // unconfirmed
-      ItemID.INFERNAL_PICKAXE, // unconfirmed
-      ItemID.INFERNAL_PICKAXE_OR, // unconfirmed
-      ItemID.CRYSTAL_PICKAXE,
-      ItemID.CRYSTAL_PICKAXE_INACTIVE,
-      ItemID._3RD_AGE_PICKAXE // unconfirmed
+    ItemID.BRONZE_PICKAXE,
+    ItemID.IRON_PICKAXE,
+    ItemID.STEEL_PICKAXE,
+    ItemID.BLACK_PICKAXE,
+    ItemID.MITHRIL_PICKAXE,
+    ItemID.ADAMANT_PICKAXE,
+    ItemID.RUNE_PICKAXE,
+    ItemID.GILDED_PICKAXE, // unconfirmed
+    ItemID.DRAGON_PICKAXE,
+    ItemID.DRAGON_PICKAXE_12797, // unconfirmed
+    ItemID.DRAGON_PICKAXE_OR, // unconfirmed
+    ItemID.DRAGON_PICKAXE_OR_25376, // unconfirmed
+    ItemID.INFERNAL_PICKAXE, // unconfirmed
+    ItemID.INFERNAL_PICKAXE_OR, // unconfirmed
+    ItemID.CRYSTAL_PICKAXE,
+    ItemID.CRYSTAL_PICKAXE_INACTIVE,
+    ItemID._3RD_AGE_PICKAXE // unconfirmed
   };
   private ItemStack pickaxe;
 

@@ -136,7 +136,7 @@ public class ItemStorage<T extends StorageType> extends Storage<T> {
   /**
    * Removes a quantity of items with the id specified.
    *
-   * @param id       the item id of the item to remove
+   * @param id the item id of the item to remove
    * @param quantity the amount of the item to remove
    * @return the amount of items removed from the storage
    */
