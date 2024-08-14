@@ -270,7 +270,7 @@ public enum PlayerOwnedHouseStorageType implements StorageType {
           ItemID.LEPRECHAUN_HAT,
           ItemID.BLACK_LEPRECHAUN_HAT,
           ItemID.BLACK_UNICORN_MASK,
-          ItemID.CAT_MASK,
+          ItemID.CAT_H,
           ItemID.PENGUIN_MASK,
           ItemID.WHITE_UNICORN_MASK,
           ItemID.WOLF_MASK,
