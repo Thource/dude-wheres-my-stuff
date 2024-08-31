@@ -20,7 +20,7 @@ public class ServantsMoneybag extends CoinsStorage {
     if (widget == null) {
       return false;
     }
-    if (!widget.getText().startsWith("The moneybag ")) {
+    if (!widget.getText().startsWith("The money bag ")) {
       return false;
     }
 
