@@ -159,27 +159,33 @@ public class DudeWheresMyStuffPanel extends JPanel {
   }
 
   void setItemSortMode(ItemSortMode itemSortMode) {
-    storageTabPanelMap.forEach((tab, tabPanel) -> {
-      if (tab == Tab.OVERVIEW) {
-        return;
-      }
+    storageTabPanelMap.forEach(
+        (tab, tabPanel) -> {
+          if (tab == Tab.OVERVIEW) {
+            return;
+          }
 
-      plugin.getClientThread().invoke(() -> tabPanel.getStorageManager().getStorages().stream()
-          .map(Storage::getStoragePanel)
-          .filter(Objects::nonNull)
-          .forEach(panel -> {
-            panel.refreshItems();
-            SwingUtilities.invokeLater(panel::update);
-          }));
+          plugin
+              .getClientThread()
+              .invoke(
+                  () ->
+                      tabPanel.getStorageManager().getStorages().stream()
+                          .map(Storage::getStoragePanel)
+                          .filter(Objects::nonNull)
+                          .forEach(
+                              panel -> {
+                                panel.refreshItems();
+                                SwingUtilities.invokeLater(panel::update);
+                              }));
 
-      JComboBox<ItemSortMode> sortDropdown = tabPanel.getSortItemsDropdown();
-      final ItemListener[] itemListeners = sortDropdown.getItemListeners();
+          JComboBox<ItemSortMode> sortDropdown = tabPanel.getSortItemsDropdown();
+          final ItemListener[] itemListeners = sortDropdown.getItemListeners();
 
-      // We need to remove and re-add the item listeners to avoid recursion
-      Arrays.stream(itemListeners).forEach(sortDropdown::removeItemListener);
-      sortDropdown.setSelectedItem(itemSortMode);
-      Arrays.stream(itemListeners).forEach(sortDropdown::addItemListener);
-    });
+          // We need to remove and re-add the item listeners to avoid recursion
+          Arrays.stream(itemListeners).forEach(sortDropdown::removeItemListener);
+          sortDropdown.setSelectedItem(itemSortMode);
+          Arrays.stream(itemListeners).forEach(sortDropdown::addItemListener);
+        });
 
     ((SearchTabPanel) storageTabPanelMap.get(Tab.SEARCH)).refreshItemSortMode();
   }

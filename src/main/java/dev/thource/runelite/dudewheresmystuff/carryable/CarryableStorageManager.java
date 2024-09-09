@@ -37,5 +37,4 @@ public class CarryableStorageManager
   public String getConfigKey() {
     return "carryable";
   }
-
 }

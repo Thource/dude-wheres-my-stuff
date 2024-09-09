@@ -109,26 +109,36 @@ public class StorageManagerManager {
     for (StorageManager<?, ?> storageManager : storageManagers) {
       storageManager.load(profileKey);
 
-      // Bounce into swing and back into the client thread to give StoragePanels a chance to be created
+      // Bounce into swing and back into the client thread to give StoragePanels a chance to be
+      // created
       SwingUtilities.invokeLater(
           () ->
-              plugin.getClientThread().invoke(() -> {
-                storageManager.getStorages().forEach(storage -> {
-                  if (storage.getStoragePanel() != null) {
-                    storage.getStoragePanel().refreshItems();
-                  }
-                });
+              plugin
+                  .getClientThread()
+                  .invoke(
+                      () -> {
+                        storageManager
+                            .getStorages()
+                            .forEach(
+                                storage -> {
+                                  if (storage.getStoragePanel() != null) {
+                                    storage.getStoragePanel().refreshItems();
+                                  }
+                                });
 
-                SwingUtilities.invokeLater(
-                    () -> {
-                      storageManager.getStorages().forEach(storage -> {
-                        if (storage.getStoragePanel() != null) {
-                          storage.getStoragePanel().update();
-                        }
-                      });
-                      storageManager.getStorageTabPanel().reorderStoragePanels();
-                    });
-              }));
+                        SwingUtilities.invokeLater(
+                            () -> {
+                              storageManager
+                                  .getStorages()
+                                  .forEach(
+                                      storage -> {
+                                        if (storage.getStoragePanel() != null) {
+                                          storage.getStoragePanel().update();
+                                        }
+                                      });
+                              storageManager.getStorageTabPanel().reorderStoragePanels();
+                            });
+                      }));
     }
   }
 
@@ -200,7 +210,10 @@ public class StorageManagerManager {
   }
 
   public List<ItemStack> getItems() {
-    return getStorages().filter(Storage::isEnabled).map(Storage::getItems).flatMap(List::stream)
+    return getStorages()
+        .filter(Storage::isEnabled)
+        .map(Storage::getItems)
+        .flatMap(List::stream)
         .collect(Collectors.toList());
   }
 

@@ -36,5 +36,4 @@ public class CoinsStorageManager extends StorageManager<CoinsStorageType, CoinsS
   public String getConfigKey() {
     return "coins";
   }
-
 }

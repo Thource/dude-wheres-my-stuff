@@ -19,8 +19,8 @@ import org.apache.commons.lang3.math.NumberUtils;
 @Slf4j
 public class GnomishFirelighter extends CarryableStorage {
 
-  private static final Pattern chargesPattern = Pattern.compile(
-      "(\\d+) (\\w+) firelighter charges");
+  private static final Pattern chargesPattern =
+      Pattern.compile("(\\d+) (\\w+) firelighter charges");
 
   GnomishFirelighter(DudeWheresMyStuffPlugin plugin) {
     super(CarryableStorageType.GNOMISH_FIRELIGHTER, plugin);

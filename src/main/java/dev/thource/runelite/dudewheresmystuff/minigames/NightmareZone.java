@@ -11,12 +11,7 @@ import net.runelite.api.Varbits;
 @Getter
 public class NightmareZone extends MinigamesStorage {
 
-  private static final int[] POTION_VARBITS = {
-      3951,
-      3952,
-      3953,
-      3954
-  };
+  private static final int[] POTION_VARBITS = {3951, 3952, 3953, 3954};
 
   private final ItemStack points = new ItemStack(ItemID.DREAM_POTION, "Points", 0, 0, 0, true);
 
@@ -31,7 +26,8 @@ public class NightmareZone extends MinigamesStorage {
     items.add(new ItemStack(ItemID.SUPER_MAGIC_POTION_1, 0, plugin));
     items.add(new ItemStack(ItemID.OVERLOAD_1, 0, plugin));
     items.add(new ItemStack(ItemID.ABSORPTION_1, 0, plugin));
-    plugin.getClientThread()
+    plugin
+        .getClientThread()
         .invokeLater(() -> items.forEach(itemStack -> itemStack.setStackable(true)));
   }
 

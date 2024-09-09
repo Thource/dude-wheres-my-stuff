@@ -25,10 +25,10 @@ class ItemImageLabel extends JLabel {
         || itemStack.getItemIdentification() == null
         || !plugin.getPluginManager().isPluginEnabled(plugin.getItemIdentificationPlugin())
         || !itemStack
-        .getItemIdentification()
-        .type
-        .enabled
-        .test(plugin.getItemIdentificationConfig())) {
+            .getItemIdentification()
+            .type
+            .enabled
+            .test(plugin.getItemIdentificationConfig())) {
       return;
     }
 

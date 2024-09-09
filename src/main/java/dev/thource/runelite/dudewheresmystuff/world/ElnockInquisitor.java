@@ -15,7 +15,7 @@ public class ElnockInquisitor extends WorldStorage {
 
     hasStaticItems = true;
 
-    varbits = new int[]{11768, 11770};
+    varbits = new int[] {11768, 11770};
     varbitItemOffset = 2;
 
     netStack = new ItemStack(ItemID.BUTTERFLY_NET, plugin);

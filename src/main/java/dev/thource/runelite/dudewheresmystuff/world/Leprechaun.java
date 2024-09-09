@@ -15,17 +15,17 @@ import net.runelite.client.config.ConfigManager;
 public class Leprechaun extends WorldStorage {
 
   private static final int[] WATERING_CAN_IDS = {
-      -1,
-      ItemID.WATERING_CAN,
-      ItemID.WATERING_CAN1,
-      ItemID.WATERING_CAN2,
-      ItemID.WATERING_CAN3,
-      ItemID.WATERING_CAN4,
-      ItemID.WATERING_CAN5,
-      ItemID.WATERING_CAN6,
-      ItemID.WATERING_CAN7,
-      ItemID.WATERING_CAN8,
-      ItemID.GRICOLLERS_CAN
+    -1,
+    ItemID.WATERING_CAN,
+    ItemID.WATERING_CAN1,
+    ItemID.WATERING_CAN2,
+    ItemID.WATERING_CAN3,
+    ItemID.WATERING_CAN4,
+    ItemID.WATERING_CAN5,
+    ItemID.WATERING_CAN6,
+    ItemID.WATERING_CAN7,
+    ItemID.WATERING_CAN8,
+    ItemID.GRICOLLERS_CAN
   };
   private final ItemStack rakes;
   private final ItemStack seedDibbers;
@@ -292,8 +292,7 @@ public class Leprechaun extends WorldStorage {
   private boolean setSecateursType(int secateursType) {
     this.secateursType = secateursType;
 
-    int secateursId =
-        secateursType == 1 ? ItemID.MAGIC_SECATEURS : ItemID.SECATEURS;
+    int secateursId = secateursType == 1 ? ItemID.MAGIC_SECATEURS : ItemID.SECATEURS;
 
     if (secateurs.getId() == secateursId) {
       return false;

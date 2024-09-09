@@ -144,31 +144,32 @@ public class OverviewItemPanel extends JPanel {
             }
           });
     }
-    addMouseListener(new MouseAdapter() {
-      private final Component rigidArea = Box.createRigidArea(new Dimension(5, 0));
+    addMouseListener(
+        new MouseAdapter() {
+          private final Component rigidArea = Box.createRigidArea(new Dimension(5, 0));
 
-      @Override
-      public void mouseEntered(MouseEvent e) {
-        if (popupButton == null) {
-          return;
-        }
+          @Override
+          public void mouseEntered(MouseEvent e) {
+            if (popupButton == null) {
+              return;
+            }
 
-        rightContainer.add(rigidArea);
-        rightContainer.add(popupButton);
-        revalidate();
-      }
+            rightContainer.add(rigidArea);
+            rightContainer.add(popupButton);
+            revalidate();
+          }
 
-      @Override
-      public void mouseExited(MouseEvent e) {
-        if (popupButton == null || !isShowing() || getVisibleRect().contains(e.getPoint())) {
-          return;
-        }
+          @Override
+          public void mouseExited(MouseEvent e) {
+            if (popupButton == null || !isShowing() || getVisibleRect().contains(e.getPoint())) {
+              return;
+            }
 
-        rightContainer.remove(rigidArea);
-        rightContainer.remove(popupButton);
-        revalidate();
-      }
-    });
+            rightContainer.remove(rigidArea);
+            rightContainer.remove(popupButton);
+            revalidate();
+          }
+        });
 
     titleLabel = new JLabel(title);
     titleLabel.setForeground(Color.WHITE);
@@ -212,12 +213,13 @@ public class OverviewItemPanel extends JPanel {
 
     popupButton = new JButton("…");
     popupButton.setPreferredSize(new Dimension(20, -1));
-    popupButton.addMouseListener(new MouseAdapter() {
-      @Override
-      public void mousePressed(MouseEvent mouseEvent) {
-        getComponentPopupMenu().show(popupButton, mouseEvent.getX(), mouseEvent.getY());
-      }
-    });
+    popupButton.addMouseListener(
+        new MouseAdapter() {
+          @Override
+          public void mousePressed(MouseEvent mouseEvent) {
+            getComponentPopupMenu().show(popupButton, mouseEvent.getX(), mouseEvent.getY());
+          }
+        });
   }
 
   public void updateStatus(String text) {

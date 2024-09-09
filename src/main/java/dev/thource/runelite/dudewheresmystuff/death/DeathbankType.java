@@ -4,9 +4,7 @@ import dev.thource.runelite.dudewheresmystuff.Region;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-/**
- * DeathbankType is used to identify Deathbanks.
- */
+/** DeathbankType is used to identify Deathbanks. */
 @RequiredArgsConstructor
 @Getter
 public enum DeathbankType {

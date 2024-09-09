@@ -21,8 +21,8 @@ public class ExpiringDeathStorageTextOverlay extends Overlay {
   private String regionName = null;
   private final Client client;
 
-  public ExpiringDeathStorageTextOverlay(DudeWheresMyStuffConfig config,
-      DeathStorageManager deathStorageManager, Client client) {
+  public ExpiringDeathStorageTextOverlay(
+      DudeWheresMyStuffConfig config, DeathStorageManager deathStorageManager, Client client) {
     this.config = config;
     this.deathStorageManager = deathStorageManager;
     this.client = client;
@@ -54,7 +54,7 @@ public class ExpiringDeathStorageTextOverlay extends Overlay {
     return storage != null
         && config.showDeathpileExpiryText()
         && (int) Math.floor((storage.getExpiryMs() - System.currentTimeMillis()) / 60_000f)
-        <= config.deathpileExpiryWarningTime();
+            <= config.deathpileExpiryWarningTime();
   }
 
   @Override
@@ -67,8 +67,9 @@ public class ExpiringDeathStorageTextOverlay extends Overlay {
   }
 
   private Dimension renderText(Graphics2D graphics) {
-    Font font = FontManager.getRunescapeFont()
-        .deriveFont(Font.PLAIN, config.deathpileExpiryWarningFontSize());
+    Font font =
+        FontManager.getRunescapeFont()
+            .deriveFont(Font.PLAIN, config.deathpileExpiryWarningFontSize());
     graphics.setFont(font);
 
     String text = "Your " + storage.getName().toLowerCase() + " ";

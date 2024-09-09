@@ -13,65 +13,63 @@ import net.runelite.api.ItemID;
 /** ItemStackUtils provides methods that interact with Lists of ItemStack. */
 public class ItemStackUtils {
 
-  public static final List<Integer> ITEM_IDS_DESTROYED_ON_DEATH = Collections.unmodifiableList(
-      Arrays.asList(
-          ItemID.LOOTING_BAG,
-          ItemID.LOOTING_BAG_22586,
-          ItemID.CLUE_BOX,
-          ItemID.FLAMTAER_BAG,
-          ItemID.FLAMTAER_BAG_25630,
-          ItemID.LUNAR_HELM,
-          ItemID.LUNAR_TORSO,
-          ItemID.LUNAR_LEGS,
-          ItemID.LUNAR_GLOVES,
-          ItemID.LUNAR_BOOTS,
-          ItemID.LUNAR_CAPE,
-          ItemID.LUNAR_AMULET,
-          ItemID.LUNAR_RING,
-          ItemID.LUNAR_STAFF,
-          ItemID.RING_OF_CHAROS,
-          ItemID.RING_OF_CHAROSA,
-          ItemID.CHRONICLE,
-          ItemID.STEEL_GAUNTLETS,
-          ItemID.COOKING_GAUNTLETS,
-          ItemID.GOLDSMITH_GAUNTLETS,
-          ItemID.CHAOS_GAUNTLETS,
-          ItemID.MAGIC_BUTTERFLY_NET,
-          ItemID.JAR_GENERATOR,
-          ItemID.AMULET_OF_THE_DAMNED,
-          ItemID.SHATTERED_RELICS_BRONZE_TROPHY,
-          ItemID.SHATTERED_RELICS_IRON_TROPHY,
-          ItemID.SHATTERED_RELICS_STEEL_TROPHY,
-          ItemID.SHATTERED_RELICS_MITHRIL_TROPHY,
-          ItemID.SHATTERED_RELICS_ADAMANT_TROPHY,
-          ItemID.SHATTERED_RELICS_RUNE_TROPHY,
-          ItemID.SHATTERED_RELICS_DRAGON_TROPHY,
-          ItemID.TRAILBLAZER_BRONZE_TROPHY,
-          ItemID.TRAILBLAZER_IRON_TROPHY,
-          ItemID.TRAILBLAZER_STEEL_TROPHY,
-          ItemID.TRAILBLAZER_MITHRIL_TROPHY,
-          ItemID.TRAILBLAZER_ADAMANT_TROPHY,
-          ItemID.TRAILBLAZER_RUNE_TROPHY,
-          ItemID.TRAILBLAZER_DRAGON_TROPHY,
-          ItemID.TWISTED_BRONZE_TROPHY,
-          ItemID.TWISTED_IRON_TROPHY,
-          ItemID.TWISTED_STEEL_TROPHY,
-          ItemID.TWISTED_MITHRIL_TROPHY,
-          ItemID.TWISTED_ADAMANT_TROPHY,
-          ItemID.TWISTED_RUNE_TROPHY,
-          ItemID.TWISTED_DRAGON_TROPHY,
-          ItemID.CRYSTAL_SAW_SEED,
-          ItemID.CRYSTAL_SAW
-      )
-  );
+  public static final List<Integer> ITEM_IDS_DESTROYED_ON_DEATH =
+      Collections.unmodifiableList(
+          Arrays.asList(
+              ItemID.LOOTING_BAG,
+              ItemID.LOOTING_BAG_22586,
+              ItemID.CLUE_BOX,
+              ItemID.FLAMTAER_BAG,
+              ItemID.FLAMTAER_BAG_25630,
+              ItemID.LUNAR_HELM,
+              ItemID.LUNAR_TORSO,
+              ItemID.LUNAR_LEGS,
+              ItemID.LUNAR_GLOVES,
+              ItemID.LUNAR_BOOTS,
+              ItemID.LUNAR_CAPE,
+              ItemID.LUNAR_AMULET,
+              ItemID.LUNAR_RING,
+              ItemID.LUNAR_STAFF,
+              ItemID.RING_OF_CHAROS,
+              ItemID.RING_OF_CHAROSA,
+              ItemID.CHRONICLE,
+              ItemID.STEEL_GAUNTLETS,
+              ItemID.COOKING_GAUNTLETS,
+              ItemID.GOLDSMITH_GAUNTLETS,
+              ItemID.CHAOS_GAUNTLETS,
+              ItemID.MAGIC_BUTTERFLY_NET,
+              ItemID.JAR_GENERATOR,
+              ItemID.AMULET_OF_THE_DAMNED,
+              ItemID.SHATTERED_RELICS_BRONZE_TROPHY,
+              ItemID.SHATTERED_RELICS_IRON_TROPHY,
+              ItemID.SHATTERED_RELICS_STEEL_TROPHY,
+              ItemID.SHATTERED_RELICS_MITHRIL_TROPHY,
+              ItemID.SHATTERED_RELICS_ADAMANT_TROPHY,
+              ItemID.SHATTERED_RELICS_RUNE_TROPHY,
+              ItemID.SHATTERED_RELICS_DRAGON_TROPHY,
+              ItemID.TRAILBLAZER_BRONZE_TROPHY,
+              ItemID.TRAILBLAZER_IRON_TROPHY,
+              ItemID.TRAILBLAZER_STEEL_TROPHY,
+              ItemID.TRAILBLAZER_MITHRIL_TROPHY,
+              ItemID.TRAILBLAZER_ADAMANT_TROPHY,
+              ItemID.TRAILBLAZER_RUNE_TROPHY,
+              ItemID.TRAILBLAZER_DRAGON_TROPHY,
+              ItemID.TWISTED_BRONZE_TROPHY,
+              ItemID.TWISTED_IRON_TROPHY,
+              ItemID.TWISTED_STEEL_TROPHY,
+              ItemID.TWISTED_MITHRIL_TROPHY,
+              ItemID.TWISTED_ADAMANT_TROPHY,
+              ItemID.TWISTED_RUNE_TROPHY,
+              ItemID.TWISTED_DRAGON_TROPHY,
+              ItemID.CRYSTAL_SAW_SEED,
+              ItemID.CRYSTAL_SAW));
 
-  private ItemStackUtils() {
-  }
+  private ItemStackUtils() {}
 
   /**
    * Compounds a List of ItemStacks, merging ItemStacks with the same id.
    *
-   * @param itemStacks           ItemStacks to be compounded
+   * @param itemStacks ItemStacks to be compounded
    * @param compoundUnstackables Whether unstackable ItemStacks should be compounded
    * @return a new List of new ItemStacks
    */
@@ -110,7 +108,7 @@ public class ItemStackUtils {
    * exists in the list, it will merge quantities. If there's an empty slot, it will fill it,
    * otherwise it'll be added to the end of the list.
    *
-   * @param items     ItemStacks to be added to
+   * @param items ItemStacks to be added to
    * @param itemToAdd ItemStack to add
    */
   public static void addItemStack(List<ItemStack> items, ItemStack itemToAdd) {
@@ -122,12 +120,12 @@ public class ItemStackUtils {
    * exists in the list, it will merge quantities. If there's an empty slot, it will fill it,
    * otherwise it'll be added to the end of the list.
    *
-   * @param items         ItemStacks to be added to
-   * @param itemToAdd     ItemStack to add
+   * @param items ItemStacks to be added to
+   * @param itemToAdd ItemStack to add
    * @param forceStacking Whether to stack non-stackable items (like in the bank)
    */
-  public static void addItemStack(List<ItemStack> items, ItemStack itemToAdd,
-      boolean forceStacking) {
+  public static void addItemStack(
+      List<ItemStack> items, ItemStack itemToAdd, boolean forceStacking) {
     if (itemToAdd.isStackable() || forceStacking) {
       for (ItemStack item : items) {
         if (item.getId() != itemToAdd.getId()) {
@@ -157,8 +155,8 @@ public class ItemStackUtils {
    * Removes an ItemStack from the supplied List of ItemStacks. Any removed ItemStacks will be
    * replaced with empty slots.
    *
-   * @param items            ItemStacks to remove from
-   * @param itemToRemove     ItemStack to remove
+   * @param items ItemStacks to remove from
+   * @param itemToRemove ItemStack to remove
    * @param replaceWithEmpty whether fully removed items should be replaced by an "empty" item
    */
   public static void removeItemStack(
@@ -206,8 +204,8 @@ public class ItemStackUtils {
     }
   }
 
-  public static List<ItemStack> explodeStorageItems(List<ItemStack> itemStacks,
-      CarryableStorageManager carryableStorageManager) {
+  public static List<ItemStack> explodeStorageItems(
+      List<ItemStack> itemStacks, CarryableStorageManager carryableStorageManager) {
     ArrayList<ItemStack> explodedItemStacks = new ArrayList<>();
     itemStacks.forEach(itemStack -> explodedItemStacks.add(new ItemStack(itemStack)));
 
@@ -219,14 +217,15 @@ public class ItemStackUtils {
       for (CarryableStorage storage : carryableStorageManager.getStorages()) {
         CarryableStorageType storageType = storage.getType();
 
-        if (storageType == CarryableStorageType.LOOTING_BAG || storageType.getContainerIds()
-            .isEmpty() || !storageType.getContainerIds().contains(itemStack.getId())) {
+        if (storageType == CarryableStorageType.LOOTING_BAG
+            || storageType.getContainerIds().isEmpty()
+            || !storageType.getContainerIds().contains(itemStack.getId())) {
           continue;
         }
 
         if (storageType.getEmptyOnDeathVarbit() == -1
             || storage.getPlugin().getClient().getVarbitValue(storageType.getEmptyOnDeathVarbit())
-            == 1) {
+                == 1) {
           storage.getItems().forEach(itemStacksIterator::add);
         }
       }

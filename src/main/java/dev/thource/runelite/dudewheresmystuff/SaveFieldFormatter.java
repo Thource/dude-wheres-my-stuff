@@ -9,26 +9,23 @@ import net.runelite.api.coords.WorldPoint;
 /** SaveFieldFormatter converts various data types into strings so that they can be saved. */
 public class SaveFieldFormatter {
 
-  private SaveFieldFormatter() {
-  }
+  private SaveFieldFormatter() {}
 
   /**
    * Converts an ItemStack list into a string.
    *
-   * @param list           the item stack list
+   * @param list the item stack list
    * @param quantitiesOnly whether the result should be composed of only quantities
    * @return a string representation of the item stack list
    */
   public static String format(List<ItemStack> list, boolean quantitiesOnly) {
-    return list.stream()
-        .map(item -> format(item, quantitiesOnly))
-        .collect(Collectors.joining(","));
+    return list.stream().map(item -> format(item, quantitiesOnly)).collect(Collectors.joining(","));
   }
 
   /**
    * Converts an ItemStack into a string.
    *
-   * @param itemStack    the item stack
+   * @param itemStack the item stack
    * @param quantityOnly whether the result should be composed of only quantity
    * @return a string representation of the item stack
    */

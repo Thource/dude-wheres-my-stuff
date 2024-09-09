@@ -63,8 +63,8 @@ public class LootingBag extends CarryableStorage {
           titleWidget != null && titleWidget.getText().equals("How many do you want to deposit?");
     }
 
-    for (ItemStack itemStack : ItemContainerWatcher.getInventoryWatcher()
-        .getItemsRemovedLastTick()) {
+    for (ItemStack itemStack :
+        ItemContainerWatcher.getInventoryWatcher().getItemsRemovedLastTick()) {
       if (itemsUsedOnBag.stream().anyMatch(i -> i.getId() == itemStack.getId())) {
         ItemStackUtils.addItemStack(items, itemStack);
         updated = true;
@@ -95,8 +95,8 @@ public class LootingBag extends CarryableStorage {
     Widget widgetTitle = plugin.getClient().getWidget(81, 1);
     if (widgetTitle != null && widgetTitle.getText().equals("Add to bag")) {
       boolean updated = false;
-      for (ItemStack itemStack : ItemContainerWatcher.getInventoryWatcher()
-          .getItemsRemovedLastTick()) {
+      for (ItemStack itemStack :
+          ItemContainerWatcher.getInventoryWatcher().getItemsRemovedLastTick()) {
         ItemStackUtils.addItemStack(items, itemStack);
         updated = true;
       }
@@ -137,15 +137,17 @@ public class LootingBag extends CarryableStorage {
 
     boolean item1IsLootingBag = type.getContainerIds().contains(item1Widget.getItemId());
     // Item wasn't used on a looting bag
-    if (!item1IsLootingBag
-        && !type.getContainerIds().contains(item2Widget.getItemId())) {
+    if (!item1IsLootingBag && !type.getContainerIds().contains(item2Widget.getItemId())) {
       return false;
     }
 
     Widget itemWidget = (item1IsLootingBag ? item2Widget : item1Widget);
-    itemsUsedOnBag.add(new SuspendedItem(itemWidget.getIndex(), itemWidget.getItemId(),
-        Objects.requireNonNull(plugin.getClient().getItemContainer(InventoryID.INVENTORY))
-            .count(itemWidget.getItemId())));
+    itemsUsedOnBag.add(
+        new SuspendedItem(
+            itemWidget.getIndex(),
+            itemWidget.getItemId(),
+            Objects.requireNonNull(plugin.getClient().getItemContainer(InventoryID.INVENTORY))
+                .count(itemWidget.getItemId())));
 
     return false;
   }

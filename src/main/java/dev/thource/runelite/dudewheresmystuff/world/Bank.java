@@ -19,8 +19,8 @@ public class Bank extends WorldStorage {
 
     Widget depositBoxWidget = plugin.getClient().getWidget(192, 1);
     if (depositBoxWidget != null && !depositBoxWidget.isHidden()) {
-      for (ItemStack itemStack : ItemContainerWatcher.getInventoryWatcher()
-          .getItemsRemovedLastTick()) {
+      for (ItemStack itemStack :
+          ItemContainerWatcher.getInventoryWatcher().getItemsRemovedLastTick()) {
         ItemStackUtils.addItemStack(items, itemStack, true);
 
         updated = true;
