@@ -68,7 +68,9 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
           12894, // Prifddinas
           14642, // ToB
           12172, // Gauntlet
-          12633 // death's office
+          12633, // death's office
+          12600, // Ferox
+          6705 // Civitas illa Fortis
       );
   private final CheckPlayTimeInfoBox playTimeInfoBox = new CheckPlayTimeInfoBox(plugin);
   private final List<ExpiringDeathStorageInfoBox> expiringDeathStorageInfoBoxes = new ArrayList<>();
