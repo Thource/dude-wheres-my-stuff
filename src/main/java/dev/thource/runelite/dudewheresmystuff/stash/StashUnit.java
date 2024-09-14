@@ -157,7 +157,8 @@ public enum StashUnit {
           ItemRequirements.item(ItemID.AMULET_OF_GLORY3),
           ItemRequirements.item(ItemID.AMULET_OF_GLORY4),
           ItemRequirements.item(ItemID.AMULET_OF_GLORY5),
-          ItemRequirements.item(ItemID.AMULET_OF_GLORY6)),
+          ItemRequirements.item(ItemID.AMULET_OF_GLORY6),
+          ItemRequirements.item(ItemID.AMULET_OF_ETERNAL_GLORY)),
       ItemRequirements.item(ItemID.BARROWS_GLOVES),
       ItemRequirements.item(ItemID.DRAGON_MED_HELM)),
   DEATH_ALTAR(
@@ -427,7 +428,8 @@ public enum StashUnit {
           ItemRequirements.item(ItemID.AMULET_OF_GLORY3),
           ItemRequirements.item(ItemID.AMULET_OF_GLORY4),
           ItemRequirements.item(ItemID.AMULET_OF_GLORY5),
-          ItemRequirements.item(ItemID.AMULET_OF_GLORY6))),
+          ItemRequirements.item(ItemID.AMULET_OF_GLORY6),
+          ItemRequirements.item(ItemID.AMULET_OF_ETERNAL_GLORY))),
   MUBARIZS_ROOM_AT_THE_DUEL_ARENA(
       "Duel Arena",
       "Mubariz's room at the Duel Arena",
