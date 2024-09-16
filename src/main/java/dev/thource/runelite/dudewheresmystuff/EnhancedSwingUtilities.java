@@ -15,13 +15,14 @@ import net.runelite.client.util.SwingUtil;
 @Slf4j
 public class EnhancedSwingUtilities {
 
+  private static boolean isInSecondaryLoop;
+
   private EnhancedSwingUtilities() {
   }
 
   public static void fastRemoveAll(Container c, ChatMessageManager chatMessageManager) {
     if (!SwingUtilities.isEventDispatchThread()) {
-      log.error("fastRemoveAll called outside of the EDT?");
-      new Throwable().printStackTrace();
+      log.error("fastRemoveAll called outside of the EDT?", new Throwable());
 
       final ChatMessageBuilder message = new ChatMessageBuilder()
           .append(ChatColorType.HIGHLIGHT)
@@ -29,7 +30,7 @@ public class EnhancedSwingUtilities {
           .append(ChatColorType.NORMAL)
           .append(" Please help me fix this issue by sending your runelite client.log file to "
               + "Thource on Discord or attach it to "
-              + "https://github.com/Thource/dude-wheres-my-stuff/issues/160");
+              + "https://github.com/Thource/dude-wheres-my-stuff/issues/256");
 
       chatMessageManager.queue(QueuedMessage.builder()
           .type(ChatMessageType.CONSOLE)
@@ -57,10 +58,18 @@ public class EnhancedSwingUtilities {
         fastRemoveAll((Container) ic, false);
       }
 
-      // each removeNotify needs to remove anything from the event queue that is for that widget
-      // this however requires taking a lock, and is moderately slow, so we just execute all of
-      // those events with a secondary event loop
-      SwingUtil.pumpPendingEvents();
+      // pumpPendingEvents can cause this function to be ran again
+      // this conditional stops stack overflows as a result of that
+      if (!isInSecondaryLoop) {
+        isInSecondaryLoop = true;
+
+        // each removeNotify needs to remove anything from the event queue that is for that widget
+        // this however requires taking a lock, and is moderately slow, so we just execute all of
+        // those events with a secondary event loop
+        SwingUtil.pumpPendingEvents();
+
+        isInSecondaryLoop = false;
+      }
 
       // call removeNotify early; this is most of the work in removeAll, and generates events that
       // the next secondaryLoop will pick up
