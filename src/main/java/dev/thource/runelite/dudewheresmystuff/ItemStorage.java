@@ -137,7 +137,7 @@ public class ItemStorage<T extends StorageType> extends Storage<T> {
     super.reset();
   }
 
-  private void resetItems() {
+  protected void resetItems() {
     if (hasStaticItems) {
       items.forEach(item -> item.setQuantity(0));
     } else {

@@ -32,6 +32,7 @@ public class WorldStorageManager extends StorageManager<WorldStorageType, WorldS
     storages.add(new Nulodion(plugin));
     storages.add(new ForestryShop(plugin));
     storages.add(new Sandstorm(plugin));
+    storages.add(new Eyatlalli(plugin));
   }
 
   @Override
