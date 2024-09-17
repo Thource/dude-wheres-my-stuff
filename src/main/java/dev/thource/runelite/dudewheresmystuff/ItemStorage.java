@@ -75,8 +75,16 @@ public class ItemStorage<T extends StorageType> extends Storage<T> {
       return false;
     }
 
-    items.clear();
+    resetItems();
     for (Item item : itemContainer.getItems()) {
+      if (hasStaticItems) {
+        items.stream()
+            .filter(i -> item.getId() == i.getId())
+            .findFirst()
+            .ifPresent(i -> i.setQuantity(item.getQuantity()));
+        continue;
+      }
+
       if (item.getId() == -1) {
         items.add(new ItemStack(item.getId(), "empty slot", 1, 0, 0, false));
         continue;
@@ -124,13 +132,17 @@ public class ItemStorage<T extends StorageType> extends Storage<T> {
 
   @Override
   public void reset() {
+    resetItems();
+
+    super.reset();
+  }
+
+  private void resetItems() {
     if (hasStaticItems) {
       items.forEach(item -> item.setQuantity(0));
     } else {
       items.clear();
     }
-
-    super.reset();
   }
 
   /**
