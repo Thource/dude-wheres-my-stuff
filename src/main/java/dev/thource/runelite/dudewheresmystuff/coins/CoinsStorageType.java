@@ -5,6 +5,7 @@ import java.util.List;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.runelite.api.InventoryID;
+import net.runelite.api.Varbits;
 
 /** CoinsStorageType is used to identify CoinsStorages. */
 @RequiredArgsConstructor
@@ -19,7 +20,8 @@ public enum CoinsStorageType implements StorageType {
   LOOTING_BAG("Looting Bag", -1, 516, false, "lootingbag", true),
   GRAND_EXCHANGE("Grand Exchange", -1, -1, false, "grandexchange", false),
   SHILO_FURNACE("Shilo Furnace", -1, -1, false, "shilofurnace", true),
-  BOUNTY_HUNTER("Bounty Hunter", -1, -1, false, "bountyhunter", true);
+  BOUNTY_HUNTER("Bounty Hunter", -1, -1, false, "bountyhunter", true),
+  MANAGING_MISCELLANIA("Managing Miscellania", Varbits.KINGDOM_COFFER, -1, true, "managingMiscellania", true);
 
   private final String name;
   private final int varbitId;
