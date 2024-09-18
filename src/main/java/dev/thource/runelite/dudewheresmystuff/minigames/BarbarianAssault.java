@@ -30,4 +30,30 @@ public class BarbarianAssault extends MinigamesStorage {
     items.add(defenderPoints);
     items.add(healerPoints);
   }
+
+  @Override
+  public boolean onVarbitChanged() {
+    if (varbits == null) {
+      return false;
+    }
+
+    boolean updated = false;
+
+    for (int i = 0; i < varbits.length; i++) {
+      int varbit = varbits[i];
+      int multiplierVarbit = varbit + 4;
+      ItemStack itemStack = items.get(i);
+
+      int newPoints = plugin.getClient().getVarbitValue(varbit)
+          + (plugin.getClient().getVarbitValue(multiplierVarbit) * 512);
+      if (newPoints == itemStack.getQuantity()) {
+        continue;
+      }
+
+      itemStack.setQuantity(newPoints);
+      updated = true;
+    }
+
+    return updated;
+  }
 }
