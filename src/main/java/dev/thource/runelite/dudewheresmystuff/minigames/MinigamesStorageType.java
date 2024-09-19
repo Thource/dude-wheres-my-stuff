@@ -21,7 +21,8 @@ public enum MinigamesStorageType implements StorageType {
   SOUL_WARS("Soul Wars", true, "soulwars"),
   MAHOGANY_HOMES("Mahogany Homes", false, "mahoganyhomes"),
   GIANTS_FOUNDRY("Giants' Foundry", false, "giantsfoundry"),
-  VOLCANIC_MINE("Volcanic Mine", false, "volcanicmine");
+  VOLCANIC_MINE("Volcanic Mine", false, "volcanicmine"),
+  TROUBLE_BREWING("Trouble Brewing", true, "troubleBrewing");
 
   private final String name;
   private final int itemContainerId = -1;

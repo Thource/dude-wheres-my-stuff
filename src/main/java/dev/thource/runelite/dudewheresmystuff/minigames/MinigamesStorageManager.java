@@ -14,16 +14,17 @@ public class MinigamesStorageManager
   private MinigamesStorageManager(DudeWheresMyStuffPlugin plugin) {
     super(plugin);
 
-    storages.add(new MageTrainingArena(plugin));
-    storages.add(new TitheFarm(plugin));
-    storages.add(new LastManStanding(plugin));
     storages.add(new BarbarianAssault(plugin));
-    storages.add(new NightmareZone(plugin));
-    storages.add(new GuardiansOfTheRift(plugin));
-    storages.add(new MahoganyHomes(plugin));
-    storages.add(new Slayer(plugin));
-    storages.add(new PestControl(plugin));
     storages.add(new GiantsFoundry(plugin));
+    storages.add(new GuardiansOfTheRift(plugin));
+    storages.add(new LastManStanding(plugin));
+    storages.add(new MageTrainingArena(plugin));
+    storages.add(new MahoganyHomes(plugin));
+    storages.add(new NightmareZone(plugin));
+    storages.add(new PestControl(plugin));
+    storages.add(new Slayer(plugin));
+    storages.add(new TitheFarm(plugin));
+    storages.add(new TroubleBrewing(plugin));
     storages.add(new VolcanicMine(plugin));
   }
 
