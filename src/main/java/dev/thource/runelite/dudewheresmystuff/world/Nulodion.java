@@ -17,7 +17,7 @@ public class Nulodion extends WorldStorage {
     items.add(new ItemStack(ItemID.CANNON_STAND, plugin));
     items.add(new ItemStack(ItemID.CANNON_BASE, plugin));
     items.add(new ItemStack(ItemID.CANNON_FURNACE, plugin));
-    items.add(new ItemStack(ItemID.CANNON_BARREL, plugin));
+    items.add(new ItemStack(ItemID.CANNON_BARRELS, plugin));
   }
 
   @Override
