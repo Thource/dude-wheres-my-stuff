@@ -49,7 +49,7 @@ public class SeedBox extends CarryableStorage {
     }
 
     items.clear();
-    lastUpdated = System.currentTimeMillis();
+    updateLastUpdated();
     return true;
   }
 
@@ -85,7 +85,7 @@ public class SeedBox extends CarryableStorage {
 
       ItemStackUtils.addItemStack(
           items, new ItemStack(optionalSeed.get().getItemId(), quantity, plugin));
-      this.lastUpdated = System.currentTimeMillis();
+      updateLastUpdated();
       return true;
     }
 
@@ -107,7 +107,7 @@ public class SeedBox extends CarryableStorage {
 
       ItemStackUtils.removeItemStack(
           items, new ItemStack(optionalSeed.get().getItemId(), quantity, plugin));
-      this.lastUpdated = System.currentTimeMillis();
+      updateLastUpdated();
       return true;
     }
 

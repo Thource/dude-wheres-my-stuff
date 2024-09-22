@@ -1486,6 +1486,7 @@ public enum PlayerOwnedHouseStorageType implements StorageType {
           ItemID.JAR_OF_SPIRITS,
           ItemID.JAR_OF_SMOKE
       )),
+  CAPE_HANGER("Cape Hanger", -1, "capeHanger", null)
   ;
 
   private final String name;

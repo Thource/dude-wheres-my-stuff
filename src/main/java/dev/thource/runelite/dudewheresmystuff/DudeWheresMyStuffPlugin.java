@@ -32,6 +32,7 @@ import net.runelite.api.Varbits;
 import net.runelite.api.events.ActorDeath;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.FocusChanged;
+import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
@@ -517,6 +518,15 @@ public class DudeWheresMyStuffPlugin extends Plugin {
     storageManagerManager.onGameTick();
 
     SwingUtilities.invokeLater(panelContainer::softUpdate);
+  }
+
+  @Subscribe
+  void onGameObjectSpawned(GameObjectSpawned gameObjectSpawned) {
+    if (clientState == ClientState.LOGGED_OUT) {
+      return;
+    }
+
+    storageManagerManager.onGameObjectSpawned(gameObjectSpawned);
   }
 
   @Subscribe

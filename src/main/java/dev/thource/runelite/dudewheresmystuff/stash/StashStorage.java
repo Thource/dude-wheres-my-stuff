@@ -79,12 +79,12 @@ public class StashStorage extends ItemStorage<StashStorageType> {
   }
 
   private void handleWithdraw() {
-    lastUpdated = System.currentTimeMillis();
+    updateLastUpdated();
     items.clear();
   }
 
   private void handleDeposit() {
-    lastUpdated = System.currentTimeMillis();
+    updateLastUpdated();
     items.clear();
     for (ItemStack itemStack :
         ItemContainerWatcher.getInventoryWatcher().getItemsRemovedLastTick()) {

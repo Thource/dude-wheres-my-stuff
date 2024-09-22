@@ -40,7 +40,7 @@ public class LastManStanding extends MinigamesStorage {
       return false;
     }
 
-    lastUpdated = System.currentTimeMillis();
+    updateLastUpdated();
     int newPoints = Integer.parseInt(matcher.group(1));
     if (newPoints != points.getQuantity()) {
       points.setQuantity(newPoints);

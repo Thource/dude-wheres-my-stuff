@@ -48,7 +48,7 @@ public class GnomishFirelighter extends CarryableStorage {
 
     if (widgetText.contains("is empty")) {
       items.forEach(itemStack -> itemStack.setQuantity(0));
-      this.lastUpdated = System.currentTimeMillis();
+      updateLastUpdated();
       return true;
     }
 
@@ -65,7 +65,7 @@ public class GnomishFirelighter extends CarryableStorage {
     }
 
     itemStack.get().setQuantity(charges);
-    lastUpdated = System.currentTimeMillis();
+    updateLastUpdated();
 
     return true;
   }
@@ -82,7 +82,7 @@ public class GnomishFirelighter extends CarryableStorage {
     }
 
     items.forEach(itemStack -> itemStack.setQuantity(0));
-    lastUpdated = System.currentTimeMillis();
+    updateLastUpdated();
     return true;
   }
 }

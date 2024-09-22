@@ -56,7 +56,7 @@ public class BottomlessBucket extends CarryableStorage {
       compostStack.setQuantity(0);
       supercompostStack.setQuantity(0);
       ultracompostStack.setQuantity(0);
-      this.lastUpdated = System.currentTimeMillis();
+      updateLastUpdated();
       return true;
     }
 
@@ -71,7 +71,7 @@ public class BottomlessBucket extends CarryableStorage {
     compostStack.setQuantity(0);
     supercompostStack.setQuantity(0);
     ultracompostStack.setQuantity(0);
-    this.lastUpdated = System.currentTimeMillis();
+    updateLastUpdated();
 
     if (widgetText.contains("ultracompost")) {
       ultracompostStack.setQuantity(charges);
@@ -99,7 +99,7 @@ public class BottomlessBucket extends CarryableStorage {
     compostStack.setQuantity(0);
     supercompostStack.setQuantity(0);
     ultracompostStack.setQuantity(0);
-    this.lastUpdated = System.currentTimeMillis();
+    updateLastUpdated();
 
     if (type == 2) {
       compostStack.setQuantity(charges);
@@ -125,7 +125,7 @@ public class BottomlessBucket extends CarryableStorage {
       compostStack.setQuantity(0);
       supercompostStack.setQuantity(0);
       ultracompostStack.setQuantity(0);
-      this.lastUpdated = System.currentTimeMillis();
+      updateLastUpdated();
       return true;
     }
 
@@ -140,7 +140,7 @@ public class BottomlessBucket extends CarryableStorage {
     compostStack.setQuantity(0);
     supercompostStack.setQuantity(0);
     ultracompostStack.setQuantity(0);
-    this.lastUpdated = System.currentTimeMillis();
+    updateLastUpdated();
 
     if (chatMessage.getMessage().contains("ultracompost")) {
       ultracompostStack.setQuantity(charges);

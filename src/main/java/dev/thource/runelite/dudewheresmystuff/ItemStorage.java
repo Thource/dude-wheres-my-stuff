@@ -55,7 +55,7 @@ public class ItemStorage<T extends StorageType> extends Storage<T> {
     if (itemContainerWatcher != null && itemContainerWatcher.wasJustUpdated()) {
       items.clear();
       items.addAll(itemContainerWatcher.getItems());
-      lastUpdated = System.currentTimeMillis();
+      updateLastUpdated();
 
       return true;
     }
@@ -96,7 +96,7 @@ public class ItemStorage<T extends StorageType> extends Storage<T> {
       }
     }
 
-    lastUpdated = System.currentTimeMillis();
+    updateLastUpdated();
 
     return true;
   }

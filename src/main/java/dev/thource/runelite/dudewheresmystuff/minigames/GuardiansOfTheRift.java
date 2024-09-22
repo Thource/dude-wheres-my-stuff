@@ -56,7 +56,7 @@ public class GuardiansOfTheRift extends MinigamesStorage {
     final long lastCatalyticEnergy = catalyticEnergy.getQuantity();
     elementalEnergy.setQuantity(NumberUtils.toInt(matcher.group(2), 0));
     catalyticEnergy.setQuantity(NumberUtils.toInt(matcher.group(1), 0));
-    this.lastUpdated = System.currentTimeMillis();
+    updateLastUpdated();
 
     return lastElementalEnergy != elementalEnergy.getQuantity()
         || lastCatalyticEnergy != catalyticEnergy.getQuantity();
@@ -82,7 +82,7 @@ public class GuardiansOfTheRift extends MinigamesStorage {
 
       elementalEnergy.setQuantity(elementalEnergy.getQuantity() - 1);
       catalyticEnergy.setQuantity(catalyticEnergy.getQuantity() - 1);
-      this.lastUpdated = System.currentTimeMillis();
+      updateLastUpdated();
 
       return true;
     }
@@ -96,7 +96,7 @@ public class GuardiansOfTheRift extends MinigamesStorage {
     final long lastCatalyticEnergy = catalyticEnergy.getQuantity();
     elementalEnergy.setQuantity(NumberUtils.toInt(matcher.group(1), 0));
     catalyticEnergy.setQuantity(NumberUtils.toInt(matcher.group(2), 0));
-    this.lastUpdated = System.currentTimeMillis();
+    updateLastUpdated();
 
     return lastElementalEnergy != elementalEnergy.getQuantity()
         || lastCatalyticEnergy != catalyticEnergy.getQuantity();

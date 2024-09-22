@@ -32,7 +32,7 @@ public class Eyatlalli extends WorldStorage {
     String message = chatMessage.getMessage();
     // "<col=00e6e6>Your weapon freezes over. You're forced to let go!</col>"
     if (message.contains("Your weapon freezes over.")) {
-      lastUpdated = System.currentTimeMillis();
+      updateLastUpdated();
       resetItems();
 
       Item[] equippedItems = plugin.getClient().getItemContainer(InventoryID.EQUIPMENT.getId())
@@ -53,7 +53,7 @@ public class Eyatlalli extends WorldStorage {
         || message.startsWith("Eyatlalli retrieves your weapon")
         || message.startsWith("You retrieve your weapon")
         || message.startsWith("As the icicle bursts, your weapon")) {
-      lastUpdated = System.currentTimeMillis();
+      updateLastUpdated();
       resetItems();
 
       return true;
@@ -62,7 +62,7 @@ public class Eyatlalli extends WorldStorage {
     // "Eyatlalli is holding onto your Elder maul. Speak to her to retrieve it."
     Matcher loginMessageMatcher = LOGIN_MESSAGE_PATTERN.matcher(message);
     if (loginMessageMatcher.find()) {
-      lastUpdated = System.currentTimeMillis();
+      updateLastUpdated();
 
       String itemName = loginMessageMatcher.group(1);
       Optional<ItemPrice> foundItem = plugin.getItemManager().search(itemName).stream()

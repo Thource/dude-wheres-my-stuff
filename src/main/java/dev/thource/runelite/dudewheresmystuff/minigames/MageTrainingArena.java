@@ -4,6 +4,7 @@ import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicBoolean;
 import lombok.Getter;
 import net.runelite.api.ItemID;
@@ -89,7 +90,7 @@ public class MageTrainingArena extends MinigamesStorage {
 
   boolean updateFromWidgets() {
     if (shopWidget != null) {
-      lastUpdated = System.currentTimeMillis();
+      updateLastUpdated();
       pointData.forEach(
           (itemStack, pointDatum) -> {
             int newPoints = plugin.getClient().getVarpValue(pointDatum.getVarpId());
@@ -115,21 +116,20 @@ public class MageTrainingArena extends MinigamesStorage {
       return true;
     }
 
-    AtomicBoolean updated = new AtomicBoolean(false);
+    for (Entry<ItemStack, MageTrainingArenaPoint> entry : pointData.entrySet()) {
+      ItemStack itemStack = entry.getKey();
+      MageTrainingArenaPoint pointDatum = entry.getValue();
+      if (pointDatum.getWidget() == null) {
+        continue;
+      }
 
-    pointData.forEach(
-        (itemStack, pointDatum) -> {
-          if (pointDatum.getWidget() == null) {
-            return;
-          }
+      int newPoints = NumberUtils.toInt(pointDatum.getWidget().getText().replace(",", ""), 0);
+      itemStack.setQuantity(newPoints);
+      updateLastUpdated();
+      return true;
+    }
 
-          updated.set(true);
-          lastUpdated = System.currentTimeMillis();
-          int newPoints = NumberUtils.toInt(pointDatum.getWidget().getText().replace(",", ""), 0);
-          itemStack.setQuantity(newPoints);
-        });
-
-    return updated.get();
+    return false;
   }
 
   @Override

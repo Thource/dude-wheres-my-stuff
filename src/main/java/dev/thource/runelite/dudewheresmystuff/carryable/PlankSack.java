@@ -57,7 +57,7 @@ public class PlankSack extends CarryableStorage {
       oakPlankStack.setQuantity(0);
       teakPlankStack.setQuantity(0);
       mahoganyPlankStack.setQuantity(0);
-      lastUpdated = System.currentTimeMillis();
+      updateLastUpdated();
       return true;
     }
 
@@ -70,7 +70,7 @@ public class PlankSack extends CarryableStorage {
     oakPlankStack.setQuantity(NumberUtils.toInt(matcher.group(2)));
     teakPlankStack.setQuantity(NumberUtils.toInt(matcher.group(3)));
     mahoganyPlankStack.setQuantity(NumberUtils.toInt(matcher.group(4)));
-    lastUpdated = System.currentTimeMillis();
+    updateLastUpdated();
     return true;
   }
 }

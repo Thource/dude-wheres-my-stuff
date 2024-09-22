@@ -228,7 +228,7 @@ public class Menagerie extends PlayerOwnedHouseStorage {
     boolean updated = updateFromInventoryWatcher(isBeingFollowed);
 
     if (updated) {
-      lastUpdated = System.currentTimeMillis();
+      updateLastUpdated();
       updateItems();
     }
 
@@ -243,7 +243,7 @@ public class Menagerie extends PlayerOwnedHouseStorage {
       return false;
     }
 
-    lastUpdated = System.currentTimeMillis();
+    updateLastUpdated();
     items.clear();
     for (Item item : itemContainerChanged.getItemContainer().getItems()) {
       if (item.getId() != -1) {
@@ -284,7 +284,7 @@ public class Menagerie extends PlayerOwnedHouseStorage {
 
     if (petBits1 != oldPetBits1 || petBits2 != oldPetBits2) {
       rebuildPetsFromBits();
-      lastUpdated = System.currentTimeMillis();
+      updateLastUpdated();
       return true;
     }
 

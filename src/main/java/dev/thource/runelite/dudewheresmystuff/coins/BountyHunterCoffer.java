@@ -38,7 +38,7 @@ public class BountyHunterCoffer extends CoinsStorage {
 
     int parsedCoins = NumberUtils.toInt(textWidget.getText().replaceAll("\\D+", ""), 0);
     this.getCoinStack().setQuantity(parsedCoins);
-    this.lastUpdated = System.currentTimeMillis();
+    updateLastUpdated();
     return true;
   }
 
@@ -56,7 +56,7 @@ public class BountyHunterCoffer extends CoinsStorage {
 
     int parsedCoins = NumberUtils.toInt(matcher.group(1), 0);
     this.getCoinStack().setQuantity(parsedCoins);
-    this.lastUpdated = System.currentTimeMillis();
+    updateLastUpdated();
     return true;
   }
 

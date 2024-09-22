@@ -22,7 +22,7 @@ public class PlayerOwnedHouseStorage extends ItemStorage<PlayerOwnedHouseStorage
       return false;
     }
 
-    lastUpdated = System.currentTimeMillis();
+    updateLastUpdated();
     items.clear();
     for (Item item : itemContainerChanged.getItemContainer().getItems()) {
       if (type.getStorableItemIds() == null || type.getStorableItemIds().contains(item.getId())) {

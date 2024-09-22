@@ -13,6 +13,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.WidgetClosed;
@@ -96,6 +97,10 @@ public abstract class Storage<T extends StorageType> {
   }
 
   public boolean onGameTick() {
+    return false;
+  }
+
+  public boolean onGameObjectSpawned(GameObjectSpawned gameObjectSpawned) {
     return false;
   }
 
@@ -271,5 +276,9 @@ public abstract class Storage<T extends StorageType> {
   public long getItemCount(int canonicalId) {
     return getItems().stream().filter(stack -> stack.getCanonicalId() == canonicalId)
         .mapToLong(ItemStack::getQuantity).sum();
+  }
+
+  protected void updateLastUpdated() {
+    lastUpdated = System.currentTimeMillis();
   }
 }

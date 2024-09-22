@@ -32,7 +32,7 @@ public class CoinsStorage extends ItemStorage<CoinsStorageType> {
           itemContainerWatcher.getItems().stream().filter(i -> i.getId() == 995).findFirst();
       coinStack.setQuantity(coinsItem.map(ItemStack::getQuantity).orElse(0L));
 
-      lastUpdated = System.currentTimeMillis();
+      updateLastUpdated();
 
       return true;
     }
@@ -67,7 +67,7 @@ public class CoinsStorage extends ItemStorage<CoinsStorageType> {
       return false;
     }
 
-    lastUpdated = System.currentTimeMillis();
+    updateLastUpdated();
     int coins = itemContainer.count(995);
     if (coinStack.getQuantity() == coins) {
       return !this.getType().isAutomatic();

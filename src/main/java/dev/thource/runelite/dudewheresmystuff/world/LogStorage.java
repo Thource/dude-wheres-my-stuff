@@ -71,7 +71,7 @@ public class LogStorage extends WorldStorage {
     }
 
     itemStack.get().setQuantity(quantity);
-    this.lastUpdated = System.currentTimeMillis();
+    updateLastUpdated();
     return true;
   }
 
@@ -104,7 +104,7 @@ public class LogStorage extends WorldStorage {
     }
 
     if (updated) {
-      this.lastUpdated = System.currentTimeMillis();
+      updateLastUpdated();
     }
 
     return updated;
@@ -133,7 +133,7 @@ public class LogStorage extends WorldStorage {
     }
 
     itemStack.get().setQuantity(quantity);
-    this.lastUpdated = System.currentTimeMillis();
+    updateLastUpdated();
     return true;
   }
 

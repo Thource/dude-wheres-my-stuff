@@ -26,7 +26,7 @@ public class LootingBag extends CoinsStorage {
     }
 
     coinStack.setQuantity(0);
-    lastUpdated = System.currentTimeMillis();
+    updateLastUpdated();
     return true;
   }
 }
