@@ -28,7 +28,7 @@ public class GrandExchange extends CoinsStorage {
 
     long oldValue = coinStack.getQuantity();
     coinStack.setQuantity(IntStream.range(0, 8).mapToLong(this::getCoinsInCollectSlot).sum());
-    lastUpdated = System.currentTimeMillis();
+    updateLastUpdated();
 
     return oldValue != coinStack.getQuantity();
   }
@@ -54,7 +54,7 @@ public class GrandExchange extends CoinsStorage {
 
     long oldValue = coinStack.getQuantity();
     coinStack.setQuantity(IntStream.range(0, 8).mapToLong(this::getCoinsInGrandExchangeSlot).sum());
-    lastUpdated = System.currentTimeMillis();
+    updateLastUpdated();
 
     return oldValue != coinStack.getQuantity();
   }

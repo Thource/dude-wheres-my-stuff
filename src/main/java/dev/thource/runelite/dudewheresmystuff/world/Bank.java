@@ -27,7 +27,7 @@ public class Bank extends WorldStorage {
       }
 
       if (updated) {
-        lastUpdated = System.currentTimeMillis();
+        updateLastUpdated();
       }
     }
 

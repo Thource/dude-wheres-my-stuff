@@ -31,6 +31,7 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.events.ActorDeath;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.ItemDespawned;
@@ -145,6 +146,10 @@ public class StorageManagerManager {
 
   public void onGameTick() {
     storageManagers.forEach(StorageManager::onGameTick);
+  }
+
+  public void onGameObjectSpawned(GameObjectSpawned gameObjectSpawned) {
+    storageManagers.forEach(m -> m.onGameObjectSpawned(gameObjectSpawned));
   }
 
   public void onWidgetLoaded(WidgetLoaded widgetLoaded) {

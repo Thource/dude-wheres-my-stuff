@@ -38,7 +38,7 @@ public class MahoganyHomes extends MinigamesStorage {
 
     points.setQuantity(
         NumberUtils.toInt(Text.removeTags(widget.getText()).replaceAll("\\D+", ""), 0));
-    lastUpdated = System.currentTimeMillis();
+    updateLastUpdated();
     return true;
   }
 
@@ -55,7 +55,7 @@ public class MahoganyHomes extends MinigamesStorage {
     }
 
     points.setQuantity(NumberUtils.toInt(matcher.group(1), 0));
-    lastUpdated = System.currentTimeMillis();
+    updateLastUpdated();
 
     return true;
   }

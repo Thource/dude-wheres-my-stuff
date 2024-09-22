@@ -26,13 +26,13 @@ public class Nulodion extends WorldStorage {
       String message = Text.removeTags(chatMessage.getMessage());
       if (message.startsWith("Your cannon has decayed")) {
         items.forEach(itemStack -> itemStack.setQuantity(1));
-        lastUpdated = System.currentTimeMillis();
+        updateLastUpdated();
         return true;
       }
 
       if (message.startsWith("The dwarf gives you a new cannon")) {
         items.forEach(itemStack -> itemStack.setQuantity(0));
-        lastUpdated = System.currentTimeMillis();
+        updateLastUpdated();
         return true;
       }
     }

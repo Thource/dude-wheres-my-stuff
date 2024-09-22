@@ -31,7 +31,7 @@ public class ShiloFurnace extends CoinsStorage {
 
     int parsedCoins = NumberUtils.toInt(textWidget.getText().replaceAll("\\D+", ""), 0);
     this.getCoinStack().setQuantity(parsedCoins);
-    this.lastUpdated = System.currentTimeMillis();
+    updateLastUpdated();
     return true;
   }
 }

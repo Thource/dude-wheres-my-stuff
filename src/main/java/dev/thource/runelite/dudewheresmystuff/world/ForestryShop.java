@@ -74,7 +74,7 @@ public class ForestryShop extends WorldStorage {
     }
 
     if (updated) {
-      this.lastUpdated = System.currentTimeMillis();
+      updateLastUpdated();
     }
 
     return updated;

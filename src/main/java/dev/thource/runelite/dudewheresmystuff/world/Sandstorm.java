@@ -58,7 +58,7 @@ public class Sandstorm extends WorldStorage {
         if (addedBuckets.isPresent()) {
           buckets.setQuantity(buckets.getQuantity() - addedBuckets.get().getQuantity());
           sand.setQuantity(sand.getQuantity() - addedBuckets.get().getQuantity());
-          lastUpdated = System.currentTimeMillis();
+          updateLastUpdated();
 
           return true;
         }
@@ -105,7 +105,7 @@ public class Sandstorm extends WorldStorage {
     }
 
     if (updated) {
-      this.lastUpdated = System.currentTimeMillis();
+      updateLastUpdated();
     }
 
     return updated;
@@ -125,7 +125,7 @@ public class Sandstorm extends WorldStorage {
     }
 
     sand.setQuantity(quantity);
-    this.lastUpdated = System.currentTimeMillis();
+    updateLastUpdated();
     return true;
   }
 
@@ -143,7 +143,7 @@ public class Sandstorm extends WorldStorage {
     }
 
     buckets.setQuantity(quantity);
-    this.lastUpdated = System.currentTimeMillis();
+    updateLastUpdated();
     return true;
   }
 

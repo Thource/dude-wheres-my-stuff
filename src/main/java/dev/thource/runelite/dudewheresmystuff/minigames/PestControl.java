@@ -43,14 +43,14 @@ public class PestControl extends MinigamesStorage {
       Matcher matcher = afterGamePattern2.matcher(widgetText);
       if (matcher.find()) {
         points.setQuantity(NumberUtils.toInt(matcher.group(1)));
-        lastUpdated = System.currentTimeMillis();
+        updateLastUpdated();
         return true;
       }
 
       matcher = afterPurchasePattern.matcher(widgetText);
       if (matcher.find()) {
         points.setQuantity(NumberUtils.toInt(matcher.group(1)));
-        lastUpdated = System.currentTimeMillis();
+        updateLastUpdated();
         return true;
       }
     }
@@ -69,7 +69,7 @@ public class PestControl extends MinigamesStorage {
         Matcher matcher = afterGamePattern1.matcher(widget.getText().replace("<br>", " "));
         if (matcher.find()) {
           points.setQuantity(points.getQuantity() + NumberUtils.toInt(matcher.group(1)));
-          lastUpdated = System.currentTimeMillis();
+          updateLastUpdated();
           return true;
         }
       }
@@ -90,7 +90,7 @@ public class PestControl extends MinigamesStorage {
       return false;
     }
 
-    lastUpdated = System.currentTimeMillis();
+    updateLastUpdated();
     points.setQuantity(plugin.getClient().getVarpValue(261));
     return true;
   }

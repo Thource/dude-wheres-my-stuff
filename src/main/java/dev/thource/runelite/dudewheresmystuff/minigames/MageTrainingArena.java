@@ -4,6 +4,7 @@ import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicBoolean;
 import lombok.Getter;
 import net.runelite.api.ItemID;
@@ -28,6 +29,7 @@ public class MageTrainingArena extends MinigamesStorage {
   private final Map<ItemStack, MageTrainingArenaPoint> pointData = new HashMap<>();
 
   private Widget shopWidget = null;
+  private boolean lobbyWidgetOpen;
 
   MageTrainingArena(DudeWheresMyStuffPlugin plugin) {
     super(MinigamesStorageType.MAGE_TRAINING_ARENA, plugin);
@@ -37,10 +39,10 @@ public class MageTrainingArena extends MinigamesStorage {
     items.add(enchantmentPoints);
     items.add(alchemistPoints);
 
-    pointData.put(telekineticPoints, new MageTrainingArenaPoint(198, 261));
-    pointData.put(alchemistPoints, new MageTrainingArenaPoint(194, 262));
-    pointData.put(enchantmentPoints, new MageTrainingArenaPoint(195, 263));
-    pointData.put(graveyardPoints, new MageTrainingArenaPoint(196, 264));
+    pointData.put(telekineticPoints, new MageTrainingArenaPoint(198, 261, 10));
+    pointData.put(alchemistPoints, new MageTrainingArenaPoint(194, 262, 11));
+    pointData.put(enchantmentPoints, new MageTrainingArenaPoint(195, 263, 12));
+    pointData.put(graveyardPoints, new MageTrainingArenaPoint(196, 264, 13));
   }
 
   @Override
@@ -52,6 +54,8 @@ public class MageTrainingArena extends MinigamesStorage {
   public boolean onWidgetLoaded(WidgetLoaded widgetLoaded) {
     if (widgetLoaded.getGroupId() == 197) {
       shopWidget = plugin.getClient().getWidget(197, 0);
+    } else if (widgetLoaded.getGroupId() == 553) {
+      lobbyWidgetOpen = true;
     } else {
       pointData.forEach(
           (itemStack, pointDatum) -> {
@@ -70,6 +74,8 @@ public class MageTrainingArena extends MinigamesStorage {
   public void onWidgetClosed(WidgetClosed widgetClosed) {
     if (widgetClosed.getGroupId() == 197) {
       shopWidget = null;
+    } else if (widgetClosed.getGroupId() == 553) {
+      lobbyWidgetOpen = false;
     } else {
       pointData.forEach(
           (itemStack, pointDatum) -> {
@@ -84,41 +90,46 @@ public class MageTrainingArena extends MinigamesStorage {
 
   boolean updateFromWidgets() {
     if (shopWidget != null) {
-      lastUpdated = System.currentTimeMillis();
+      updateLastUpdated();
       pointData.forEach(
           (itemStack, pointDatum) -> {
             int newPoints = plugin.getClient().getVarpValue(pointDatum.getVarpId());
-            if (newPoints == pointDatum.getLastVarpValue()) {
-              return;
-            }
-
             itemStack.setQuantity(newPoints);
-            pointDatum.lastVarpValue = newPoints;
           });
 
       return true;
     }
 
-    AtomicBoolean updated = new AtomicBoolean(false);
+    if (lobbyWidgetOpen) {
+      lastUpdated = System.currentTimeMillis();
+      pointData.forEach(
+          (itemStack, pointDatum) -> {
+            Widget widget = plugin.getClient().getWidget(553, pointDatum.getLobbyWidgetId());
+            if (widget == null) {
+              return;
+            }
 
-    pointData.forEach(
-        (itemStack, pointDatum) -> {
-          if (pointDatum.getWidget() == null) {
-            return;
-          }
+            int newPoints = NumberUtils.toInt(widget.getText().replace(",", ""), 0);
+            itemStack.setQuantity(newPoints);
+          });
 
-          updated.set(true);
-          lastUpdated = System.currentTimeMillis();
-          int newPoints = NumberUtils.toInt(pointDatum.getWidget().getText(), 0);
-          if (newPoints == pointDatum.getLastWidgetValue()) {
-            return;
-          }
+      return true;
+    }
 
-          itemStack.setQuantity(newPoints);
-          pointDatum.lastWidgetValue = newPoints;
-        });
+    for (Entry<ItemStack, MageTrainingArenaPoint> entry : pointData.entrySet()) {
+      ItemStack itemStack = entry.getKey();
+      MageTrainingArenaPoint pointDatum = entry.getValue();
+      if (pointDatum.getWidget() == null) {
+        continue;
+      }
 
-    return updated.get();
+      int newPoints = NumberUtils.toInt(pointDatum.getWidget().getText().replace(",", ""), 0);
+      itemStack.setQuantity(newPoints);
+      updateLastUpdated();
+      return true;
+    }
+
+    return false;
   }
 
   @Override

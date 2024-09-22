@@ -10,6 +10,7 @@ import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.events.ActorDeath;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.ItemDespawned;
@@ -71,6 +72,16 @@ public abstract class StorageManager<T extends StorageType, S extends Storage<T>
       updateStorages(
           storages.stream()
               .filter(storage -> storage.isEnabled() && storage.onGameTick())
+              .collect(Collectors.toList()));
+    }
+  }
+
+  /** Pass onGameObjectSpawned through to enabled storages. */
+  public void onGameObjectSpawned(GameObjectSpawned gameObjectSpawned) {
+    if (enabled) {
+      updateStorages(
+          storages.stream()
+              .filter(storage -> storage.isEnabled() && storage.onGameObjectSpawned(gameObjectSpawned))
               .collect(Collectors.toList()));
     }
   }

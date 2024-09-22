@@ -30,7 +30,7 @@ public class GiantsFoundry extends MinigamesStorage {
     Widget shopWidget = plugin.getClient().getWidget(753, 13);
     if (shopWidget != null) {
       points.setQuantity(Integer.parseInt(shopWidget.getText()));
-      lastUpdated = System.currentTimeMillis();
+      updateLastUpdated();
       return true;
     }
 
@@ -40,7 +40,7 @@ public class GiantsFoundry extends MinigamesStorage {
         Matcher matcher = HAND_IN_PATTERN.matcher(chatWidget.getText());
         if (matcher.find()) {
           points.setQuantity(points.getQuantity() + NumberUtils.toInt(matcher.group(1)));
-          lastUpdated = System.currentTimeMillis();
+          updateLastUpdated();
           didJustHandIn = true;
           return true;
         }

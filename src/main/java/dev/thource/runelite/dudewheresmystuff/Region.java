@@ -532,7 +532,7 @@ public enum Region {
   REGION_OURANIA_HUNTER("Ourania Hunter Area", 9778),
   REGION_PIRATES_COVE("Pirates' Cove", 8763),
   REGION_PISCATORIS_HUNTER_AREA("Piscatoris Hunter Area", 9015, 9016, 9271, 9272, 9528),
-  REGION_POH("Player Owned House", 7513, 7514, 7769, 7770),
+  REGION_POH("Player Owned House", 7257, 7513, 7514, 7769, 7770, 8025, 8026),
   REGION_POISON_WASTE("Poison Waste", 8752),
   REGION_PORT_TYRAS("Port Tyras", 8496),
   REGION_PURO_PURO("Puro Puro", 10307),

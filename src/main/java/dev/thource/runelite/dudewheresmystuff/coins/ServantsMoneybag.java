@@ -26,7 +26,7 @@ public class ServantsMoneybag extends CoinsStorage {
 
     int parsedCoins = NumberUtils.toInt(widget.getText().replaceAll("\\D+", ""), 0);
     this.getCoinStack().setQuantity(parsedCoins);
-    this.lastUpdated = System.currentTimeMillis();
+    updateLastUpdated();
     return true;
   }
 }

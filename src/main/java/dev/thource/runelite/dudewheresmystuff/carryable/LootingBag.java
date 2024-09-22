@@ -39,7 +39,7 @@ public class LootingBag extends CarryableStorage {
       Widget emptyText = lootingBagWidget.getChild(28);
       if (emptyText != null && Objects.equals(emptyText.getText(), "The bag is empty.")) {
         items.clear();
-        lastUpdated = System.currentTimeMillis();
+        updateLastUpdated();
 
         return true;
       }
@@ -85,7 +85,7 @@ public class LootingBag extends CarryableStorage {
     }
 
     if (updated) {
-      lastUpdated = System.currentTimeMillis();
+      updateLastUpdated();
     }
 
     return updated;
@@ -102,7 +102,7 @@ public class LootingBag extends CarryableStorage {
       }
 
       if (updated) {
-        lastUpdated = System.currentTimeMillis();
+        updateLastUpdated();
 
         return true;
       }
