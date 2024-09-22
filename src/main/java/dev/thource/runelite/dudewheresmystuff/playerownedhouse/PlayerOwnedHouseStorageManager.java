@@ -5,6 +5,7 @@ import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.Region;
 import dev.thource.runelite.dudewheresmystuff.StorageManager;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ActorDeath;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameObjectSpawned;
@@ -38,9 +39,13 @@ public class PlayerOwnedHouseStorageManager
   }
 
   private boolean notInHouse() {
-    return client.getLocalPlayer() != null
-        && Region.get(client.getLocalPlayer().getWorldLocation().getRegionID())
-        != Region.REGION_POH;
+    if (client.getLocalPlayer() == null) {
+      return true;
+    }
+
+    WorldPoint worldPoint = WorldPoint.fromLocalInstance(client,
+        client.getLocalPlayer().getLocalLocation());
+    return Region.get(worldPoint.getRegionID()) != Region.REGION_POH;
   }
 
   @Override
@@ -146,5 +151,4 @@ public class PlayerOwnedHouseStorageManager
   public String getConfigKey() {
     return "poh";
   }
-
 }
