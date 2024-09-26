@@ -87,6 +87,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
   private List<ItemStack> deathItems;
   private Item[] oldInventoryItems;
   private DeathbankInfoBox deathbankInfoBox;
+  private int entryModeTob; // 1 = entering entry mode, 2 = entry mode
 
   @Inject
   private DeathStorageManager(DudeWheresMyStuffPlugin plugin) {
@@ -270,6 +271,21 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
 
     refreshInfoBoxes();
     updateWorldMapPoints();
+
+    if (entryModeTob > 0) {
+      WorldPoint location =
+          WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation());
+      Region region = Region.get(location.getRegionID());
+      if (entryModeTob == 1) {
+        if (region == Region.RAIDS_THEATRE_OF_BLOOD) {
+          entryModeTob = 2;
+        }
+      } else if (entryModeTob == 2) {
+        if (region != Region.RAIDS_THEATRE_OF_BLOOD) {
+          entryModeTob = 0;
+        }
+      }
+    }
   }
 
   public Deathpile getSoonestExpiringDeathpile() {
@@ -462,12 +478,18 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
   public void onChatMessage(ChatMessage chatMessage) {
     super.onChatMessage(chatMessage);
 
-    if (chatMessage.getType() != ChatMessageType.GAMEMESSAGE || deathbank != null) {
+    if (chatMessage.getType() != ChatMessageType.SPAM
+        && chatMessage.getType() != ChatMessageType.GAMEMESSAGE) {
       return;
     }
 
     String message = Text.removeTags(chatMessage.getMessage());
-    if (!message.startsWith("You have items stored in an item retrieval service.")) {
+    if (message.startsWith("You enter the Theatre of Blood (Entry Mode)")) {
+      entryModeTob = 1;
+      return;
+    }
+
+    if (deathbank != null || !message.startsWith("You have items stored in an item retrieval service.")) {
       return;
     }
 
@@ -608,6 +630,12 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
     if (!RESPAWN_REGIONS.contains(client.getLocalPlayer().getWorldLocation().getRegionID())) {
       // Player has died but is still safe unless their team dies
       if (deathRegion == Region.RAIDS_THEATRE_OF_BLOOD) {
+        if (entryModeTob > 0) {
+          dying = false;
+          deathLocation = null;
+          deathItems = null;
+        }
+
         return false;
       }
 
