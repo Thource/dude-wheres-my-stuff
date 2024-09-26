@@ -489,7 +489,8 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
       return;
     }
 
-    if (deathbank != null || !message.startsWith("You have items stored in an item retrieval service.")) {
+    if (deathbank != null || !message.startsWith(
+        "You have items stored in an item retrieval service.")) {
       return;
     }
 
@@ -630,12 +631,6 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
     if (!RESPAWN_REGIONS.contains(client.getLocalPlayer().getWorldLocation().getRegionID())) {
       // Player has died but is still safe unless their team dies
       if (deathRegion == Region.RAIDS_THEATRE_OF_BLOOD) {
-        if (entryModeTob > 0) {
-          dying = false;
-          deathLocation = null;
-          deathItems = null;
-        }
-
         return false;
       }
 
@@ -764,7 +759,8 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
 
   @Override
   public void onActorDeath(ActorDeath actorDeath) {
-    if (client.getLocalPlayer() == null || actorDeath.getActor() != client.getLocalPlayer()) {
+    if (client.getLocalPlayer() == null || actorDeath.getActor() != client.getLocalPlayer()
+        || entryModeTob == 2) {
       return;
     }
 
