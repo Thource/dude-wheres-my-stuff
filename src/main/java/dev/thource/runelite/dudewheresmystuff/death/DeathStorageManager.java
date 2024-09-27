@@ -489,6 +489,17 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
       return;
     }
 
+    if (dying) {
+      Region region = Region.get(deathLocation.getRegionID());
+      if (region == Region.RAIDS_THEATRE_OF_BLOOD && message.startsWith(
+          "You feel refreshed as your health is replenished")) {
+        dying = false;
+        deathLocation = null;
+        deathItems = null;
+        return;
+      }
+    }
+
     if (deathbank != null || !message.startsWith(
         "You have items stored in an item retrieval service.")) {
       return;
