@@ -26,7 +26,10 @@
 package dev.thource.runelite.dudewheresmystuff;
 
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
+import java.awt.Component;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JPanel;
@@ -55,7 +58,9 @@ public class FasterMaterialTabGroup extends JPanel {
   private final JPanel display;
   /* A list of all the tabs contained in this group. */
   private final List<FasterMaterialTab> tabs = new ArrayList<>();
+  private final List<FasterMaterialTab> endTabs = new ArrayList<>();
   private final transient DudeWheresMyStuffPlugin plugin;
+  private final GridBagLayout gridBagLayout;
 
   FasterMaterialTabGroup(JPanel display, DudeWheresMyStuffPlugin plugin) {
     this.display = display;
@@ -63,13 +68,43 @@ public class FasterMaterialTabGroup extends JPanel {
     if (display != null) {
       this.display.setLayout(new BorderLayout());
     }
-    setLayout(new FlowLayout(FlowLayout.CENTER, 8, 0));
+    this.gridBagLayout = new GridBagLayout();
+    setLayout(gridBagLayout);
     setOpaque(false);
   }
 
   public void addTab(FasterMaterialTab tab) {
     tabs.add(tab);
-    add(tab, BorderLayout.NORTH);
+    add(tab);
+  }
+
+  public void addTabToEnd(FasterMaterialTab tab) {
+    endTabs.add(tab);
+    this.addTab(tab);
+  }
+
+  public void resetGrid() {
+    GridBagConstraints constraints = new GridBagConstraints();
+    // reduce padding if there are 6 tabs (f2p) so that kofi is distinguished from the other tabs
+    int padding = tabs.stream().filter(Component::isVisible).count() == 6 ? 6 : 8;
+
+    int visibleTabs = 0;
+    for (FasterMaterialTab tab : tabs) {
+      if (!tab.isVisible()) {
+        continue;
+      }
+
+      constraints.anchor =
+          endTabs.contains(tab) ? GridBagConstraints.EAST : GridBagConstraints.WEST;
+      constraints.gridx = endTabs.contains(tab) ? 5 : visibleTabs % 6;
+      constraints.gridy = visibleTabs / 6;
+      constraints.weightx = endTabs.contains(tab) ? 1 : 0.1;
+      constraints.insets = new Insets(constraints.gridy == 0 ? 0 : padding,
+          constraints.gridx == 0 ? 0 : padding, 0, 0);
+      gridBagLayout.setConstraints(tab, constraints);
+
+      visibleTabs++;
+    }
   }
 
   /**
