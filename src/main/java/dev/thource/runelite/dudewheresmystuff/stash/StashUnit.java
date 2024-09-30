@@ -1020,7 +1020,8 @@ public enum StashUnit {
       "Centre of the Catacombs of Kourend",
       STASHUnit.CENTRE_OF_THE_CATACOMBS_OF_KOUREND,
       new int[]{ItemID.ARCLIGHT, ItemID.AMULET_OF_THE_DAMNED},
-      ItemRequirements.item(ItemID.ARCLIGHT),
+      ItemRequirements.any("Arclight or Emberlight", ItemRequirements.item(ItemID.ARCLIGHT),
+          ItemRequirements.item(ItemID.EMBERLIGHT)),
       ItemRequirements.any(
           "Amulet of the damned",
           ItemRequirements.item(ItemID.AMULET_OF_THE_DAMNED),
