@@ -782,7 +782,8 @@ public enum StashUnit {
       ItemRequirements.any(
           "Bandos boots",
           ItemRequirements.item(ItemID.BANDOS_BOOTS),
-          ItemRequirements.item(ItemID.GUARDIAN_BOOTS)),
+          ItemRequirements.item(ItemID.GUARDIAN_BOOTS),
+          ItemRequirements.item(ItemID.ECHO_BOOTS)),
       ItemRequirements.item(ItemID.OBSIDIAN_CAPE)),
   FOUNTAIN_OF_HEROES(
       "Fountain of heroes",
