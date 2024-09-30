@@ -782,7 +782,8 @@ public enum StashUnit {
       ItemRequirements.any(
           "Bandos boots",
           ItemRequirements.item(ItemID.BANDOS_BOOTS),
-          ItemRequirements.item(ItemID.GUARDIAN_BOOTS)),
+          ItemRequirements.item(ItemID.GUARDIAN_BOOTS),
+          ItemRequirements.item(ItemID.ECHO_BOOTS)),
       ItemRequirements.item(ItemID.OBSIDIAN_CAPE)),
   FOUNTAIN_OF_HEROES(
       "Fountain of heroes",
@@ -897,7 +898,11 @@ public enum StashUnit {
           ItemRequirements.item(ItemID.DRAGON_DEFENDER_T),
           ItemRequirements.item(ItemID.DRAGON_DEFENDER_L),
           ItemRequirements.item(ItemID.AVERNIC_DEFENDER),
-          ItemRequirements.item(ItemID.AVERNIC_DEFENDER_L)),
+          ItemRequirements.item(ItemID.AVERNIC_DEFENDER_L),
+          ItemRequirements.item(ItemID.GHOMMALS_AVERNIC_DEFENDER_5),
+          ItemRequirements.item(ItemID.GHOMMALS_AVERNIC_DEFENDER_5_L),
+          ItemRequirements.item(ItemID.GHOMMALS_AVERNIC_DEFENDER_6),
+          ItemRequirements.item(ItemID.GHOMMALS_AVERNIC_DEFENDER_6_L)),
       ItemRequirements.any(
           "Any slayer helmet",
           ItemRequirements.item(ItemID.SLAYER_HELMET),
@@ -1015,7 +1020,8 @@ public enum StashUnit {
       "Centre of the Catacombs of Kourend",
       STASHUnit.CENTRE_OF_THE_CATACOMBS_OF_KOUREND,
       new int[]{ItemID.ARCLIGHT, ItemID.AMULET_OF_THE_DAMNED},
-      ItemRequirements.item(ItemID.ARCLIGHT),
+      ItemRequirements.any("Arclight or Emberlight", ItemRequirements.item(ItemID.ARCLIGHT),
+          ItemRequirements.item(ItemID.EMBERLIGHT)),
       ItemRequirements.any(
           "Amulet of the damned",
           ItemRequirements.item(ItemID.AMULET_OF_THE_DAMNED),
@@ -1311,7 +1317,8 @@ public enum StashUnit {
       "Cam Torum",
       "South of the gates to Cam Torum",
       STASHUnit.CAM_TORUM_ENTRANCE,
-      new int[]{ItemID.BLUE_MOON_HELM, ItemID.BLUE_MOON_CHESTPLATE, ItemID.BLUE_MOON_TASSETS, ItemID.BLUE_MOON_SPEAR},
+      new int[]{ItemID.BLUE_MOON_HELM, ItemID.BLUE_MOON_CHESTPLATE, ItemID.BLUE_MOON_TASSETS,
+          ItemID.BLUE_MOON_SPEAR},
       ItemRequirements.any(
           "Blue moon helm",
           ItemRequirements.item(ItemID.BLUE_MOON_HELM),
@@ -1328,7 +1335,8 @@ public enum StashUnit {
       "Civitas illa Fortis",
       "Outside the temple in Civitas illa Fortis",
       STASHUnit.TEMPLE_SOUTHEAST_OF_THE_BAZAAR,
-      new int[]{ItemID.SUNFIRE_FANATIC_HELM, ItemID.SUNFIRE_FANATIC_CUIRASS, ItemID.SUNFIRE_FANATIC_CHAUSSES},
+      new int[]{ItemID.SUNFIRE_FANATIC_HELM, ItemID.SUNFIRE_FANATIC_CUIRASS,
+          ItemID.SUNFIRE_FANATIC_CHAUSSES},
       ItemRequirements.any(
           "Any piece of Sunfire Fanatic armour",
           ItemRequirements.item(ItemID.SUNFIRE_FANATIC_HELM),
