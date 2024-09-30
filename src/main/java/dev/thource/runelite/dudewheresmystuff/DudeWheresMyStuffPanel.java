@@ -58,6 +58,7 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.util.AsyncBufferedImage;
 import net.runelite.client.util.ImageUtil;
+import net.runelite.client.util.LinkBrowser;
 
 /**
  * DudeWheresMyStuffPanel is responsible for hosting all the StorageTabPanels, so that the player
@@ -107,8 +108,6 @@ public class DudeWheresMyStuffPanel extends JPanel {
     setBackground(ColorScheme.DARK_GRAY_COLOR);
 
     display.setBorder(new EmptyBorder(10, 10, 8, 10));
-
-    tabGroup.setLayout(new InvisibleGridLayout(0, 6, 7, 7));
     tabGroup.setBorder(new EmptyBorder(10, 10, 0, 10));
 
     add(tabGroup, BorderLayout.NORTH);
@@ -149,6 +148,18 @@ public class DudeWheresMyStuffPanel extends JPanel {
 
     addTab(Tab.SEARCH, new SearchTabPanel(plugin, storageManagerManager));
 
+    FasterMaterialTab donateTab = new FasterMaterialTab(
+        new ImageIcon(ImageUtil.loadImageResource(DudeWheresMyStuffPlugin.class, "kofi.png")),
+        tabGroup, null);
+    donateTab.setPreferredSize(new Dimension(30, 27));
+    donateTab.setName("Support me");
+    donateTab.setToolTipText("Buy me a coffee? :)");
+    donateTab.setOnSelectEvent(() -> {
+      LinkBrowser.browse("https://ko-fi.com/thource");
+      return false;
+    });
+    tabGroup.addTabToEnd(donateTab);
+
     for (Tab tab : Tab.TABS) {
       if (tab == Tab.OVERVIEW) {
         continue;
@@ -156,6 +167,7 @@ public class DudeWheresMyStuffPanel extends JPanel {
 
       Optional.ofNullable(uiTabs.get(tab)).ifPresent(materialTab -> materialTab.setVisible(false));
     }
+    tabGroup.resetGrid();
   }
 
   void setItemSortMode(ItemSortMode itemSortMode) {
@@ -283,6 +295,7 @@ public class DudeWheresMyStuffPanel extends JPanel {
 
     ((SearchTabPanel) storageTabPanelMap.get(Tab.SEARCH)).getSearchBar().setText("");
     switchTab(Tab.OVERVIEW);
+    tabGroup.resetGrid();
 
     setDisplayName("");
   }
@@ -307,6 +320,7 @@ public class DudeWheresMyStuffPanel extends JPanel {
               .ifPresent(overviewItemPanel -> overviewItemPanel.setVisible(true));
         });
     uiTabs.get(Tab.SEARCH).setVisible(true);
+    tabGroup.resetGrid();
     setDisplayName(displayName);
   }
 
