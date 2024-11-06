@@ -721,9 +721,9 @@ public enum StashUnit {
       "Shantay Pass",
       "Shantay Pass",
       STASHUnit.SHANTAY_PASS,
-      new int[]{ItemID.BRUISE_BLUE_SNELM_3343, ItemID.STAFF_OF_AIR, ItemID.BRONZE_SQ_SHIELD},
+      new int[]{ItemID.POINTED_BRUISE_BLUE_SNELM, ItemID.STAFF_OF_AIR, ItemID.BRONZE_SQ_SHIELD},
       ItemRequirements.any(
-          "Bruise blue snelm (pointed)", ItemRequirements.item(ItemID.BRUISE_BLUE_SNELM_3343)),
+          "Bruise blue snelm (pointed)", ItemRequirements.item(ItemID.POINTED_BRUISE_BLUE_SNELM)),
       ItemRequirements.item(ItemID.STAFF_OF_AIR),
       ItemRequirements.item(ItemID.BRONZE_SQ_SHIELD)),
   AUBURYS_SHOP_IN_VARROCK(
