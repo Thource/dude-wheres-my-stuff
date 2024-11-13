@@ -36,7 +36,7 @@ public class DeathpileStoragePanel extends StoragePanel {
   }
 
   public void setItemBoxesPriorities() {
-    getItemBoxes().forEach(itemBox -> ((DeathpileItemBox) itemBox).resetPriority());
+    getItemBoxes().forEach(itemBox -> ((DeathpileItemBox) itemBox).resetPriority(false));
 
     List<ItemStack> pickupOrder = ((Deathpile) storage).getPickupOrder();
     for (int i = 0; i < pickupOrder.size(); i++) {
@@ -50,8 +50,10 @@ public class DeathpileStoragePanel extends StoragePanel {
           continue;
         }
 
-        deathpileItemBox.setPriority(i + 1);
+        deathpileItemBox.setPriority(i + 1, false);
       }
     }
+
+    getItemBoxes().forEach(itemBox -> ((DeathpileItemBox) itemBox).repaintLabel());
   }
 }

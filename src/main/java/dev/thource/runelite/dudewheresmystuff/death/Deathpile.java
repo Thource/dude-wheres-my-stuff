@@ -139,7 +139,7 @@ public class Deathpile extends ExpiringDeathStorage {
     pickupOrder.clear();
 
     if (storagePanel != null) {
-      storagePanel.getItemBoxes().forEach(ib -> ((DeathpileItemBox) ib).resetPriority());
+      storagePanel.getItemBoxes().forEach(ib -> ((DeathpileItemBox) ib).resetPriority(true));
     }
   }
 

@@ -12,7 +12,9 @@ import lombok.Getter;
 public class DeathpileItemBox extends ItemBox {
 
   private boolean prioritized;
+  private boolean lastPrioritized;
   private int priority;
+  private int lastPriority;
 
   DeathpileItemBox(
       DudeWheresMyStuffPlugin plugin, @Nullable ItemStack itemStack, boolean displayEmptyStacks,
@@ -29,16 +31,25 @@ public class DeathpileItemBox extends ItemBox {
 
             if (prioritized) {
               deathpile.resetPriority(itemStack);
-              resetPriority();
+              resetPriority(true);
               return;
             }
 
-            setPriority(deathpile.prioritizeItem(itemStack));
+            setPriority(deathpile.prioritizeItem(itemStack), true);
           }
         });
   }
 
-  void resetPriority() {
+  void repaintLabel() {
+    if (imageLabel != null && (lastPrioritized != prioritized || lastPriority != priority)) {
+      lastPrioritized = prioritized;
+      lastPriority = priority;
+
+      imageLabel.repaint();
+    }
+  }
+
+  void resetPriority(boolean repaint) {
     if (!prioritized) {
       return;
     }
@@ -46,12 +57,12 @@ public class DeathpileItemBox extends ItemBox {
     prioritized = false;
     priority = 0;
 
-    if (imageLabel != null) {
-      imageLabel.repaint();
+    if (repaint) {
+      repaintLabel();
     }
   }
 
-  void setPriority(int priority) {
+  void setPriority(int priority, boolean repaint) {
     if (prioritized && priority != this.priority) {
       return;
     }
@@ -59,8 +70,8 @@ public class DeathpileItemBox extends ItemBox {
     prioritized = true;
     this.priority = priority;
 
-    if (imageLabel != null) {
-      imageLabel.repaint();
+    if (repaint) {
+      repaintLabel();
     }
   }
 }
