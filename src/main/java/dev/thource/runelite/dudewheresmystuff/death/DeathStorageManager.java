@@ -72,6 +72,12 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
           12600, // Ferox
           6705 // Civitas illa Fortis
       );
+  private static final Set<Region> SAFE_DEATH_REGIONS =
+      ImmutableSet.of(
+          Region.REGION_POH,
+          Region.MG_LAST_MAN_STANDING_DESERTED_ISLAND,
+          Region.MG_LAST_MAN_STANDING_WILD_VARROCK
+      );
   private final CheckPlayTimeInfoBox playTimeInfoBox = new CheckPlayTimeInfoBox(plugin);
   private final List<ExpiringDeathStorageInfoBox> expiringDeathStorageInfoBoxes = new ArrayList<>();
   @Getter private final DeathsOffice deathsOffice;
@@ -648,8 +654,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
       log.info(
           "Died, but did not respawn in a known respawn location: "
               + client.getLocalPlayer().getWorldLocation().getRegionID());
-    } else if (deathRegion != Region.REGION_POH) {
-      // POH deaths are always safe deaths
+    } else if (!SAFE_DEATH_REGIONS.contains(deathRegion)) {
       updated = true;
       registerDeath(deathRegion);
     }
