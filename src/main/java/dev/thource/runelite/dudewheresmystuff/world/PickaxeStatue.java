@@ -35,7 +35,7 @@ public class PickaxeStatue extends WorldStorage {
   protected PickaxeStatue(DudeWheresMyStuffPlugin plugin) {
     super(WorldStorageType.PICKAXE_STATUE, plugin);
 
-    pickaxe = new ItemStack(PICKAXE_IDS[0], 1, plugin);
+    pickaxe = new ItemStack(PICKAXE_IDS[0], plugin);
     items.add(pickaxe);
   }
 
@@ -44,6 +44,7 @@ public class PickaxeStatue extends WorldStorage {
     int pickaxeId = getPickaxeId(plugin.getClient().getVarbitValue(14440));
     if (pickaxe.getId() != pickaxeId) {
       pickaxe.setId(pickaxeId, plugin);
+      pickaxe.setQuantity(pickaxe.getId() == PICKAXE_IDS[0] ? 0 : 1);
       return true;
     }
 
@@ -63,16 +64,20 @@ public class PickaxeStatue extends WorldStorage {
     super.load(configManager, managerConfigKey, profileKey);
 
     if (items.isEmpty()) {
-      items.add(new ItemStack(PICKAXE_IDS[0], 1, plugin));
+      items.add(new ItemStack(PICKAXE_IDS[0], plugin));
     }
     pickaxe = items.get(0);
+    //Ensures bronze pickaxe removal changes are picked up on plugin update
+    if (pickaxe.getId() == PICKAXE_IDS[0]) {
+      pickaxe.setQuantity(0);
+    }
   }
 
   @Override
   public void reset() {
     super.reset();
 
-    pickaxe = new ItemStack(PICKAXE_IDS[0], 1, plugin);
+    pickaxe = new ItemStack(PICKAXE_IDS[0], plugin);
     items.add(pickaxe);
   }
 }
