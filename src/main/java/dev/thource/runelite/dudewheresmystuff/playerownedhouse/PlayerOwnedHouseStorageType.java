@@ -1532,7 +1532,8 @@ public enum PlayerOwnedHouseStorageType implements StorageType {
           ItemID.JAR_OF_EYES,
           ItemID.JAR_OF_DREAMS,
           ItemID.JAR_OF_SPIRITS,
-          ItemID.JAR_OF_SMOKE
+          ItemID.JAR_OF_SMOKE,
+          ItemID.JAR_OF_VENOM
       )),
   CAPE_HANGER("Cape Hanger", -1, "capeHanger", null)
   ;
