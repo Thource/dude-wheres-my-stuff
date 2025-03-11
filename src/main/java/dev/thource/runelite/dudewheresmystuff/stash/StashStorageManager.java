@@ -106,6 +106,9 @@ public class StashStorageManager extends StorageManager<StashStorageType, StashS
         }
 
         stashStorage = findStashStorageFromChartText(getChartText(widget, childId));
+        if (!stashStorage.isPresent()) {
+          log.info("Missing " + childId + " STASH unit: " + getChartText(widget, childId));
+        }
         built = false;
         filled = false;
       } else if (widget.getType() == 5 && stashStorage.isPresent()) {

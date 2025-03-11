@@ -432,7 +432,7 @@ public enum StashUnit {
           ItemRequirements.item(ItemID.AMULET_OF_ETERNAL_GLORY))),
   MUBARIZS_ROOM_AT_THE_DUEL_ARENA(
       "Duel Arena",
-      "Mubariz's room at the Duel Arena",
+      "Mubariz's room at the Emir's Arena",
       STASHUnit.PVP_ARENA_TICKET_OFFICE,
       new int[]{ItemID.IRON_CHAINBODY, ItemID.LEATHER_CHAPS, ItemID.COIF},
       ItemRequirements.item(ItemID.IRON_CHAINBODY),
@@ -815,7 +815,7 @@ public enum StashUnit {
       ItemRequirements.item(ItemID.IRON_SCIMITAR)),
   NEAR_THE_GEM_STALL_IN_ARDOUGNE_MARKET(
       "Ardougne",
-      "Near the gem stall in Ardougne Market",
+      "Near the gem stall in Ardougne market",
       STASHUnit.NEAR_THE_GEM_STALL_IN_ARDOUGNE_MARKET,
       new int[]{ItemID.CASTLE_WARS_BRACELET3, ItemID.DRAGONSTONE_AMULET, ItemID.RING_OF_FORGING},
       ItemRequirements.any(
@@ -1275,7 +1275,7 @@ public enum StashUnit {
       ItemRequirements.item(ItemID.BULLROARER)),
   GYPSY_TENT_ENTRANCE(
       "Varrock",
-      "Gypsy Aris' tent",
+      "Aris's tent",
       STASHUnit.GYPSY_TENT_ENTRANCE,
       new int[]{ItemID.GOLD_RING, ItemID.GOLD_NECKLACE},
       ItemRequirements.item(ItemID.GOLD_RING),
@@ -1341,7 +1341,37 @@ public enum StashUnit {
           "Any piece of Sunfire Fanatic armour",
           ItemRequirements.item(ItemID.SUNFIRE_FANATIC_HELM),
           ItemRequirements.item(ItemID.SUNFIRE_FANATIC_CUIRASS),
-          ItemRequirements.item(ItemID.SUNFIRE_FANATIC_CHAUSSES)));
+          ItemRequirements.item(ItemID.SUNFIRE_FANATIC_CHAUSSES))),
+  TWILIGHT_TEMPLE_MINE(
+      "Twilight Temple mine",
+      "North of the Twilight Temple",
+      STASHUnit.TWILIGHT_TEMPLE_MINE,
+      new int[]{ItemID.MAPLE_LONGBOW, ItemID.RUBY_AMULET, ItemID.STEEL_PLATELEGS},
+      ItemRequirements.item(ItemID.MAPLE_LONGBOW),
+      ItemRequirements.item(ItemID.RUBY_AMULET),
+      ItemRequirements.item(ItemID.STEEL_PLATELEGS)),
+  ORTUS_MEETS_PROUDSPIRE(
+      "East of Proudspire",
+      "Where the River Ortus meets the Proudspire",
+      STASHUnit.ORTUS_MEETS_PROUDSPIRE,
+      new int[]{ItemID.BLUE_WIZARD_HAT, ItemID.BLUE_WIZARD_ROBE},
+      ItemRequirements.item(ItemID.BLUE_WIZARD_HAT),
+      ItemRequirements.item(ItemID.BLUE_WIZARD_ROBE)),
+  OUTSIDE_TWILIGHT_TEMPLE(
+      "Twilight Temple",
+      "Twilight Temple",
+      STASHUnit.OUTSIDE_TWILIGHT_TEMPLE,
+      new int[]{ItemID.RUNE_LONGSWORD, ItemID.RUNE_PLATEBODY, ItemID.RUNE_PLATESKIRT},
+      ItemRequirements.item(ItemID.RUNE_LONGSWORD),
+      ItemRequirements.item(ItemID.RUNE_PLATEBODY),
+      ItemRequirements.item(ItemID.RUNE_PLATESKIRT)),
+  WESTERN_SALVAGER_OVERLOOK(
+      "Western Salvager Overlook",
+      "West side of Salvager Overlook",
+      STASHUnit.WESTERN_SALVAGER_OVERLOOK,
+      new int[]{ItemID.HUEYCOATL_HIDE_COIF, ItemID.HUEYCOATL_HIDE_VAMBRACES},
+      ItemRequirements.item(ItemID.HUEYCOATL_HIDE_COIF),
+      ItemRequirements.item(ItemID.HUEYCOATL_HIDE_VAMBRACES));
 
   private final String locationName;
   private final String chartText;
