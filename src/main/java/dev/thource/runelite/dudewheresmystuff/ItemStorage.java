@@ -45,6 +45,9 @@ public class ItemStorage<T extends StorageType> extends Storage<T> {
 
       itemStack.setQuantity(newPoints);
       updated = true;
+      if (!type.isAutomatic()) {
+        updateLastUpdated();
+      }
     }
 
     return updated;
