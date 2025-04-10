@@ -5,8 +5,8 @@ import dev.thource.runelite.dudewheresmystuff.ItemStack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import net.runelite.api.ChatMessageType;
-import net.runelite.api.ItemID;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.util.Text;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -28,13 +28,13 @@ public class MasteringMixology extends MinigamesStorage {
 
     varbits = new int[]{11431, 11432, 11433};
 
-    moxResin = new ItemStack(ItemID.MOX_PASTE, plugin);
-    agaResin = new ItemStack(ItemID.AGA_PASTE, plugin);
-    lyeResin = new ItemStack(ItemID.LYE_PASTE, plugin);
+    moxResin = new ItemStack(ItemID.MM_MOX_PASTE, plugin);
+    agaResin = new ItemStack(ItemID.MM_AGA_PASTE, plugin);
+    lyeResin = new ItemStack(ItemID.MM_LYE_PASTE, plugin);
 
-    items.add(new ItemStack(ItemID.MOX_PASTE, plugin));
-    items.add(new ItemStack(ItemID.AGA_PASTE, plugin));
-    items.add(new ItemStack(ItemID.LYE_PASTE, plugin));
+    items.add(new ItemStack(ItemID.MM_MOX_PASTE, plugin));
+    items.add(new ItemStack(ItemID.MM_AGA_PASTE, plugin));
+    items.add(new ItemStack(ItemID.MM_LYE_PASTE, plugin));
     items.add(moxResin);
     items.add(agaResin);
     items.add(lyeResin);

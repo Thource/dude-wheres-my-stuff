@@ -3,7 +3,7 @@ package dev.thource.runelite.dudewheresmystuff.carryable;
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.ItemID;
+import net.runelite.api.gameval.ItemID;
 
 /**
  * ForestryKit is responsible for tracking what the player has stored in their Forestry Kit.
@@ -17,21 +17,21 @@ public class ForestryKit extends CarryableStorage {
     hasStaticItems = true;
 
     // Basic Forestry Kit storage
-    items.add(new ItemStack(ItemID.ANIMAINFUSED_BARK, plugin));
+    items.add(new ItemStack(ItemID.FORESTRY_CURRENCY, plugin));
     items.add(new ItemStack(ItemID.NATURE_OFFERINGS, plugin));
-    items.add(new ItemStack(ItemID.FORESTERS_RATION, plugin));
-    items.add(new ItemStack(ItemID.SECATEURS_ATTACHMENT, plugin));
+    items.add(new ItemStack(ItemID.FORESTRY_RATION, plugin));
+    items.add(new ItemStack(ItemID.FORESTRY_SECATEURS_ATTACHMENT, plugin));
     items.add(new ItemStack(ItemID.LEAVES, plugin));
-    items.add(new ItemStack(ItemID.OAK_LEAVES, plugin));
-    items.add(new ItemStack(ItemID.WILLOW_LEAVES, plugin));
-    items.add(new ItemStack(ItemID.MAPLE_LEAVES, plugin));
-    items.add(new ItemStack(ItemID.YEW_LEAVES, plugin));
-    items.add(new ItemStack(ItemID.MAGIC_LEAVES, plugin));
-    items.add(new ItemStack(ItemID.FORESTRY_TOP, plugin));
-    items.add(new ItemStack(ItemID.FORESTRY_LEGS, plugin));
-    items.add(new ItemStack(ItemID.FORESTRY_HAT, plugin));
-    items.add(new ItemStack(ItemID.FORESTRY_BOOTS, plugin));
-    items.add(new ItemStack(ItemID.WOODCUT_CAPET, plugin));
+    items.add(new ItemStack(ItemID.LEAVES_OAK, plugin));
+    items.add(new ItemStack(ItemID.LEAVES_WILLOW, plugin));
+    items.add(new ItemStack(ItemID.LEAVES_MAPLE, plugin));
+    items.add(new ItemStack(ItemID.LEAVES_YEW, plugin));
+    items.add(new ItemStack(ItemID.LEAVES_MAGIC, plugin));
+    items.add(new ItemStack(ItemID.FORESTRY_LUMBERJACK_TOP, plugin));
+    items.add(new ItemStack(ItemID.FORESTRY_LUMBERJACK_LEGS, plugin));
+    items.add(new ItemStack(ItemID.FORESTRY_LUMBERJACK_HAT, plugin));
+    items.add(new ItemStack(ItemID.FORESTRY_LUMBERJACK_BOOTS, plugin));
+    items.add(new ItemStack(ItemID.SKILLCAPE_WOODCUTTING_TRIMMED, plugin));
 
     // TODO: Forestry Basket Log Storage
   }

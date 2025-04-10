@@ -2,7 +2,7 @@ package dev.thource.runelite.dudewheresmystuff.world;
 
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
-import net.runelite.api.ItemID;
+import net.runelite.api.gameval.ItemID;
 
 /** ElnockInquisitor is responsible for tracking imp catching tools stored at Elnock Inquisitor. */
 public class ElnockInquisitor extends WorldStorage {
@@ -18,13 +18,13 @@ public class ElnockInquisitor extends WorldStorage {
     varbits = new int[]{11768, 11770};
     varbitItemOffset = 2;
 
-    netStack = new ItemStack(ItemID.BUTTERFLY_NET, plugin);
-    magicNetStack = new ItemStack(ItemID.MAGIC_BUTTERFLY_NET, plugin);
+    netStack = new ItemStack(ItemID.HUNTING_BUTTERFLY_NET, plugin);
+    magicNetStack = new ItemStack(ItemID.II_MAGIC_BUTTERFLY_NET, plugin);
 
     items.add(netStack);
     items.add(magicNetStack);
-    items.add(new ItemStack(ItemID.IMP_REPELLENT, plugin));
-    items.add(new ItemStack(ItemID.IMPLING_JAR, plugin));
+    items.add(new ItemStack(ItemID.II_IMP_REPELLENT, plugin));
+    items.add(new ItemStack(ItemID.II_IMPLING_JAR, plugin));
   }
 
   @Override

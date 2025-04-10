@@ -6,7 +6,7 @@ import java.util.Arrays;
 import lombok.Getter;
 import net.runelite.api.EnumComposition;
 import net.runelite.api.EnumID;
-import net.runelite.api.Varbits;
+import net.runelite.api.gameval.VarbitID;
 
 /**
  * RunePouch is responsible for tracking how many runes the player has stored in their rune pouch.
@@ -16,16 +16,16 @@ public class RunePouch extends CarryableStorage {
 
   private static final String EMPTY = "empty";
   private static final int[] runeTypeVarbits = {
-      Varbits.RUNE_POUCH_RUNE1,
-      Varbits.RUNE_POUCH_RUNE2,
-      Varbits.RUNE_POUCH_RUNE3,
-      Varbits.RUNE_POUCH_RUNE4,
+      VarbitID.RUNE_POUCH_TYPE_1,
+      VarbitID.RUNE_POUCH_TYPE_2,
+      VarbitID.RUNE_POUCH_TYPE_3,
+      VarbitID.RUNE_POUCH_TYPE_4,
   };
   private static final int[] runeQuantityVarbits = {
-      Varbits.RUNE_POUCH_AMOUNT1,
-      Varbits.RUNE_POUCH_AMOUNT2,
-      Varbits.RUNE_POUCH_AMOUNT3,
-      Varbits.RUNE_POUCH_AMOUNT4,
+      VarbitID.RUNE_POUCH_QUANTITY_1,
+      VarbitID.RUNE_POUCH_QUANTITY_2,
+      VarbitID.RUNE_POUCH_QUANTITY_3,
+      VarbitID.RUNE_POUCH_QUANTITY_4,
   };
   private static final int MAX_RUNE_TYPES = runeTypeVarbits.length;
   private int[] runeTypes = new int[MAX_RUNE_TYPES];

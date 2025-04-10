@@ -6,10 +6,10 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import net.runelite.api.ChatMessageType;
-import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
-import net.runelite.api.ItemID;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.gameval.InventoryID;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.http.api.item.ItemPrice;
 
 /** Eyatlalli is responsible for tracking the player's cold storage weapon. */
@@ -35,7 +35,7 @@ public class Eyatlalli extends WorldStorage {
       updateLastUpdated();
       resetItems();
 
-      Item[] equippedItems = plugin.getClient().getItemContainer(InventoryID.EQUIPMENT.getId())
+      Item[] equippedItems = plugin.getClient().getItemContainer(InventoryID.WORN)
           .getItems();
       if (equippedItems.length > 3) {
         Item item = equippedItems[3];
@@ -72,7 +72,7 @@ public class Eyatlalli extends WorldStorage {
           .getId()) {
         resetItems();
         items.add(
-            new ItemStack(foundItem.map(ItemPrice::getId).orElse(ItemID.MYSTERY_BOX), 1, plugin));
+            new ItemStack(foundItem.map(ItemPrice::getId).orElse(ItemID.MACRO_QUIZ_MYSTERY_BOX), 1, plugin));
       }
 
       return true;

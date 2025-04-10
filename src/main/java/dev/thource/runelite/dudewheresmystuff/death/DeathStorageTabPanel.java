@@ -6,7 +6,7 @@ import dev.thource.runelite.dudewheresmystuff.StorageTabPanel;
 import java.awt.Color;
 import java.util.Comparator;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.ItemID;
+import net.runelite.api.gameval.ItemID;
 
 /** DeathStorageTabPanel is responsible for displaying death storage data to the player. */
 @Slf4j
@@ -23,7 +23,7 @@ public class DeathStorageTabPanel
 
     if (plugin.getConfig().showDeathStorageRiskWarning()) {
       OverviewItemPanel warningPanel = new OverviewItemPanel(plugin.getItemManager(), null,
-          () -> false, ItemID.SIGIL_OF_CONSISTENCY, 1, "WARNING!");
+          () -> false, ItemID.SIGIL_OF_CONSISTENCY_ATTUNED, 1, "WARNING!");
       warningPanel.updateStatus(
           "<HTML>The information displayed<br> in this tab can be inaccurate!<br><br>By relying on this information,<br>you are risking your items!</HTML>");
       warningPanel.setTitleColor(Color.RED);

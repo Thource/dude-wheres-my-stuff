@@ -33,20 +33,20 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.GameState;
-import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
-import net.runelite.api.ItemID;
 import net.runelite.api.Quest;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.TileItem;
-import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ActorDeath;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.ItemDespawned;
+import net.runelite.api.gameval.InventoryID;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.ui.overlay.infobox.InfoBox;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
@@ -113,7 +113,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
       return;
     }
 
-    if (itemContainerChanged.getContainerId() == InventoryID.INVENTORY.getId()) {
+    if (itemContainerChanged.getContainerId() == InventoryID.INV) {
       if (updateInventoryItems(itemContainerChanged.getItemContainer().getItems())) {
         updateStorages(Collections.singletonList(deathbank));
       }
@@ -518,7 +518,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
         .findFirst().orElse(DeathbankType.UNKNOWN);
 
     if (deathbankType == DeathbankType.UNKNOWN
-        && client.getVarbitValue(Varbits.ACCOUNT_TYPE) != 2) {
+        && client.getVarbitValue(VarbitID.IRONMAN) != 2) {
       createMysteryGrave();
       updateStorages(Collections.singletonList(grave));
       return;
@@ -566,7 +566,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
 
     grave = new Grave(plugin, new WorldPoint(0, 0, 0), this, new ArrayList<>());
     storages.add(grave);
-    grave.getItems().add(new ItemStack(ItemID.MYSTERY_BOX, 1, plugin));
+    grave.getItems().add(new ItemStack(ItemID.MACRO_QUIZ_MYSTERY_BOX, 1, plugin));
 
     SwingUtilities.invokeLater(() -> {
       grave.createStoragePanel(this);
@@ -581,8 +581,8 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
     deathbank.setLastUpdated(System.currentTimeMillis());
     deathbank.setLocked(
         type != DeathbankType.ZULRAH
-            || client.getVarbitValue(Varbits.ACCOUNT_TYPE) != 2); // not uim
-    deathbank.getItems().add(new ItemStack(ItemID.MYSTERY_BOX, 1, plugin));
+            || client.getVarbitValue(VarbitID.IRONMAN) != 2); // not uim
+    deathbank.getItems().add(new ItemStack(ItemID.MACRO_QUIZ_MYSTERY_BOX, 1, plugin));
 
     SwingUtilities.invokeLater(() -> {
       deathbank.createStoragePanel(this);
@@ -677,7 +677,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
     clearCarryableStorage();
 
     // Remove any items that were kept on death from the death items
-    Stream.of(InventoryID.INVENTORY, InventoryID.EQUIPMENT)
+    Stream.of(InventoryID.INV, InventoryID.WORN)
         .map(id -> client.getItemContainer(id)).filter(Objects::nonNull)
         .forEach(i -> removeItemsFromList(deathItems, i.getItems()));
 
@@ -689,9 +689,9 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
       deathbank.setLastUpdated(System.currentTimeMillis());
       deathbank.setLocked(
           deathbankType.get() != DeathbankType.ZULRAH
-              || client.getVarbitValue(Varbits.ACCOUNT_TYPE) != 2); // not uim
+              || client.getVarbitValue(VarbitID.IRONMAN) != 2); // not uim
       deathbank.getItems().addAll(deathItems);
-    } else if (client.getVarbitValue(Varbits.ACCOUNT_TYPE) == 2) { // uim
+    } else if (client.getVarbitValue(VarbitID.IRONMAN) == 2) { // uim
       createDeathpile(deathLocation, deathItems);
     } else {
       createGrave(deathLocation, deathItems);

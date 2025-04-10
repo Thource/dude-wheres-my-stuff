@@ -28,9 +28,9 @@ package dev.thource.runelite.dudewheresmystuff.death;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import net.runelite.api.ItemID;
 import net.runelite.api.Point;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPoint;
 import net.runelite.client.util.ImageUtil;

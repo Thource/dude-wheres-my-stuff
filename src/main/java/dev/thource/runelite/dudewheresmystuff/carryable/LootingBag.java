@@ -10,10 +10,10 @@ import java.util.ListIterator;
 import java.util.Objects;
 import lombok.Getter;
 import net.runelite.api.ChatMessageType;
-import net.runelite.api.InventoryID;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.MenuOptionClicked;
-import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.gameval.InterfaceID.Inventory;
+import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.widgets.Widget;
 
 /** LootingBag is responsible for tracking the player's items in their looting bag. */
@@ -116,7 +116,7 @@ public class LootingBag extends CarryableStorage {
     Widget item1Widget = plugin.getClient().getSelectedWidget();
 
     if (menuOption.getWidget() == null
-        || menuOption.getWidget().getParentId() != ComponentID.INVENTORY_CONTAINER) {
+        || menuOption.getWidget().getParentId() != Inventory.ITEMS) {
       return false;
     }
 
@@ -144,7 +144,7 @@ public class LootingBag extends CarryableStorage {
 
     Widget itemWidget = (item1IsLootingBag ? item2Widget : item1Widget);
     itemsUsedOnBag.add(new SuspendedItem(itemWidget.getIndex(), itemWidget.getItemId(),
-        Objects.requireNonNull(plugin.getClient().getItemContainer(InventoryID.INVENTORY))
+        Objects.requireNonNull(plugin.getClient().getItemContainer(InventoryID.INV))
             .count(itemWidget.getItemId())));
 
     return false;

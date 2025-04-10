@@ -2,7 +2,7 @@ package dev.thource.runelite.dudewheresmystuff.world;
 
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
-import net.runelite.api.ItemID;
+import net.runelite.api.gameval.ItemID;
 
 /** FossilStorage is responsible for tracking the players fossil island fossil storage. */
 public class FossilStorage extends WorldStorage {
@@ -47,40 +47,40 @@ public class FossilStorage extends WorldStorage {
 
     varbits = VARBITS;
 
-    items.add(new ItemStack(ItemID.UNIDENTIFIED_SMALL_FOSSIL, plugin));
-    items.add(new ItemStack(ItemID.UNIDENTIFIED_MEDIUM_FOSSIL, plugin));
-    items.add(new ItemStack(ItemID.UNIDENTIFIED_LARGE_FOSSIL, plugin));
-    items.add(new ItemStack(ItemID.UNIDENTIFIED_RARE_FOSSIL, plugin));
+    items.add(new ItemStack(ItemID.FOSSIL_SMALL_UNID, plugin));
+    items.add(new ItemStack(ItemID.FOSSIL_MEDIUM_UNID, plugin));
+    items.add(new ItemStack(ItemID.FOSSIL_LARGE_UNID, plugin));
+    items.add(new ItemStack(ItemID.FOSSIL_RARE_UNID, plugin));
 
-    items.add(new ItemStack(ItemID.SMALL_FOSSILISED_LIMBS, plugin));
-    items.add(new ItemStack(ItemID.SMALL_FOSSILISED_SPINE, plugin));
-    items.add(new ItemStack(ItemID.SMALL_FOSSILISED_RIBS, plugin));
-    items.add(new ItemStack(ItemID.SMALL_FOSSILISED_PELVIS, plugin));
-    items.add(new ItemStack(ItemID.SMALL_FOSSILISED_SKULL, plugin));
+    items.add(new ItemStack(ItemID.FOSSIL_SMALL_1, plugin));
+    items.add(new ItemStack(ItemID.FOSSIL_SMALL_2, plugin));
+    items.add(new ItemStack(ItemID.FOSSIL_SMALL_3, plugin));
+    items.add(new ItemStack(ItemID.FOSSIL_SMALL_4, plugin));
+    items.add(new ItemStack(ItemID.FOSSIL_SMALL_5, plugin));
 
-    items.add(new ItemStack(ItemID.MEDIUM_FOSSILISED_LIMBS, plugin));
-    items.add(new ItemStack(ItemID.MEDIUM_FOSSILISED_SPINE, plugin));
-    items.add(new ItemStack(ItemID.MEDIUM_FOSSILISED_RIBS, plugin));
-    items.add(new ItemStack(ItemID.MEDIUM_FOSSILISED_PELVIS, plugin));
-    items.add(new ItemStack(ItemID.MEDIUM_FOSSILISED_SKULL, plugin));
+    items.add(new ItemStack(ItemID.FOSSIL_MEDIUM_1, plugin));
+    items.add(new ItemStack(ItemID.FOSSIL_MEDIUM_2, plugin));
+    items.add(new ItemStack(ItemID.FOSSIL_MEDIUM_3, plugin));
+    items.add(new ItemStack(ItemID.FOSSIL_MEDIUM_4, plugin));
+    items.add(new ItemStack(ItemID.FOSSIL_MEDIUM_5, plugin));
 
-    items.add(new ItemStack(ItemID.LARGE_FOSSILISED_LIMBS, plugin));
-    items.add(new ItemStack(ItemID.LARGE_FOSSILISED_SPINE, plugin));
-    items.add(new ItemStack(ItemID.LARGE_FOSSILISED_RIBS, plugin));
-    items.add(new ItemStack(ItemID.LARGE_FOSSILISED_PELVIS, plugin));
-    items.add(new ItemStack(ItemID.LARGE_FOSSILISED_SKULL, plugin));
+    items.add(new ItemStack(ItemID.FOSSIL_LARGE_1, plugin));
+    items.add(new ItemStack(ItemID.FOSSIL_LARGE_2, plugin));
+    items.add(new ItemStack(ItemID.FOSSIL_LARGE_3, plugin));
+    items.add(new ItemStack(ItemID.FOSSIL_LARGE_4, plugin));
+    items.add(new ItemStack(ItemID.FOSSIL_LARGE_5, plugin));
 
-    items.add(new ItemStack(ItemID.FOSSILISED_ROOTS, plugin));
-    items.add(new ItemStack(ItemID.FOSSILISED_STUMP, plugin));
-    items.add(new ItemStack(ItemID.FOSSILISED_BRANCH, plugin));
-    items.add(new ItemStack(ItemID.FOSSILISED_LEAF, plugin));
-    items.add(new ItemStack(ItemID.FOSSILISED_MUSHROOM, plugin));
+    items.add(new ItemStack(ItemID.FOSSIL_PLANT_1, plugin));
+    items.add(new ItemStack(ItemID.FOSSIL_PLANT_2, plugin));
+    items.add(new ItemStack(ItemID.FOSSIL_PLANT_3, plugin));
+    items.add(new ItemStack(ItemID.FOSSIL_PLANT_4, plugin));
+    items.add(new ItemStack(ItemID.FOSSIL_PLANT_5, plugin));
 
-    items.add(new ItemStack(ItemID.RARE_FOSSILISED_LIMBS, plugin));
-    items.add(new ItemStack(ItemID.RARE_FOSSILISED_SPINE, plugin));
-    items.add(new ItemStack(ItemID.RARE_FOSSILISED_RIBS, plugin));
-    items.add(new ItemStack(ItemID.RARE_FOSSILISED_PELVIS, plugin));
-    items.add(new ItemStack(ItemID.RARE_FOSSILISED_SKULL, plugin));
-    items.add(new ItemStack(ItemID.RARE_FOSSILISED_TUSK, plugin));
+    items.add(new ItemStack(ItemID.FOSSIL_RARE_1, plugin));
+    items.add(new ItemStack(ItemID.FOSSIL_RARE_2, plugin));
+    items.add(new ItemStack(ItemID.FOSSIL_RARE_3, plugin));
+    items.add(new ItemStack(ItemID.FOSSIL_RARE_4, plugin));
+    items.add(new ItemStack(ItemID.FOSSIL_RARE_5, plugin));
+    items.add(new ItemStack(ItemID.FOSSIL_RARE_6, plugin));
   }
 }

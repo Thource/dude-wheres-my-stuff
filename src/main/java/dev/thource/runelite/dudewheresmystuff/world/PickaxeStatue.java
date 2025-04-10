@@ -2,7 +2,7 @@ package dev.thource.runelite.dudewheresmystuff.world;
 
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
-import net.runelite.api.ItemID;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.client.config.ConfigManager;
 
 /**
@@ -19,16 +19,16 @@ public class PickaxeStatue extends WorldStorage {
       ItemID.MITHRIL_PICKAXE,
       ItemID.ADAMANT_PICKAXE,
       ItemID.RUNE_PICKAXE,
-      ItemID.GILDED_PICKAXE, // unconfirmed
+      ItemID.TRAIL_GILDED_PICKAXE, // unconfirmed
       ItemID.DRAGON_PICKAXE,
-      ItemID.DRAGON_PICKAXE_12797, // unconfirmed
-      ItemID.DRAGON_PICKAXE_OR, // unconfirmed
-      ItemID.DRAGON_PICKAXE_OR_25376, // unconfirmed
+      ItemID.DRAGON_PICKAXE_PRETTY, // unconfirmed
+      ItemID.ZALCANO_PICKAXE, // unconfirmed
+      ItemID.TRAILBLAZER_PICKAXE_NO_INFERNAL, // unconfirmed
       ItemID.INFERNAL_PICKAXE, // unconfirmed
-      ItemID.INFERNAL_PICKAXE_OR, // unconfirmed
+      ItemID.TRAILBLAZER_PICKAXE, // unconfirmed
       ItemID.CRYSTAL_PICKAXE,
       ItemID.CRYSTAL_PICKAXE_INACTIVE,
-      ItemID._3RD_AGE_PICKAXE // unconfirmed
+      ItemID._3A_PICKAXE // unconfirmed
   };
   private ItemStack pickaxe;
 

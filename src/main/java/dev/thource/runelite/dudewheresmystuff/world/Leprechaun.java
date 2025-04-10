@@ -8,7 +8,7 @@ import dev.thource.runelite.dudewheresmystuff.carryable.BottomlessBucket;
 import java.util.ArrayList;
 import javax.swing.SwingUtilities;
 import lombok.Setter;
-import net.runelite.api.ItemID;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.client.config.ConfigManager;
 
 /** Leprechaun is responsible for tracking the player's leprechaun-stored farming equipment. */
@@ -16,16 +16,16 @@ public class Leprechaun extends WorldStorage {
 
   private static final int[] WATERING_CAN_IDS = {
       -1,
-      ItemID.WATERING_CAN,
-      ItemID.WATERING_CAN1,
-      ItemID.WATERING_CAN2,
-      ItemID.WATERING_CAN3,
-      ItemID.WATERING_CAN4,
-      ItemID.WATERING_CAN5,
-      ItemID.WATERING_CAN6,
-      ItemID.WATERING_CAN7,
-      ItemID.WATERING_CAN8,
-      ItemID.GRICOLLERS_CAN
+      ItemID.WATERING_CAN_0,
+      ItemID.WATERING_CAN_1,
+      ItemID.WATERING_CAN_2,
+      ItemID.WATERING_CAN_3,
+      ItemID.WATERING_CAN_4,
+      ItemID.WATERING_CAN_5,
+      ItemID.WATERING_CAN_6,
+      ItemID.WATERING_CAN_7,
+      ItemID.WATERING_CAN_8,
+      ItemID.ZEAH_WATERINGCAN
   };
   private final ItemStack rakes;
   private final ItemStack seedDibbers;
@@ -55,17 +55,17 @@ public class Leprechaun extends WorldStorage {
     hasStaticItems = true;
 
     rakes = new ItemStack(ItemID.RAKE, plugin);
-    seedDibbers = new ItemStack(ItemID.SEED_DIBBER, plugin);
+    seedDibbers = new ItemStack(ItemID.DIBBER, plugin);
     spades = new ItemStack(ItemID.SPADE, plugin);
     secateurs = new ItemStack(ItemID.SECATEURS, plugin);
-    wateringCan = new ItemStack(ItemID.WATERING_CAN, plugin);
+    wateringCan = new ItemStack(ItemID.WATERING_CAN_0, plugin);
     trowels = new ItemStack(ItemID.GARDENING_TROWEL, plugin);
     plantCures = new ItemStack(ItemID.PLANT_CURE, plugin);
     bottomlessBucket = new ItemStack(ItemID.BOTTOMLESS_COMPOST_BUCKET, plugin);
-    buckets = new ItemStack(ItemID.BUCKET, plugin);
-    composts = new ItemStack(ItemID.COMPOST, plugin);
-    superComposts = new ItemStack(ItemID.SUPERCOMPOST, plugin);
-    ultraComposts = new ItemStack(ItemID.ULTRACOMPOST, plugin);
+    buckets = new ItemStack(ItemID.BUCKET_EMPTY, plugin);
+    composts = new ItemStack(ItemID.BUCKET_COMPOST, plugin);
+    superComposts = new ItemStack(ItemID.BUCKET_SUPERCOMPOST, plugin);
+    ultraComposts = new ItemStack(ItemID.BUCKET_ULTRACOMPOST, plugin);
 
     items.add(rakes);
     items.add(seedDibbers);
@@ -293,7 +293,7 @@ public class Leprechaun extends WorldStorage {
     this.secateursType = secateursType;
 
     int secateursId =
-        secateursType == 1 ? ItemID.MAGIC_SECATEURS : ItemID.SECATEURS;
+        secateursType == 1 ? ItemID.FAIRY_ENCHANTED_SECATEURS : ItemID.SECATEURS;
 
     if (secateurs.getId() == secateursId) {
       return false;
@@ -334,7 +334,7 @@ public class Leprechaun extends WorldStorage {
     if (bottomlessBucketType == 1) {
       bottomlessBucket.setName("Bottomless compost bucket");
     } else if (bottomlessBucketType != 0) {
-      itemId = ItemID.BOTTOMLESS_COMPOST_BUCKET_22997;
+      itemId = ItemID.BOTTOMLESS_COMPOST_BUCKET_FILLED;
     }
 
     if (oldBottomlessBucketCharges == bottomlessBucketCharges

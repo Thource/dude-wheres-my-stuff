@@ -5,9 +5,9 @@ import dev.thource.runelite.dudewheresmystuff.ItemStack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import lombok.Getter;
-import net.runelite.api.ItemID;
 import net.runelite.api.events.WidgetClosed;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.api.widgets.Widget;
 import org.apache.commons.lang3.math.NumberUtils;
 
@@ -23,7 +23,7 @@ public class PestControl extends MinigamesStorage {
       "Remaining Void Knight Commendation Points: (\\d+)");
 
   private final ItemStack points =
-      new ItemStack(ItemID.VOID_SEAL1, "Points", 0, 0, 0, true);
+      new ItemStack(ItemID.PEST_SEAL_1, "Points", 0, 0, 0, true);
 
   private Widget shopWidget = null;
 
