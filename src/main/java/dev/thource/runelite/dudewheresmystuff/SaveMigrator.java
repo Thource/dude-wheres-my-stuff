@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.ItemID;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.client.config.ConfigManager;
 
 /** SaveMigrator converts the player's data from the v1 format to the v2 format. */
@@ -273,7 +273,7 @@ public class SaveMigrator {
         PREFIX_WORLD + WorldStorageType.LEPRECHAUN.getConfigKey(),
         itemQuantities.stream().map(Object::toString).collect(Collectors.joining(","))
             + ";"
-            + (itemIds.get(3) == ItemID.MAGIC_SECATEURS ? "1" : "0") + ";"
+            + (itemIds.get(3) == ItemID.FAIRY_ENCHANTED_SECATEURS ? "1" : "0") + ";"
             + wateringCanIndex
     );
   }

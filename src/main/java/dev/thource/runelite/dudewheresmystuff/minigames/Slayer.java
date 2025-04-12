@@ -3,8 +3,8 @@ package dev.thource.runelite.dudewheresmystuff.minigames;
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
 import lombok.Getter;
-import net.runelite.api.ItemID;
-import net.runelite.api.Varbits;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.VarbitID;
 
 /** Slayer is responsible for tracking the player's Slayer points. */
 @Getter
@@ -15,7 +15,7 @@ public class Slayer extends MinigamesStorage {
   Slayer(DudeWheresMyStuffPlugin plugin) {
     super(MinigamesStorageType.SLAYER, plugin);
 
-    varbits = new int[]{Varbits.SLAYER_POINTS};
+    varbits = new int[]{VarbitID.SLAYER_POINTS};
 
     items.add(points);
   }

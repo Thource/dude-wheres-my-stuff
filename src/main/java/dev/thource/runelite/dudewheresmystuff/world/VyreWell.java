@@ -2,7 +2,8 @@ package dev.thource.runelite.dudewheresmystuff.world;
 
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
-import net.runelite.api.ItemID;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.VarbitID;
 
 /**
  * VyreWell is responsible for tracking how many blood runes and vials the player has stored in the
@@ -18,11 +19,11 @@ public class VyreWell extends WorldStorage {
 
     hasStaticItems = true;
 
-    varbits = new int[]{6455};
+    varbits = new int[] {VarbitID.TOB_LOBBY_WELL_CONTENTS};
 
-    vialsOfBlood = new ItemStack(ItemID.VIAL_OF_BLOOD_22446, plugin);
+    vialsOfBlood = new ItemStack(ItemID.VIAL_BLOOD, plugin);
     items.add(vialsOfBlood);
-    bloodRunes = new ItemStack(ItemID.BLOOD_RUNE, plugin);
+    bloodRunes = new ItemStack(ItemID.BLOODRUNE, plugin);
     items.add(bloodRunes);
   }
 

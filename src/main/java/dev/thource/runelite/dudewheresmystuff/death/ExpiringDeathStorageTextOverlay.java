@@ -8,7 +8,7 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import net.runelite.api.Client;
-import net.runelite.api.Varbits;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -33,7 +33,7 @@ public class ExpiringDeathStorageTextOverlay extends Overlay {
   // Updates every game tick
   public void updateSoonestExpiringDeathStorage() {
     ExpiringDeathStorage newStorage;
-    if (client.getVarbitValue(Varbits.ACCOUNT_TYPE) == 2) {
+    if (client.getVarbitValue(VarbitID.IRONMAN) == 2) {
       newStorage = deathStorageManager.getSoonestExpiringDeathpile();
     } else {
       newStorage = deathStorageManager.getGrave();

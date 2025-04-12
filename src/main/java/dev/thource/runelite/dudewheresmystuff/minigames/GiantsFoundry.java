@@ -5,7 +5,7 @@ import dev.thource.runelite.dudewheresmystuff.ItemStack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import lombok.Getter;
-import net.runelite.api.ItemID;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.api.widgets.Widget;
 import org.apache.commons.lang3.math.NumberUtils;
 
@@ -16,7 +16,7 @@ public class GiantsFoundry extends MinigamesStorage {
   private static final Pattern HAND_IN_PATTERN = Pattern.compile("at quality: (\\d+)");
 
   private final ItemStack points =
-      new ItemStack(ItemID.COLOSSAL_BLADE, "Points", 0, 0, 0, true);
+      new ItemStack(ItemID.GIANTS_FOUNDRY_COLOSSAL_BLADE, "Points", 0, 0, 0, true);
   private boolean didJustHandIn = false;
 
   GiantsFoundry(DudeWheresMyStuffPlugin plugin) {

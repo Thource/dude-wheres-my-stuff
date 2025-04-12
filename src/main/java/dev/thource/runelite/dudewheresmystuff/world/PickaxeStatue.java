@@ -2,7 +2,8 @@ package dev.thource.runelite.dudewheresmystuff.world;
 
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
-import net.runelite.api.ItemID;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.config.ConfigManager;
 
 /**
@@ -12,23 +13,23 @@ import net.runelite.client.config.ConfigManager;
 public class PickaxeStatue extends WorldStorage {
 
   private static final int[] PICKAXE_IDS = {
-      ItemID.BRONZE_PICKAXE,
-      ItemID.IRON_PICKAXE,
-      ItemID.STEEL_PICKAXE,
-      ItemID.BLACK_PICKAXE,
-      ItemID.MITHRIL_PICKAXE,
-      ItemID.ADAMANT_PICKAXE,
-      ItemID.RUNE_PICKAXE,
-      ItemID.GILDED_PICKAXE, // unconfirmed
-      ItemID.DRAGON_PICKAXE,
-      ItemID.DRAGON_PICKAXE_12797, // unconfirmed
-      ItemID.DRAGON_PICKAXE_OR, // unconfirmed
-      ItemID.DRAGON_PICKAXE_OR_25376, // unconfirmed
-      ItemID.INFERNAL_PICKAXE, // unconfirmed
-      ItemID.INFERNAL_PICKAXE_OR, // unconfirmed
-      ItemID.CRYSTAL_PICKAXE,
-      ItemID.CRYSTAL_PICKAXE_INACTIVE,
-      ItemID._3RD_AGE_PICKAXE // unconfirmed
+    ItemID.BRONZE_PICKAXE,
+    ItemID.IRON_PICKAXE,
+    ItemID.STEEL_PICKAXE,
+    ItemID.BLACK_PICKAXE,
+    ItemID.MITHRIL_PICKAXE,
+    ItemID.ADAMANT_PICKAXE,
+    ItemID.RUNE_PICKAXE,
+    ItemID.TRAIL_GILDED_PICKAXE, // unconfirmed
+    ItemID.DRAGON_PICKAXE,
+    ItemID.DRAGON_PICKAXE_PRETTY, // unconfirmed
+    ItemID.ZALCANO_PICKAXE, // unconfirmed
+    ItemID.TRAILBLAZER_PICKAXE_NO_INFERNAL, // unconfirmed
+    ItemID.INFERNAL_PICKAXE, // unconfirmed
+    ItemID.TRAILBLAZER_PICKAXE, // unconfirmed
+    ItemID.CRYSTAL_PICKAXE,
+    ItemID.CRYSTAL_PICKAXE_INACTIVE,
+    ItemID._3A_PICKAXE // unconfirmed
   };
   private ItemStack pickaxe;
 
@@ -41,7 +42,7 @@ public class PickaxeStatue extends WorldStorage {
 
   @Override
   public boolean onVarbitChanged() {
-    int pickaxeId = getPickaxeId(plugin.getClient().getVarbitValue(14440));
+    int pickaxeId = getPickaxeId(plugin.getClient().getVarbitValue(VarbitID.TOA_PICKAXE_STORED));
     if (pickaxe.getId() != pickaxeId) {
       pickaxe.setId(pickaxeId, plugin);
       pickaxe.setQuantity(pickaxe.getId() == PICKAXE_IDS[0] ? 0 : 1);
@@ -67,7 +68,7 @@ public class PickaxeStatue extends WorldStorage {
       items.add(new ItemStack(PICKAXE_IDS[0], plugin));
     }
     pickaxe = items.get(0);
-    //Ensures bronze pickaxe removal changes are picked up on plugin update
+    // Ensures bronze pickaxe removal changes are picked up on plugin update
     if (pickaxe.getId() == PICKAXE_IDS[0]) {
       pickaxe.setQuantity(0);
     }

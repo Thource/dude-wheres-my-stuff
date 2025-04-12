@@ -4,7 +4,7 @@ import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import net.runelite.api.ItemID;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.api.widgets.Widget;
 import org.apache.commons.lang3.math.NumberUtils;
 
@@ -39,7 +39,7 @@ public class ForestryShop extends WorldStorage {
     items.add(new ItemStack(ItemID.TEAK_LOGS, plugin));
     items.add(new ItemStack(ItemID.MAHOGANY_LOGS, plugin));
     items.add(new ItemStack(ItemID.REDWOOD_LOGS, plugin));
-    items.add(new ItemStack(ItemID.ARCTIC_PINE_LOGS, plugin));
+    items.add(new ItemStack(ItemID.ARCTIC_PINE_LOG, plugin));
 
     plugin.getClientThread().invokeLater(() -> items.forEach(ItemStack::stripPrices));
   }

@@ -7,8 +7,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
-import net.runelite.api.ItemID;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.api.widgets.Widget;
 import org.apache.commons.lang3.math.NumberUtils;
 
@@ -27,11 +27,11 @@ public class GnomishFirelighter extends CarryableStorage {
 
     hasStaticItems = true;
 
-    items.add(new ItemStack(ItemID.RED_FIRELIGHTER, 0, plugin));
-    items.add(new ItemStack(ItemID.GREEN_FIRELIGHTER, 0, plugin));
-    items.add(new ItemStack(ItemID.BLUE_FIRELIGHTER, 0, plugin));
-    items.add(new ItemStack(ItemID.PURPLE_FIRELIGHTER, 0, plugin));
-    items.add(new ItemStack(ItemID.WHITE_FIRELIGHTER, 0, plugin));
+    items.add(new ItemStack(ItemID.GNOMISH_FIRELIGHTER_RED, 0, plugin));
+    items.add(new ItemStack(ItemID.GNOMISH_FIRELIGHTER_GREEN, 0, plugin));
+    items.add(new ItemStack(ItemID.GNOMISH_FIRELIGHTER_BLUE, 0, plugin));
+    items.add(new ItemStack(ItemID.TRAIL_GNOMISH_FIRELIGHTER_PURPLE, 0, plugin));
+    items.add(new ItemStack(ItemID.TRAIL_GNOMISH_FIRELIGHTER_WHITE, 0, plugin));
   }
 
   @Override

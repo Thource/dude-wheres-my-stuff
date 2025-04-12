@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.List;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import net.runelite.api.InventoryID;
+import net.runelite.api.gameval.InventoryID;
 
 /** WorldStorageType is used to identify WorldStorages. */
 @RequiredArgsConstructor
@@ -15,14 +15,14 @@ public enum WorldStorageType implements StorageType {
   LEPRECHAUN("Tool Leprechaun", -1, true, "leprechaun", true, null),
   BANK(
       "Bank",
-      InventoryID.BANK.getId(),
+      InventoryID.BANK,
       false,
       "bank",
       false,
       Collections.singletonList(2)), // uim
   GROUP_STORAGE(
       "Group Storage",
-      InventoryID.GROUP_STORAGE.getId(),
+      InventoryID.INV_GROUP_TEMP,
       false,
       "groupstorage",
       false,
@@ -37,7 +37,7 @@ public enum WorldStorageType implements StorageType {
   VYRE_WELL("Vyre Well", -1, true, "vyrewell", true, null),
   SEED_VAULT(
       "Seed Vault",
-      InventoryID.SEED_VAULT.getId(),
+      InventoryID.SEED_VAULT,
       false,
       "seedvault",
       true,

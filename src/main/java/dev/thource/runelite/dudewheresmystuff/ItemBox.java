@@ -4,7 +4,7 @@ import javax.annotation.Nullable;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import lombok.Getter;
-import net.runelite.api.ItemID;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.util.AsyncBufferedImage;
 import net.runelite.client.util.QuantityFormatter;
@@ -53,7 +53,7 @@ class ItemBox extends JPanel {
     final long haPrice = item.getTotalHaPrice();
     final StringBuilder sb = new StringBuilder("<html>");
     sb.append(name).append(" x ").append(QuantityFormatter.formatNumber(quantity));
-    if (item.getId() == ItemID.COINS_995) {
+    if (item.getId() == ItemID.COINS) {
       sb.append(HTML_CLOSE_TAG);
       return sb.toString();
     }
@@ -67,7 +67,7 @@ class ItemBox extends JPanel {
       }
     }
 
-    if (item.getId() == ItemID.PLATINUM_TOKEN) {
+    if (item.getId() == ItemID.PLATINUM) {
       sb.append(HTML_CLOSE_TAG);
       return sb.toString();
     }

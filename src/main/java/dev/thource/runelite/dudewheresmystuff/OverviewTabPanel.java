@@ -43,7 +43,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.ItemID;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.ColorScheme;
@@ -90,7 +90,7 @@ class OverviewTabPanel extends TabContentPanel {
     setBackground(ColorScheme.DARK_GRAY_COLOR);
 
     summaryOverview =
-        new OverviewItemPanel(itemManager, null, () -> false, ItemID.NOTES, 1, LOGGED_OUT_SUMMARY);
+        new OverviewItemPanel(itemManager, null, () -> false, ItemID.HW16_CLUE_LIBRARY, 1, LOGGED_OUT_SUMMARY);
     add(summaryOverview);
     add(Box.createVerticalStrut(8));
     if (developerMode) {

@@ -8,9 +8,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import lombok.Getter;
 import net.runelite.api.ChatMessageType;
-import net.runelite.api.ItemID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.api.widgets.Widget;
 import org.apache.commons.lang3.math.NumberUtils;
 
@@ -21,9 +21,9 @@ import org.apache.commons.lang3.math.NumberUtils;
 public class GuardiansOfTheRift extends MinigamesStorage {
 
   private final ItemStack elementalEnergy =
-      new ItemStack(ItemID.AIR_RUNE, "Elemental Energy", 0, 0, 0, true);
+      new ItemStack(ItemID.AIRRUNE, "Elemental Energy", 0, 0, 0, true);
   private final ItemStack catalyticEnergy =
-      new ItemStack(ItemID.COSMIC_RUNE, "Catalytic Energy", 0, 0, 0, true);
+      new ItemStack(ItemID.COSMICRUNE, "Catalytic Energy", 0, 0, 0, true);
 
   private final Pattern chatPointsPattern =
       Pattern.compile(

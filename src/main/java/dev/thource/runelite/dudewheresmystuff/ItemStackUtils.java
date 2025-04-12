@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
-import net.runelite.api.ItemID;
+import net.runelite.api.gameval.ItemID;
 
 /** ItemStackUtils provides methods that interact with Lists of ItemStack. */
 public class ItemStackUtils {
@@ -16,11 +16,11 @@ public class ItemStackUtils {
   public static final List<Integer> ITEM_IDS_DESTROYED_ON_DEATH = Collections.unmodifiableList(
       Arrays.asList(
           ItemID.LOOTING_BAG,
-          ItemID.LOOTING_BAG_22586,
-          ItemID.CLUE_BOX,
+          ItemID.LOOTING_BAG_OPEN,
+          ItemID.BH_CLUE_BOX,
           ItemID.FLAMTAER_BAG,
-          ItemID.FLAMTAER_BAG_25630,
-          ItemID.LUNAR_HELM,
+          ItemID.FLAMTAER_BAG_DUMMY,
+          ItemID.LUNAR_HELMET,
           ItemID.LUNAR_TORSO,
           ItemID.LUNAR_LEGS,
           ItemID.LUNAR_GLOVES,
@@ -28,24 +28,24 @@ public class ItemStackUtils {
           ItemID.LUNAR_CAPE,
           ItemID.LUNAR_AMULET,
           ItemID.LUNAR_RING,
-          ItemID.LUNAR_STAFF,
+          ItemID.LUNAR_MOONCLAN_LIMINAL_STAFF,
           ItemID.RING_OF_CHAROS,
-          ItemID.RING_OF_CHAROSA,
+          ItemID.RING_OF_CHAROS_UNLOCKED,
           ItemID.CHRONICLE,
           ItemID.STEEL_GAUNTLETS,
-          ItemID.COOKING_GAUNTLETS,
-          ItemID.GOLDSMITH_GAUNTLETS,
-          ItemID.CHAOS_GAUNTLETS,
-          ItemID.MAGIC_BUTTERFLY_NET,
-          ItemID.JAR_GENERATOR,
-          ItemID.AMULET_OF_THE_DAMNED,
-          ItemID.SHATTERED_RELICS_BRONZE_TROPHY,
-          ItemID.SHATTERED_RELICS_IRON_TROPHY,
-          ItemID.SHATTERED_RELICS_STEEL_TROPHY,
-          ItemID.SHATTERED_RELICS_MITHRIL_TROPHY,
-          ItemID.SHATTERED_RELICS_ADAMANT_TROPHY,
-          ItemID.SHATTERED_RELICS_RUNE_TROPHY,
-          ItemID.SHATTERED_RELICS_DRAGON_TROPHY,
+          ItemID.GAUNTLETS_OF_COOKING,
+          ItemID.GAUNTLETS_OF_GOLDSMITHING,
+          ItemID.GAUNTLETS_OF_CHAOS,
+          ItemID.II_MAGIC_BUTTERFLY_NET,
+          ItemID.II_JAR_GENERATOR,
+          ItemID.DAMNED_AMULET_DEGRADED,
+          ItemID.LEAGUE_3_BRONZE_TROPHY,
+          ItemID.LEAGUE_3_IRON_TROPHY,
+          ItemID.LEAGUE_3_STEEL_TROPHY,
+          ItemID.LEAGUE_3_MITHRIL_TROPHY,
+          ItemID.LEAGUE_3_ADAMANT_TROPHY,
+          ItemID.LEAGUE_3_RUNE_TROPHY,
+          ItemID.LEAGUE_3_DRAGON_TROPHY,
           ItemID.TRAILBLAZER_BRONZE_TROPHY,
           ItemID.TRAILBLAZER_IRON_TROPHY,
           ItemID.TRAILBLAZER_STEEL_TROPHY,
@@ -60,8 +60,8 @@ public class ItemStackUtils {
           ItemID.TWISTED_ADAMANT_TROPHY,
           ItemID.TWISTED_RUNE_TROPHY,
           ItemID.TWISTED_DRAGON_TROPHY,
-          ItemID.CRYSTAL_SAW_SEED,
-          ItemID.CRYSTAL_SAW
+          ItemID.CRYSTAL_SEED_OLD_SMALL,
+          ItemID.EYEGLO_CRYSTAL_SAW
       )
   );
 

@@ -39,20 +39,20 @@ import java.util.Collections;
 import java.util.List;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import net.runelite.api.ItemID;
+import net.runelite.api.gameval.ItemID;
 
 /** Tab is used to define tabs that the user can click to swap panels. */
 @RequiredArgsConstructor
 @Getter
 public enum Tab {
-  OVERVIEW("Overview", ItemID.NOTES),
-  COINS("Coins", ItemID.COINS_995, 0xBADCA7),
+  OVERVIEW("Overview", ItemID.HW16_CLUE_LIBRARY),
+  COINS("Coins", ItemID.COINS, 0xBADCA7),
   CARRYABLE_STORAGE("Carry-able Storage", ItemID.LOOTING_BAG),
-  WORLD("World Storage", ItemID.ROGUES_EQUIPMENT_CRATE),
-  MINIGAMES("Minigames", ItemID.PROGRESS_HAT),
+  WORLD("World Storage", ItemID.ROGUESDEN_CRATE),
+  MINIGAMES("Minigames", ItemID.MAGICTRAINING_PROGHAT_DULL),
   DEATH("Death Storage", ItemID.SKULL),
-  POH_STORAGE("POH Storage", ItemID.MAHOGANY_ARMOUR_CASE),
-  STASH_UNITS("STASH Units", ItemID.STASH_CHART),
+  POH_STORAGE("POH Storage", ItemID.POH_COS_ROOM_ARMOUR_CASE_MAHOGANY),
+  STASH_UNITS("STASH Units", ItemID.POH_WALLCHART_4),
   SEARCH("Search", -1);
 
   public static final ImmutableMap<Class<? extends StorageManager<?, ?>>, Tab> MANAGER_TAB_MAP =
