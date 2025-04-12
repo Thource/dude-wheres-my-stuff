@@ -9,35 +9,80 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.VarbitID;
 
 /** CarryableStorageType is used to identify CarryableStorages. */
 @RequiredArgsConstructor
 @Getter
 public enum CarryableStorageType implements StorageType {
-  INVENTORY("Inventory", InventoryID.INV, true, "inventory", false, new ArrayList<>(),
+  INVENTORY("Inventory", InventoryID.INV, true, "inventory", false, new ArrayList<>(), -1),
+  EQUIPMENT("Equipment", InventoryID.WORN, true, "equipment", false, new ArrayList<>(), -1),
+  LOOTING_BAG(
+      "Looting Bag",
+      InventoryID.LOOTING_BAG,
+      false,
+      "lootingbag",
+      true,
+      Arrays.asList(ItemID.LOOTING_BAG, ItemID.LOOTING_BAG_OPEN),
       -1),
-  EQUIPMENT("Equipment", InventoryID.WORN, true, "equipment", false, new ArrayList<>(),
-      -1),
-  LOOTING_BAG("Looting Bag", 516, false, "lootingbag", true,
-      Arrays.asList(ItemID.LOOTING_BAG, ItemID.LOOTING_BAG_OPEN), -1),
-  SEED_BOX("Seed Box", 573, false, "seedbox", true,
-      Arrays.asList(ItemID.SEED_BOX, ItemID.SEED_BOX_OPEN), 15314),
-  RUNE_POUCH("Rune Pouch", -1, true, "runepouch", true,
-      Arrays.asList(ItemID.BH_RUNE_POUCH, ItemID.BH_RUNE_POUCH_TROUVER, ItemID.DIVINE_RUNE_POUCH,
-          ItemID.DIVINE_RUNE_POUCH_TROUVER), 15311),
-  BOTTOMLESS_BUCKET("Bottomless Compost Bucket", -1, false, "bottomlessbucket", true,
-      new ArrayList<>(), -1),
+  SEED_BOX(
+      "Seed Box",
+      InventoryID.SEED_BOX,
+      false,
+      "seedbox",
+      true,
+      Arrays.asList(ItemID.SEED_BOX, ItemID.SEED_BOX_OPEN),
+      VarbitID.EMPTYONDEATH_SEEDBOX),
+  RUNE_POUCH(
+      "Rune Pouch",
+      -1,
+      true,
+      "runepouch",
+      true,
+      Arrays.asList(
+          ItemID.BH_RUNE_POUCH,
+          ItemID.BH_RUNE_POUCH_TROUVER,
+          ItemID.DIVINE_RUNE_POUCH,
+          ItemID.DIVINE_RUNE_POUCH_TROUVER),
+      VarbitID.EMPTYONDEATH_RUNEPOUCH),
+  BOTTOMLESS_BUCKET(
+      "Bottomless Compost Bucket", -1, false, "bottomlessbucket", true, new ArrayList<>(), -1),
   PLANK_SACK("Plank Sack", -1, false, "planksack", true, new ArrayList<>(), -1),
-  BOLT_POUCH("Bolt Pouch", -1, true, "boltpouch", true,
-      Collections.singletonList(ItemID.XBOWS_BOLT_POUCH), 15313),
-  GNOMISH_FIRELIGHTER("Gnomish Firelighter", -1, false, "gnomishfirelighter", true,
-      Collections.singletonList(ItemID.GNOMISH_FIRELIGHTER_CHARGED), -1),
-  MASTER_SCROLL_BOOK("Master Scroll Book", -1, true, "masterscrollbook", true, new ArrayList<>(),
+  BOLT_POUCH(
+      "Bolt Pouch",
+      -1,
+      true,
+      "boltpouch",
+      true,
+      Collections.singletonList(ItemID.XBOWS_BOLT_POUCH),
+      VarbitID.EMPTYONDEATH_BOLTPOUCH),
+  GNOMISH_FIRELIGHTER(
+      "Gnomish Firelighter",
+      -1,
+      false,
+      "gnomishfirelighter",
+      true,
+      Collections.singletonList(ItemID.GNOMISH_FIRELIGHTER_CHARGED),
       -1),
-  HUNTSMANS_KIT("Huntsman's Kit", 855, false, "huntsmanskit", true,
-      Collections.singletonList(ItemID.HUNTSMANS_KIT), -1),
-  FORESTRY_KIT("Forestry Kit", 814, false, "forestrykit", true,
-      Arrays.asList(ItemID.FORESTRY_KIT, ItemID.FORESTRY_BASKET_CLOSED, ItemID.FORESTRY_BASKET_OPEN), -1);
+  MASTER_SCROLL_BOOK(
+      "Master Scroll Book", -1, true, "masterscrollbook", true, new ArrayList<>(), -1),
+  HUNTSMANS_KIT(
+      "Huntsman's Kit",
+      InventoryID.HUNTSMANS_KIT,
+      false,
+      "huntsmanskit",
+      true,
+      Collections.singletonList(ItemID.HUNTSMANS_KIT),
+      -1),
+  FORESTRY_KIT(
+      "Forestry Kit",
+      InventoryID.FORESTRY_KIT,
+      false,
+      "forestrykit",
+      true,
+      Arrays.asList(
+          ItemID.FORESTRY_KIT, ItemID.FORESTRY_BASKET_CLOSED, ItemID.FORESTRY_BASKET_OPEN),
+      -1);
 
   private final String name;
   private final int itemContainerId;

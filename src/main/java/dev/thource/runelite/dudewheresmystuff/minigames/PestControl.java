@@ -8,6 +8,7 @@ import lombok.Getter;
 import net.runelite.api.events.WidgetClosed;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.VarPlayerID;
 import net.runelite.api.widgets.Widget;
 import org.apache.commons.lang3.math.NumberUtils;
 
@@ -91,7 +92,7 @@ public class PestControl extends MinigamesStorage {
     }
 
     updateLastUpdated();
-    points.setQuantity(plugin.getClient().getVarpValue(261));
+    points.setQuantity(plugin.getClient().getVarpValue(VarPlayerID.IF1));
     return true;
   }
 }

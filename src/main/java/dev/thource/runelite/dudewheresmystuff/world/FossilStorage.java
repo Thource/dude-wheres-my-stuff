@@ -3,49 +3,49 @@ package dev.thource.runelite.dudewheresmystuff.world;
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
 import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.VarbitID;
 
 /** FossilStorage is responsible for tracking the players fossil island fossil storage. */
 public class FossilStorage extends WorldStorage {
-
-  private static final int[] VARBITS = {
-      5828,
-      5829,
-      5830,
-      5831,
-      5832,
-      5833,
-      5834,
-      5835,
-      5836,
-      5837,
-      5838,
-      5839,
-      5840,
-      5841,
-      5842,
-      5843,
-      5844,
-      5845,
-      5846,
-      5847,
-      5848,
-      5849,
-      5850,
-      5851,
-      5852,
-      5853,
-      5854,
-      5855,
-      5856,
-      5952
-  };
 
   protected FossilStorage(DudeWheresMyStuffPlugin plugin) {
     super(WorldStorageType.FOSSIL_STORAGE, plugin);
 
     hasStaticItems = true;
 
-    varbits = VARBITS;
+    varbits =
+        new int[] {
+          VarbitID.FOSSIL_STORAGE_SMALL_UNID,
+          VarbitID.FOSSIL_STORAGE_MEDIUM_UNID,
+          VarbitID.FOSSIL_STORAGE_LARGE_UNID,
+          VarbitID.FOSSIL_STORAGE_RARE_UNID,
+          VarbitID.FOSSIL_STORAGE_SMALL_1,
+          VarbitID.FOSSIL_STORAGE_SMALL_2,
+          VarbitID.FOSSIL_STORAGE_SMALL_3,
+          VarbitID.FOSSIL_STORAGE_SMALL_4,
+          VarbitID.FOSSIL_STORAGE_SMALL_5,
+          VarbitID.FOSSIL_STORAGE_MEDIUM_1,
+          VarbitID.FOSSIL_STORAGE_MEDIUM_2,
+          VarbitID.FOSSIL_STORAGE_MEDIUM_3,
+          VarbitID.FOSSIL_STORAGE_MEDIUM_4,
+          VarbitID.FOSSIL_STORAGE_MEDIUM_5,
+          VarbitID.FOSSIL_STORAGE_LARGE_1,
+          VarbitID.FOSSIL_STORAGE_LARGE_2,
+          VarbitID.FOSSIL_STORAGE_LARGE_3,
+          VarbitID.FOSSIL_STORAGE_LARGE_4,
+          VarbitID.FOSSIL_STORAGE_LARGE_5,
+          VarbitID.FOSSIL_STORAGE_PLANT_1,
+          VarbitID.FOSSIL_STORAGE_PLANT_2,
+          VarbitID.FOSSIL_STORAGE_PLANT_3,
+          VarbitID.FOSSIL_STORAGE_PLANT_4,
+          VarbitID.FOSSIL_STORAGE_PLANT_5,
+          VarbitID.FOSSIL_STORAGE_RARE_1,
+          VarbitID.FOSSIL_STORAGE_RARE_2,
+          VarbitID.FOSSIL_STORAGE_RARE_3,
+          VarbitID.FOSSIL_STORAGE_RARE_4,
+          VarbitID.FOSSIL_STORAGE_RARE_5,
+          VarbitID.FOSSIL_STORAGE_RARE_6,
+        };
 
     items.add(new ItemStack(ItemID.FOSSIL_SMALL_UNID, plugin));
     items.add(new ItemStack(ItemID.FOSSIL_MEDIUM_UNID, plugin));

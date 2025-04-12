@@ -15,6 +15,7 @@ import net.runelite.api.Item;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.VarPlayerID;
 import net.runelite.client.config.ConfigManager;
 
 /** Menagerie is responsible for tracking which pets the player has in their POH menagerie. */
@@ -224,7 +225,7 @@ public class Menagerie extends PlayerOwnedHouseStorage {
       return false;
     }
 
-    boolean isBeingFollowed = plugin.getClient().getVarpValue(447) != -1;
+    boolean isBeingFollowed = plugin.getClient().getVarpValue(VarPlayerID.FOLLOWER_NPC) != -1;
     boolean updated = updateFromInventoryWatcher(isBeingFollowed);
 
     if (updated) {
@@ -279,8 +280,8 @@ public class Menagerie extends PlayerOwnedHouseStorage {
     int oldPetBits1 = petBits1;
     int oldPetBits2 = petBits2;
 
-    petBits1 = plugin.getClient().getVarpValue(864);
-    petBits2 = plugin.getClient().getVarpValue(1416);
+    petBits1 = plugin.getClient().getVarpValue(VarPlayerID.PRAYER20);
+    petBits2 = plugin.getClient().getVarpValue(VarPlayerID.MENAGERIE_CONTENTS2);
 
     if (petBits1 != oldPetBits1 || petBits2 != oldPetBits2) {
       rebuildPetsFromBits();

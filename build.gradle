@@ -44,8 +44,10 @@ dependencies {
 group = 'dev.thource.runelite.dudewheresmystuff'
 version = '2.7.1'
 //noinspection GroovyUnusedAssignment
-sourceCompatibility = '1.8'
+sourceCompatibility = '11'
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
 }
+
+targetCompatibility = JavaVersion.VERSION_11

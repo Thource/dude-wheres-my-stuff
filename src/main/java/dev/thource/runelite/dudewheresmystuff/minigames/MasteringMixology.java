@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.util.Text;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -26,7 +27,8 @@ public class MasteringMixology extends MinigamesStorage {
 
     hasStaticItems = true;
 
-    varbits = new int[]{11431, 11432, 11433};
+    varbits =
+        new int[] {VarbitID.MM_AVAILABLE_MOX, VarbitID.MM_AVAILABLE_AGA, VarbitID.MM_AVAILABLE_LYE};
 
     moxResin = new ItemStack(ItemID.MM_MOX_PASTE, plugin);
     agaResin = new ItemStack(ItemID.MM_AGA_PASTE, plugin);
@@ -43,13 +45,13 @@ public class MasteringMixology extends MinigamesStorage {
   @Override
   public boolean onChatMessage(ChatMessage chatMessage) {
     if ((chatMessage.getType() != ChatMessageType.SPAM
-        && chatMessage.getType() != ChatMessageType.GAMEMESSAGE)
+            && chatMessage.getType() != ChatMessageType.GAMEMESSAGE)
         || !chatMessage.getMessage().startsWith("You are rewarded ")) {
       return false;
     }
 
-    Matcher matcher = rewardPointsPattern.matcher(
-        Text.removeTags(chatMessage.getMessage().replace(",", "")));
+    Matcher matcher =
+        rewardPointsPattern.matcher(Text.removeTags(chatMessage.getMessage().replace(",", "")));
     if (!matcher.find()) {
       return false;
     }

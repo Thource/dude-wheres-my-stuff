@@ -4,12 +4,11 @@ import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
 import lombok.Getter;
 import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.VarbitID;
 
 /** BarbarianAssault is responsible for tracking the player's Barbarian Assault points. */
 @Getter
 public class BarbarianAssault extends MinigamesStorage {
-
-  private static final int[] VARBITS = {4759, 4760, 4762, 4761};
 
   private final ItemStack attackerPoints =
       new ItemStack(ItemID.BARBASSAULT_PLAYERICON_ATTACKER, "Attacker Points", 0, 0, 0, true);
@@ -23,7 +22,13 @@ public class BarbarianAssault extends MinigamesStorage {
   BarbarianAssault(DudeWheresMyStuffPlugin plugin) {
     super(MinigamesStorageType.BARBARIAN_ASSAULT, plugin);
 
-    varbits = VARBITS;
+    varbits =
+        new int[] {
+          VarbitID.BARBASSAULT_POINTS_ATTACKER_BASE,
+          VarbitID.BARBASSAULT_POINTS_COLLECTOR_BASE,
+          VarbitID.BARBASSAULT_POINTS_DEFENDER_BASE,
+          VarbitID.BARBASSAULT_POINTS_HEALER_BASE
+        };
 
     items.add(attackerPoints);
     items.add(collectorPoints);
@@ -44,8 +49,9 @@ public class BarbarianAssault extends MinigamesStorage {
       int multiplierVarbit = varbit + 4;
       ItemStack itemStack = items.get(i);
 
-      int newPoints = plugin.getClient().getVarbitValue(varbit)
-          + (plugin.getClient().getVarbitValue(multiplierVarbit) * 512);
+      int newPoints =
+          plugin.getClient().getVarbitValue(varbit)
+              + (plugin.getClient().getVarbitValue(multiplierVarbit) * 512);
       if (newPoints == itemStack.getQuantity()) {
         continue;
       }

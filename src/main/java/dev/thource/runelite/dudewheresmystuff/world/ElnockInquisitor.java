@@ -3,6 +3,7 @@ package dev.thource.runelite.dudewheresmystuff.world;
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
 import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.VarbitID;
 
 /** ElnockInquisitor is responsible for tracking imp catching tools stored at Elnock Inquisitor. */
 public class ElnockInquisitor extends WorldStorage {
@@ -15,7 +16,7 @@ public class ElnockInquisitor extends WorldStorage {
 
     hasStaticItems = true;
 
-    varbits = new int[]{11768, 11770};
+    varbits = new int[] {VarbitID.II_STORED_REPELLENT, VarbitID.II_STORED_IMPLING_JARS};
     varbitItemOffset = 2;
 
     netStack = new ItemStack(ItemID.HUNTING_BUTTERFLY_NET, plugin);
@@ -31,7 +32,7 @@ public class ElnockInquisitor extends WorldStorage {
   public boolean onVarbitChanged() {
     boolean updated = super.onVarbitChanged();
 
-    int newNet = plugin.getClient().getVarbitValue(11767);
+    int newNet = plugin.getClient().getVarbitValue(VarbitID.II_STORED_NET);
 
     if (newNet == 0 && (netStack.getQuantity() != 0 || magicNetStack.getQuantity() != 0)) {
       netStack.setQuantity(0);

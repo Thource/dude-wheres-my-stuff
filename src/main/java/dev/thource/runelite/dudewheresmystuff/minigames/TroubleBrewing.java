@@ -4,6 +4,7 @@ import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
 import lombok.Getter;
 import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.VarPlayerID;
 
 /** TroubleBrewing is responsible for tracking the player's Trouble Brewing pieces of eight. */
 @Getter
@@ -19,7 +20,7 @@ public class TroubleBrewing extends MinigamesStorage {
 
   @Override
   public boolean onVarbitChanged() {
-    int newPoints = plugin.getClient().getVarpValue(4218);
+    int newPoints = plugin.getClient().getVarpValue(VarPlayerID.BREW_PIECES);
     if (newPoints != points.getQuantity()) {
       points.setQuantity(newPoints);
       return true;

@@ -12,12 +12,12 @@ import net.runelite.api.gameval.VarbitID;
 @Getter
 public enum CoinsStorageType implements StorageType {
   BANK("Bank", -1, InventoryID.BANK, false, "bank", false),
-  NMZ("Nightmare Zone", 3948, -1, true, "nightmarezone", true, 1000),
-  LMS("Last Man Standing", 5305, -1, true, "lastmanstanding", false, 1000),
+  NMZ("Nightmare Zone", VarbitID.NZONE_CASH, -1, true, "nightmarezone", true, 1000),
+  LMS("Last Man Standing", VarbitID.BR_COFFER, -1, true, "lastmanstanding", false, 1000),
   SERVANT_MONEYBAG("Servant's Moneybag", -1, -1, false, "servantsmoneybag", true),
-  BF("Blast Furnace", 5357, -1, true, "blastfurnace", true),
+  BF("Blast Furnace", VarbitID.BLAST_FURNACE_COFFER, -1, true, "blastfurnace", true),
   INVENTORY("Inventory", -1, InventoryID.INV, true, "inventory", false),
-  LOOTING_BAG("Looting Bag", -1, 516, false, "lootingbag", true),
+  LOOTING_BAG("Looting Bag", -1, InventoryID.LOOTING_BAG, false, "lootingbag", true),
   GRAND_EXCHANGE("Grand Exchange", -1, -1, false, "grandexchange", false),
   SHILO_FURNACE("Shilo Furnace", -1, -1, false, "shilofurnace", true),
   BOUNTY_HUNTER("Bounty Hunter", -1, -1, false, "bountyhunter", true),

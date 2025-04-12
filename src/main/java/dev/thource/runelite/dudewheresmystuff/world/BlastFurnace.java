@@ -11,31 +11,30 @@ import net.runelite.api.gameval.VarbitID;
  */
 public class BlastFurnace extends WorldStorage {
 
-  private static final int[] VARBITS = {
-      VarbitID.BLAST_FURNACE_COPPER_ORE,
-      VarbitID.BLAST_FURNACE_TIN_ORE,
-      VarbitID.BLAST_FURNACE_IRON_ORE,
-      VarbitID.BLAST_FURNACE_COAL,
-      VarbitID.BLAST_FURNACE_MITHRIL_ORE,
-      VarbitID.BLAST_FURNACE_ADAMANTITE_ORE,
-      VarbitID.BLAST_FURNACE_RUNITE_ORE,
-      VarbitID.BLAST_FURNACE_SILVER_ORE,
-      VarbitID.BLAST_FURNACE_GOLD_ORE,
-      VarbitID.BLAST_FURNACE_BRONZE_BARS,
-      VarbitID.BLAST_FURNACE_IRON_BARS,
-      VarbitID.BLAST_FURNACE_STEEL_BARS,
-      VarbitID.BLAST_FURNACE_MITHRIL_BARS,
-      VarbitID.BLAST_FURNACE_ADAMANTITE_BARS,
-      VarbitID.BLAST_FURNACE_RUNITE_BARS,
-      VarbitID.BLAST_FURNACE_SILVER_BARS,
-      VarbitID.BLAST_FURNACE_GOLD_BARS
-  };
-
   protected BlastFurnace(DudeWheresMyStuffPlugin plugin) {
     super(WorldStorageType.BLAST_FURNACE, plugin);
 
     hasStaticItems = true;
-    varbits = VARBITS;
+    varbits =
+        new int[] {
+          VarbitID.BLAST_FURNACE_COPPER_ORE,
+          VarbitID.BLAST_FURNACE_TIN_ORE,
+          VarbitID.BLAST_FURNACE_IRON_ORE,
+          VarbitID.BLAST_FURNACE_COAL,
+          VarbitID.BLAST_FURNACE_MITHRIL_ORE,
+          VarbitID.BLAST_FURNACE_ADAMANTITE_ORE,
+          VarbitID.BLAST_FURNACE_RUNITE_ORE,
+          VarbitID.BLAST_FURNACE_SILVER_ORE,
+          VarbitID.BLAST_FURNACE_GOLD_ORE,
+          VarbitID.BLAST_FURNACE_BRONZE_BARS,
+          VarbitID.BLAST_FURNACE_IRON_BARS,
+          VarbitID.BLAST_FURNACE_STEEL_BARS,
+          VarbitID.BLAST_FURNACE_MITHRIL_BARS,
+          VarbitID.BLAST_FURNACE_ADAMANTITE_BARS,
+          VarbitID.BLAST_FURNACE_RUNITE_BARS,
+          VarbitID.BLAST_FURNACE_SILVER_BARS,
+          VarbitID.BLAST_FURNACE_GOLD_BARS
+        };
 
     items.add(new ItemStack(ItemID.COPPER_ORE, plugin));
     items.add(new ItemStack(ItemID.TIN_ORE, plugin));

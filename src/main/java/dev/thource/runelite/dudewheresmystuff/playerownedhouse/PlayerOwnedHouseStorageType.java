@@ -6,6 +6,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.gameval.ItemID;
 
 /** PlayerOwnedHouseStorageType is used to identify PlayerOwnedHouseStorages. */
@@ -1514,7 +1515,7 @@ public enum PlayerOwnedHouseStorageType implements StorageType {
           ItemID.COX_CHALLENGE_CAPE_T1,
           ItemID.COX_CHALLENGE_CAPE_T3,
           ItemID.COX_CHALLENGE_CAPE_T2)),
-  MENAGERIE("Menagerie", 517, "menagerie", null),
+  MENAGERIE("Menagerie", InventoryID.POH_MENAGERIE_PETS, "menagerie", null),
   BOSS_LAIR_DISPLAY(
       "Boss Lair Display",
       33405,
