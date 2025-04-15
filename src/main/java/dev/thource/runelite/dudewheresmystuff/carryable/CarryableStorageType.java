@@ -82,7 +82,15 @@ public enum CarryableStorageType implements StorageType {
       true,
       Arrays.asList(
           ItemID.FORESTRY_KIT, ItemID.FORESTRY_BASKET_CLOSED, ItemID.FORESTRY_BASKET_OPEN),
-      -1);
+      -1),
+  TACKLE_BOX(
+      "Tackle Box",
+      InventoryID.TACKLE_BOX,
+      false,
+          "tackleBox",
+          true,
+      Collections.singletonList(ItemID.TACKLE_BOX),
+      VarbitID.EMPTYONDEATH_TACKLEBOX);
 
   private final String name;
   private final int itemContainerId;
