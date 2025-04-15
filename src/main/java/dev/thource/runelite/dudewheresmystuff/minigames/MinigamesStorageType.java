@@ -23,7 +23,8 @@ public enum MinigamesStorageType implements StorageType {
   GIANTS_FOUNDRY("Giants' Foundry", false, "giantsfoundry"),
   VOLCANIC_MINE("Volcanic Mine", false, "volcanicmine"),
   TROUBLE_BREWING("Trouble Brewing", true, "troubleBrewing"),
-  MASTERING_MIXOLOGY("Mastering Mixology", false, "masteringMixology");
+  MASTERING_MIXOLOGY("Mastering Mixology", false, "masteringMixology"),
+  WINTERTODT("Wintertodt", true, "wintertodt");
 
   private final String name;
   private final int itemContainerId = -1;
