@@ -53,7 +53,7 @@ public enum WorldStorageType implements StorageType {
   POTION_STORAGE(
       "Potion Storage",
       -1,
-      true,
+      false,
       "potionStorage",
       true,
       Collections.singletonList(2)); // uim
