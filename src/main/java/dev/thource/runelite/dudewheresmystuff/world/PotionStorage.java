@@ -146,8 +146,9 @@ public class PotionStorage extends WorldStorage {
       return false;
     }
 
+    var doseMap = new HashMap<String, Integer>();
     var updated = false;
-    ItemStack currentPotion = null;
+    String currentPotionString = null;
     for (Widget widget : potionStorageWidget.getChildren()) {
       var widgetText = widget.getText();
       if (widgetText.startsWith("Vials:")) {
@@ -161,34 +162,38 @@ public class PotionStorage extends WorldStorage {
       }
 
       if (widgetText.startsWith("Doses:")) {
-        if (currentPotion != null) {
-          var newDoses = Integer.parseInt(widgetText.replace("Doses: ", ""));
-          if (newDoses != currentPotion.getQuantity()) {
-            updated = true;
-            currentPotion.setQuantity(newDoses);
-          }
+        if (currentPotionString != null) {
+          doseMap.put(currentPotionString, Integer.parseInt(widgetText.replace("Doses: ", "")));
         }
 
         continue;
       }
 
       if (widgetText.contains("(")) {
-        currentPotion = potionMap.get(widgetText);
-        if (currentPotion == null) {
+        currentPotionString = widgetText;
+        if (!potionMap.containsKey(currentPotionString)) {
           var textSplit = widgetText.split("\\s*\\(");
-          currentPotion = potionMap.get(textSplit[0]);
+          currentPotionString = textSplit[0];
         }
 
-        if (currentPotion == null) {
+        if (!potionMap.containsKey(currentPotionString)) {
           log.info("Unknown potion: '{}'", widgetText);
         }
       }
     }
 
-    if (updated) {
-      updateLastUpdated();
+    for (var entry : potionMap.entrySet()) {
+      var potionString = entry.getKey();
+      var potionStack = entry.getValue();
+
+      var newQuantity = doseMap.getOrDefault(potionString, 0);
+      if (newQuantity != potionStack.getQuantity()) {
+        updated = true;
+        potionStack.setQuantity(newQuantity);
+      }
     }
 
+    updateLastUpdated();
     return updated;
   }
 }
