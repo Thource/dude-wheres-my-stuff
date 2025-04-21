@@ -111,7 +111,7 @@ public class DudeWheresMyStuffPlugin extends Plugin {
   @Inject private CoinsStorageManager previewCoinsStorageManager;
   @Inject private CarryableStorageManager carryableStorageManager;
   @Inject private CarryableStorageManager previewCarryableStorageManager;
-  @Inject private WorldStorageManager worldStorageManager;
+  @Getter @Inject private WorldStorageManager worldStorageManager;
   @Inject private WorldStorageManager previewWorldStorageManager;
   @Inject private StashStorageManager stashStorageManager;
   @Inject private StashStorageManager previewStashStorageManager;

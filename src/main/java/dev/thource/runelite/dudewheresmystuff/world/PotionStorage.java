@@ -25,7 +25,7 @@ public class PotionStorage extends WorldStorage {
 
   private final ItemStack vials;
   private final HashMap<String, ItemStack> potionMap = new HashMap<>();
-  private final HashMap<Integer, PotionDoseInfo> doseMap = new HashMap<>();
+  @Getter private final HashMap<Integer, PotionDoseInfo> doseMap = new HashMap<>();
 
   protected PotionStorage(DudeWheresMyStuffPlugin plugin) {
     super(WorldStorageType.POTION_STORAGE, plugin);
@@ -481,12 +481,13 @@ public class PotionStorage extends WorldStorage {
   }
 
   private boolean updateFromDepositBoxOrBank() {
-    if (plugin.getClient().getVarbitValue(VarbitID.BANK_DEPOSITPOTION) != 1) {
+    var client = plugin.getClient();
+    if (client.getVarbitValue(VarbitID.BANK_DEPOSITPOTION) != 1) {
       return false;
     }
 
-    var depositBoxWidget = plugin.getClient().getWidget(InterfaceID.BankDepositbox.FRAME);
-    var bankWidget = plugin.getClient().getWidget(InterfaceID.Bankmain.FRAME);
+    var depositBoxWidget = client.getWidget(InterfaceID.BankDepositbox.FRAME);
+    var bankWidget = client.getWidget(InterfaceID.Bankmain.FRAME);
     if ((depositBoxWidget == null || depositBoxWidget.isHidden())
         && (bankWidget == null || bankWidget.isHidden())) {
       return false;
@@ -515,7 +516,18 @@ public class PotionStorage extends WorldStorage {
 
   @Override
   public boolean onGameTick() {
-    return updateFromPotionStorageWidget() || updateFromDepositBoxOrBank();
-    //        || updateFromToaPot();
+    var updated = false;
+
+    if (updateFromPotionStorageWidget()) {
+      updated = true;
+      log.info("Updated from potion storage widget");
+    }
+
+    if (updateFromDepositBoxOrBank()) {
+      updated = true;
+      log.info("Updated from bank deposit");
+    }
+
+    return updated;
   }
 }
