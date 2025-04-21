@@ -490,9 +490,20 @@ public class PotionStorage extends WorldStorage {
     }
 
     var depositBoxWidget = client.getWidget(InterfaceID.BankDepositbox.FRAME);
+    var depositBoxOpen = depositBoxWidget != null && !depositBoxWidget.isHidden();
     var bankWidget = client.getWidget(InterfaceID.Bankmain.ITEMS);
-    if ((depositBoxWidget == null || depositBoxWidget.isHidden())
-        && (bankWidget == null || bankWidget.isHidden())) {
+    var bankOpen = bankWidget != null && !bankWidget.isHidden();
+    if (bankOpen) {
+      var potionStorageWidget =
+          plugin.getClient().getWidget(InterfaceID.Bankmain.POTIONSTORE_ITEMS);
+      var potionStorageOpen =
+          potionStorageWidget != null
+              && !potionStorageWidget.isHidden()
+              && potionStorageWidget.getChildren() != null;
+      if (potionStorageOpen) {
+        return false;
+      }
+    } else if (!depositBoxOpen) {
       return false;
     }
 
