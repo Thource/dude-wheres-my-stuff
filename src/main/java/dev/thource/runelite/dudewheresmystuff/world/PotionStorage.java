@@ -4,6 +4,8 @@ import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.ItemContainerWatcher;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
 import java.util.HashMap;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.ItemID;
@@ -14,9 +16,16 @@ import net.runelite.api.widgets.Widget;
 @Slf4j
 public class PotionStorage extends WorldStorage {
 
+  @RequiredArgsConstructor
+  @Getter
+  private static class PotionDoseInfo {
+    private final int doses;
+    private final ItemStack itemStack;
+  }
+
   private final ItemStack vials;
   private final HashMap<String, ItemStack> potionMap = new HashMap<>();
-  private final HashMap<Integer, ItemStack> itemStackFromDoseIdMap = new HashMap<>();
+  private final HashMap<Integer, PotionDoseInfo> doseMap = new HashMap<>();
 
   protected PotionStorage(DudeWheresMyStuffPlugin plugin) {
     super(WorldStorageType.POTION_STORAGE, plugin);
@@ -406,9 +415,10 @@ public class PotionStorage extends WorldStorage {
     items.add(itemStack);
     potionMap.put(storageText, itemStack);
 
-    itemStackFromDoseIdMap.put(oneDoseId, itemStack);
+    doseMap.put(oneDoseId, new PotionDoseInfo(1, itemStack));
+    var doses = 1;
     for (int otherDoseId : otherDoseIds) {
-      itemStackFromDoseIdMap.put(otherDoseId, itemStack);
+      doseMap.put(otherDoseId, new PotionDoseInfo(++doses, itemStack));
     }
   }
 
@@ -486,9 +496,11 @@ public class PotionStorage extends WorldStorage {
     for (ItemStack itemStack :
         ItemContainerWatcher.getInventoryWatcher().getItemsRemovedLastTick()) {
 
-      var potionStack = itemStackFromDoseIdMap.get(itemStack.getCanonicalId());
-      if (potionStack != null) {
-        potionStack.setQuantity(potionStack.getQuantity() + itemStack.getQuantity());
+      var potionDoseInfo = doseMap.get(itemStack.getCanonicalId());
+      if (potionDoseInfo != null) {
+        var potionStack = potionDoseInfo.getItemStack();
+        potionStack.setQuantity(
+            potionStack.getQuantity() + itemStack.getQuantity() * potionDoseInfo.getDoses());
 
         updated = true;
       }
