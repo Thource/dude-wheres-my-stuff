@@ -476,11 +476,9 @@ public class PotionStorage extends WorldStorage {
     }
 
     var depositBoxWidget = plugin.getClient().getWidget(InterfaceID.BankDepositbox.FRAME);
-    if (depositBoxWidget == null || depositBoxWidget.isHidden()) {
-      return false;
-    }
     var bankWidget = plugin.getClient().getWidget(InterfaceID.Bankmain.FRAME);
-    if (bankWidget == null || bankWidget.isHidden()) {
+    if ((depositBoxWidget == null || depositBoxWidget.isHidden())
+        && (bankWidget == null || bankWidget.isHidden())) {
       return false;
     }
 
@@ -505,8 +503,7 @@ public class PotionStorage extends WorldStorage {
 
   @Override
   public boolean onGameTick() {
-    return updateFromPotionStorageWidget()
-        || updateFromDepositBoxOrBank();
-//        || updateFromToaPot();
+    return updateFromPotionStorageWidget() || updateFromDepositBoxOrBank();
+    //        || updateFromToaPot();
   }
 }
