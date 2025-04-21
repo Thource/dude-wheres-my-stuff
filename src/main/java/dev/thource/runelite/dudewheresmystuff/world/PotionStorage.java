@@ -461,10 +461,6 @@ public class PotionStorage extends WorldStorage {
           var textSplit = widgetText.split("\\s*\\(");
           currentPotionString = textSplit[0];
         }
-
-        if (!potionMap.containsKey(currentPotionString)) {
-          log.info("Unknown potion: '{}'", widgetText);
-        }
       }
     }
 
@@ -532,16 +528,10 @@ public class PotionStorage extends WorldStorage {
 
   @Override
   public boolean onGameTick() {
-    var updated = false;
-
-    if (updateFromPotionStorageWidget()) {
-      updated = true;
-      log.info("Updated from potion storage widget");
-    }
+    var updated = updateFromPotionStorageWidget();
 
     if (updateFromDepositBoxOrBank()) {
       updated = true;
-      log.info("Updated from bank deposit");
     }
 
     return updated;
