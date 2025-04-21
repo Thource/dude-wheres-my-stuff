@@ -11,13 +11,13 @@ import lombok.extern.slf4j.Slf4j;
 public class WorldStorageManager extends StorageManager<WorldStorageType, WorldStorage> {
 
   @Getter private final Leprechaun leprechaun;
+  @Getter private final PotionStorage potionStorage;
 
   @Inject
   private WorldStorageManager(DudeWheresMyStuffPlugin plugin) {
     super(plugin);
 
     leprechaun = new Leprechaun(plugin);
-
     storages.add(leprechaun);
     storages.add(new Bank(plugin));
     storages.add(new WorldStorage(WorldStorageType.GROUP_STORAGE, plugin));
@@ -33,6 +33,8 @@ public class WorldStorageManager extends StorageManager<WorldStorageType, WorldS
     storages.add(new ForestryShop(plugin));
     storages.add(new Sandstorm(plugin));
     storages.add(new Eyatlalli(plugin));
+    potionStorage = new PotionStorage(plugin);
+    storages.add(potionStorage);
   }
 
   @Override

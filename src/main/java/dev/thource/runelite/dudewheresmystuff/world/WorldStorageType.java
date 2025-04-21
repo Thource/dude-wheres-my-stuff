@@ -49,7 +49,14 @@ public enum WorldStorageType implements StorageType {
   FORESTRY_SHOP("Forestry Shop", -1, false, "forestryshop", true,
       Arrays.asList(0, 1, 3, 4, 5, 6)), // uim only
   SANDSTORM("Sandstorm", -1, false, "sandstorm", true, null),
-  EYATLALLI("Eyatlalli", -1, false, "eyatlalli", true, null);
+  EYATLALLI("Eyatlalli", -1, false, "eyatlalli", true, null),
+  POTION_STORAGE(
+      "Potion Storage",
+      -1,
+      false,
+      "potionStorage",
+      true,
+      Collections.singletonList(2)); // uim
 
   private final String name;
   private final int itemContainerId;
