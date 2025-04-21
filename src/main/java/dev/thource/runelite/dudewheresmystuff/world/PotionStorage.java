@@ -34,6 +34,7 @@ public class PotionStorage extends WorldStorage {
 
     vials = new ItemStack(ItemID.VIAL_EMPTY, plugin);
     items.add(vials);
+    doseMap.put(ItemID.VIAL_EMPTY, new PotionDoseInfo(1, vials));
 
     // regular potions
     addPotion(
@@ -425,7 +426,9 @@ public class PotionStorage extends WorldStorage {
   private boolean updateFromPotionStorageWidget() {
     var potionStorageWidget = plugin.getClient().getWidget(InterfaceID.Bankmain.POTIONSTORE_ITEMS);
 
-    if (potionStorageWidget == null || potionStorageWidget.getChildren() == null) {
+    if (potionStorageWidget == null
+        || potionStorageWidget.isHidden()
+        || potionStorageWidget.getChildren() == null) {
       return false;
     }
 
@@ -487,7 +490,7 @@ public class PotionStorage extends WorldStorage {
     }
 
     var depositBoxWidget = client.getWidget(InterfaceID.BankDepositbox.FRAME);
-    var bankWidget = client.getWidget(InterfaceID.Bankmain.FRAME);
+    var bankWidget = client.getWidget(InterfaceID.Bankmain.ITEMS_CONTAINER);
     if ((depositBoxWidget == null || depositBoxWidget.isHidden())
         && (bankWidget == null || bankWidget.isHidden())) {
       return false;
@@ -502,6 +505,8 @@ public class PotionStorage extends WorldStorage {
         var potionStack = potionDoseInfo.getItemStack();
         potionStack.setQuantity(
             potionStack.getQuantity() + itemStack.getQuantity() * potionDoseInfo.getDoses());
+
+        vials.setQuantity(vials.getQuantity() + itemStack.getQuantity());
 
         updated = true;
       }
