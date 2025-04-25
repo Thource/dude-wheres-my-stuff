@@ -7,6 +7,7 @@ import dev.thource.runelite.dudewheresmystuff.ItemStack;
 import dev.thource.runelite.dudewheresmystuff.Region;
 import dev.thource.runelite.dudewheresmystuff.SaveFieldFormatter;
 import dev.thource.runelite.dudewheresmystuff.SaveFieldLoader;
+import dev.thource.runelite.dudewheresmystuff.Var;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.ListIterator;
 import net.runelite.api.Item;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.VarPlayerID;
 import net.runelite.client.config.ConfigManager;
@@ -276,12 +278,18 @@ public class Menagerie extends PlayerOwnedHouseStorage {
   }
 
   @Override
-  public boolean onVarbitChanged() {
-    int oldPetBits1 = petBits1;
-    int oldPetBits2 = petBits2;
+  public boolean onVarbitChanged(VarbitChanged varbitChanged) {
+    var petVar1 = Var.player(varbitChanged, VarPlayerID.PRAYER20);
+    var petVar2 = Var.player(varbitChanged, VarPlayerID.MENAGERIE_CONTENTS2);
+    if (!petVar1.wasChanged() && !petVar2.wasChanged()) {
+      return false;
+    }
 
-    petBits1 = plugin.getClient().getVarpValue(VarPlayerID.PRAYER20);
-    petBits2 = plugin.getClient().getVarpValue(VarPlayerID.MENAGERIE_CONTENTS2);
+    final var oldPetBits1 = petBits1;
+    final var oldPetBits2 = petBits2;
+    var client = plugin.getClient();
+    petBits1 = petVar1.getValue(client);
+    petBits2 = petVar2.getValue(client);
 
     if (petBits1 != oldPetBits1 || petBits2 != oldPetBits2) {
       rebuildPetsFromBits();

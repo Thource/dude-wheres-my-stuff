@@ -2,6 +2,7 @@ package dev.thource.runelite.dudewheresmystuff.world;
 
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.VarbitID;
 
@@ -28,8 +29,8 @@ public class VyreWell extends WorldStorage {
   }
 
   @Override
-  public boolean onVarbitChanged() {
-    boolean updated = super.onVarbitChanged();
+  public boolean onVarbitChanged(VarbitChanged varbitChanged) {
+    boolean updated = super.onVarbitChanged(varbitChanged);
 
     if (updated) {
       bloodRunes.setQuantity(vialsOfBlood.getQuantity() * 200L);

@@ -8,6 +8,7 @@ import dev.thource.runelite.dudewheresmystuff.ItemStack;
 import dev.thource.runelite.dudewheresmystuff.ItemStackUtils;
 import dev.thource.runelite.dudewheresmystuff.Region;
 import dev.thource.runelite.dudewheresmystuff.StorageManager;
+import dev.thource.runelite.dudewheresmystuff.Var;
 import dev.thource.runelite.dudewheresmystuff.carryable.CarryableStorageManager;
 import dev.thource.runelite.dudewheresmystuff.carryable.CarryableStorageType;
 import dev.thource.runelite.dudewheresmystuff.coins.CoinsStorageManager;
@@ -44,6 +45,7 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.ItemDespawned;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.VarPlayerID;
@@ -140,9 +142,14 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
   }
 
   @Override
-  public void onVarbitChanged() {
+  public void onVarbitChanged(VarbitChanged varbitChanged) {
+    var durationVar = Var.bit(varbitChanged, VarbitID.GRAVESTONE_DURATION);
+    if (!durationVar.wasChanged()) {
+      return;
+    }
+
     if (grave == null) {
-      if (client.getVarbitValue(VarbitID.GRAVESTONE_DURATION) > 0
+      if (durationVar.getValue(plugin.getClient()) > 0
           && client.getBoostedSkillLevel(Skill.HITPOINTS) > 0) {
         createMysteryGrave();
       }

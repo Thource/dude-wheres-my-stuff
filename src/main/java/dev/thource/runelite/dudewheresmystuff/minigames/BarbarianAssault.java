@@ -2,7 +2,9 @@ package dev.thource.runelite.dudewheresmystuff.minigames;
 
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
+import dev.thource.runelite.dudewheresmystuff.Var;
 import lombok.Getter;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.VarbitID;
 
@@ -37,29 +39,28 @@ public class BarbarianAssault extends MinigamesStorage {
   }
 
   @Override
-  public boolean onVarbitChanged() {
+  public boolean onVarbitChanged(VarbitChanged varbitChanged) {
     if (varbits == null) {
       return false;
     }
 
-    boolean updated = false;
-
     for (int i = 0; i < varbits.length; i++) {
-      int varbit = varbits[i];
-      int multiplierVarbit = varbit + 4;
-      ItemStack itemStack = items.get(i);
+      var var = Var.bit(varbitChanged, varbits[i]);
+      if (!var.wasChanged()) {
+        continue;
+      }
 
-      int newPoints =
-          plugin.getClient().getVarbitValue(varbit)
-              + (plugin.getClient().getVarbitValue(multiplierVarbit) * 512);
+      var itemStack = items.get(i);
+      var client = plugin.getClient();
+      var newPoints = var.getValue(client) + (client.getVarbitValue(varbits[i] + 4) * 512);
       if (newPoints == itemStack.getQuantity()) {
         continue;
       }
 
       itemStack.setQuantity(newPoints);
-      updated = true;
+      return true;
     }
 
-    return updated;
+    return false;
   }
 }

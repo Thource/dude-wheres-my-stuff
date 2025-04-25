@@ -500,7 +500,9 @@ public class DudeWheresMyStuffPlugin extends Plugin {
           onItemContainerChanged(new ItemContainerChanged(itemContainer.getId(), itemContainer));
         }
 
-        onVarbitChanged(new VarbitChanged());
+        var varbitChanged = new VarbitChanged();
+        varbitChanged.setVarbitId(-999);
+        onVarbitChanged(varbitChanged);
 
         panelContainer.getPanel().setDisplayName(getDisplayName(configManager.getRSProfileKey()));
 
@@ -562,7 +564,7 @@ public class DudeWheresMyStuffPlugin extends Plugin {
       return;
     }
 
-    storageManagerManager.onVarbitChanged();
+    storageManagerManager.onVarbitChanged(varbitChanged);
   }
 
   @Subscribe
