@@ -496,13 +496,15 @@ public class DudeWheresMyStuffPlugin extends Plugin {
       if (pluginStartedAlreadyLoggedIn) {
         load(configManager.getRSProfileKey());
 
-        for (ItemContainer itemContainer : client.getItemContainers()) {
-          onItemContainerChanged(new ItemContainerChanged(itemContainer.getId(), itemContainer));
-        }
+        clientThread.invokeLater(() -> {
+          for (ItemContainer itemContainer : client.getItemContainers()) {
+            onItemContainerChanged(new ItemContainerChanged(itemContainer.getId(), itemContainer));
+          }
 
-        var varbitChanged = new VarbitChanged();
-        varbitChanged.setVarbitId(-999);
-        onVarbitChanged(varbitChanged);
+          var varbitChanged = new VarbitChanged();
+          varbitChanged.setVarbitId(-999);
+          onVarbitChanged(varbitChanged);
+        });
 
         panelContainer.getPanel().setDisplayName(getDisplayName(configManager.getRSProfileKey()));
 
