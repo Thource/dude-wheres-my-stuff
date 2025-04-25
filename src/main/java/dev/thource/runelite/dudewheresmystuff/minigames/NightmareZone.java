@@ -2,7 +2,9 @@ package dev.thource.runelite.dudewheresmystuff.minigames;
 
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
+import dev.thource.runelite.dudewheresmystuff.Var;
 import lombok.Getter;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.VarPlayerID;
 import net.runelite.api.gameval.VarbitID;
@@ -36,12 +38,17 @@ public class NightmareZone extends MinigamesStorage {
   }
 
   @Override
-  public boolean onVarbitChanged() {
-    boolean updated = super.onVarbitChanged();
+  public boolean onVarbitChanged(VarbitChanged varbitChanged) {
+    var updated = super.onVarbitChanged(varbitChanged);
 
-    int newPoints =
-        plugin.getClient().getVarbitValue(VarbitID.NZONE_CURRENTPOINTS)
-            + plugin.getClient().getVarpValue(VarPlayerID.NZONE_REWARDPOINTS);
+    var currentPointsVar = Var.bit(varbitChanged, VarbitID.NZONE_CURRENTPOINTS);
+    var rewardPointsVar = Var.player(varbitChanged, VarPlayerID.NZONE_REWARDPOINTS);
+    if (!currentPointsVar.wasChanged() && !rewardPointsVar.wasChanged()) {
+      return updated;
+    }
+
+    var client = plugin.getClient();
+    int newPoints = currentPointsVar.getValue(client) + rewardPointsVar.getValue(client);
     if (newPoints != points.getQuantity()) {
       points.setQuantity(newPoints);
       updated = true;

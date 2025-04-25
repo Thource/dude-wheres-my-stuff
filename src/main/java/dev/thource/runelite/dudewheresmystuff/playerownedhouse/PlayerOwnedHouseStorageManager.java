@@ -13,6 +13,7 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.ItemDespawned;
 import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetClosed;
 import net.runelite.api.events.WidgetLoaded;
 
@@ -121,12 +122,12 @@ public class PlayerOwnedHouseStorageManager
   }
 
   @Override
-  public void onVarbitChanged() {
+  public void onVarbitChanged(VarbitChanged varbitChanged) {
     if (notInHouse()) {
       return;
     }
 
-    super.onVarbitChanged();
+    super.onVarbitChanged(varbitChanged);
   }
 
   @Override

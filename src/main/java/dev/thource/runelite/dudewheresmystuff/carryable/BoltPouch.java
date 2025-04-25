@@ -2,7 +2,9 @@ package dev.thource.runelite.dudewheresmystuff.carryable;
 
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
+import dev.thource.runelite.dudewheresmystuff.Var;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.config.ConfigManager;
@@ -112,28 +114,36 @@ public class BoltPouch extends CarryableStorage {
   BoltPouch(DudeWheresMyStuffPlugin plugin) {
     super(CarryableStorageType.BOLT_POUCH, plugin);
 
-    items.add(new ItemStack(-1, 0, plugin));
-    items.add(new ItemStack(-1, 0, plugin));
-    items.add(new ItemStack(-1, 0, plugin));
-    items.add(new ItemStack(-1, 0, plugin));
+    resetItems();
   }
 
   @Override
-  public boolean onVarbitChanged() {
-    boolean updated = false;
+  public boolean onVarbitChanged(VarbitChanged varbitChanged) {
+    var updated = false;
 
     for (int i = 0; i < BOLT_TYPE_VARBITS.length; i++) {
-      int boltCount = plugin.getClient().getVarbitValue(BOLT_COUNT_VARBITS[i]);
-      int boltItemId = getBoltItemId(plugin.getClient().getVarbitValue(BOLT_TYPE_VARBITS[i]));
-      ItemStack boltStack = items.get(i);
-
-      if (boltCount != boltStack.getQuantity()) {
-        boltStack.setQuantity(boltCount);
-        updated = true;
+      var countVar = Var.bit(varbitChanged, BOLT_COUNT_VARBITS[i]);
+      var typeVar = Var.bit(varbitChanged, BOLT_TYPE_VARBITS[i]);
+      if (!countVar.wasChanged() && !typeVar.wasChanged()) {
+        continue;
       }
-      if (boltItemId != boltStack.getId()) {
-        boltStack.setId(boltItemId, plugin);
-        updated = true;
+
+      var client = plugin.getClient();
+      var boltStack = items.get(i);
+      if (countVar.wasChanged()) {
+        var newCount = countVar.getValue(client);
+        if (newCount != boltStack.getQuantity()) {
+          boltStack.setQuantity(newCount);
+          updated = true;
+        }
+      }
+
+      if (typeVar.wasChanged()) {
+        int boltItemId = getBoltItemId(typeVar.getValue(client));
+        if (boltItemId != boltStack.getId()) {
+          boltStack.setId(boltItemId, plugin);
+          updated = true;
+        }
       }
     }
 
@@ -158,9 +168,9 @@ public class BoltPouch extends CarryableStorage {
   }
 
   @Override
-  public void reset() {
-    lastUpdated = -1;
-    lastSaveString = null;
-    enable();
+  protected void resetItems() {
+    for (int i = 0; i < BOLT_TYPE_VARBITS.length; i++) {
+      items.add(new ItemStack(-1, 0, plugin));
+    }
   }
 }

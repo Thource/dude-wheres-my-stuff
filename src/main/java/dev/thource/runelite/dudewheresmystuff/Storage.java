@@ -16,6 +16,7 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetClosed;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.client.config.ConfigManager;
@@ -118,7 +119,8 @@ public abstract class Storage<T extends StorageType> {
     return false;
   }
 
-  public boolean onVarbitChanged() {
+  @SuppressWarnings("java:S1172") // the parameter is used in child classes
+  public boolean onVarbitChanged(VarbitChanged varbitChanged) {
     return false;
   }
 

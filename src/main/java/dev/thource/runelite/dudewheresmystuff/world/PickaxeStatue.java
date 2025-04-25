@@ -2,6 +2,8 @@ package dev.thource.runelite.dudewheresmystuff.world;
 
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
+import dev.thource.runelite.dudewheresmystuff.Var;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.config.ConfigManager;
@@ -41,8 +43,13 @@ public class PickaxeStatue extends WorldStorage {
   }
 
   @Override
-  public boolean onVarbitChanged() {
-    int pickaxeId = getPickaxeId(plugin.getClient().getVarbitValue(VarbitID.TOA_PICKAXE_STORED));
+  public boolean onVarbitChanged(VarbitChanged varbitChanged) {
+    var typeVar = Var.bit(varbitChanged, VarbitID.TOA_PICKAXE_STORED);
+    if (!typeVar.wasChanged()) {
+      return false;
+    }
+
+    int pickaxeId = getPickaxeId(typeVar.getValue(plugin.getClient()));
     if (pickaxe.getId() != pickaxeId) {
       pickaxe.setId(pickaxeId, plugin);
       pickaxe.setQuantity(pickaxe.getId() == PICKAXE_IDS[0] ? 0 : 1);

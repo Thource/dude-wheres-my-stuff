@@ -2,7 +2,9 @@ package dev.thource.runelite.dudewheresmystuff.minigames;
 
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
+import dev.thource.runelite.dudewheresmystuff.Var;
 import lombok.Getter;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.VarPlayerID;
 
@@ -19,8 +21,13 @@ public class TroubleBrewing extends MinigamesStorage {
   }
 
   @Override
-  public boolean onVarbitChanged() {
-    int newPoints = plugin.getClient().getVarpValue(VarPlayerID.BREW_PIECES);
+  public boolean onVarbitChanged(VarbitChanged varbitChanged) {
+    var piecesVar = Var.player(varbitChanged, VarPlayerID.BREW_PIECES);
+    if (!piecesVar.wasChanged()) {
+      return false;
+    }
+
+    var newPoints = piecesVar.getValue(plugin.getClient());
     if (newPoints != points.getQuantity()) {
       points.setQuantity(newPoints);
       return true;

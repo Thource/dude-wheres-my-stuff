@@ -2,6 +2,8 @@ package dev.thource.runelite.dudewheresmystuff.world;
 
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
+import dev.thource.runelite.dudewheresmystuff.Var;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.VarbitID;
 
@@ -29,23 +31,26 @@ public class ElnockInquisitor extends WorldStorage {
   }
 
   @Override
-  public boolean onVarbitChanged() {
-    boolean updated = super.onVarbitChanged();
+  public boolean onVarbitChanged(VarbitChanged varbitChanged) {
+    var updated = super.onVarbitChanged(varbitChanged);
 
-    int newNet = plugin.getClient().getVarbitValue(VarbitID.II_STORED_NET);
+    var netVar = Var.bit(varbitChanged, VarbitID.II_STORED_NET);
+    if (netVar.wasChanged()) {
+      int newNet = netVar.getValue(plugin.getClient());
 
-    if (newNet == 0 && (netStack.getQuantity() != 0 || magicNetStack.getQuantity() != 0)) {
-      netStack.setQuantity(0);
-      magicNetStack.setQuantity(0);
-      updated = true;
-    } else if (newNet == 1 && netStack.getQuantity() != 1) {
-      netStack.setQuantity(1);
-      magicNetStack.setQuantity(0);
-      updated = true;
-    } else if (newNet == 2 && magicNetStack.getQuantity() != 1) {
-      netStack.setQuantity(0);
-      magicNetStack.setQuantity(1);
-      updated = true;
+      if (newNet == 0 && (netStack.getQuantity() != 0 || magicNetStack.getQuantity() != 0)) {
+        netStack.setQuantity(0);
+        magicNetStack.setQuantity(0);
+        updated = true;
+      } else if (newNet == 1 && netStack.getQuantity() != 1) {
+        netStack.setQuantity(1);
+        magicNetStack.setQuantity(0);
+        updated = true;
+      } else if (newNet == 2 && magicNetStack.getQuantity() != 1) {
+        netStack.setQuantity(0);
+        magicNetStack.setQuantity(1);
+        updated = true;
+      }
     }
 
     return updated;
