@@ -451,9 +451,9 @@ public enum StashUnit {
           ItemRequirements.item(ItemID.AMULET_OF_GLORY_6),
           ItemRequirements.item(ItemID.AMULET_OF_GLORY_INF))),
   MUBARIZS_ROOM_AT_THE_DUEL_ARENA(
-      "Duel Arena",
+      "Emir's Arena",
       "Mubariz's room at the Emir's Arena",
-      STASHUnit.PVP_ARENA_TICKET_OFFICE,
+      STASHUnit.EMIRS_ARENA_TICKET_OFFICE,
       new int[]{ItemID.IRON_CHAINBODY, ItemID.LEATHER_CHAPS, ItemID.COIF},
       ItemRequirements.item(ItemID.IRON_CHAINBODY),
       ItemRequirements.item(ItemID.LEATHER_CHAPS),
