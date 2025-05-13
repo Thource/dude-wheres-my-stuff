@@ -9,14 +9,14 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.Getter;
 import net.runelite.api.Client;
-import net.runelite.api.InventoryID;
 import net.runelite.api.ItemContainer;
+import net.runelite.api.gameval.InventoryID;
 
 /** ItemContainerWatcher makes it easy to detect changes to ItemContainers. */
 public class ItemContainerWatcher {
 
   @Getter static final ItemContainerWatcher inventoryWatcher =
-      new ItemContainerWatcher(InventoryID.INVENTORY.getId());
+      new ItemContainerWatcher(InventoryID.INV);
   @Getter static final ItemContainerWatcher lootingBagWatcher = new ItemContainerWatcher(516);
   @Getter static final ItemContainerWatcher seedBoxWatcher = new ItemContainerWatcher(573);
   @Getter static final ItemContainerWatcher deathsOfficeWatcher = new ItemContainerWatcher(636);

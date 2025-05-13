@@ -16,6 +16,7 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.gameval.VarbitID;
 
 /** Grave is responsible for tracking the player's items that are in a grave. */
 @Getter
@@ -65,7 +66,7 @@ public class Grave extends ExpiringDeathStorage {
       return false;
     }
 
-    int newExpiryTime = plugin.getClient().getVarbitValue(10465);
+    int newExpiryTime = plugin.getClient().getVarbitValue(VarbitID.GRAVESTONE_DURATION);
     if (newExpiryTime <= 0) {
       if (expiryTime >= 6) {
         // invoke this later, so that it doesn't cause concurrent modification

@@ -3,8 +3,8 @@ package dev.thource.runelite.dudewheresmystuff.world;
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
 import net.runelite.api.ChatMessageType;
-import net.runelite.api.ItemID;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.client.util.Text;
 
 /** Nulodion is responsible for tracking when the player can claim a new cannon from Nulodion. */
@@ -14,10 +14,10 @@ public class Nulodion extends WorldStorage {
 
     hasStaticItems = true;
 
-    items.add(new ItemStack(ItemID.CANNON_STAND, plugin));
-    items.add(new ItemStack(ItemID.CANNON_BASE, plugin));
-    items.add(new ItemStack(ItemID.CANNON_FURNACE, plugin));
-    items.add(new ItemStack(ItemID.CANNON_BARRELS, plugin));
+    items.add(new ItemStack(ItemID.TWPART2, plugin));
+    items.add(new ItemStack(ItemID.TWPART1, plugin));
+    items.add(new ItemStack(ItemID.TWPART4, plugin));
+    items.add(new ItemStack(ItemID.TWPART3, plugin));
   }
 
   @Override

@@ -28,7 +28,6 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.VarClientInt;
-import net.runelite.api.Varbits;
 import net.runelite.api.events.ActorDeath;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.FocusChanged;
@@ -41,6 +40,7 @@ import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetClosed;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatMessageManager;
@@ -111,7 +111,7 @@ public class DudeWheresMyStuffPlugin extends Plugin {
   @Inject private CoinsStorageManager previewCoinsStorageManager;
   @Inject private CarryableStorageManager carryableStorageManager;
   @Inject private CarryableStorageManager previewCarryableStorageManager;
-  @Inject private WorldStorageManager worldStorageManager;
+  @Getter @Inject private WorldStorageManager worldStorageManager;
   @Inject private WorldStorageManager previewWorldStorageManager;
   @Inject private StashStorageManager stashStorageManager;
   @Inject private StashStorageManager previewStashStorageManager;
@@ -475,7 +475,7 @@ public class DudeWheresMyStuffPlugin extends Plugin {
 
     if (clientState == ClientState.LOGGING_IN) {
       final boolean isMember = client.getVarcIntValue(VarClientInt.MEMBERSHIP_STATUS) == 1;
-      final int accountType = client.getVarbitValue(Varbits.ACCOUNT_TYPE);
+      final int accountType = client.getVarbitValue(VarbitID.IRONMAN);
       final String displayName = getDisplayName(configManager.getRSProfileKey());
 
       // All saves should be migrated on plugin start, so this must be a new account
@@ -496,11 +496,15 @@ public class DudeWheresMyStuffPlugin extends Plugin {
       if (pluginStartedAlreadyLoggedIn) {
         load(configManager.getRSProfileKey());
 
-        for (ItemContainer itemContainer : client.getItemContainers()) {
-          onItemContainerChanged(new ItemContainerChanged(itemContainer.getId(), itemContainer));
-        }
+        clientThread.invokeLater(() -> {
+          for (ItemContainer itemContainer : client.getItemContainers()) {
+            onItemContainerChanged(new ItemContainerChanged(itemContainer.getId(), itemContainer));
+          }
 
-        onVarbitChanged(new VarbitChanged());
+          var varbitChanged = new VarbitChanged();
+          varbitChanged.setVarbitId(-999);
+          onVarbitChanged(varbitChanged);
+        });
 
         panelContainer.getPanel().setDisplayName(getDisplayName(configManager.getRSProfileKey()));
 
@@ -562,7 +566,7 @@ public class DudeWheresMyStuffPlugin extends Plugin {
       return;
     }
 
-    storageManagerManager.onVarbitChanged();
+    storageManagerManager.onVarbitChanged(varbitChanged);
   }
 
   @Subscribe

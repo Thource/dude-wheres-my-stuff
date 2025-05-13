@@ -15,6 +15,7 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.ItemDespawned;
 import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetClosed;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.client.callback.ClientThread;
@@ -105,11 +106,11 @@ public abstract class StorageManager<T extends StorageType, S extends Storage<T>
   }
 
   /** Pass onVarbitChanged through to enabled storages. */
-  public void onVarbitChanged() {
+  public void onVarbitChanged(VarbitChanged varbitChanged) {
     if (enabled) {
       updateStorages(
           storages.stream()
-              .filter(storage -> storage.isEnabled() && storage.onVarbitChanged())
+              .filter(storage -> storage.isEnabled() && storage.onVarbitChanged(varbitChanged))
               .collect(Collectors.toList()));
     }
   }

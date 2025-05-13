@@ -6,8 +6,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import lombok.Getter;
 import net.runelite.api.ChatMessageType;
-import net.runelite.api.ItemID;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.util.Text;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -21,7 +21,7 @@ public class MahoganyHomes extends MinigamesStorage {
           "You have completed <col=ef1020>\\d+</col> contracts with a total of "
               + "<col=ef1020>(\\d+)</col> points\\.");
 
-  private final ItemStack points = new ItemStack(ItemID.SAW, "Points", 0, 0, 0, true);
+  private final ItemStack points = new ItemStack(ItemID.POH_SAW, "Points", 0, 0, 0, true);
 
   MahoganyHomes(DudeWheresMyStuffPlugin plugin) {
     super(MinigamesStorageType.MAHOGANY_HOMES, plugin);

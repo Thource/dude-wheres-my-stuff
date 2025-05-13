@@ -36,6 +36,7 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.ItemDespawned;
 import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetClosed;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.client.config.ConfigManager;
@@ -160,8 +161,8 @@ public class StorageManagerManager {
     storageManagers.forEach(manager -> manager.onWidgetClosed(widgetClosed));
   }
 
-  public void onVarbitChanged() {
-    storageManagers.forEach(StorageManager::onVarbitChanged);
+  public void onVarbitChanged(VarbitChanged varbitChanged) {
+    storageManagers.forEach(storageManager -> storageManager.onVarbitChanged(varbitChanged));
   }
 
   public void onItemContainerChanged(ItemContainerChanged itemContainerChanged) {

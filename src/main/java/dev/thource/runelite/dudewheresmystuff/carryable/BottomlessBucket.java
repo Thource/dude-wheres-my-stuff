@@ -6,8 +6,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
-import net.runelite.api.ItemID;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.api.widgets.Widget;
 import org.apache.commons.lang3.math.NumberUtils;
 
@@ -29,9 +29,9 @@ public class BottomlessBucket extends CarryableStorage {
 
     hasStaticItems = true;
 
-    compostStack = new ItemStack(ItemID.COMPOST, plugin);
-    supercompostStack = new ItemStack(ItemID.SUPERCOMPOST, plugin);
-    ultracompostStack = new ItemStack(ItemID.ULTRACOMPOST, plugin);
+    compostStack = new ItemStack(ItemID.BUCKET_COMPOST, plugin);
+    supercompostStack = new ItemStack(ItemID.BUCKET_SUPERCOMPOST, plugin);
+    ultracompostStack = new ItemStack(ItemID.BUCKET_ULTRACOMPOST, plugin);
 
     items.add(compostStack);
     items.add(supercompostStack);

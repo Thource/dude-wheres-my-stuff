@@ -26,6 +26,9 @@ public class MinigamesStorageManager
     storages.add(new TitheFarm(plugin));
     storages.add(new TroubleBrewing(plugin));
     storages.add(new VolcanicMine(plugin));
+    storages.add(new MasteringMixology(plugin));
+    storages.add(new Tempoross(plugin));
+    storages.add(new Wintertodt(plugin));
   }
 
   @Override

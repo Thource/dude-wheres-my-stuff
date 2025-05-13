@@ -5,7 +5,7 @@ import dev.thource.runelite.dudewheresmystuff.ItemStack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import lombok.Getter;
-import net.runelite.api.ItemID;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.util.Text;
 

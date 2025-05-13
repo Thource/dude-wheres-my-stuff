@@ -6,8 +6,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import lombok.Getter;
 import net.runelite.api.ChatMessageType;
-import net.runelite.api.ItemID;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.client.util.Text;
 import org.apache.commons.lang3.math.NumberUtils;
 
@@ -34,10 +34,10 @@ public class PlankSack extends CarryableStorage {
 
     hasStaticItems = true;
 
-    plankStack = new ItemStack(ItemID.PLANK, plugin);
-    oakPlankStack = new ItemStack(ItemID.OAK_PLANK, plugin);
-    teakPlankStack = new ItemStack(ItemID.TEAK_PLANK, plugin);
-    mahoganyPlankStack = new ItemStack(ItemID.MAHOGANY_PLANK, plugin);
+    plankStack = new ItemStack(ItemID.WOODPLANK, plugin);
+    oakPlankStack = new ItemStack(ItemID.PLANK_OAK, plugin);
+    teakPlankStack = new ItemStack(ItemID.PLANK_TEAK, plugin);
+    mahoganyPlankStack = new ItemStack(ItemID.PLANK_MAHOGANY, plugin);
 
     items.add(plankStack);
     items.add(oakPlankStack);

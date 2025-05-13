@@ -5,11 +5,10 @@ import dev.thource.runelite.dudewheresmystuff.ItemStack;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.concurrent.atomic.AtomicBoolean;
 import lombok.Getter;
-import net.runelite.api.ItemID;
 import net.runelite.api.events.WidgetClosed;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.api.widgets.Widget;
 import org.apache.commons.lang3.math.NumberUtils;
 
@@ -18,13 +17,13 @@ import org.apache.commons.lang3.math.NumberUtils;
 public class MageTrainingArena extends MinigamesStorage {
 
   private final ItemStack telekineticPoints =
-      new ItemStack(ItemID.LAW_RUNE, "Telekinetic Points", 0, 0, 0, true);
+      new ItemStack(ItemID.LAWRUNE, "Telekinetic Points", 0, 0, 0, true);
   private final ItemStack graveyardPoints =
       new ItemStack(ItemID.PEACH, "Graveyard Points", 0, 0, 0, true);
   private final ItemStack enchantmentPoints =
-      new ItemStack(ItemID.CYLINDER, "Enchantment Points", 0, 0, 0, true);
+      new ItemStack(ItemID.MAGICTRAINING_ENCHAN_CYLINDER, "Enchantment Points", 0, 0, 0, true);
   private final ItemStack alchemistPoints =
-      new ItemStack(ItemID.COINS, "Alchemist Points", 0, 0, 0, true);
+      new ItemStack(ItemID.FAKE_COINS, "Alchemist Points", 0, 0, 0, true);
 
   private final Map<ItemStack, MageTrainingArenaPoint> pointData = new HashMap<>();
 

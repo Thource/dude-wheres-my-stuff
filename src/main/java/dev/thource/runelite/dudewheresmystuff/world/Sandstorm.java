@@ -7,7 +7,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import net.runelite.api.ItemID;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.api.widgets.Widget;
 import org.apache.commons.lang3.math.NumberUtils;
 
@@ -34,8 +34,8 @@ public class Sandstorm extends WorldStorage {
 
     hasStaticItems = true;
 
-    buckets = new ItemStack(ItemID.BUCKET, plugin);
-    sand = new ItemStack(ItemID.SAND, plugin);
+    buckets = new ItemStack(ItemID.BUCKET_EMPTY, plugin);
+    sand = new ItemStack(ItemID.HANDSAND_SAND, plugin);
 
     items.add(buckets);
     items.add(sand);

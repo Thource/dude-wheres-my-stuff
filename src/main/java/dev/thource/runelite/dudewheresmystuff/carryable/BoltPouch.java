@@ -2,8 +2,11 @@ package dev.thource.runelite.dudewheresmystuff.carryable;
 
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
+import dev.thource.runelite.dudewheresmystuff.Var;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.ItemID;
+import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.config.ConfigManager;
 
 /** BoltPouch is responsible for tracking which bolts the player has in the bolt pouch. */
@@ -11,128 +14,136 @@ import net.runelite.client.config.ConfigManager;
 public class BoltPouch extends CarryableStorage {
 
   private static final int[] BOLT_TYPE_VARBITS = {
-      2473,
-      2474,
-      2475,
-      2476
+    VarbitID.XBOWS_POUCH_SLOT1,
+    VarbitID.XBOWS_POUCH_SLOT2,
+    VarbitID.XBOWS_POUCH_SLOT3,
+    VarbitID.XBOWS_POUCH_SLOT4
   };
   private static final int[] BOLT_COUNT_VARBITS = {
-      2469,
-      2470,
-      2471,
-      2472
+    VarbitID.XBOWS_POUCH_NUM1,
+    VarbitID.XBOWS_POUCH_NUM2,
+    VarbitID.XBOWS_POUCH_NUM3,
+    VarbitID.XBOWS_POUCH_NUM4
   };
   private static final int[] BOLT_ITEM_IDS = {
-      -1,
-      ItemID.BRONZE_BOLTS,
-      ItemID.BLURITE_BOLTS,
-      ItemID.IRON_BOLTS,
-      ItemID.STEEL_BOLTS,
-      ItemID.MITHRIL_BOLTS,
-      ItemID.ADAMANT_BOLTS,
-      ItemID.RUNITE_BOLTS,
-      ItemID.SILVER_BOLTS, // 8
-      ItemID.BRONZE_BOLTS_P,
-      ItemID.BLURITE_BOLTS_P,
-      ItemID.IRON_BOLTS_P,
-      ItemID.STEEL_BOLTS_P,
-      ItemID.MITHRIL_BOLTS_P,
-      ItemID.ADAMANT_BOLTS_P,
-      ItemID.RUNITE_BOLTS_P,
-      ItemID.SILVER_BOLTS_P, // 16
-      ItemID.BRONZE_BOLTS_P_6061,
-      ItemID.BLURITE_BOLTS_P_9293,
-      ItemID.IRON_BOLTS_P_9294,
-      ItemID.STEEL_BOLTS_P_9295,
-      ItemID.MITHRIL_BOLTS_P_9296,
-      ItemID.ADAMANT_BOLTS_P_9297,
-      ItemID.RUNITE_BOLTS_P_9298,
-      ItemID.SILVER_BOLTS_P_9299, // 24
-      ItemID.BRONZE_BOLTS_P_6062,
-      ItemID.BLURITE_BOLTS_P_9300,
-      ItemID.IRON_BOLTS_P_9301,
-      ItemID.STEEL_BOLTS_P_9302,
-      ItemID.MITHRIL_BOLTS_P_9303,
-      ItemID.ADAMANT_BOLTS_P_9304,
-      ItemID.RUNITE_BOLTS_P_9305,
-      ItemID.SILVER_BOLTS_P_9306, // 32
-      ItemID.OPAL_BOLTS,
-      ItemID.JADE_BOLTS,
-      ItemID.PEARL_BOLTS,
-      ItemID.TOPAZ_BOLTS,
-      ItemID.SAPPHIRE_BOLTS,
-      ItemID.EMERALD_BOLTS,
-      ItemID.RUBY_BOLTS,
-      ItemID.DIAMOND_BOLTS, // 40
-      ItemID.DRAGONSTONE_BOLTS,
-      ItemID.ONYX_BOLTS,
-      ItemID.OPAL_BOLTS_E,
-      ItemID.JADE_BOLTS_E,
-      ItemID.PEARL_BOLTS_E,
-      ItemID.TOPAZ_BOLTS_E,
-      ItemID.SAPPHIRE_BOLTS_E,
-      ItemID.EMERALD_BOLTS_E, // 48
-      ItemID.RUBY_BOLTS_E,
-      ItemID.DIAMOND_BOLTS_E,
-      ItemID.DRAGONSTONE_BOLTS_E,
-      ItemID.ONYX_BOLTS_E,
-      ItemID.MITH_GRAPPLE_9419,
-      ItemID.BARBED_BOLTS,
-      ItemID.BONE_BOLTS,
-      ItemID.BROAD_BOLTS, // 56
-      ItemID.AMETHYST_BROAD_BOLTS,
-      ItemID.DRAGON_BOLTS,
-      ItemID.DRAGON_BOLTS_P,
-      ItemID.DRAGON_BOLTS_P_21926,
-      ItemID.DRAGON_BOLTS_P_21928,
-      ItemID.OPAL_DRAGON_BOLTS,
-      ItemID.JADE_DRAGON_BOLTS,
-      ItemID.PEARL_DRAGON_BOLTS, // 64
-      ItemID.TOPAZ_DRAGON_BOLTS,
-      ItemID.SAPPHIRE_DRAGON_BOLTS,
-      ItemID.EMERALD_DRAGON_BOLTS,
-      ItemID.RUBY_DRAGON_BOLTS,
-      ItemID.DIAMOND_DRAGON_BOLTS,
-      ItemID.DRAGONSTONE_DRAGON_BOLTS,
-      ItemID.ONYX_DRAGON_BOLTS,
-      ItemID.OPAL_DRAGON_BOLTS_E, // 72
-      ItemID.JADE_DRAGON_BOLTS_E,
-      ItemID.PEARL_DRAGON_BOLTS_E,
-      ItemID.TOPAZ_DRAGON_BOLTS_E,
-      ItemID.SAPPHIRE_DRAGON_BOLTS_E,
-      ItemID.EMERALD_DRAGON_BOLTS_E,
-      ItemID.RUBY_DRAGON_BOLTS_E,
-      ItemID.DIAMOND_DRAGON_BOLTS_E,
-      ItemID.DRAGONSTONE_DRAGON_BOLTS_E, // 80
-      ItemID.ONYX_DRAGON_BOLTS_E,
-      ItemID.BOLT_RACK,
+    -1,
+    ItemID.BOLT,
+    ItemID.XBOWS_CROSSBOW_BOLTS_BLURITE,
+    ItemID.XBOWS_CROSSBOW_BOLTS_IRON,
+    ItemID.XBOWS_CROSSBOW_BOLTS_STEEL,
+    ItemID.XBOWS_CROSSBOW_BOLTS_MITHRIL,
+    ItemID.XBOWS_CROSSBOW_BOLTS_ADAMANTITE,
+    ItemID.XBOWS_CROSSBOW_BOLTS_RUNITE,
+    ItemID.XBOWS_CROSSBOW_BOLTS_SILVER, // 8
+    ItemID.POISON_BOLT,
+    ItemID.XBOWS_CROSSBOW_BOLTS_BLURITE_POISONED,
+    ItemID.XBOWS_CROSSBOW_BOLTS_IRON_POISONED,
+    ItemID.XBOWS_CROSSBOW_BOLTS_STEEL_POISONED,
+    ItemID.XBOWS_CROSSBOW_BOLTS_MITHRIL_POISONED,
+    ItemID.XBOWS_CROSSBOW_BOLTS_ADAMANTITE_POISONED,
+    ItemID.XBOWS_CROSSBOW_BOLTS_RUNITE_POISONED,
+    ItemID.XBOWS_CROSSBOW_BOLTS_SILVER_POISONED, // 16
+    ItemID.POISON_BOLT_,
+    ItemID.XBOWS_CROSSBOW_BOLTS_BLURITE_POISONED_,
+    ItemID.XBOWS_CROSSBOW_BOLTS_IRON_POISONED_,
+    ItemID.XBOWS_CROSSBOW_BOLTS_STEEL_POISONED_,
+    ItemID.XBOWS_CROSSBOW_BOLTS_MITHRIL_POISONED_,
+    ItemID.XBOWS_CROSSBOW_BOLTS_ADAMANTITE_POISONED_,
+    ItemID.XBOWS_CROSSBOW_BOLTS_RUNITE_POISONED_,
+    ItemID.XBOWS_CROSSBOW_BOLTS_SILVER_POISONED_, // 24
+    ItemID.POISON_BOLT__,
+    ItemID.XBOWS_CROSSBOW_BOLTS_BLURITE_POISONED__,
+    ItemID.XBOWS_CROSSBOW_BOLTS_IRON_POISONED__,
+    ItemID.XBOWS_CROSSBOW_BOLTS_STEEL_POISONED__,
+    ItemID.XBOWS_CROSSBOW_BOLTS_MITHRIL_POISONED__,
+    ItemID.XBOWS_CROSSBOW_BOLTS_ADAMANTITE_POISONED__,
+    ItemID.XBOWS_CROSSBOW_BOLTS_RUNITE_POISONED__,
+    ItemID.XBOWS_CROSSBOW_BOLTS_SILVER_POISONED__, // 32
+    ItemID.OPAL_BOLT,
+    ItemID.XBOWS_CROSSBOW_BOLTS_BLURITE_TIPPED_JADE,
+    ItemID.PEARL_BOLT,
+    ItemID.XBOWS_CROSSBOW_BOLTS_STEEL_TIPPED_REDTOPAZ,
+    ItemID.XBOWS_CROSSBOW_BOLTS_MITHRIL_TIPPED_SAPPHIRE,
+    ItemID.XBOWS_CROSSBOW_BOLTS_MITHRIL_TIPPED_EMERALD,
+    ItemID.XBOWS_CROSSBOW_BOLTS_ADAMANTITE_TIPPED_RUBY,
+    ItemID.XBOWS_CROSSBOW_BOLTS_ADAMANTITE_TIPPED_DIAMOND, // 40
+    ItemID.XBOWS_CROSSBOW_BOLTS_RUNITE_TIPPED_DRAGONSTONE,
+    ItemID.XBOWS_CROSSBOW_BOLTS_RUNITE_TIPPED_ONYX,
+    ItemID.XBOWS_CROSSBOW_BOLTS_BRONZE_TIPPED_OPAL_ENCHANTED,
+    ItemID.XBOWS_CROSSBOW_BOLTS_BLURITE_TIPPED_JADE_ENCHANTED,
+    ItemID.XBOWS_CROSSBOW_BOLTS_IRON_TIPPED_PEARL_ENCHANTED,
+    ItemID.XBOWS_CROSSBOW_BOLTS_STEEL_TIPPED_REDTOPAZ_ENCHANTED,
+    ItemID.XBOWS_CROSSBOW_BOLTS_MITHRIL_TIPPED_SAPPHIRE_ENCHANTED,
+    ItemID.XBOWS_CROSSBOW_BOLTS_MITHRIL_TIPPED_EMERALD_ENCHANTED, // 48
+    ItemID.XBOWS_CROSSBOW_BOLTS_ADAMANTITE_TIPPED_RUBY_ENCHANTED,
+    ItemID.XBOWS_CROSSBOW_BOLTS_ADAMANTITE_TIPPED_DIAMOND_ENCHANTED,
+    ItemID.XBOWS_CROSSBOW_BOLTS_RUNITE_TIPPED_DRAGONSTONE_ENCHANTED,
+    ItemID.XBOWS_CROSSBOW_BOLTS_RUNITE_TIPPED_ONYX_ENCHANTED,
+    ItemID.XBOWS_GRAPPLE_TIP_BOLT_MITHRIL_ROPE,
+    ItemID.BARBED_BOLT,
+    ItemID.DTTD_BONE_CROSSBOW_BOLT,
+    ItemID.SLAYER_BROAD_BOLT, // 56
+    ItemID.SLAYER_BROAD_BOLT_AMETHYST,
+    ItemID.DRAGON_BOLTS,
+    ItemID.DRAGON_BOLTS_P,
+    ItemID.DRAGON_BOLTS_P_,
+    ItemID.DRAGON_BOLTS_P__,
+    ItemID.DRAGON_BOLTS_UNENCHANTED_OPAL,
+    ItemID.DRAGON_BOLTS_UNENCHANTED_JADE,
+    ItemID.DRAGON_BOLTS_UNENCHANTED_PEARL, // 64
+    ItemID.DRAGON_BOLTS_UNENCHANTED_TOPAZ,
+    ItemID.DRAGON_BOLTS_UNENCHANTED_SAPPHIRE,
+    ItemID.DRAGON_BOLTS_UNENCHANTED_EMERALD,
+    ItemID.DRAGON_BOLTS_UNENCHANTED_RUBY,
+    ItemID.DRAGON_BOLTS_UNENCHANTED_DIAMOND,
+    ItemID.DRAGON_BOLTS_UNENCHANTED_DRAGONSTONE,
+    ItemID.DRAGON_BOLTS_UNENCHANTED_ONYX,
+    ItemID.DRAGON_BOLTS_ENCHANTED_OPAL, // 72
+    ItemID.DRAGON_BOLTS_ENCHANTED_JADE,
+    ItemID.DRAGON_BOLTS_ENCHANTED_PEARL,
+    ItemID.DRAGON_BOLTS_ENCHANTED_TOPAZ,
+    ItemID.DRAGON_BOLTS_ENCHANTED_SAPPHIRE,
+    ItemID.DRAGON_BOLTS_ENCHANTED_EMERALD,
+    ItemID.DRAGON_BOLTS_ENCHANTED_RUBY,
+    ItemID.DRAGON_BOLTS_ENCHANTED_DIAMOND,
+    ItemID.DRAGON_BOLTS_ENCHANTED_DRAGONSTONE, // 80
+    ItemID.DRAGON_BOLTS_ENCHANTED_ONYX,
+    ItemID.BARROWS_KARIL_AMMO,
   };
 
   BoltPouch(DudeWheresMyStuffPlugin plugin) {
     super(CarryableStorageType.BOLT_POUCH, plugin);
 
-    items.add(new ItemStack(-1, 0, plugin));
-    items.add(new ItemStack(-1, 0, plugin));
-    items.add(new ItemStack(-1, 0, plugin));
-    items.add(new ItemStack(-1, 0, plugin));
+    resetItems();
   }
 
   @Override
-  public boolean onVarbitChanged() {
-    boolean updated = false;
+  public boolean onVarbitChanged(VarbitChanged varbitChanged) {
+    var updated = false;
 
     for (int i = 0; i < BOLT_TYPE_VARBITS.length; i++) {
-      int boltCount = plugin.getClient().getVarbitValue(BOLT_COUNT_VARBITS[i]);
-      int boltItemId = getBoltItemId(plugin.getClient().getVarbitValue(BOLT_TYPE_VARBITS[i]));
-      ItemStack boltStack = items.get(i);
-
-      if (boltCount != boltStack.getQuantity()) {
-        boltStack.setQuantity(boltCount);
-        updated = true;
+      var countVar = Var.bit(varbitChanged, BOLT_COUNT_VARBITS[i]);
+      var typeVar = Var.bit(varbitChanged, BOLT_TYPE_VARBITS[i]);
+      if (!countVar.wasChanged() && !typeVar.wasChanged()) {
+        continue;
       }
-      if (boltItemId != boltStack.getId()) {
-        boltStack.setId(boltItemId, plugin);
-        updated = true;
+
+      var client = plugin.getClient();
+      var boltStack = items.get(i);
+      if (countVar.wasChanged()) {
+        var newCount = countVar.getValue(client);
+        if (newCount != boltStack.getQuantity()) {
+          boltStack.setQuantity(newCount);
+          updated = true;
+        }
+      }
+
+      if (typeVar.wasChanged()) {
+        int boltItemId = getBoltItemId(typeVar.getValue(client));
+        if (boltItemId != boltStack.getId()) {
+          boltStack.setId(boltItemId, plugin);
+          updated = true;
+        }
       }
     }
 
@@ -157,9 +168,9 @@ public class BoltPouch extends CarryableStorage {
   }
 
   @Override
-  public void reset() {
-    lastUpdated = -1;
-    lastSaveString = null;
-    enable();
+  protected void resetItems() {
+    for (int i = 0; i < BOLT_TYPE_VARBITS.length; i++) {
+      items.add(new ItemStack(-1, 0, plugin));
+    }
   }
 }

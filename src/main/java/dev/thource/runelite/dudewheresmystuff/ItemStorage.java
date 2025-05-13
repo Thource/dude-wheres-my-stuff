@@ -9,6 +9,7 @@ import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.api.events.VarbitChanged;
 
 /** ItemStorage builds upon Storage by adding items and some other functionality. */
 public class ItemStorage<T extends StorageType> extends Storage<T> {
@@ -27,24 +28,31 @@ public class ItemStorage<T extends StorageType> extends Storage<T> {
   }
 
   @Override
-  public boolean onVarbitChanged() {
+  public boolean onVarbitChanged(VarbitChanged varbitChanged) {
     if (varbits == null) {
       return false;
     }
 
-    boolean updated = false;
+    var updated = false;
 
+    var client = plugin.getClient();
     for (int i = 0; i < varbits.length; i++) {
-      int varbit = varbits[i];
-      ItemStack itemStack = items.get(i + varbitItemOffset);
-
-      int newPoints = plugin.getClient().getVarbitValue(varbit);
-      if (newPoints == itemStack.getQuantity()) {
+      var var = Var.bit(varbitChanged, varbits[i]);
+      if (!var.wasChanged()) {
         continue;
       }
 
-      itemStack.setQuantity(newPoints);
+      var itemStack = items.get(i + varbitItemOffset);
+      var newQuantity = var.getValue(client);
+      if (newQuantity == itemStack.getQuantity()) {
+        continue;
+      }
+
+      itemStack.setQuantity(newQuantity);
       updated = true;
+      if (!type.isAutomatic()) {
+        updateLastUpdated();
+      }
     }
 
     return updated;
