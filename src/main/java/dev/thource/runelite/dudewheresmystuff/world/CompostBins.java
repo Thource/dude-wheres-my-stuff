@@ -188,29 +188,6 @@ public class CompostBins extends WorldStorage {
   }
 
   @Override
-  public boolean onVarbitChanged(VarbitChanged varbitChanged) {
-    if (varbitChanged.getVarbitId() != -999
-        && varbitChanged.getVarbitId() != VarbitID.FARMING_TRANSMIT_E
-        && varbitChanged.getVarbitId() != VarbitID.FARMING_TRANSMIT_N
-        && varbitChanged.getVarbitId() != VarbitID.FARMING_TRANSMIT_D) {
-      return false;
-    }
-
-    var client = plugin.getClient();
-    var location = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation());
-    var bin = regionBinMap.get(location.getRegionID());
-    if (bin != null) {
-      var compostValue = Var.bit(varbitChanged, bin.getVarbitId()).getValue(client);
-      if (bin.setStackQuantities(compostValue)) {
-        updateLastUpdated();
-        return true;
-      }
-    }
-
-    return true;
-  }
-
-  @Override
   public void reset() {
     super.reset();
 
