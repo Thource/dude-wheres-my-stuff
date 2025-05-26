@@ -24,7 +24,7 @@ public class DeathItems extends DeathStorage {
 
   @Override
   protected void createStoragePanel(StorageManager<?, ?> storageManager) {
-    storagePanel = new StoragePanel(plugin, this, false, false);
+    storagePanel = new StoragePanel(plugin, this, false, false, true);
 
     storagePanel.collapse(true);
 

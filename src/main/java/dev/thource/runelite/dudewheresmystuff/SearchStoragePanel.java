@@ -10,7 +10,7 @@ class SearchStoragePanel extends StoragePanel {
   @Setter private String searchText = "";
 
   public SearchStoragePanel(DudeWheresMyStuffPlugin plugin, Storage<?> storage) {
-    super(plugin, storage, false, false);
+    super(plugin, storage, false, false, true);
   }
 
   @Override

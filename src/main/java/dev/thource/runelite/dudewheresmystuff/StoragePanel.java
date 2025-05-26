@@ -72,6 +72,7 @@ public class StoragePanel extends JPanel {
   private final transient DudeWheresMyStuffPlugin plugin;
   @Getter private final transient Storage<?> storage;
   private final boolean displayEmptyStacks;
+  private final boolean combineIdenticalStacks;
   @Getter private List<ItemBox> itemBoxes = new ArrayList<>();
   @Nullable private JComponent popupButton;
   private final List<ItemStack> items = new ArrayList<>();
@@ -79,19 +80,22 @@ public class StoragePanel extends JPanel {
   /**
    * A constructor.
    *
-   * @param plugin             the plugin
-   * @param storage            the storage that this panel represents
-   * @param showPrice          if prices should be shown
-   * @param displayEmptyStacks if empty stacks should be shown
+   * @param plugin                 the plugin
+   * @param storage                the storage that this panel represents
+   * @param showPrice              if prices should be shown
+   * @param displayEmptyStacks     if empty stacks should be shown
+   * @param combineIdenticalStacks if stacks should be compounded
    */
   public StoragePanel(
       DudeWheresMyStuffPlugin plugin,
       Storage<?> storage,
       boolean showPrice,
-      boolean displayEmptyStacks) {
+      boolean displayEmptyStacks,
+      boolean combineIdenticalStacks) {
     this.plugin = plugin;
     this.storage = storage;
     this.displayEmptyStacks = displayEmptyStacks;
+    this.combineIdenticalStacks = combineIdenticalStacks;
 
     setLayout(new BorderLayout(0, 1));
     setBorder(new EmptyBorder(5, 0, 0, 0));
@@ -314,7 +318,7 @@ public class StoragePanel extends JPanel {
     }
 
     List<ItemStack> newItems = newItemStream.collect(Collectors.toList());
-    if (itemSortMode != ItemSortMode.UNSORTED) {
+    if (itemSortMode != ItemSortMode.UNSORTED && combineIdenticalStacks) {
       newItems = ItemStackUtils.compound(newItems, true);
     }
 

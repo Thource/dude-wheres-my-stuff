@@ -2,6 +2,8 @@ package dev.thource.runelite.dudewheresmystuff.world;
 
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
+import dev.thource.runelite.dudewheresmystuff.StorageManager;
+import dev.thource.runelite.dudewheresmystuff.StoragePanel;
 import dev.thource.runelite.dudewheresmystuff.Var;
 import java.util.HashMap;
 import java.util.Objects;
@@ -213,5 +215,12 @@ public class CompostBins extends WorldStorage {
     super.reset();
 
     lastRegionId = -1;
+  }
+
+  @Override
+  protected void createStoragePanel(StorageManager<?, ?> storageManager) {
+    storagePanel = new StoragePanel(plugin, this, true, false, false);
+
+    createComponentPopupMenu(storageManager);
   }
 }
