@@ -2,6 +2,8 @@ package dev.thource.runelite.dudewheresmystuff.world;
 
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
+import dev.thource.runelite.dudewheresmystuff.StorageManager;
+import dev.thource.runelite.dudewheresmystuff.StoragePanel;
 import dev.thource.runelite.dudewheresmystuff.Var;
 import java.util.HashMap;
 import java.util.Objects;
@@ -186,32 +188,16 @@ public class CompostBins extends WorldStorage {
   }
 
   @Override
-  public boolean onVarbitChanged(VarbitChanged varbitChanged) {
-    if (varbitChanged.getVarbitId() != -999
-        && varbitChanged.getVarbitId() != VarbitID.FARMING_TRANSMIT_E
-        && varbitChanged.getVarbitId() != VarbitID.FARMING_TRANSMIT_N
-        && varbitChanged.getVarbitId() != VarbitID.FARMING_TRANSMIT_D) {
-      return false;
-    }
-
-    var client = plugin.getClient();
-    var location = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation());
-    var bin = regionBinMap.get(location.getRegionID());
-    if (bin != null) {
-      var compostValue = Var.bit(varbitChanged, bin.getVarbitId()).getValue(client);
-      if (bin.setStackQuantities(compostValue)) {
-        updateLastUpdated();
-        return true;
-      }
-    }
-
-    return true;
-  }
-
-  @Override
   public void reset() {
     super.reset();
 
     lastRegionId = -1;
+  }
+
+  @Override
+  protected void createStoragePanel(StorageManager<?, ?> storageManager) {
+    storagePanel = new StoragePanel(plugin, this, true, false, false);
+
+    createComponentPopupMenu(storageManager);
   }
 }
