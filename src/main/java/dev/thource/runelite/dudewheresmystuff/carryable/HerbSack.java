@@ -4,11 +4,14 @@ import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.ItemContainerWatcher;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
 import java.util.regex.Pattern;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.gameval.ItemID;
 
 /** HerbSack is responsible for tracking the player's items in their herb sack. */
+@Slf4j
 public class HerbSack extends CarryableStorage {
 
   private static final Pattern CHECK_PATTERN = Pattern.compile("(\\d+) x (.*)");
@@ -87,6 +90,17 @@ public class HerbSack extends CarryableStorage {
     }
 
     return didUpdate;
+  }
+
+  @Override
+  public boolean onMenuOptionClicked(MenuOptionClicked menuOption) {
+    if (menuOption.getWidget() == null) {
+      return false;
+    }
+
+    log.info("onMenuOptionClicked parentId: {}, option: \"{}\", itemId: {}", menuOption.getWidget().getParentId(), menuOption.getMenuOption(), menuOption.getWidget().getItemId());
+
+    return false;
   }
 
   @Override
