@@ -96,6 +96,12 @@ public class HerbSack extends CarryableStorage {
       return false;
     }
 
+    if (chatMessage.getMessage().startsWith("The herb sack is empty")) {
+      resetItems();
+      updateLastUpdated();
+      return true;
+    }
+
     if (checkingSack) {
       var matcher = CHECK_PATTERN.matcher(chatMessage.getMessage());
       if (matcher.find()) {
@@ -123,9 +129,6 @@ public class HerbSack extends CarryableStorage {
       addingToSack = true;
     } else if (chatMessage.getMessage().startsWith("You look in your herb sack")) {
       checkingSack = true;
-    } else if (chatMessage.getMessage().startsWith("The herb sack is empty")) {
-      resetItems();
-      updateLastUpdated();
     } else if (chatMessage.getMessage().startsWith("You add the herbs to your sack")) {
       addingToSack = true;
     } else if (chatMessage
