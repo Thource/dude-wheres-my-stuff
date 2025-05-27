@@ -117,6 +117,8 @@ public class HerbSack extends CarryableStorage {
     }
 
     if (menuOption.getWidget().getParentId() == InterfaceID.BankDepositbox.INVENTORY) {
+      plugin.getWorldStorageManager().getBank().addItems(items);
+
       resetItems();
       updateLastUpdated();
       return true;
