@@ -4,14 +4,13 @@ import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.ItemContainerWatcher;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
 import java.util.regex.Pattern;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.ItemID;
 
 /** HerbSack is responsible for tracking the player's items in their herb sack. */
-@Slf4j
 public class HerbSack extends CarryableStorage {
 
   private static final Pattern CHECK_PATTERN = Pattern.compile("(\\d+) x (.*)");
@@ -21,7 +20,8 @@ public class HerbSack extends CarryableStorage {
 
   private boolean checkingSack;
   private boolean addingToSack;
-  private boolean removingFromSack;
+  private boolean removingToInv;
+  private boolean removingToBank;
 
   public HerbSack(DudeWheresMyStuffPlugin plugin) {
     super(CarryableStorageType.HERB_SACK, plugin);
@@ -79,12 +79,22 @@ public class HerbSack extends CarryableStorage {
       didUpdate = true;
     }
 
-    if (removingFromSack) {
+    if (removingToInv) {
       ItemContainerWatcher.getInventoryWatcher()
           .getItemsAddedLastTick()
           .forEach(itemStack -> addQuantityByName(itemStack.getName(), -1));
 
-      removingFromSack = false;
+      removingToInv = false;
+      updateLastUpdated();
+      didUpdate = true;
+    }
+
+    if (removingToBank) {
+      ItemContainerWatcher.getBankWatcher()
+          .getItemsAddedLastTick()
+          .forEach(itemStack -> addQuantityByName(itemStack.getName(), -1));
+
+      removingToBank = false;
       updateLastUpdated();
       didUpdate = true;
     }
@@ -94,11 +104,15 @@ public class HerbSack extends CarryableStorage {
 
   @Override
   public boolean onMenuOptionClicked(MenuOptionClicked menuOption) {
-    if (menuOption.getWidget() == null) {
+    if (menuOption.getWidget() == null || (
+        menuOption.getWidget().getParentId() != InterfaceID.Bankside.ITEMS
+            && menuOption.getWidget().getParentId() != InterfaceID.BankDepositbox.INVENTORY)
+        || !type.getContainerIds().contains(menuOption.getWidget().getItemId())
+        || !menuOption.getMenuOption().equals("Empty")) {
       return false;
     }
 
-    log.info("onMenuOptionClicked parentId: {}, option: \"{}\", itemId: {}", menuOption.getWidget().getParentId(), menuOption.getMenuOption(), menuOption.getWidget().getItemId());
+    removingToBank = true;
 
     return false;
   }
@@ -148,7 +162,7 @@ public class HerbSack extends CarryableStorage {
     } else if (chatMessage
         .getMessage()
         .startsWith("You rummage around to see if you can extract any herbs from your herb sack")) {
-      removingFromSack = true;
+      removingToInv = true;
     }
 
     return false;
