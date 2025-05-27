@@ -92,7 +92,8 @@ public class HerbSack extends CarryableStorage {
     if (removingToBank) {
       ItemContainerWatcher.getBankWatcher()
           .getItemsAddedLastTick()
-          .forEach(itemStack -> addQuantityByName(itemStack.getName(), -1));
+          .forEach(itemStack -> addQuantityByName(itemStack.getName(),
+              (int) -itemStack.getQuantity()));
 
       removingToBank = false;
       updateLastUpdated();
