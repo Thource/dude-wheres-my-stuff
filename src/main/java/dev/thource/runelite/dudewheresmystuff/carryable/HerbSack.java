@@ -105,15 +105,22 @@ public class HerbSack extends CarryableStorage {
 
   @Override
   public boolean onMenuOptionClicked(MenuOptionClicked menuOption) {
-    if (menuOption.getWidget() == null || (
-        menuOption.getWidget().getParentId() != InterfaceID.Bankside.ITEMS
-            && menuOption.getWidget().getParentId() != InterfaceID.BankDepositbox.INVENTORY)
+    if (menuOption.getWidget() == null
         || !type.getContainerIds().contains(menuOption.getWidget().getItemId())
         || !menuOption.getMenuOption().equals("Empty")) {
       return false;
     }
 
-    removingToBank = true;
+    if (menuOption.getWidget().getParentId() == InterfaceID.Bankside.ITEMS) {
+      removingToBank = true;
+      return false;
+    }
+
+    if (menuOption.getWidget().getParentId() == InterfaceID.BankDepositbox.INVENTORY) {
+      resetItems();
+      updateLastUpdated();
+      return true;
+    }
 
     return false;
   }
