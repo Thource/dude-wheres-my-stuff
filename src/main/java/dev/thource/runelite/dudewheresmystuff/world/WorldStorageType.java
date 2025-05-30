@@ -51,7 +51,8 @@ public enum WorldStorageType implements StorageType {
   EYATLALLI("Eyatlalli", -1, false, "eyatlalli", true, null),
   POTION_STORAGE(
       "Potion Storage", -1, false, "potionStorage", true, Collections.singletonList(2)), // no uims
-  COMPOST_BINS("Compost Bins", -1, false, "compostBins", true, null);
+  COMPOST_BINS("Compost Bins", -1, false, "compostBins", true, null),
+  NEST("Nest", -1, false, "nest", true, null);
 
   private final String name;
   private final int itemContainerId;
