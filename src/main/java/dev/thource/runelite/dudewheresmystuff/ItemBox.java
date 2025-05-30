@@ -1,6 +1,8 @@
 package dev.thource.runelite.dudewheresmystuff;
 
+import java.awt.image.BufferedImage;
 import javax.annotation.Nullable;
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import lombok.Getter;
@@ -32,14 +34,28 @@ class ItemBox extends JPanel {
       imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
       imageLabel.setItemStack(itemStack);
-      AsyncBufferedImage itemImage =
-          plugin
-              .getItemManager()
-              .getImage(
-                  itemStack.getId(),
-                  (int) Math.min(itemStack.getQuantity(), Integer.MAX_VALUE),
-                  itemStack.isStackable() || itemStack.getQuantity() > 1);
-      itemImage.addTo(imageLabel);
+
+      if (itemStack.getSpriteId() != -1) {
+        plugin.getSpriteManager().getSpriteAsync(itemStack.getSpriteId(), 0, (image) -> {
+          if (image != null) {
+            var spriteImage = new BufferedImage(36, 32, BufferedImage.TYPE_INT_ARGB);
+            var spriteGraphics = spriteImage.createGraphics();
+            spriteGraphics.drawImage(image, (spriteImage.getWidth() - image.getWidth()) / 2, (spriteImage.getHeight() - image.getHeight()) / 2, null);
+            spriteGraphics.dispose();
+
+            imageLabel.setIcon(new ImageIcon(spriteImage));
+          }
+        });
+      } else {
+        AsyncBufferedImage itemImage =
+            plugin
+                .getItemManager()
+                .getImage(
+                    itemStack.getId(),
+                    (int) Math.min(itemStack.getQuantity(), Integer.MAX_VALUE),
+                    itemStack.isStackable() || itemStack.getQuantity() > 1);
+        itemImage.addTo(imageLabel);
+      }
 
       add(imageLabel);
     }

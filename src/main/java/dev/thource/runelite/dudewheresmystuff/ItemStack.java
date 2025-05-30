@@ -44,6 +44,7 @@ public class ItemStack {
 
   private int id;
   @Setter private long quantity;
+  @Setter private int spriteId = -1;
   @EqualsAndHashCode.Exclude @Setter private String name;
   @EqualsAndHashCode.Exclude private int gePrice;
   @EqualsAndHashCode.Exclude private int haPrice;
@@ -94,6 +95,7 @@ public class ItemStack {
 
     this.itemIdentification = itemStack.getItemIdentification();
     this.canonicalId = itemStack.canonicalId;
+    this.spriteId = itemStack.spriteId;
   }
 
   /**

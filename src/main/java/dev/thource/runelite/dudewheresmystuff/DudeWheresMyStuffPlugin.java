@@ -53,6 +53,7 @@ import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.ConfigSync;
 import net.runelite.client.events.RuneScapeProfileChanged;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.game.SpriteManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDependency;
@@ -95,6 +96,7 @@ public class DudeWheresMyStuffPlugin extends Plugin {
   @Getter @Inject private ClientThread clientThread;
   @Getter @Inject private InfoBoxManager infoBoxManager;
   @Getter @Inject private ItemManager itemManager;
+  @Getter @Inject private SpriteManager spriteManager;
   @Getter @Inject private DudeWheresMyStuffConfig config;
   @Inject private ConfigManager configManager;
   @Inject private OverlayManager overlayManager;
