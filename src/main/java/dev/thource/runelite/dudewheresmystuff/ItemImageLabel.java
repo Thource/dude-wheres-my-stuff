@@ -1,5 +1,6 @@
 package dev.thource.runelite.dudewheresmystuff;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -21,8 +22,21 @@ class ItemImageLabel extends JLabel {
   @Override
   protected void paintComponent(Graphics g) {
     super.paintComponent(g);
-    if (itemStack == null
-        || itemStack.getItemIdentification() == null
+
+    if (itemStack == null) {
+      return;
+    }
+
+    if (itemStack.getSpriteId() != -1) {
+      final TextComponent quantityText = new TextComponent();
+      quantityText.setPosition(new Point(0, 10));
+      quantityText.setFont(FontManager.getRunescapeSmallFont());
+      quantityText.setColor(Color.YELLOW);
+      quantityText.setText(String.valueOf(itemStack.getQuantity()));
+      quantityText.render((Graphics2D) g);
+    }
+
+    if (itemStack.getItemIdentification() == null
         || !plugin.getPluginManager().isPluginEnabled(plugin.getItemIdentificationPlugin())
         || !itemStack
         .getItemIdentification()

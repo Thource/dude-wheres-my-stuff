@@ -30,13 +30,17 @@ public class MasteringMixology extends MinigamesStorage {
     varbits =
         new int[] {VarbitID.MM_AVAILABLE_MOX, VarbitID.MM_AVAILABLE_AGA, VarbitID.MM_AVAILABLE_LYE};
 
-    moxResin = new ItemStack(ItemID.MM_MOX_PASTE, plugin);
-    agaResin = new ItemStack(ItemID.MM_AGA_PASTE, plugin);
-    lyeResin = new ItemStack(ItemID.MM_LYE_PASTE, plugin);
-
     items.add(new ItemStack(ItemID.MM_MOX_PASTE, plugin));
     items.add(new ItemStack(ItemID.MM_AGA_PASTE, plugin));
     items.add(new ItemStack(ItemID.MM_LYE_PASTE, plugin));
+
+    moxResin = new ItemStack(-2, "Mox resin", 0, 0, 0, true); // sprite 5666
+    moxResin.setSpriteId(5666);
+    agaResin = new ItemStack(-2, "Aga resin", 0, 0, 0, true); // sprite 5667
+    agaResin.setSpriteId(5667);
+    lyeResin = new ItemStack(-2, "Lye resin", 0, 0, 0, true); // sprite 5668
+    lyeResin.setSpriteId(5668);
+
     items.add(moxResin);
     items.add(agaResin);
     items.add(lyeResin);
