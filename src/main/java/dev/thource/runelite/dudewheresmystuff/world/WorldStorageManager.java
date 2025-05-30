@@ -38,6 +38,7 @@ public class WorldStorageManager extends StorageManager<WorldStorageType, WorldS
     potionStorage = new PotionStorage(plugin);
     storages.add(potionStorage);
     storages.add(new CompostBins(plugin));
+    storages.add(new Nest(plugin));
   }
 
   @Override
