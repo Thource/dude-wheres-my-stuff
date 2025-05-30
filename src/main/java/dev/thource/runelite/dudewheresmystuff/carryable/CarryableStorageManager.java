@@ -32,6 +32,7 @@ public class CarryableStorageManager
     storages.add(new HuntsmansKit(plugin));
     storages.add(new ForestryKit(plugin));
     storages.add(new TackleBox(plugin));
+    storages.add(new HerbSack(plugin));
   }
 
   @Override

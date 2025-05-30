@@ -17,12 +17,17 @@ public class ItemContainerWatcher {
 
   @Getter static final ItemContainerWatcher inventoryWatcher =
       new ItemContainerWatcher(InventoryID.INV);
-  @Getter static final ItemContainerWatcher lootingBagWatcher = new ItemContainerWatcher(516);
-  @Getter static final ItemContainerWatcher seedBoxWatcher = new ItemContainerWatcher(573);
-  @Getter static final ItemContainerWatcher deathsOfficeWatcher = new ItemContainerWatcher(636);
+  @Getter static final ItemContainerWatcher lootingBagWatcher = new ItemContainerWatcher(
+      InventoryID.LOOTING_BAG);
+  @Getter static final ItemContainerWatcher bankWatcher = new ItemContainerWatcher(
+      InventoryID.BANK);
+  @Getter static final ItemContainerWatcher seedBoxWatcher = new ItemContainerWatcher(
+      InventoryID.SEED_BOX);
+  @Getter static final ItemContainerWatcher deathsOfficeWatcher = new ItemContainerWatcher(
+      InventoryID.DEATH_PERMANENT);
   private static final Map<Integer, ItemContainerWatcher> watcherMap;
   private static final ItemContainerWatcher[] all =
-      new ItemContainerWatcher[]{inventoryWatcher, lootingBagWatcher, seedBoxWatcher,
+      new ItemContainerWatcher[]{inventoryWatcher, lootingBagWatcher, bankWatcher, seedBoxWatcher,
           deathsOfficeWatcher};
   private static Client client;
 

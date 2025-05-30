@@ -12,6 +12,7 @@ public class WorldStorageManager extends StorageManager<WorldStorageType, WorldS
 
   @Getter private final Leprechaun leprechaun;
   @Getter private final PotionStorage potionStorage;
+  @Getter private final Bank bank;
 
   @Inject
   private WorldStorageManager(DudeWheresMyStuffPlugin plugin) {
@@ -19,7 +20,8 @@ public class WorldStorageManager extends StorageManager<WorldStorageType, WorldS
 
     leprechaun = new Leprechaun(plugin);
     storages.add(leprechaun);
-    storages.add(new Bank(plugin));
+    bank = new Bank(plugin);
+    storages.add(bank);
     storages.add(new WorldStorage(WorldStorageType.GROUP_STORAGE, plugin));
     storages.add(new WorldStorage(WorldStorageType.SEED_VAULT, plugin));
     storages.add(new BlastFurnace(plugin));
