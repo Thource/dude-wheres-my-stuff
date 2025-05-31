@@ -16,17 +16,17 @@ public interface DudeWheresMyStuffConfig extends Config {
   String CONFIG_GROUP = "dudewheresmystuff";
 
   @ConfigSection(
-      name = "Data Export Options",
+      name = "Data Export",
       description = "Settings for data exports",
       position = 100)
-  String DATA_EXPORT_OPTIONS = "Data Export Options";
+  String DATA_EXPORT_OPTIONS = "Data Export";
 
   @ConfigSection(
-      name = "Deathpiles / Graves Options",
+      name = "Deathpiles / Graves",
       description = "Settings for deathpiles and graves",
       position = 100
   )
-  String DEATHPILE_OPTIONS_SECTION = "Deathpiles / Graves Options";
+  String DEATHPILE_OPTIONS_SECTION = "Deathpiles / Graves";
 
   @ConfigItem(
       keyName = "showEmptyStorages",
@@ -84,23 +84,109 @@ public interface DudeWheresMyStuffConfig extends Config {
   @ConfigItem(keyName = "googleSpreadSheetUrl", name = "", description = "", hidden = true)
   void setGoogleSpreadSheetUrl(String spreadSheetUrl);
 
+  @ConfigSection(
+      name = "Item Count Tooltip",
+      description = "Settings for the item count tooltip",
+      position = 100
+  )
+  String ITEM_COUNT_TOOLTIP_SECTION = "Item Count Tooltip";
+
   @ConfigItem(
       keyName = "storedItemCountTooltip",
-      name = "Item count tooltip mode",
+      name = "Display mode",
       description = "Adds a tooltip when you hover items that tells you how many of those item you "
           + "have stored. \"Simple\" mode shows a sum, \"Detailed\" mode tells you where they are "
-          + "stored.")
+          + "stored.",
+      section = ITEM_COUNT_TOOLTIP_SECTION)
   default StoredItemCountTooltipMode storedItemCountTooltip() {
     return StoredItemCountTooltipMode.OFF;
   }
 
   @ConfigItem(
       keyName = "storedItemCountTooltipKeybind",
-      name = "Item count tooltip keybind",
-      description = "Hold this key down to display the item count tooltip."
+      name = "Keybind",
+      description = "Hold this key down to display the item count tooltip.",
+      section = ITEM_COUNT_TOOLTIP_SECTION
   )
   default Keybind storedItemCountTooltipKeybind() {
     return Keybind.NOT_SET;
+  }
+
+  @ConfigItem(
+      keyName = "storedItemCountInclude.carryable",
+      name = "Include carry-able storages",
+      description = "Whether carry-able storages should be included in the item count.",
+      section = ITEM_COUNT_TOOLTIP_SECTION,
+      position = 100
+  )
+  default boolean storedItemCountIncludeCarryable() {
+    return true;
+  }
+
+  @ConfigItem(
+      keyName = "storedItemCountInclude.coins",
+      name = "Include coin storages",
+      description = "Whether coin storages should be included in the item count.",
+      section = ITEM_COUNT_TOOLTIP_SECTION,
+      position = 101
+  )
+  default boolean storedItemCountIncludeCoins() {
+    return true;
+  }
+
+  @ConfigItem(
+      keyName = "storedItemCountInclude.death",
+      name = "Include death storages",
+      description = "Whether death storages should be included in the item count.",
+      section = ITEM_COUNT_TOOLTIP_SECTION,
+      position = 102
+  )
+  default boolean storedItemCountIncludeDeath() {
+    return true;
+  }
+
+  @ConfigItem(
+      keyName = "storedItemCountInclude.minigames",
+      name = "Include minigame storages",
+      description = "Whether minigame storages should be included in the item count.",
+      section = ITEM_COUNT_TOOLTIP_SECTION,
+      position = 103
+  )
+  default boolean storedItemCountIncludeMinigames() {
+    return true;
+  }
+
+  @ConfigItem(
+      keyName = "storedItemCountInclude.poh",
+      name = "Include POH storages",
+      description = "Whether POH storages should be included in the item count.",
+      section = ITEM_COUNT_TOOLTIP_SECTION,
+      position = 104
+  )
+  default boolean storedItemCountIncludePOH() {
+    return true;
+  }
+
+  @ConfigItem(
+      keyName = "storedItemCountInclude.stash",
+      name = "Include stash storages",
+      description = "Whether stash storages should be included in the item count.",
+      section = ITEM_COUNT_TOOLTIP_SECTION,
+      position = 105
+  )
+  default boolean storedItemCountIncludeStash() {
+    return true;
+  }
+
+  @ConfigItem(
+      keyName = "storedItemCountInclude.world",
+      name = "Include world storages",
+      description = "Whether world storages should be included in the item count.",
+      section = ITEM_COUNT_TOOLTIP_SECTION,
+      position = 106
+  )
+  default boolean storedItemCountIncludeWorld() {
+    return true;
   }
 
   @ConfigItem(

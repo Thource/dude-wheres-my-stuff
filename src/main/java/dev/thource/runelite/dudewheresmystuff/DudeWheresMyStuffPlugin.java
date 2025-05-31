@@ -98,7 +98,7 @@ public class DudeWheresMyStuffPlugin extends Plugin {
   @Getter @Inject private ItemManager itemManager;
   @Getter @Inject private SpriteManager spriteManager;
   @Getter @Inject private DudeWheresMyStuffConfig config;
-  @Inject private ConfigManager configManager;
+  @Getter @Inject private ConfigManager configManager;
   @Inject private OverlayManager overlayManager;
   @Inject private KeyManager keyManager;
   @Getter @Inject private ChatMessageManager chatMessageManager;
@@ -682,8 +682,7 @@ public class DudeWheresMyStuffPlugin extends Plugin {
   public long getWithdrawableItemCount(int id) {
     int canonicalId = itemManager.canonicalize(id);
 
-    return storageManagerManager.getStorages()
-        .filter(Storage::isWithdrawable)
+    return storageManagerManager.getStoredItemCountStorages()
         .mapToLong(storage -> storage.getItemCount(canonicalId)).sum();
   }
 
@@ -692,8 +691,8 @@ public class DudeWheresMyStuffPlugin extends Plugin {
 
     HashMap<Storage<?>, Long> map = new HashMap<>();
 
-    storageManagerManager.getStorages()
-        .filter(Storage::isWithdrawable).forEach(storage -> {
+    storageManagerManager.getStoredItemCountStorages()
+        .forEach(storage -> {
           long count = storage.getItemCount(canonicalId);
 
           if (count > 0) {
