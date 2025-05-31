@@ -1,9 +1,11 @@
 package dev.thource.runelite.dudewheresmystuff;
 
+import dev.thource.runelite.dudewheresmystuff.coins.CoinsStorageType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 import javax.annotation.Nullable;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
@@ -39,35 +41,76 @@ public abstract class Storage<T extends StorageType> {
   }
 
   protected void createComponentPopupMenu(StorageManager<?, ?> storageManager) {
-    if (type.isAutomatic() || storagePanel == null) {
+    if (storagePanel == null) {
       return;
     }
 
     final JPopupMenu popupMenu = new JPopupMenu();
     popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
-    storagePanel.setComponentPopupMenu(popupMenu);
 
-    final JMenuItem reset = new JMenuItem("Reset");
-    reset.addActionListener(
-        e -> {
-          boolean confirmed = DudeWheresMyStuffPlugin.getConfirmation(storagePanel,
-              "Are you sure you want to reset your " + type.getName()
-                  + " data?\nThis cannot be undone.", "Confirm reset");
+    if (!type.isAutomatic()) {
+      final JMenuItem reset = new JMenuItem("Reset");
+      reset.addActionListener(
+          e -> {
+            boolean confirmed =
+                DudeWheresMyStuffPlugin.getConfirmation(
+                    storagePanel,
+                    "Are you sure you want to reset your "
+                        + type.getName()
+                        + " data?\nThis cannot be undone.",
+                    "Confirm reset");
 
-          if (confirmed) {
-            deleteData(storageManager);
-            plugin.getClientThread().invoke(() -> {
-              storagePanel.refreshItems();
+            if (confirmed) {
+              deleteData(storageManager);
+              plugin
+                  .getClientThread()
+                  .invoke(
+                      () -> {
+                        storagePanel.refreshItems();
 
-              SwingUtilities.invokeLater(() -> {
-                storagePanel.update();
-                softUpdate();
-                storageManager.getStorageTabPanel().reorderStoragePanels();
-              });
-            });
-          }
-        });
-    popupMenu.add(reset);
+                        SwingUtilities.invokeLater(
+                            () -> {
+                              storagePanel.update();
+                              softUpdate();
+                              storageManager.getStorageTabPanel().reorderStoragePanels();
+                            });
+                      });
+            }
+          });
+      popupMenu.add(reset);
+    }
+
+    if (!storageManager.isPreviewManager() && type != CoinsStorageType.INVENTORY
+        && type != CoinsStorageType.LOOTING_BAG && type != CoinsStorageType.BANK) {
+      final var itemCountConfigKey = "storedItemCountInclude." + getConfigKey(storageManager.getConfigKey());
+      var storageIncluded = new AtomicBoolean(
+          Objects.equals(Objects.requireNonNullElse(plugin.getConfigManager().getConfiguration(
+              DudeWheresMyStuffConfig.CONFIG_GROUP,
+              itemCountConfigKey
+          ), "true"), "true")
+      );
+      final JMenuItem toggleItemCountInclusion = new JMenuItem(
+          (storageIncluded.get() ? "Exclude from" : "Include in") + " item count tooltip"
+      );
+      toggleItemCountInclusion.addActionListener(
+          e -> {
+            storageIncluded.set(!storageIncluded.get());
+            plugin.getConfigManager().setConfiguration(
+                DudeWheresMyStuffConfig.CONFIG_GROUP,
+                itemCountConfigKey,
+                storageIncluded.get()
+            );
+
+            toggleItemCountInclusion.setText(
+                (storageIncluded.get() ? "Exclude from" : "Include in") + " item count tooltip"
+            );
+          });
+      popupMenu.add(toggleItemCountInclusion);
+    }
+
+    if (popupMenu.getSubElements().length > 0) {
+      storagePanel.setComponentPopupMenu(popupMenu);
+    }
   }
 
   /**
@@ -282,5 +325,21 @@ public abstract class Storage<T extends StorageType> {
 
   protected void updateLastUpdated() {
     lastUpdated = System.currentTimeMillis();
+  }
+
+  public boolean includeInStoredItemCount(String managerConfigKey) {
+    var configManager = plugin.getConfigManager();
+
+    var managerIncludedValue = configManager.getConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP,
+        "storedItemCountInclude." + managerConfigKey);
+    if (Objects.equals(managerIncludedValue, "false")) {
+      return false;
+    }
+
+    var storageIncludedValue = Objects.requireNonNullElse(configManager.getConfiguration(
+        DudeWheresMyStuffConfig.CONFIG_GROUP,
+        "storedItemCountInclude." + getConfigKey(managerConfigKey)
+    ), "true");
+    return Objects.equals(storageIncludedValue, "true");
   }
 }

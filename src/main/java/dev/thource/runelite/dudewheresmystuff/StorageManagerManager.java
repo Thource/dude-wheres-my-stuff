@@ -205,6 +205,41 @@ public class StorageManagerManager {
         .flatMap(i -> i);
   }
 
+  /**
+   * Gets all the storages which are included in the item count tooltip from each storage manager.
+   *
+   * @return a flat map of every storage from every storage manager (except for expired deathpiles,
+   *     lost deathbanks and the inventory/looting bag coin storages.)
+   */
+  @SuppressWarnings("java:S1452")
+  public Stream<? extends Storage<? extends Enum<? extends Enum<?>>>> getStoredItemCountStorages() {
+    return Stream.of(
+            getDeathStorageManager().getStorages().stream()
+                .filter(s -> !(s instanceof DeathItems))
+                .filter(
+                    s ->
+                        (s instanceof Deathpile && !((Deathpile) s).hasExpired())
+                            || (s instanceof Deathbank && ((Deathbank) s).isActive()))
+                .filter(s -> s.includeInStoredItemCount(getDeathStorageManager().getConfigKey())),
+            getCoinsStorageManager().getStorages().stream()
+                .filter(
+                    storage ->
+                        storage.getType() != CoinsStorageType.INVENTORY
+                            && storage.getType() != CoinsStorageType.LOOTING_BAG
+                            && storage.getType() != CoinsStorageType.BANK)
+                .filter(s -> s.includeInStoredItemCount(getCoinsStorageManager().getConfigKey())),
+            getCarryableStorageManager().getStorages().stream()
+                .filter(s -> s.includeInStoredItemCount(getCarryableStorageManager().getConfigKey())),
+            getStashStorageManager().getStorages().stream()
+                .filter(s -> s.includeInStoredItemCount(getStashStorageManager().getConfigKey())),
+            getPlayerOwnedHouseStorageManager().getStorages().stream()
+                .filter(s -> s.includeInStoredItemCount(getPlayerOwnedHouseStorageManager().getConfigKey())),
+            getWorldStorageManager().getStorages().stream()
+                .filter(s -> s.includeInStoredItemCount(getWorldStorageManager().getConfigKey())))
+        .flatMap(s -> s).filter(Storage::isWithdrawable);
+  }
+
+
   public List<ItemStack> getItems() {
     return getStorages().filter(Storage::isEnabled).map(Storage::getItems).flatMap(List::stream)
         .collect(Collectors.toList());
