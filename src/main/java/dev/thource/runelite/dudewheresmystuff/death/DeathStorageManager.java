@@ -35,6 +35,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.GameState;
 import net.runelite.api.Item;
+import net.runelite.api.MenuAction;
 import net.runelite.api.Quest;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
@@ -45,6 +46,7 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.ItemDespawned;
+import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.gameval.ItemID;
@@ -96,6 +98,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
   private Item[] oldInventoryItems;
   private DeathbankInfoBox deathbankInfoBox;
   private int entryModeTob; // 1 = entering entry mode, 2 = entry mode
+  private final List<SuspendedGroundItem> itemsPickedUp = new ArrayList<>();
 
   @Inject
   private DeathStorageManager(DudeWheresMyStuffPlugin plugin) {
@@ -306,6 +309,17 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
         if (region != Region.RAIDS_THEATRE_OF_BLOOD) {
           entryModeTob = 0;
         }
+      }
+    }
+
+    var listIterator = itemsPickedUp.listIterator();
+    while (listIterator.hasNext()) {
+      var item = listIterator.next();
+
+      if (item.getTicksLeft() <= 1) {
+        listIterator.remove();
+      } else {
+        item.setTicksLeft(item.getTicksLeft() - 1);
       }
     }
   }
@@ -820,23 +834,60 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
   }
 
   @Override
-  public void onItemDespawned(ItemDespawned itemDespawned) {
-    WorldPoint worldPoint = itemDespawned.getTile().getWorldLocation();
-    // 10 is the max telegrab range, this should stop deathpiles from disappearing at random
-    if (worldPoint.distanceTo(plugin.getClient().getLocalPlayer().getWorldLocation()) > 10) {
+  public void onMenuOptionClicked(MenuOptionClicked menuOption) {
+    if (menuOption.getMenuAction() != MenuAction.GROUND_ITEM_THIRD_OPTION
+        && menuOption.getMenuAction() != MenuAction.WIDGET_TARGET_ON_GROUND_ITEM) {
       return;
     }
 
-    TileItem despawnedItem = itemDespawned.getItem();
+    var worldView = client.getTopLevelWorldView();
+    if (worldView == null) {
+      return;
+    }
 
-    List<Deathpile> updatedDeathpiles = removeFromDeathpiles(despawnedItem, worldPoint);
+    var worldPoint =
+        WorldPoint.fromScene(
+            worldView, menuOption.getParam0(), menuOption.getParam1(), worldView.getPlane());
+    getDeathpiles()
+        .filter(deathpile -> !deathpile.hasExpired())
+        .filter(deathpile -> deathpile.getWorldPoint().equals(worldPoint))
+        .findFirst()
+        .ifPresent(
+            (dp) -> {
+              var suspendedGroundItem = new SuspendedGroundItem(menuOption.getId(), worldPoint);
+              suspendedGroundItem.setTicksLeft(100);
+
+              for (SuspendedGroundItem i : itemsPickedUp) {
+                i.setTicksLeft(1);
+              }
+
+              itemsPickedUp.add(suspendedGroundItem);
+            });
+  }
+
+  @Override
+  public void onItemDespawned(ItemDespawned itemDespawned) {
+    var worldPoint = itemDespawned.getTile().getWorldLocation();
+    var despawnedItem = itemDespawned.getItem();
+
+    if (itemsPickedUp.stream()
+        .noneMatch(
+            i -> i.getWorldPoint().equals(worldPoint) && i.getId() == despawnedItem.getId())) {
+      return;
+    }
+
+    itemsPickedUp.stream()
+        .filter(i -> i.getId() == despawnedItem.getId())
+        .forEach(i -> i.setTicksLeft(1));
+
+    var updatedDeathpiles = removeFromDeathpiles(despawnedItem, worldPoint);
     if (updatedDeathpiles.isEmpty()) {
       return;
     }
 
-    ListIterator<Deathpile> iterator = updatedDeathpiles.listIterator();
+    var iterator = updatedDeathpiles.listIterator();
     while (iterator.hasNext()) {
-      Deathpile deathpile = iterator.next();
+      var deathpile = iterator.next();
 
       if (deathpile.getItems().isEmpty()) {
         deathpile.deleteData(this);
