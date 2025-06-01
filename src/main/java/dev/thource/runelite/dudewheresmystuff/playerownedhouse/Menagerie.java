@@ -133,7 +133,14 @@ public class Menagerie extends PlayerOwnedHouseStorage {
             ItemID.WHISPERERPET,
             ItemID.SCURRIUSPET,
             ItemID.SOLHEREDITPET,
-            ItemID.QUETZALPET));
+            ItemID.QUETZALPET,
+            ItemID.ARAXXORPET,
+            ItemID.ARAXXORPET_CUTE,
+            ItemID.HUEYPET,
+            ItemID.AMOXLIATLPET,
+            ItemID.RTBRANDAPET,
+            ItemID.RTELDRICPET,
+            ItemID.YAMAPET));
 
     VARPLAYER_BITS_TO_ITEM_IDS_LIST = builder.build();
   }
