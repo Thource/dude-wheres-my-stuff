@@ -92,7 +92,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
   @Setter private CoinsStorageManager coinsStorageManager;
   @Inject private WorldMapPointManager worldMapPointManager;
   @Getter @Setter private int startPlayedMinutes = -1;
-  private boolean dying;
+  private DyingState dyingState = DyingState.NOT_DYING;
   private WorldPoint deathLocation;
   private List<ItemStack> deathItems;
   private Item[] oldInventoryItems;
@@ -285,6 +285,29 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
     super.onGameTick();
 
     updateStartPlayedMinutes();
+
+    if (dyingState == DyingState.TICK_1) {
+      dyingState = DyingState.TICK_2;
+    } else if (dyingState == DyingState.TICK_2) {
+      dyingState = DyingState.TICK_3;
+    } else if (dyingState == DyingState.TICK_3) {
+      dyingState = DyingState.RECORDING_DATA;
+    } else if (dyingState == DyingState.RECORDING_DATA) {
+      WorldPoint location =
+          WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation());
+      List<ItemStack> items =
+          getDeathItems().stream()
+              .filter(itemStack -> itemStack.getId() != -1)
+              .collect(Collectors.toList());
+
+      if (items.isEmpty()) {
+        dyingState = DyingState.NOT_DYING;
+      } else {
+        dyingState = DyingState.WAITING_FOR_RESPAWN;
+        deathLocation = location;
+        deathItems = items;
+      }
+    }
 
     if ((deathbank != null && checkIfDeathbankWindowIsEmpty())
         | processDeath()
@@ -525,11 +548,11 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
       return;
     }
 
-    if (dying) {
+    if (dyingState != DyingState.NOT_DYING) {
       Region region = Region.get(deathLocation.getRegionID());
       if (region == Region.RAIDS_THEATRE_OF_BLOOD
           && message.startsWith("You feel refreshed as your health is replenished")) {
-        dying = false;
+        dyingState = DyingState.NOT_DYING;
         deathLocation = null;
         deathItems = null;
         return;
@@ -673,7 +696,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
 
   private boolean processDeath() {
     if (client.getLocalPlayer() == null
-        || !dying
+        || dyingState != DyingState.WAITING_FOR_RESPAWN
         || client.getBoostedSkillLevel(Skill.HITPOINTS) < 10) {
       return false;
     }
@@ -696,7 +719,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
       registerDeath(deathRegion);
     }
 
-    dying = false;
+    dyingState = DyingState.NOT_DYING;
     deathLocation = null;
     deathItems = null;
 
@@ -818,19 +841,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
       return;
     }
 
-    WorldPoint location =
-        WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation());
-    List<ItemStack> items =
-        getDeathItems().stream()
-            .filter(itemStack -> itemStack.getId() != -1)
-            .collect(Collectors.toList());
-    if (items.isEmpty()) {
-      return;
-    }
-
-    dying = true;
-    deathLocation = location;
-    deathItems = items;
+    dyingState = DyingState.TICK_1;
   }
 
   @Override
