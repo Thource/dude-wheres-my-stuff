@@ -98,7 +98,15 @@ public enum CarryableStorageType implements StorageType {
       "herbSack",
       true,
       List.of(ItemID.SLAYER_HERB_SACK, ItemID.SLAYER_HERB_SACK_OPEN),
-      VarbitID.EMPTYONDEATH_HERBSACK);
+      VarbitID.EMPTYONDEATH_HERBSACK),
+  CHUGGING_BARREL(
+      "Chugging Barrel",
+      InventoryID.PREPOT_DEVICE_INV,
+      false,
+      "chuggingBarrel",
+      true,
+      Collections.singletonList(ItemID.MM_PREPOT_DEVICE),
+      -1);
 
   private final String name;
   private final int itemContainerId;
