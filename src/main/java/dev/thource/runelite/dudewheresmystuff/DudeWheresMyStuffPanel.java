@@ -148,6 +148,8 @@ public class DudeWheresMyStuffPanel extends JPanel {
 
     addTab(Tab.SEARCH, new SearchTabPanel(plugin, storageManagerManager));
 
+    addTab(Tab.DEBUG, new DebugPanel(plugin));
+
     FasterMaterialTab donateTab = new FasterMaterialTab(
         new ImageIcon(ImageUtil.loadImageResource(DudeWheresMyStuffPlugin.class, "kofi.png")),
         tabGroup, null);
@@ -293,6 +295,7 @@ public class DudeWheresMyStuffPanel extends JPanel {
               overviewItemPanel.setVisible(false);
             });
 
+    uiTabs.get(Tab.DEBUG).setVisible(plugin.isDeveloperMode());
     ((SearchTabPanel) storageTabPanelMap.get(Tab.SEARCH)).getSearchBar().setText("");
     switchTab(Tab.OVERVIEW);
     tabGroup.resetGrid();
@@ -320,6 +323,7 @@ public class DudeWheresMyStuffPanel extends JPanel {
               .ifPresent(overviewItemPanel -> overviewItemPanel.setVisible(true));
         });
     uiTabs.get(Tab.SEARCH).setVisible(true);
+    uiTabs.get(Tab.DEBUG).setVisible(plugin.isDeveloperMode());
     tabGroup.resetGrid();
     setDisplayName(displayName);
   }

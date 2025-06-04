@@ -37,7 +37,7 @@ class ExpiringDeathStorageInfoBox extends InfoBox {
     setImage(icon);
     this.storage = storage;
 
-    Region region = Region.get(storage.getWorldPoint().getRegionID());
+    var region = storage.getRegion();
     regionName = (region == null ? "Unknown" : region.getName());
     refreshTooltip();
   }

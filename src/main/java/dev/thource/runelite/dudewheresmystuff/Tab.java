@@ -53,7 +53,8 @@ public enum Tab {
   DEATH("Death Storage", ItemID.SKULL),
   POH_STORAGE("POH Storage", ItemID.POH_COS_ROOM_ARMOUR_CASE_MAHOGANY),
   STASH_UNITS("STASH Units", ItemID.POH_WALLCHART_4),
-  SEARCH("Search", -1);
+  SEARCH("Search", -1),
+  DEBUG("Debug", ItemID.BLUECOG);
 
   public static final ImmutableMap<Class<? extends StorageManager<?, ?>>, Tab> MANAGER_TAB_MAP =
       ImmutableMap.<Class<? extends StorageManager<?, ?>>, Tab>builder()

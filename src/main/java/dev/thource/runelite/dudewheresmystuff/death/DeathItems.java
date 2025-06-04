@@ -3,15 +3,18 @@ package dev.thource.runelite.dudewheresmystuff.death;
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.StorageManager;
 import dev.thource.runelite.dudewheresmystuff.StoragePanel;
+import java.util.Collections;
 import java.util.Objects;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.config.ConfigManager;
 
 /** DeathItems shows the user what items they will lose on death. */
+@Slf4j
 public class DeathItems extends DeathStorage {
 
   private final DeathStorageManager deathStorageManager;
@@ -31,6 +34,20 @@ public class DeathItems extends DeathStorage {
     createComponentPopupMenu(storageManager);
   }
 
+  public void createDebugDeathpile(WorldPoint worldPoint) {
+    var deathpile = deathStorageManager.createDeathpile(RemoteDeathpileAreas.getPileArea(worldPoint), items);
+    SwingUtilities.invokeLater(() ->
+        plugin.getClientThread().invoke(() ->
+            deathStorageManager.updateStorages(Collections.singletonList(deathpile))));
+  }
+
+  public void createDebugGrave(WorldPoint worldPoint) {
+    var grave = deathStorageManager.createGrave(RemoteDeathpileAreas.getPileArea(worldPoint), items);
+    SwingUtilities.invokeLater(() ->
+        plugin.getClientThread().invoke(() ->
+            deathStorageManager.updateStorages(Collections.singletonList(grave))));
+  }
+
   @Override
   protected void createComponentPopupMenu(StorageManager<?, ?> storageManager) {
     if (!plugin.isDeveloperMode() || deathStorageManager.isPreviewManager()
@@ -42,24 +59,20 @@ public class DeathItems extends DeathStorage {
     popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
     storagePanel.setComponentPopupMenu(popupMenu);
 
-    final JMenuItem createDeathpile = new JMenuItem("Create Deathpile");
-    createDeathpile.addActionListener(
-        e -> {
-          WorldPoint location =
-              Objects.requireNonNull(plugin.getClient().getLocalPlayer()).getWorldLocation();
-          deathStorageManager.createDeathpile(location, items);
-          deathStorageManager.getStorageTabPanel().reorderStoragePanels();
-        });
-    popupMenu.add(createDeathpile);
+    final JMenuItem createDeathpileItem = new JMenuItem("Create Deathpile");
+    createDeathpileItem.addActionListener(e -> {
+      var client = plugin.getClient();
+      createDebugDeathpile(
+          WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()));
+    });
+    popupMenu.add(createDeathpileItem);
 
     final JMenuItem createGrave = new JMenuItem("Create Grave");
-    createGrave.addActionListener(
-        e -> {
-          WorldPoint location =
-              Objects.requireNonNull(plugin.getClient().getLocalPlayer()).getWorldLocation();
-          deathStorageManager.createGrave(location, items);
-          deathStorageManager.getStorageTabPanel().reorderStoragePanels();
-        });
+    createGrave.addActionListener(e -> {
+      var client = plugin.getClient();
+      createDebugGrave(
+          WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()));
+    });
     popupMenu.add(createGrave);
   }
 

@@ -4,6 +4,7 @@ import dev.thource.runelite.dudewheresmystuff.death.DeathbankType;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
 
 /**
@@ -169,12 +170,41 @@ public class SaveFieldLoader {
 
     String[] splitData = stringList.remove(0).split(",");
     if (splitData.length != 3) {
+      stringList.add(0, String.join(",", splitData));
       return dfault;
     }
 
     try {
       return new WorldPoint(Integer.parseInt(splitData[0]), Integer.parseInt(splitData[1]),
           Integer.parseInt(splitData[2]));
+    } catch (NumberFormatException e) {
+      return dfault;
+    }
+  }
+
+  /**
+   * Pulls a string from the string list, converts it to a WorldArea and returns it or the default
+   * value.
+   *
+   * @param stringList the string list
+   * @param dfault     the fallback value to return
+   * @return the converted first string of the string list, or the fallback value
+   */
+  public static WorldArea loadWorldArea(List<String> stringList, WorldArea dfault) {
+    if (stringList.isEmpty()) {
+      return dfault;
+    }
+
+    String[] splitData = stringList.remove(0).split(",");
+    if (splitData.length != 5) {
+      stringList.add(0, String.join(",", splitData));
+      return dfault;
+    }
+
+    try {
+      return new WorldArea(Integer.parseInt(splitData[0]), Integer.parseInt(splitData[1]),
+          Integer.parseInt(splitData[2]), Integer.parseInt(splitData[3]),
+          Integer.parseInt(splitData[4]));
     } catch (NumberFormatException e) {
       return dfault;
     }
