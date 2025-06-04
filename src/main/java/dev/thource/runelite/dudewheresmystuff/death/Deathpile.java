@@ -56,15 +56,17 @@ public class Deathpile extends ExpiringDeathStorage {
 
   @Override
   public boolean onGameTick() {
+    var updated = super.onGameTick();
+
     if (hasExpired()) {
-      return false;
+      return updated;
     }
 
     if (worldPoint == null) {
-      return locate();
+      return locate() || updated;
     }
 
-    return false;
+    return updated;
   }
 
   private List<TileItem> getTileGroundItems(
