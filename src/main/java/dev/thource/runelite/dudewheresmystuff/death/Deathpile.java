@@ -38,22 +38,6 @@ public class Deathpile extends ExpiringDeathStorage {
     refreshColor();
   }
 
-  Deathpile(
-      DudeWheresMyStuffPlugin plugin,
-      boolean useAccountPlayTime,
-      WorldPoint worldPoint,
-      DeathStorageManager deathStorageManager,
-      List<ItemStack> deathItems) {
-    super(
-        plugin,
-        useAccountPlayTime,
-        worldPoint,
-        deathStorageManager,
-        deathItems,
-        DeathStorageType.DEATHPILE);
-    refreshColor();
-  }
-
   @Override
   public boolean onGameTick() {
     var updated = super.onGameTick();
@@ -153,7 +137,7 @@ public class Deathpile extends ExpiringDeathStorage {
       String profileKey,
       String uuid) {
     Deathpile deathpile =
-        new Deathpile(plugin, true, (WorldArea) null, deathStorageManager, new ArrayList<>());
+        new Deathpile(plugin, true, null, deathStorageManager, new ArrayList<>());
 
     deathpile.uuid = UUID.fromString(uuid);
     deathpile.load(

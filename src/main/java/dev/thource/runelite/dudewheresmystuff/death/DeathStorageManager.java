@@ -626,7 +626,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
       return;
     }
 
-    grave = new Grave(plugin, (WorldArea) null, this, new ArrayList<>());
+    grave = new Grave(plugin, null, this, new ArrayList<>());
     storages.add(grave);
     grave.getItems().add(new ItemStack(ItemID.MACRO_QUIZ_MYSTERY_BOX, 1, plugin));
 

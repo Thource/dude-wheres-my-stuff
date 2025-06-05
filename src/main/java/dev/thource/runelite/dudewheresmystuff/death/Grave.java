@@ -15,7 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldArea;
-import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.VarbitID;
@@ -24,12 +23,6 @@ import net.runelite.api.gameval.VarbitID;
 @Getter
 @Slf4j
 public class Grave extends ExpiringDeathStorage {
-
-  Grave(DudeWheresMyStuffPlugin plugin, WorldPoint worldPoint,
-      DeathStorageManager deathStorageManager, List<ItemStack> deathItems) {
-    super(plugin, false, worldPoint, deathStorageManager, deathItems,
-        DeathStorageType.GRAVE);
-  }
 
   Grave(DudeWheresMyStuffPlugin plugin, WorldArea worldArea,
       DeathStorageManager deathStorageManager, List<ItemStack> deathItems) {
@@ -41,7 +34,7 @@ public class Grave extends ExpiringDeathStorage {
       String profileKey, String uuid) {
     Grave grave = new Grave(
         plugin,
-        (WorldArea) null,
+        null,
         deathStorageManager,
         new ArrayList<>()
     );

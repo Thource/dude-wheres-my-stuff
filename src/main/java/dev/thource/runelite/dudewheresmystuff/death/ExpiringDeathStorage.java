@@ -49,29 +49,6 @@ public abstract class ExpiringDeathStorage extends DeathStorage {
   ExpiringDeathStorage(
       DudeWheresMyStuffPlugin plugin,
       boolean useAccountPlayTime,
-      WorldPoint worldPoint,
-      DeathStorageManager deathStorageManager,
-      List<ItemStack> deathItems,
-      DeathStorageType storageType) {
-    super(storageType, plugin);
-    this.useAccountPlayTime = useAccountPlayTime;
-    this.worldPoint = worldPoint;
-    this.deathStorageManager = deathStorageManager;
-    this.items.addAll(deathItems);
-
-    int duration = getTotalLifeInMinutes();
-    if (this instanceof Deathpile) {
-      duration -= plugin.getConfig().deathpileContingencyMinutes();
-    } else {
-      duration -= 1;
-    }
-    this.expiryTime =
-        useAccountPlayTime ? deathStorageManager.getPlayedMinutes() + duration : duration * 100;
-  }
-
-  ExpiringDeathStorage(
-      DudeWheresMyStuffPlugin plugin,
-      boolean useAccountPlayTime,
       WorldArea worldArea,
       DeathStorageManager deathStorageManager,
       List<ItemStack> deathItems,
