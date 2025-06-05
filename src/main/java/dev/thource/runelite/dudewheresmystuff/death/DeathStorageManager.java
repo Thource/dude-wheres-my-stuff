@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.inject.Inject;
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffConfig;
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
+import dev.thource.runelite.dudewheresmystuff.ItemContainerWatcher;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
 import dev.thource.runelite.dudewheresmystuff.ItemStackUtils;
 import dev.thource.runelite.dudewheresmystuff.Region;
@@ -97,7 +98,6 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
   private DyingState dyingState = DyingState.NOT_DYING;
   private WorldArea deathArea;
   private List<ItemStack> deathItems;
-  private Item[] oldInventoryItems;
   private DeathbankInfoBox deathbankInfoBox;
   private int entryModeTob; // 1 = entering entry mode, 2 = entry mode
   private final List<SuspendedGroundItem> itemsPickedUp = new ArrayList<>();
@@ -122,11 +122,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
       return;
     }
 
-    if (itemContainerChanged.getContainerId() == InventoryID.INV) {
-      if (updateInventoryItems(itemContainerChanged.getItemContainer().getItems())) {
-        updateStorages(Collections.singletonList(deathbank));
-      }
-    } else if (itemContainerChanged.getContainerId() == 525) {
+    if (itemContainerChanged.getContainerId() == InventoryID.GRAVESTONE) {
       if (client.getWidget(672, 0) == null) {
         updateDeathbankItems(itemContainerChanged.getItemContainer().getItems());
 
@@ -215,33 +211,40 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
     }
   }
 
-  private boolean updateInventoryItems(Item[] items) {
-    boolean updated = false;
+  private boolean updateFromWatchers() {
+    var updated = updateDeathbankFromWatcher(ItemContainerWatcher.getInventoryWatcher());
 
-    if (oldInventoryItems != null
-        && client.getLocalPlayer() != null
-        && deathbank != null
-        && deathbank.getDeathbankType() == DeathbankType.ZULRAH
-        && Region.get(client.getLocalPlayer().getWorldLocation().getRegionID())
-            == Region.CITY_ZULANDRA) {
-      List<ItemStack> inventoryItemsList =
-          Arrays.stream(items)
-              .map(i -> new ItemStack(i.getId(), "", i.getQuantity(), 0, 0, true))
-              .collect(Collectors.toList());
-      removeItemsFromList(inventoryItemsList, oldInventoryItems);
-      removeItemsFromList(deathbank.getItems(), inventoryItemsList);
-
-      if (!inventoryItemsList.isEmpty()) {
-        deathbank.setLastUpdated(System.currentTimeMillis());
-        updated = true;
-      }
-
-      if (deathbank.getItems().isEmpty()) {
-        clearDeathbank(false);
-      }
+    if (plugin.getClient().getVarbitValue(VarbitID.SETTINGS_GRAVESTONE_AUTOEQUIP) == 1
+        && updateDeathbankFromWatcher(ItemContainerWatcher.getWornWatcher())) {
+      updated = true;
     }
 
-    oldInventoryItems = items;
+    return updated;
+  }
+
+  private boolean updateDeathbankFromWatcher(ItemContainerWatcher watcher) {
+    boolean updated = false;
+
+    if (deathbank == null
+        || deathbank.getDeathbankType() != DeathbankType.ZULRAH
+        || client.getLocalPlayer() == null
+        || Region.get(client.getLocalPlayer().getWorldLocation().getRegionID())
+            != Region.CITY_ZULANDRA) {
+      return false;
+    }
+
+    var itemsAddedLastTick = watcher.getItemsAddedLastTick();
+    removeItemsFromList(deathbank.getItems(), itemsAddedLastTick);
+
+    if (!itemsAddedLastTick.isEmpty()) {
+      deathbank.setLastUpdated(System.currentTimeMillis());
+      updated = true;
+    }
+
+    if (deathbank.getItems().isEmpty()) {
+      clearDeathbank(false);
+    }
+
     return updated;
   }
 
@@ -315,7 +318,8 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
 
     if ((deathbank != null && checkIfDeathbankWindowIsEmpty())
         | processDeath()
-        | checkItemsLostOnDeathWindow()) {
+        | checkItemsLostOnDeathWindow()
+        | updateFromWatchers()) {
 
       SwingUtilities.invokeLater(
           () -> plugin.getClientThread().invoke(() -> updateStorages(storages)));
@@ -634,7 +638,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
         });
   }
 
-  private void createMysteryDeathbank(DeathbankType type) {
+  void createMysteryDeathbank(DeathbankType type) {
     deathbank = new Deathbank(type, plugin, this);
     storages.add(deathbank);
     deathbank.setLastUpdated(System.currentTimeMillis());
@@ -996,7 +1000,6 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
 
   @Override
   public void reset() {
-    oldInventoryItems = null;
     storages.removeIf(s -> s instanceof ExpiringDeathStorage || s instanceof Deathbank);
     deathbank = null;
     enable();

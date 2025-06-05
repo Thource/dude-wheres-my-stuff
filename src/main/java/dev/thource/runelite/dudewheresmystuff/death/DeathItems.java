@@ -4,7 +4,6 @@ import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.StorageManager;
 import dev.thource.runelite.dudewheresmystuff.StoragePanel;
 import java.util.Collections;
-import java.util.Objects;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
@@ -48,6 +47,17 @@ public class DeathItems extends DeathStorage {
             deathStorageManager.updateStorages(Collections.singletonList(grave))));
   }
 
+  public void createDebugDeathbank() {
+    if (deathStorageManager.getDeathbank() != null) {
+      deathStorageManager.getDeathbank().setLostAt(System.currentTimeMillis());
+    }
+
+    deathStorageManager.createMysteryDeathbank(DeathbankType.UNKNOWN);
+    var deathbank = deathStorageManager.getDeathbank();
+    deathbank.getItems().clear();
+    deathbank.getItems().addAll(items);
+  }
+
   @Override
   protected void createComponentPopupMenu(StorageManager<?, ?> storageManager) {
     if (!plugin.isDeveloperMode() || deathStorageManager.isPreviewManager()
@@ -74,6 +84,10 @@ public class DeathItems extends DeathStorage {
           WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()));
     });
     popupMenu.add(createGrave);
+
+    final JMenuItem createDeathbank = new JMenuItem("Create Deathbank");
+    createDeathbank.addActionListener(e -> createDebugDeathbank());
+    popupMenu.add(createDeathbank);
   }
 
   @Override

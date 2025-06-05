@@ -7,6 +7,7 @@ import dev.thource.runelite.dudewheresmystuff.SaveFieldLoader;
 import dev.thource.runelite.dudewheresmystuff.StorageManager;
 import java.util.ArrayList;
 import java.util.UUID;
+import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
@@ -123,6 +124,38 @@ public class Deathbank extends DeathStorage {
           }
         });
     popupMenu.add(clearDeathbank);
+    createDebugMenuOptions(storageManager, popupMenu);
+  }
+
+  private void createDebugMenuOptions(StorageManager<?, ?> storageManager, JPopupMenu popupMenu) {
+    if (plugin.isDeveloperMode()) {
+      var debugMenu = new JMenu("Debug");
+      popupMenu.add(debugMenu);
+
+      var setTypeMenu = new JMenu("Set type");
+      debugMenu.add(setTypeMenu);
+
+      for (DeathbankType dbType : DeathbankType.values()) {
+        var setType = new JMenuItem(dbType.getName());
+        setType.addActionListener(
+            e -> setDeathbankType(dbType));
+        setTypeMenu.add(setType);
+      }
+
+      var expire = new JMenuItem("Set as lost");
+      debugMenu.add(expire);
+      expire.addActionListener(
+          e -> {
+            lostAt = System.currentTimeMillis();
+            softUpdate();
+            storageManager.getStorageTabPanel().reorderStoragePanels();
+          });
+
+      var lock = new JMenuItem("Toggle lock");
+      debugMenu.add(lock);
+      lock.addActionListener(
+          e -> setLocked(!locked));
+    }
   }
 
   void setLocked(boolean locked) {
@@ -131,6 +164,16 @@ public class Deathbank extends DeathStorage {
     SwingUtilities.invokeLater(() -> {
       if (storagePanel != null) {
         storagePanel.setSubTitle(locked ? "Locked" : "Unlocked");
+      }
+    });
+  }
+
+  void setDeathbankType(DeathbankType dbType) {
+    deathbankType = dbType;
+
+    SwingUtilities.invokeLater(() -> {
+      if (storagePanel != null) {
+        storagePanel.setTitle(deathbankType.getName());
       }
     });
   }
