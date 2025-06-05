@@ -13,7 +13,7 @@ enum RemoteDeathpileAreas {
 
   //  BOSS_ARAXXOR(new WorldArea(), new WorldPoint()),
   //  BOSS_CERBERUS(new WorldArea(), new WorldPoint()),
-  //  BOSS_COLOSSEUM(new WorldArea(), new WorldPoint()),
+  BOSS_COLOSSEUM(new WorldArea(1805, 3087, 40, 40, 0), new WorldArea(1799, 9503, 8, 8, 0)),
   //  BOSS_DT2_DUKE(new WorldArea(), new WorldPoint()),
   //  BOSS_DT2_LEVIATHAN(new WorldArea(), new WorldPoint()),
   //  BOSS_DT2_VARDORVIS(new WorldArea(), new WorldPoint()),
@@ -22,7 +22,7 @@ enum RemoteDeathpileAreas {
   BOSS_GWD_BANDOS(new WorldArea(2863, 5351, 15, 21, 2), new WorldArea(2860, 5353, 3, 3, 2)),
   BOSS_GWD_SARADOMIN(new WorldArea(2888, 5257, 21, 20, 0), new WorldArea(2909, 5264, 3, 3, 0)),
   BOSS_GWD_ZAMORAK(new WorldArea(2917, 5317, 21, 16, 2), new WorldArea(2924, 5333, 3, 3, 2)),
-//  BOSS_MUSPAH(new WorldArea(), new WorldPoint()),
+  //  BOSS_MUSPAH(new WorldArea(), new WorldPoint()),
   BOSS_ROYAL_TITANS(new WorldArea(2908, 9560, 7, 15, 0), new WorldArea(2949, 9571, 7, 7, 0)),
 //  BOSS_SKOTIZO(new WorldArea(), new WorldPoint()),
 //  BOSS_YAMA(new WorldArea(), new WorldPoint()),
