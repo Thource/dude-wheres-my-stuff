@@ -17,6 +17,7 @@ import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.VarbitID;
 
 /** Grave is responsible for tracking the player's items that are in a grave. */
@@ -98,8 +99,10 @@ public class Grave extends ExpiringDeathStorage {
 
   private void locate() {
     Optional<NPC> graveObject = plugin.getClient().getNpcs().stream()
-        .filter(n -> n.getId() == 9856).findFirst();
-    if (!graveObject.isPresent()) {
+        .filter(
+            n -> n.getId() == NpcID.GRAVESTONE_DEFAULT || n.getId() == NpcID.GRAVESTONE_ANGEL)
+        .findFirst();
+    if (graveObject.isEmpty()) {
       return;
     }
 
