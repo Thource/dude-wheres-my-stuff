@@ -78,7 +78,8 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
           12633, // death's office
           12600, // Ferox
           6705, // Civitas illa Fortis
-          7316 // Colosseum lobby
+          7316, // Colosseum lobby
+          5789 // Chasm of Fire (Yama)
           );
   private static final Set<Region> SAFE_DEATH_REGIONS =
       ImmutableSet.of(
