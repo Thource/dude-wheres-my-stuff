@@ -28,6 +28,7 @@ enum RemoteDeathpileAreas {
   BOSS_ROYAL_TITANS(new WorldArea(2908, 9560, 7, 15, 0), new WorldArea(2949, 9571, 7, 7, 0)),
 //  BOSS_SKOTIZO(new WorldArea(), new WorldArea()),
 //  BOSS_YAMA(new WorldArea(), new WorldArea()),
+  BOSS_SKOTIZO(Collections.singletonList(9048), 0, new WorldArea(1658, 10042, 12, 12, 0)),
 //  QUEST_BENEATH_CURSED_SANDS_AKH(new WorldArea(), new WorldArea()),
 //  QUEST_BENEATH_CURSED_SANDS_CHAMPION(new WorldArea(), new WorldArea()),
 //  QUEST_CURSE_OF_ARRAV(new WorldArea(), new WorldArea()),

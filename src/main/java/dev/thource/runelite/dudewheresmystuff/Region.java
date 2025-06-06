@@ -56,7 +56,7 @@ public enum Region {
   BOSS_NIGHTMARE("Nightmare of Ashihama", 15515),
   BOSS_PHANTOM_MUSPAH("Phantom Muspah", 11330),
   BOSS_SARACHNIS("Sarachnis", 7322),
-  BOSS_SKOTIZO("Skotizo", 6810),
+  BOSS_SKOTIZO("Skotizo", 9048),
   BOSS_SMOKE_DEVIL("Thermonuclear smoke devil", 9363, 9619),
   BOSS_TEMPOROSS("Tempoross", 12078),
   BOSS_THE_LEVIATHAN("The Leviathan", 8291),
