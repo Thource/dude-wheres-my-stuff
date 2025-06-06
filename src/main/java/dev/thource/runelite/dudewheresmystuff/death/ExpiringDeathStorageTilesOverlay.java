@@ -67,12 +67,26 @@ public class ExpiringDeathStorageTilesOverlay extends Overlay {
                     DudeWheresMyStuffConfig.CONFIG_GROUP, "debug.render.remoteDeathpileAreas"),
             "true")) {
       for (RemoteDeathpileAreas remoteDeathpileArea : RemoteDeathpileAreas.values()) {
-        drawArea(
-            graphics,
-            remoteDeathpileArea.getDeathArea(),
-            Color.ORANGE,
-            remoteDeathpileArea.name() + " death area",
-            new BasicStroke(2));
+        var deathArea = remoteDeathpileArea.getDeathArea();
+        var deathRegions = remoteDeathpileArea.getDeathRegionIds();
+        if (deathArea != null) {
+          drawArea(
+              graphics,
+              deathArea,
+              Color.ORANGE,
+              remoteDeathpileArea.name() + " death area",
+              new BasicStroke(2));
+        } else if (deathRegions != null) {
+          for (Integer deathRegionId : remoteDeathpileArea.getDeathRegionIds()) {
+            drawTile(
+                graphics,
+                WorldPoint.fromRegion(deathRegionId, 32, 32, remoteDeathpileArea.getDeathPlane()),
+                Color.ORANGE,
+                remoteDeathpileArea.name() + " death region",
+                new BasicStroke(2));
+          }
+        }
+
         drawArea(
             graphics,
             remoteDeathpileArea.getPileArea(),

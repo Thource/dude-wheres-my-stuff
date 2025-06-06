@@ -1,18 +1,20 @@
 package dev.thource.runelite.dudewheresmystuff.death;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import javax.annotation.Nullable;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
 
-@RequiredArgsConstructor
 @Getter
 enum RemoteDeathpileAreas {
   GE_TEST(new WorldArea(3161, 3480, 8, 8, 0), new WorldArea(3165, 3478, 1, 1, 0)),
+  LUMMY_REGION_TEST(Collections.singletonList(12850), 0, new WorldArea(3223, 3225, 1, 1, 0)),
 
   BOSS_ARAXXOR(new WorldArea(3616, 9797, 35, 40, 0), new WorldArea(3656, 9812, 7, 10, 0)),
-  //  BOSS_CERBERUS(new WorldArea(), new WorldArea()),
+  BOSS_CERBERUS(List.of(4883, 5140, 5395), 0, new WorldArea(1307, 1246, 8, 8, 0)),
   BOSS_COLOSSEUM(new WorldArea(1805, 3087, 40, 40, 0), new WorldArea(1799, 9503, 8, 8, 0)),
   //  BOSS_DT2_DUKE(new WorldArea(), new WorldArea()),
   //  BOSS_DT2_LEVIATHAN(new WorldArea(), new WorldArea()),
@@ -34,12 +36,40 @@ enum RemoteDeathpileAreas {
 //  QUEST_FREMENNIK_EXILES(new WorldArea(), new WorldArea()),
 ;
 
-  private final WorldArea deathArea;
+  @Nullable private final WorldArea deathArea;
+  @Nullable private final List<Integer> deathRegionIds;
+  private final int deathPlane;
   private final WorldArea pileArea;
 
+  RemoteDeathpileAreas(List<Integer> deathRegionIds, int deathPlane, WorldArea pileArea) {
+    this.deathArea = null;
+    this.deathRegionIds = deathRegionIds;
+    this.deathPlane = deathPlane;
+    this.pileArea = pileArea;
+  }
+
+  RemoteDeathpileAreas(WorldArea deathArea, WorldArea pileArea) {
+    this.deathArea = deathArea;
+    this.deathRegionIds = null;
+    this.deathPlane = -1;
+    this.pileArea = pileArea;
+  }
+
   static WorldArea getPileArea(WorldPoint worldPoint) {
+    var regionId = worldPoint.getRegionID();
     var remotePoint =
-        Arrays.stream(values()).filter(l -> l.getDeathArea().contains(worldPoint)).findFirst();
+        Arrays.stream(values()).filter(l -> {
+          if (l.getDeathArea() != null) {
+            return l.getDeathArea().contains(worldPoint);
+          }
+
+          if (l.getDeathRegionIds() != null) {
+            return worldPoint.getPlane() == l.getDeathPlane()
+                && l.getDeathRegionIds().contains(regionId);
+          }
+
+          return false;
+        }).findFirst();
 
     if (remotePoint.isPresent()) {
       return remotePoint.get().getPileArea();

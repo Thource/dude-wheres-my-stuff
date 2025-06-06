@@ -161,6 +161,7 @@ public enum Region {
   DUNGEON_BRIMHAVEN("Brimhaven Dungeon", 10901, 10900, 10899, 10645, 10644, 10643),
   DUNGEON_BRINE_RAT_CAVERN("Brine Rat Cavern", 10910),
   DUNGEON_CATACOMBS_OF_KOUREND("Catacombs of Kourend", 6557, 6556, 6813, 6812),
+  DUNGEON_CERBERUS_LAIR("Cerberus' Lair", 5139),
   DUNGEON_CHAMPIONS_CHALLENGE("Champions' Challenge", 12696),
   DUNGEON_CHAOS_DRUID_TOWER("Chaos Druid Tower", 10392),
   DUNGEON_CHASM_OF_FIRE("Chasm of Fire", 5789),

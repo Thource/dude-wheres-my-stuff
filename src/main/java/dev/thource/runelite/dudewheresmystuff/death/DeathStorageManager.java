@@ -97,7 +97,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
   @Inject private WorldMapPointManager worldMapPointManager;
   @Getter @Setter private int startPlayedMinutes = -1;
   private DyingState dyingState = DyingState.NOT_DYING;
-  private WorldArea deathArea;
+  private WorldArea deathPileArea;
   private List<ItemStack> deathItems;
   private DeathbankInfoBox deathbankInfoBox;
   private int entryModeTob; // 1 = entering entry mode, 2 = entry mode
@@ -312,7 +312,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
         dyingState = DyingState.NOT_DYING;
       } else {
         dyingState = DyingState.WAITING_FOR_RESPAWN;
-        deathArea = worldArea;
+        deathPileArea = worldArea;
         deathItems = items;
       }
     }
@@ -558,11 +558,11 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
     }
 
     if (dyingState != DyingState.NOT_DYING) {
-      Region region = Region.get(deathArea.toWorldPoint().getRegionID());
+      Region region = Region.get(deathPileArea.toWorldPoint().getRegionID());
       if (region == Region.RAIDS_THEATRE_OF_BLOOD
           && message.startsWith("You feel refreshed as your health is replenished")) {
         dyingState = DyingState.NOT_DYING;
-        deathArea = null;
+        deathPileArea = null;
         deathItems = null;
         return;
       }
@@ -712,24 +712,24 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
 
     boolean updated = false;
 
-    Region deathRegion = Region.get(deathArea.toWorldPoint().getRegionID());
+    Region deathPileRegion = Region.get(deathPileArea.toWorldPoint().getRegionID());
 
     if (!RESPAWN_REGIONS.contains(client.getLocalPlayer().getWorldLocation().getRegionID())) {
       // Player has died but is still safe unless their team dies
-      if (deathRegion == Region.RAIDS_THEATRE_OF_BLOOD) {
+      if (deathPileRegion == Region.RAIDS_THEATRE_OF_BLOOD) {
         return false;
       }
 
       log.info(
           "Died, but did not respawn in a known respawn location: "
               + client.getLocalPlayer().getWorldLocation().getRegionID());
-    } else if (!SAFE_DEATH_REGIONS.contains(deathRegion)) {
+    } else if (!SAFE_DEATH_REGIONS.contains(deathPileRegion)) {
       updated = true;
-      registerDeath(deathRegion);
+      registerDeath(deathPileRegion);
     }
 
     dyingState = DyingState.NOT_DYING;
-    deathArea = null;
+    deathPileArea = null;
     deathItems = null;
 
     return updated;
@@ -762,9 +762,9 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
               || client.getVarbitValue(VarbitID.IRONMAN) != 2); // not uim
       deathbank.getItems().addAll(deathItems);
     } else if (client.getVarbitValue(VarbitID.IRONMAN) == 2) { // uim
-      createDeathpile(deathArea, deathItems);
+      createDeathpile(deathPileArea, deathItems);
     } else {
-      createGrave(deathArea, deathItems);
+      createGrave(deathPileArea, deathItems);
     }
 
     refreshMapPoints();
