@@ -20,12 +20,13 @@ public enum DeathbankType {
   HYDRA("Alchemical Hydra", 13, 14, Region.BOSS_HYDRA, "KaruulmSlayerDungeon"), // confirmed
   HESPORI("Hespori", 15, 16, Region.BOSS_HESPORI, "FarmingGuild"), // confirmed
   MIMIC("The Mimic", 17, 18, null, null),
-  QUEST_TFE("The Fremennik Exiles", 19, 20, null, null),
-  QUEST_SOTE("Song of the Elves", 21, 22, null, "elvenrebel"),
-  QUEST_SOTF("Sins of the Father", 23, 24, null, null),
+  QUEST_SOTE("Song of the Elves", 19, 20, null, "elvenrebel"),
+  QUEST_SOTE2("Song of the Elves", 21, 22, null, "elvenrebel"),
+  QUEST_TFE("The Fremennik Exiles", 23, 24, null, null),
   NIGHTMARE("The Nightmare", 25, 26, Region.BOSS_NIGHTMARE, "Shura"), // confirmed
   PHOSANI("Phosani's Nightmare", 27, 28, Region.BOSS_NIGHTMARE, "SisterSenga"), // confirmed
   SEPULCHRE("Hallowed Sepulchre", 29, 30, Region.MG_HALLOWED_SEPULCHRE, null), // confirmed
+  QUEST_SOTF("Sins of the Father", 31, 32, null, null),
   ZULRAH("Zulrah", 33, 0, Region.BOSS_ZULRAH, "Zul-Andra"), // confirmed
   NEX("Nex", 36, 37, Region.BOSS_NEX, null); // confirmed
 
