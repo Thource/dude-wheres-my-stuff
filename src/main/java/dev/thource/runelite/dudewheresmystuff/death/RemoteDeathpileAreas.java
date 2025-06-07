@@ -34,10 +34,14 @@ enum RemoteDeathpileAreas {
   QUEST_SECRETS_OF_THE_NORTH_MUSPAH(List.of(11330), 0, new WorldArea(2844, 10333, 5, 6, 0)),
   QUEST_BENEATH_CURSED_SANDS_CHAMPION(List.of(13456), 0, new WorldArea(3411, 2843, 7, 10, 0)),
   QUEST_CURSE_OF_ARRAV(new WorldArea(3613, 4578, 28, 10, 0), new WorldArea(3577, 4602, 5, 5, 0)),
-//  QUEST_DESERT_TREASURE_2_SHADOW_REALM(new WorldArea(), new WorldArea()),
-//  QUEST_DESERT_TREASURE_2_STRANGLEWOOD(new WorldArea(), new WorldArea()),
-//  QUEST_FREMENNIK_EXILES(new WorldArea(), new WorldArea()),
-;
+  //  QUEST_DESERT_TREASURE_2_SHADOW_REALM(new WorldArea(), new WorldArea()),
+  //  QUEST_DESERT_TREASURE_2_STRANGLEWOOD(new WorldArea(), new WorldArea()),
+  //  QUEST_FREMENNIK_EXILES(new WorldArea(), new WorldArea()),
+  QUEST_MONKEY_MADNESS_2_KRUK(
+      new WorldArea(2517, 9201, 33, 28, 1), new WorldArea(2531, 9232, 16, 9, 1)),
+  QUEST_MONKEY_MADNESS_2_END_SURFACE(List.of(8023), 0, new WorldArea(2427, 3514, 14, 6, 0)),
+  QUEST_MONKEY_MADNESS_2_END_CAVE(List.of(8280, 8536), 0, new WorldArea(2427, 3514, 14, 6, 0)),
+  ;
 
   @Nullable private final WorldArea deathArea;
   @Nullable private final List<Integer> deathRegionIds;
@@ -65,6 +69,11 @@ enum RemoteDeathpileAreas {
               ? BOSS_MUSPAH
               : QUEST_SECRETS_OF_THE_NORTH_MUSPAH)
           .getPileArea();
+    }
+
+    if ((regionId == 8280 || regionId == 8536)
+        && Quest.MONKEY_MADNESS_II.getState(client) == QuestState.FINISHED) {
+      return worldPoint.toWorldArea();
     }
 
     var remotePoint =
