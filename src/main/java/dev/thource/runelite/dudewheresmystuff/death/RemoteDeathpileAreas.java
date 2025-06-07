@@ -16,10 +16,10 @@ enum RemoteDeathpileAreas {
   BOSS_ARAXXOR(new WorldArea(3616, 9797, 35, 40, 0), new WorldArea(3656, 9812, 7, 10, 0)),
   BOSS_CERBERUS(List.of(4883, 5140, 5395), 0, new WorldArea(1307, 1246, 8, 8, 0)),
   BOSS_COLOSSEUM(new WorldArea(1805, 3087, 40, 40, 0), new WorldArea(1799, 9503, 8, 8, 0)),
-  //  BOSS_DT2_DUKE(new WorldArea(), new WorldArea()),
-  //  BOSS_DT2_LEVIATHAN(new WorldArea(), new WorldArea()),
-  //  BOSS_DT2_VARDORVIS(new WorldArea(), new WorldArea()),
-  //  BOSS_DT2_WHISPERER(new WorldArea(), new WorldArea()),
+  BOSS_DT2_DUKE(new WorldArea(3028, 6434, 23, 24, 0), new WorldArea(3037, 6427, 5, 7, 0)),
+  BOSS_DT2_LEVIATHAN(Collections.singletonList(8291), 0, new WorldArea(2057, 6431, 9, 8, 0)),
+  BOSS_DT2_VARDORVIS(new WorldArea(1118, 3407, 23, 21, 0), new WorldArea(1115, 3426, 6, 7, 0)),
+  BOSS_DT2_WHISPERER(Collections.singletonList(12898), 0, new WorldArea(2917, 5821, 8, 7, 0)),
   BOSS_GWD_ARMADYL(new WorldArea(2823, 5295, 21, 15, 2), new WorldArea(2838, 5292, 3, 3, 2)),
   BOSS_GWD_BANDOS(new WorldArea(2863, 5351, 15, 21, 2), new WorldArea(2860, 5353, 3, 3, 2)),
   BOSS_GWD_SARADOMIN(new WorldArea(2888, 5257, 21, 20, 0), new WorldArea(2909, 5264, 3, 3, 0)),
@@ -58,18 +58,21 @@ enum RemoteDeathpileAreas {
   static WorldArea getPileArea(WorldPoint worldPoint) {
     var regionId = worldPoint.getRegionID();
     var remotePoint =
-        Arrays.stream(values()).filter(l -> {
-          if (l.getDeathArea() != null) {
-            return l.getDeathArea().contains(worldPoint);
-          }
+        Arrays.stream(values())
+            .filter(
+                l -> {
+                  if (l.getDeathArea() != null) {
+                    return l.getDeathArea().contains(worldPoint);
+                  }
 
-          if (l.getDeathRegionIds() != null) {
-            return worldPoint.getPlane() == l.getDeathPlane()
-                && l.getDeathRegionIds().contains(regionId);
-          }
+                  if (l.getDeathRegionIds() != null) {
+                    return worldPoint.getPlane() == l.getDeathPlane()
+                        && l.getDeathRegionIds().contains(regionId);
+                  }
 
-          return false;
-        }).findFirst();
+                  return false;
+                })
+            .findFirst();
 
     if (remotePoint.isPresent()) {
       return remotePoint.get().getPileArea();
