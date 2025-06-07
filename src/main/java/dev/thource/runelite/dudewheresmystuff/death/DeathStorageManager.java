@@ -303,6 +303,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
     } else if (dyingState == DyingState.RECORDING_DATA) {
       WorldArea worldArea =
           RemoteDeathpileAreas.getPileArea(
+              client,
               WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()));
       List<ItemStack> items =
           getDeathItems().stream()

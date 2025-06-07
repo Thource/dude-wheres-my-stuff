@@ -34,14 +34,14 @@ public class DeathItems extends DeathStorage {
   }
 
   public void createDebugDeathpile(WorldPoint worldPoint) {
-    var deathpile = deathStorageManager.createDeathpile(RemoteDeathpileAreas.getPileArea(worldPoint), items);
+    var deathpile = deathStorageManager.createDeathpile(RemoteDeathpileAreas.getPileArea(plugin.getClient(), worldPoint), items);
     SwingUtilities.invokeLater(() ->
         plugin.getClientThread().invoke(() ->
             deathStorageManager.updateStorages(Collections.singletonList(deathpile))));
   }
 
   public void createDebugGrave(WorldPoint worldPoint) {
-    var grave = deathStorageManager.createGrave(RemoteDeathpileAreas.getPileArea(worldPoint), items);
+    var grave = deathStorageManager.createGrave(RemoteDeathpileAreas.getPileArea(plugin.getClient(), worldPoint), items);
     SwingUtilities.invokeLater(() ->
         plugin.getClientThread().invoke(() ->
             deathStorageManager.updateStorages(Collections.singletonList(grave))));
