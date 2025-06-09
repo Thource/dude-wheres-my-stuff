@@ -884,7 +884,9 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
               suspendedGroundItem.setTicksLeft(100);
 
               for (SuspendedGroundItem i : itemsPickedUp) {
-                i.setTicksLeft(1);
+                if (i.getTicksLeft() > 2) {
+                  i.setTicksLeft(2);
+                }
               }
 
               itemsPickedUp.add(suspendedGroundItem);
@@ -904,7 +906,11 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
 
     itemsPickedUp.stream()
         .filter(i -> i.getId() == despawnedItem.getId())
-        .forEach(i -> i.setTicksLeft(1));
+        .forEach(i -> {
+          if (i.getTicksLeft() > 2) {
+            i.setTicksLeft(2);
+          }
+        });
 
     var updatedDeathpiles = removeFromDeathpiles(despawnedItem, worldPoint);
     if (updatedDeathpiles.isEmpty()) {
