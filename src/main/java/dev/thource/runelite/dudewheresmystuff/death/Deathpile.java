@@ -159,6 +159,13 @@ public class Deathpile extends ExpiringDeathStorage {
   }
 
   @Override
+  public void softUpdate() {
+    super.softUpdate();
+
+    storagePanel.setSubTitle(items.size() + " stacks");
+  }
+
+  @Override
   protected void loadValues(ArrayList<String> values) {
     super.loadValues(values);
 
