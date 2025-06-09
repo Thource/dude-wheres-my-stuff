@@ -37,6 +37,7 @@ public class PlayerOwnedHouseStorageManager
 
     storages.add(new CapeHanger(plugin));
     storages.add(new Menagerie(plugin));
+    storages.add(new SpiceRack(plugin));
   }
 
   private boolean notInHouse() {
