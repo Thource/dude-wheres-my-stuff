@@ -14,8 +14,9 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.NPC;
-import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.coords.WorldArea;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.VarbitID;
 
 /** Grave is responsible for tracking the player's items that are in a grave. */
@@ -23,9 +24,9 @@ import net.runelite.api.gameval.VarbitID;
 @Slf4j
 public class Grave extends ExpiringDeathStorage {
 
-  Grave(DudeWheresMyStuffPlugin plugin, WorldPoint worldPoint,
+  Grave(DudeWheresMyStuffPlugin plugin, WorldArea worldArea,
       DeathStorageManager deathStorageManager, List<ItemStack> deathItems) {
-    super(plugin, false, worldPoint, deathStorageManager, deathItems,
+    super(plugin, false, worldArea, deathStorageManager, deathItems,
         DeathStorageType.GRAVE);
   }
 
@@ -82,21 +83,28 @@ public class Grave extends ExpiringDeathStorage {
 
     expiryTime = newExpiryTime;
 
-    if (worldPoint.getX() == 0 && worldPoint.getY() == 0 && worldPoint.getPlane() == 0) {
-      findGrave();
+    if (worldPoint == null) {
+      locate();
     }
 
     return true;
   }
 
-  private void findGrave() {
+  private void locate() {
     Optional<NPC> graveObject = plugin.getClient().getNpcs().stream()
-        .filter(n -> n.getId() == 9856).findFirst();
-    if (!graveObject.isPresent()) {
+        .filter(
+            n -> n.getId() == NpcID.GRAVESTONE_DEFAULT || n.getId() == NpcID.GRAVESTONE_ANGEL)
+        .findFirst();
+    if (graveObject.isEmpty()) {
+      return;
+    }
+
+    if (worldArea != null && !worldArea.contains(graveObject.get().getWorldLocation())) {
       return;
     }
 
     worldPoint = graveObject.get().getWorldLocation();
+    worldArea = null;
     deathStorageManager.refreshMapPoints();
     SwingUtilities.invokeLater(this::setSubTitle);
   }

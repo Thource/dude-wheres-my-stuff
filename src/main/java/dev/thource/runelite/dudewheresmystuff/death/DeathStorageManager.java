@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.inject.Inject;
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffConfig;
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
+import dev.thource.runelite.dudewheresmystuff.ItemContainerWatcher;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
 import dev.thource.runelite.dudewheresmystuff.ItemStackUtils;
 import dev.thource.runelite.dudewheresmystuff.Region;
@@ -40,6 +41,7 @@ import net.runelite.api.Quest;
 import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.TileItem;
+import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ActorDeath;
 import net.runelite.api.events.ChatMessage;
@@ -75,7 +77,9 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
           12172, // Gauntlet
           12633, // death's office
           12600, // Ferox
-          6705 // Civitas illa Fortis
+          6705, // Civitas illa Fortis
+          7316, // Colosseum lobby
+          5789 // Chasm of Fire (Yama)
           );
   private static final Set<Region> SAFE_DEATH_REGIONS =
       ImmutableSet.of(
@@ -87,15 +91,15 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
   @Getter private final DeathsOffice deathsOffice;
   long startMs = 0L;
   @Getter @Nullable private Deathbank deathbank = null;
+  @Getter private final DeathItems deathItemsStorage;
   @Getter @Nullable private Grave grave = null;
   @Setter private CarryableStorageManager carryableStorageManager;
   @Setter private CoinsStorageManager coinsStorageManager;
   @Inject private WorldMapPointManager worldMapPointManager;
   @Getter @Setter private int startPlayedMinutes = -1;
   private DyingState dyingState = DyingState.NOT_DYING;
-  private WorldPoint deathLocation;
+  private WorldArea deathPileArea;
   private List<ItemStack> deathItems;
-  private Item[] oldInventoryItems;
   private DeathbankInfoBox deathbankInfoBox;
   private int entryModeTob; // 1 = entering entry mode, 2 = entry mode
   private final List<SuspendedGroundItem> itemsPickedUp = new ArrayList<>();
@@ -108,7 +112,8 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
         "Navigate to the quest tab and swap to</br>the Character Summary tab"
             + " (brown star) to</br>track cross-client deathpiles.");
 
-    storages.add(new DeathItems(plugin, this));
+    deathItemsStorage = new DeathItems(plugin, this);
+    storages.add(deathItemsStorage);
     deathsOffice = new DeathsOffice(plugin);
     storages.add(deathsOffice);
   }
@@ -119,11 +124,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
       return;
     }
 
-    if (itemContainerChanged.getContainerId() == InventoryID.INV) {
-      if (updateInventoryItems(itemContainerChanged.getItemContainer().getItems())) {
-        updateStorages(Collections.singletonList(deathbank));
-      }
-    } else if (itemContainerChanged.getContainerId() == 525) {
+    if (itemContainerChanged.getContainerId() == InventoryID.GRAVESTONE) {
       if (client.getWidget(672, 0) == null) {
         updateDeathbankItems(itemContainerChanged.getItemContainer().getItems());
 
@@ -212,33 +213,40 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
     }
   }
 
-  private boolean updateInventoryItems(Item[] items) {
-    boolean updated = false;
+  private boolean updateFromWatchers() {
+    var updated = updateDeathbankFromWatcher(ItemContainerWatcher.getInventoryWatcher());
 
-    if (oldInventoryItems != null
-        && client.getLocalPlayer() != null
-        && deathbank != null
-        && deathbank.getDeathbankType() == DeathbankType.ZULRAH
-        && Region.get(client.getLocalPlayer().getWorldLocation().getRegionID())
-            == Region.CITY_ZULANDRA) {
-      List<ItemStack> inventoryItemsList =
-          Arrays.stream(items)
-              .map(i -> new ItemStack(i.getId(), "", i.getQuantity(), 0, 0, true))
-              .collect(Collectors.toList());
-      removeItemsFromList(inventoryItemsList, oldInventoryItems);
-      removeItemsFromList(deathbank.getItems(), inventoryItemsList);
-
-      if (!inventoryItemsList.isEmpty()) {
-        deathbank.setLastUpdated(System.currentTimeMillis());
-        updated = true;
-      }
-
-      if (deathbank.getItems().isEmpty()) {
-        clearDeathbank(false);
-      }
+    if (plugin.getClient().getVarbitValue(VarbitID.SETTINGS_GRAVESTONE_AUTOEQUIP) == 1
+        && updateDeathbankFromWatcher(ItemContainerWatcher.getWornWatcher())) {
+      updated = true;
     }
 
-    oldInventoryItems = items;
+    return updated;
+  }
+
+  private boolean updateDeathbankFromWatcher(ItemContainerWatcher watcher) {
+    boolean updated = false;
+
+    if (deathbank == null
+        || deathbank.getDeathbankType() != DeathbankType.ZULRAH
+        || client.getLocalPlayer() == null
+        || Region.get(client.getLocalPlayer().getWorldLocation().getRegionID())
+            != Region.CITY_ZULANDRA) {
+      return false;
+    }
+
+    var itemsAddedLastTick = watcher.getItemsAddedLastTick();
+    removeItemsFromList(deathbank.getItems(), itemsAddedLastTick);
+
+    if (!itemsAddedLastTick.isEmpty()) {
+      deathbank.setLastUpdated(System.currentTimeMillis());
+      updated = true;
+    }
+
+    if (deathbank.getItems().isEmpty()) {
+      clearDeathbank(false);
+    }
+
     return updated;
   }
 
@@ -293,8 +301,10 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
     } else if (dyingState == DyingState.TICK_3) {
       dyingState = DyingState.RECORDING_DATA;
     } else if (dyingState == DyingState.RECORDING_DATA) {
-      WorldPoint location =
-          WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation());
+      WorldArea worldArea =
+          RemoteDeathpileAreas.getPileArea(
+              client,
+              WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()));
       List<ItemStack> items =
           getDeathItems().stream()
               .filter(itemStack -> itemStack.getId() != -1)
@@ -304,14 +314,15 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
         dyingState = DyingState.NOT_DYING;
       } else {
         dyingState = DyingState.WAITING_FOR_RESPAWN;
-        deathLocation = location;
+        deathPileArea = worldArea;
         deathItems = items;
       }
     }
 
     if ((deathbank != null && checkIfDeathbankWindowIsEmpty())
         | processDeath()
-        | checkItemsLostOnDeathWindow()) {
+        | checkItemsLostOnDeathWindow()
+        | updateFromWatchers()) {
 
       SwingUtilities.invokeLater(
           () -> plugin.getClientThread().invoke(() -> updateStorages(storages)));
@@ -549,11 +560,11 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
     }
 
     if (dyingState != DyingState.NOT_DYING) {
-      Region region = Region.get(deathLocation.getRegionID());
+      Region region = Region.get(deathPileArea.toWorldPoint().getRegionID());
       if (region == Region.RAIDS_THEATRE_OF_BLOOD
           && message.startsWith("You feel refreshed as your health is replenished")) {
         dyingState = DyingState.NOT_DYING;
-        deathLocation = null;
+        deathPileArea = null;
         deathItems = null;
         return;
       }
@@ -618,7 +629,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
       return;
     }
 
-    grave = new Grave(plugin, new WorldPoint(0, 0, 0), this, new ArrayList<>());
+    grave = new Grave(plugin, null, this, new ArrayList<>());
     storages.add(grave);
     grave.getItems().add(new ItemStack(ItemID.MACRO_QUIZ_MYSTERY_BOX, 1, plugin));
 
@@ -630,7 +641,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
         });
   }
 
-  private void createMysteryDeathbank(DeathbankType type) {
+  void createMysteryDeathbank(DeathbankType type) {
     deathbank = new Deathbank(type, plugin, this);
     storages.add(deathbank);
     deathbank.setLastUpdated(System.currentTimeMillis());
@@ -703,24 +714,24 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
 
     boolean updated = false;
 
-    Region deathRegion = Region.get(deathLocation.getRegionID());
+    Region deathPileRegion = Region.get(deathPileArea.toWorldPoint().getRegionID());
 
     if (!RESPAWN_REGIONS.contains(client.getLocalPlayer().getWorldLocation().getRegionID())) {
       // Player has died but is still safe unless their team dies
-      if (deathRegion == Region.RAIDS_THEATRE_OF_BLOOD) {
+      if (deathPileRegion == Region.RAIDS_THEATRE_OF_BLOOD) {
         return false;
       }
 
       log.info(
           "Died, but did not respawn in a known respawn location: "
               + client.getLocalPlayer().getWorldLocation().getRegionID());
-    } else if (!SAFE_DEATH_REGIONS.contains(deathRegion)) {
+    } else if (!SAFE_DEATH_REGIONS.contains(deathPileRegion)) {
       updated = true;
-      registerDeath(deathRegion);
+      registerDeath(deathPileRegion);
     }
 
     dyingState = DyingState.NOT_DYING;
-    deathLocation = null;
+    deathPileArea = null;
     deathItems = null;
 
     return updated;
@@ -753,9 +764,9 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
               || client.getVarbitValue(VarbitID.IRONMAN) != 2); // not uim
       deathbank.getItems().addAll(deathItems);
     } else if (client.getVarbitValue(VarbitID.IRONMAN) == 2) { // uim
-      createDeathpile(deathLocation, deathItems);
+      createDeathpile(deathPileArea, deathItems);
     } else {
-      createGrave(deathLocation, deathItems);
+      createGrave(deathPileArea, deathItems);
     }
 
     refreshMapPoints();
@@ -792,25 +803,29 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
     SwingUtilities.invokeLater(carryableStorageManager.getStorageTabPanel()::reorderStoragePanels);
   }
 
-  void createDeathpile(WorldPoint location, List<ItemStack> items) {
+  Deathpile createDeathpile(WorldArea area, List<ItemStack> items) {
     boolean useAccountPlayTime = deathpilesUseAccountPlayTime();
-    Deathpile deathpile = new Deathpile(plugin, useAccountPlayTime, location, this, items);
+    Deathpile deathpile = new Deathpile(plugin, useAccountPlayTime, area, this, items);
     SwingUtilities.invokeLater(() -> deathpile.createStoragePanel(this));
     storages.add(deathpile);
+
+    return deathpile;
   }
 
-  void createGrave(WorldPoint location, List<ItemStack> items) {
+  Grave createGrave(WorldArea area, List<ItemStack> items) {
     // If the player already has a grave, their items get added to it and the timer restarts
     if (grave != null) {
       grave.getItems().addAll(items);
       updateStorages(Collections.singletonList(grave));
 
-      return;
+      return grave;
     }
 
-    grave = new Grave(plugin, location, this, items);
+    grave = new Grave(plugin, area, this, items);
     SwingUtilities.invokeLater(() -> grave.createStoragePanel(this));
     storages.add(grave);
+
+    return grave;
   }
 
   private Optional<DeathbankType> getDeathbankType(Region deathRegion) {
@@ -860,7 +875,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
         WorldPoint.fromScene(
             worldView, menuOption.getParam0(), menuOption.getParam1(), worldView.getPlane());
     getDeathpiles()
-        .filter(deathpile -> !deathpile.hasExpired())
+        .filter(deathpile -> !deathpile.hasExpired() && deathpile.getWorldPoint() != null)
         .filter(deathpile -> deathpile.getWorldPoint().equals(worldPoint))
         .findFirst()
         .ifPresent(
@@ -928,7 +943,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
     }
 
     return getDeathpiles()
-        .filter(deathpile -> !deathpile.hasExpired())
+        .filter(deathpile -> !deathpile.hasExpired() && deathpile.getWorldPoint() != null)
         .filter(deathpile -> deathpile.getWorldPoint().equals(worldPoint))
         .filter(
             deathpile -> {
@@ -988,7 +1003,6 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
 
   @Override
   public void reset() {
-    oldInventoryItems = null;
     storages.removeIf(s -> s instanceof ExpiringDeathStorage || s instanceof Deathbank);
     deathbank = null;
     enable();
@@ -1009,9 +1023,12 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
         .filter(deathpile -> !deathpile.hasExpired())
         .forEach(
             deathpile -> {
+              var worldPoint =
+                  deathpile.getWorldPoint() != null
+                      ? deathpile.getWorldPoint()
+                      : deathpile.getWorldArea().toWorldPoint();
               deathpile.worldMapPoint =
-                  new DeathWorldMapPoint(
-                      deathpile.getWorldPoint(), itemManager, index.getAndIncrement());
+                  new DeathWorldMapPoint(worldPoint, itemManager, index.getAndIncrement());
               worldMapPointManager.add(deathpile.getWorldMapPoint());
             });
   }

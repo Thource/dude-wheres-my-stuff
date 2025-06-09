@@ -44,7 +44,7 @@ public class ExpiringDeathStorageTextOverlay extends Overlay {
 
     storage = newStorage;
     if (storage != null) {
-      Region region = Region.get(storage.getWorldPoint().getRegionID());
+      var region = storage.getRegion();
       regionName = (region == null ? null : region.getName());
     }
   }

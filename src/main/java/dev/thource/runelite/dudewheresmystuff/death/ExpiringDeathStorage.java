@@ -22,6 +22,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import lombok.Getter;
 import lombok.Setter;
+import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.util.ImageUtil;
 
@@ -31,6 +32,7 @@ public abstract class ExpiringDeathStorage extends DeathStorage {
       new ImageIcon(ImageUtil.loadImageResource(DudeWheresMyStuffPlugin.class, "warning.png"));
   @Getter protected final DeathStorageManager deathStorageManager;
   @Getter protected WorldPoint worldPoint;
+  @Getter protected WorldArea worldArea;
   @Getter @Setter protected int expiryTime;
   protected long expiredAt = -1L;
   @Getter @Setter protected DeathWorldMapPoint worldMapPoint;
@@ -47,13 +49,17 @@ public abstract class ExpiringDeathStorage extends DeathStorage {
   ExpiringDeathStorage(
       DudeWheresMyStuffPlugin plugin,
       boolean useAccountPlayTime,
-      WorldPoint worldPoint,
+      WorldArea worldArea,
       DeathStorageManager deathStorageManager,
       List<ItemStack> deathItems,
       DeathStorageType storageType) {
     super(storageType, plugin);
     this.useAccountPlayTime = useAccountPlayTime;
-    this.worldPoint = worldPoint;
+    if (worldArea != null && worldArea.getWidth() == 1 && worldArea.getHeight() == 1) {
+      this.worldPoint = worldArea.toWorldPoint();
+    } else {
+      this.worldArea = worldArea;
+    }
     this.deathStorageManager = deathStorageManager;
     this.items.addAll(deathItems);
 
@@ -77,7 +83,11 @@ public abstract class ExpiringDeathStorage extends DeathStorage {
     ArrayList<String> saveValues = super.getSaveValues();
 
     saveValues.add(SaveFieldFormatter.format(uuid));
-    saveValues.add(SaveFieldFormatter.format(worldPoint));
+    if (worldPoint != null) {
+      saveValues.add(SaveFieldFormatter.format(worldPoint));
+    } else {
+      saveValues.add(SaveFieldFormatter.format(worldArea));
+    }
     saveValues.add(SaveFieldFormatter.format(useAccountPlayTime));
     saveValues.add(SaveFieldFormatter.format(expiryTime));
     saveValues.add(SaveFieldFormatter.format(expiredAt));
@@ -90,7 +100,12 @@ public abstract class ExpiringDeathStorage extends DeathStorage {
     super.loadValues(values);
 
     uuid = SaveFieldLoader.loadUUID(values, uuid);
-    worldPoint = SaveFieldLoader.loadWorldPoint(values, worldPoint);
+    var point = SaveFieldLoader.loadWorldPoint(values, null);
+    if (point != null) {
+      worldPoint = point;
+    } else {
+      worldArea = SaveFieldLoader.loadWorldArea(values, null);
+    }
     useAccountPlayTime = SaveFieldLoader.loadBoolean(values, useAccountPlayTime);
     expiryTime = SaveFieldLoader.loadInt(values, expiryTime);
     expiredAt = SaveFieldLoader.loadLong(values, expiredAt);
@@ -110,12 +125,16 @@ public abstract class ExpiringDeathStorage extends DeathStorage {
         footerLabel.setHorizontalTextPosition(SwingConstants.LEFT);
         footerLabel.setIcon(WARNING_ICON);
         footerLabel.setToolTipText(
-            "This " + this.getName().toLowerCase() + " is using tick-based tracking, which means "
+            "This "
+                + this.getName().toLowerCase()
+                + " is using tick-based tracking, which means "
                 + "that the timer could be out of sync. To use the more accurate play time based "
                 + "timers, enable cross-client timers in the plugin settings.");
       } else if (deathStorageManager.getStartPlayedMinutes() <= 0) {
         footerLabel.setToolTipText(
-            "This " + this.getName().toLowerCase() + " is using play time based tracking, but the "
+            "This "
+                + this.getName().toLowerCase()
+                + " is using play time based tracking, but the "
                 + "plugin doesn't know what your current play time is. To update your play time, "
                 + "swap the quest interface to the \"Character summary\" tab (brown star).");
       }
@@ -129,12 +148,20 @@ public abstract class ExpiringDeathStorage extends DeathStorage {
       return;
     }
 
-    Region region = Region.get(worldPoint.getRegionID());
+    var region = getRegion();
     if (region == null) {
       storagePanel.setSubTitle("Unknown");
     } else {
       storagePanel.setSubTitle(region.getName());
     }
+  }
+
+  public Region getRegion() {
+    if (worldPoint == null && worldArea == null) {
+      return null;
+    }
+
+    return Region.get((worldPoint != null ? worldPoint : worldArea.toWorldPoint()).getRegionID());
   }
 
   @Override
@@ -150,10 +177,14 @@ public abstract class ExpiringDeathStorage extends DeathStorage {
     final JMenuItem delete = new JMenuItem("Delete " + this.getName());
     delete.addActionListener(
         e -> {
-          boolean confirmed = hasExpired() || DudeWheresMyStuffPlugin.getConfirmation(storagePanel,
-              "Are you sure you want to delete this " + this.getName().toLowerCase()
-                  + "?\nThis cannot be undone.",
-              "Confirm deletion");
+          boolean confirmed =
+              hasExpired()
+                  || DudeWheresMyStuffPlugin.getConfirmation(
+                      storagePanel,
+                      "Are you sure you want to delete this "
+                          + this.getName().toLowerCase()
+                          + "?\nThis cannot be undone.",
+                      "Confirm deletion");
 
           if (confirmed) {
             deathStorageManager.deleteStorage(this);
@@ -175,8 +206,8 @@ public abstract class ExpiringDeathStorage extends DeathStorage {
           e -> {
             int minutes = 0;
             try {
-              minutes = Integer.parseInt(
-                  JOptionPane.showInputDialog("Enter expiry in minutes from now"));
+              minutes =
+                  Integer.parseInt(JOptionPane.showInputDialog("Enter expiry in minutes from now"));
             } catch (NumberFormatException nfe) {
               // Do nothing
             }
@@ -193,8 +224,7 @@ public abstract class ExpiringDeathStorage extends DeathStorage {
             expiredAt = -1L;
             softUpdate();
             storageManager.getStorageTabPanel().reorderStoragePanels();
-          }
-      );
+          });
 
       JMenuItem expire = new JMenuItem("Expire");
       debugMenu.add(expire);
@@ -204,8 +234,7 @@ public abstract class ExpiringDeathStorage extends DeathStorage {
             expiryTime = 0;
             softUpdate();
             storageManager.getStorageTabPanel().reorderStoragePanels();
-          }
-      );
+          });
     }
   }
 
@@ -220,15 +249,16 @@ public abstract class ExpiringDeathStorage extends DeathStorage {
       if (expiryTime <= 0) {
         expiredAt = System.currentTimeMillis();
 
-        SwingUtilities.invokeLater(() -> {
-          if (storagePanel == null) {
-            return;
-          }
+        SwingUtilities.invokeLater(
+            () -> {
+              if (storagePanel == null) {
+                return;
+              }
 
-          JLabel footerLabel = storagePanel.getFooterLabel();
-          footerLabel.setIcon(null);
-          footerLabel.setToolTipText(null);
-        });
+              JLabel footerLabel = storagePanel.getFooterLabel();
+              footerLabel.setIcon(null);
+              footerLabel.setToolTipText(null);
+            });
       }
 
       return true;

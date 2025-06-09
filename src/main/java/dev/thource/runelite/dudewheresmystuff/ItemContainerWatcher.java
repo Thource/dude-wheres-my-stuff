@@ -16,7 +16,9 @@ import net.runelite.api.gameval.InventoryID;
 public class ItemContainerWatcher {
 
   @Getter static final ItemContainerWatcher inventoryWatcher =
-      new ItemContainerWatcher(InventoryID.INV);
+      new ItemContainerWatcher(InventoryID.INV, true);
+  @Getter static final ItemContainerWatcher wornWatcher =
+      new ItemContainerWatcher(InventoryID.WORN, true);
   @Getter static final ItemContainerWatcher lootingBagWatcher = new ItemContainerWatcher(
       InventoryID.LOOTING_BAG);
   @Getter static final ItemContainerWatcher bankWatcher = new ItemContainerWatcher(
@@ -27,8 +29,8 @@ public class ItemContainerWatcher {
       InventoryID.DEATH_PERMANENT);
   private static final Map<Integer, ItemContainerWatcher> watcherMap;
   private static final ItemContainerWatcher[] all =
-      new ItemContainerWatcher[]{inventoryWatcher, lootingBagWatcher, bankWatcher, seedBoxWatcher,
-          deathsOfficeWatcher};
+      new ItemContainerWatcher[]{inventoryWatcher, wornWatcher, lootingBagWatcher, bankWatcher,
+          seedBoxWatcher, deathsOfficeWatcher};
   private static Client client;
 
   static {
@@ -43,9 +45,17 @@ public class ItemContainerWatcher {
   private final List<ItemStack> itemsLastTick = new ArrayList<>();
   @Getter private final List<ItemStack> items = new ArrayList<>();
   private boolean justUpdated = false;
+  private final boolean requiresInitialUpdate;
+  private boolean initialUpdateOccurred = false;
 
   ItemContainerWatcher(int itemContainerId) {
     this.itemContainerId = itemContainerId;
+    this.requiresInitialUpdate = false;
+  }
+
+  ItemContainerWatcher(int itemContainerId, boolean requiresInitialUpdate) {
+    this.itemContainerId = itemContainerId;
+    this.requiresInitialUpdate = requiresInitialUpdate;
   }
 
   static void init(Client client) {
@@ -57,6 +67,9 @@ public class ItemContainerWatcher {
       itemContainerWatcher.itemsLastTick.clear();
       itemContainerWatcher.items.clear();
       itemContainerWatcher.justUpdated = false;
+      if (itemContainerWatcher.requiresInitialUpdate) {
+        itemContainerWatcher.initialUpdateOccurred = false;
+      }
     }
   }
 
@@ -106,6 +119,13 @@ public class ItemContainerWatcher {
                   return new ItemStack(item.getId(), item.getQuantity(), plugin);
                 })
             .collect(Collectors.toList()));
+
+    if (requiresInitialUpdate && !initialUpdateOccurred) {
+      initialUpdateOccurred = true;
+
+      itemsLastTick.clear();
+      itemsLastTick.addAll(items);
+    }
   }
 
   /**
@@ -114,6 +134,10 @@ public class ItemContainerWatcher {
    * @return ItemStack List
    */
   public List<ItemStack> getItemsAddedLastTick() {
+    if (!justUpdated || (requiresInitialUpdate && !initialUpdateOccurred)) {
+      return List.of();
+    }
+
     List<ItemStack> itemsAddedLastTick =
         items.stream()
             .filter(i -> i.getId() != -1)
@@ -131,6 +155,10 @@ public class ItemContainerWatcher {
    * @return ItemStack List
    */
   public List<ItemStack> getItemsRemovedLastTick() {
+    if (!justUpdated || (requiresInitialUpdate && !initialUpdateOccurred)) {
+      return List.of();
+    }
+
     List<ItemStack> itemsRemovedLastTick =
         itemsLastTick.stream()
             .filter(i -> i.getId() != -1)

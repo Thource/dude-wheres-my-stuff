@@ -27,7 +27,10 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.ItemContainer;
+import net.runelite.api.KeyCode;
+import net.runelite.api.MenuAction;
 import net.runelite.api.VarClientInt;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ActorDeath;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.FocusChanged;
@@ -36,6 +39,7 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.ItemDespawned;
+import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetClosed;
@@ -166,7 +170,7 @@ public class DudeWheresMyStuffPlugin extends Plugin {
   protected void startUp() {
     if (panelContainer == null) {
       expiringDeathStorageTilesOverlay = new ExpiringDeathStorageTilesOverlay(config, client,
-          deathStorageManager);
+          deathStorageManager, this);
       expiringDeathStorageTextOverlay = new ExpiringDeathStorageTextOverlay(config,
           deathStorageManager, client);
       deathStorageManager.setCarryableStorageManager(carryableStorageManager);
@@ -542,6 +546,56 @@ public class DudeWheresMyStuffPlugin extends Plugin {
     }
 
     storageManagerManager.onMenuOptionClicked(menuOption);
+  }
+
+  @Subscribe
+  void onMenuEntryAdded(MenuEntryAdded menuEntryAdded) {
+    final boolean hotKeyPressed = client.isKeyPressed(KeyCode.KC_SHIFT);
+    if (!isDeveloperMode() || !menuEntryAdded.getOption().equals("Walk here") || !hotKeyPressed) {
+      return;
+    }
+
+    if (Objects.equals(configManager.getConfiguration(
+        DudeWheresMyStuffConfig.CONFIG_GROUP, "debug.menu.createDeathpile"), "true")) {
+      client
+          .getMenu()
+          .createMenuEntry(-1)
+          .setOption("Create deathpile")
+          .setType(MenuAction.RUNELITE)
+          .onClick(
+              e -> {
+                var target = client.getTopLevelWorldView().getSelectedSceneTile();
+                if (target != null) {
+                  SwingUtilities.invokeLater(
+                      () ->
+                          deathStorageManager
+                              .getDeathItemsStorage()
+                              .createDebugDeathpile(
+                                  WorldPoint.fromLocalInstance(client, target.getLocalLocation())));
+                }
+              });
+    }
+
+    if (Objects.equals(configManager.getConfiguration(
+        DudeWheresMyStuffConfig.CONFIG_GROUP, "debug.menu.logCoords"), "true")) {
+      client
+          .getMenu()
+          .createMenuEntry(-1)
+          .setOption("Log co-ords")
+          .setType(MenuAction.RUNELITE)
+          .onClick(
+              e -> {
+                var target = client.getTopLevelWorldView().getSelectedSceneTile();
+                if (target != null) {
+                  var worldPoint = WorldPoint.fromLocalInstance(client, target.getLocalLocation());
+                  log.info(
+                      "Co-ords: {}, {}, {}",
+                      worldPoint.getX(),
+                      worldPoint.getY(),
+                      worldPoint.getPlane());
+                }
+              });
+    }
   }
 
   @Subscribe
