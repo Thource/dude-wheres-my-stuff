@@ -12,9 +12,6 @@ import net.runelite.api.coords.WorldPoint;
 
 @Getter
 enum RemoteDeathpileAreas {
-  GE_TEST(new WorldArea(3161, 3480, 8, 8, 0), new WorldArea(3165, 3478, 1, 1, 0)),
-  LUMMY_REGION_TEST(List.of(12850), 0, new WorldArea(3223, 3225, 1, 1, 0)),
-
   BOSS_ARAXXOR(new WorldArea(3616, 9797, 35, 40, 0), new WorldArea(3657, 9812, 5, 7, 0)),
   BOSS_CERBERUS(List.of(4883, 5140, 5395), 0, new WorldArea(1307, 1247, 7, 6, 0)),
   BOSS_COLOSSEUM(new WorldArea(1805, 3087, 40, 40, 0), new WorldArea(1800, 9504, 5, 5, 0)),
@@ -30,8 +27,8 @@ enum RemoteDeathpileAreas {
   BOSS_ROYAL_TITANS(new WorldArea(2908, 9560, 7, 15, 0), new WorldArea(2949, 9571, 7, 7, 0)),
   BOSS_SKOTIZO(List.of(9048), 0, new WorldArea(1658, 10042, 12, 12, 0)),
   BOSS_YAMA(List.of(6045), 0, new WorldArea(1438, 10074, 4, 6, 0)),
-  //  QUEST_BENEATH_CURSED_SANDS_AKH(new WorldArea(), new WorldArea()),
   QUEST_SECRETS_OF_THE_NORTH_MUSPAH(List.of(11330), 0, new WorldArea(2844, 10333, 5, 6, 0)),
+  //  QUEST_BENEATH_CURSED_SANDS_AKH(new WorldArea(), new WorldArea()),
   QUEST_BENEATH_CURSED_SANDS_CHAMPION(List.of(13456), 0, new WorldArea(3411, 2843, 7, 10, 0)),
   QUEST_CURSE_OF_ARRAV(new WorldArea(3613, 4578, 28, 10, 0), new WorldArea(3577, 4602, 5, 5, 0)),
   //  QUEST_DESERT_TREASURE_2_SHADOW_REALM(new WorldArea(), new WorldArea()),
@@ -71,7 +68,7 @@ enum RemoteDeathpileAreas {
           .getPileArea();
     }
 
-    if ((regionId == 8280 || regionId == 8536)
+    if ((regionId == 8023 || regionId == 8280 || regionId == 8536)
         && Quest.MONKEY_MADNESS_II.getState(client) == QuestState.FINISHED) {
       return worldPoint.toWorldArea();
     }
