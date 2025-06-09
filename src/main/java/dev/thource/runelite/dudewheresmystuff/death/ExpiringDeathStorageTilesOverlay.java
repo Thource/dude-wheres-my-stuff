@@ -96,6 +96,10 @@ public class ExpiringDeathStorageTilesOverlay extends Overlay {
       }
     }
 
+    if (!config.deathpileTileMarkers()) {
+      return null;
+    }
+
     deathStorageManager
         .getExpiringDeathStorages()
         .filter(storage -> !storage.hasExpired())

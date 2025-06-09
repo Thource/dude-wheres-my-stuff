@@ -249,6 +249,17 @@ public interface DudeWheresMyStuffConfig extends Config {
     return true;
   }
 
+  @ConfigItem(
+      keyName = "deathpileTileMarkers",
+      name = "Show tile markers",
+      description = "When enabled, activate deathpiles / graves will be indicated by tile markers.",
+      section = DEATHPILE_OPTIONS_SECTION,
+      position = 103
+  )
+  default boolean deathpileTileMarkers() {
+    return true;
+  }
+
   @Range(
       min = 1,
       max = 59
