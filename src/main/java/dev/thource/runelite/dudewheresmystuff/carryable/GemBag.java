@@ -1,29 +1,21 @@
 package dev.thource.runelite.dudewheresmystuff.carryable;
 
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
-import dev.thource.runelite.dudewheresmystuff.ItemContainerWatcher;
-import dev.thource.runelite.dudewheresmystuff.ItemStack;
-import dev.thource.runelite.dudewheresmystuff.ItemStackUtils;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ListIterator;
-import java.util.Objects;
 import lombok.Getter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.MenuOptionClicked;
-import net.runelite.api.gameval.InterfaceID.Inventory;
-import net.runelite.api.gameval.InventoryID;
-import net.runelite.api.widgets.Widget;
 
 /** TackleBox is responsible for tracking the player's items in their tackle box. */
 @Getter
-public class TackleBox extends CarryableStorage implements DepositOnUse {
+public class GemBag extends CarryableStorage implements DepositOnUse {
 
   private final List<SuspendedItem> itemsUsed = new ArrayList<>();
 
-  public TackleBox(DudeWheresMyStuffPlugin plugin) {
-    super(CarryableStorageType.TACKLE_BOX, plugin);
+  public GemBag(DudeWheresMyStuffPlugin plugin) {
+    super(CarryableStorageType.GEM_BAG, plugin);
   }
 
   @Override

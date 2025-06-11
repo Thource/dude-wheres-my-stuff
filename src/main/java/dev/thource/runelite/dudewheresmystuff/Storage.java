@@ -323,7 +323,7 @@ public abstract class Storage<T extends StorageType> {
         .mapToLong(ItemStack::getQuantity).sum();
   }
 
-  protected void updateLastUpdated() {
+  public void updateLastUpdated() {
     lastUpdated = System.currentTimeMillis();
   }
 

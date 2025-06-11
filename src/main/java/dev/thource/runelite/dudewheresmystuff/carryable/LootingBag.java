@@ -12,15 +12,16 @@ import lombok.Getter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.InterfaceID.Inventory;
 import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.widgets.Widget;
 
 /** LootingBag is responsible for tracking the player's items in their looting bag. */
 @Getter
-public class LootingBag extends CarryableStorage {
+public class LootingBag extends CarryableStorage implements DepositOnUse {
 
-  private final List<SuspendedItem> itemsUsedOnBag = new ArrayList<>();
+  private final List<SuspendedItem> itemsUsed = new ArrayList<>();
 
   public LootingBag(DudeWheresMyStuffPlugin plugin) {
     super(CarryableStorageType.LOOTING_BAG, plugin);
@@ -52,43 +53,24 @@ public class LootingBag extends CarryableStorage {
     return didUpdate;
   }
 
-  private boolean checkUsedItems() {
-    boolean updated = false;
+  @Override
+  public List<SuspendedItem> getItemsUsed() {
+    return itemsUsed;
+  }
 
-    Widget depositDialog = plugin.getClient().getWidget(219, 1);
-    boolean depositDialogOpen = false;
+  @Override
+  public boolean isDepositDialogOpen() {
+    var depositDialog = plugin.getClient().getWidget(219, 1);
     if (depositDialog != null) {
-      Widget titleWidget = depositDialog.getChild(0);
-      depositDialogOpen =
+      var titleWidget = depositDialog.getChild(0);
+
+      return
           titleWidget != null && titleWidget.getText().equals("How many do you want to deposit?");
     }
 
-    for (ItemStack itemStack : ItemContainerWatcher.getInventoryWatcher()
-        .getItemsRemovedLastTick()) {
-      if (itemsUsedOnBag.stream().anyMatch(i -> i.getId() == itemStack.getId())) {
-        ItemStackUtils.addItemStack(items, itemStack);
-        updated = true;
-      }
-    }
-
-    ListIterator<SuspendedItem> listIterator = itemsUsedOnBag.listIterator();
-    while (listIterator.hasNext()) {
-      SuspendedItem item = listIterator.next();
-
-      if (item.getQuantity() == 1 || !depositDialogOpen) {
-        if (item.getTicksLeft() <= 1) {
-          listIterator.remove();
-        } else {
-          item.setTicksLeft(item.getTicksLeft() - 1);
-        }
-      }
-    }
-
-    if (updated) {
-      updateLastUpdated();
-    }
-
-    return updated;
+    var depositXDialog = plugin.getClient().getWidget(InterfaceID.Chatbox.MES_TEXT);
+    return depositXDialog != null && !depositXDialog.isHidden() && depositXDialog.getText()
+        .equals("Enter amount:");
   }
 
   private boolean checkForDeposit() {
@@ -113,41 +95,7 @@ public class LootingBag extends CarryableStorage {
 
   @Override
   public boolean onMenuOptionClicked(MenuOptionClicked menuOption) {
-    Widget item1Widget = plugin.getClient().getSelectedWidget();
-
-    if (menuOption.getWidget() == null
-        || menuOption.getWidget().getParentId() != Inventory.ITEMS) {
-      return false;
-    }
-
-    Widget item2Widget = menuOption.getWidget();
-    if (item1Widget == null) {
-      if (!menuOption.getMenuOption().equals("Use")
-          && !menuOption.getMenuOption().equals("Examine")) {
-        itemsUsedOnBag.removeIf(item -> item.getInventorySlot() == item2Widget.getIndex());
-      }
-
-      return false;
-    }
-
-    // one of the widgets is not an item
-    if (item1Widget.getItemId() == -1 || item2Widget.getItemId() == -1) {
-      return false;
-    }
-
-    boolean item1IsLootingBag = type.getContainerIds().contains(item1Widget.getItemId());
-    // Item wasn't used on a looting bag
-    if (!item1IsLootingBag
-        && !type.getContainerIds().contains(item2Widget.getItemId())) {
-      return false;
-    }
-
-    Widget itemWidget = (item1IsLootingBag ? item2Widget : item1Widget);
-    itemsUsedOnBag.add(new SuspendedItem(itemWidget.getIndex(), itemWidget.getItemId(),
-        Objects.requireNonNull(plugin.getClient().getItemContainer(InventoryID.INV))
-            .count(itemWidget.getItemId())));
-
-    return false;
+    return DepositOnUse.super.onMenuOptionClicked(menuOption);
   }
 
   @Override
@@ -158,7 +106,7 @@ public class LootingBag extends CarryableStorage {
     }
 
     if (chatMessage.getMessage().startsWith("You can't put items in the looting bag")) {
-      itemsUsedOnBag.clear();
+      itemsUsed.clear();
     }
 
     return false;

@@ -106,7 +106,16 @@ public enum CarryableStorageType implements StorageType {
       "chuggingBarrel",
       true,
       Collections.singletonList(ItemID.MM_PREPOT_DEVICE),
-      -1);
+      -1),
+  GEM_BAG(
+      "Gem Bag",
+      -1,
+      false,
+      "gemBag",
+      true,
+      List.of(ItemID.GEM_BAG, ItemID.GEM_BAG_OPEN),
+      -1)
+  ;
 
   private final String name;
   private final int itemContainerId;
