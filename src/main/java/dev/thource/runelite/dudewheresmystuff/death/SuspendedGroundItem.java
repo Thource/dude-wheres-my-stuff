@@ -7,7 +7,7 @@ import net.runelite.api.coords.WorldPoint;
 
 @RequiredArgsConstructor
 @Getter
-class SuspendedGroundItem {
+public class SuspendedGroundItem {
   private final int id;
   private final WorldPoint worldPoint;
   @Setter private int ticksLeft;

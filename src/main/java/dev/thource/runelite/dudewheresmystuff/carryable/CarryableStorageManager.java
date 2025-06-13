@@ -34,6 +34,7 @@ public class CarryableStorageManager
     storages.add(new TackleBox(plugin));
     storages.add(new HerbSack(plugin));
     storages.add(new ChuggingBarrel(plugin));
+    storages.add(new GemBag(plugin));
   }
 
   @Override

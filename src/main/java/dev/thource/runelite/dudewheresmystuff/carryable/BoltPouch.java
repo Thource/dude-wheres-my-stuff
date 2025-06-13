@@ -168,7 +168,7 @@ public class BoltPouch extends CarryableStorage {
   }
 
   @Override
-  protected void resetItems() {
+  public void resetItems() {
     for (int i = 0; i < BOLT_TYPE_VARBITS.length; i++) {
       items.add(new ItemStack(-1, 0, plugin));
     }

@@ -171,6 +171,12 @@ public abstract class StorageManager<T extends StorageType, S extends Storage<T>
   }
 
   public void onItemDespawned(ItemDespawned itemDespawned) {
+    if (enabled) {
+      updateStorages(
+          storages.stream()
+              .filter(storage -> storage.isEnabled() && storage.onItemDespawned(itemDespawned))
+              .collect(Collectors.toList()));
+    }
   }
 
   /** Pass onChatMessage through to enabled storages. */

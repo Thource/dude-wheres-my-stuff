@@ -81,7 +81,7 @@ public class RunePouch extends CarryableStorage {
   }
 
   @Override
-  protected void resetItems() {
+  public void resetItems() {
     for (int i = 0; i < MAX_RUNE_TYPES; i++) {
       items.add(new ItemStack(-1, 0, plugin));
     }

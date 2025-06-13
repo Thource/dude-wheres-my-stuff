@@ -19,7 +19,7 @@ public class ItemStorage<T extends StorageType> extends Storage<T> {
   protected int varbitItemOffset = 0;
   @Nullable protected final ItemContainerWatcher itemContainerWatcher;
   @Getter protected List<ItemStack> items = new ArrayList<>();
-  protected boolean hasStaticItems = false;
+  @Getter protected boolean hasStaticItems = false;
 
   protected ItemStorage(T type, DudeWheresMyStuffPlugin plugin) {
     super(type, plugin);
@@ -145,7 +145,7 @@ public class ItemStorage<T extends StorageType> extends Storage<T> {
     super.reset();
   }
 
-  protected void resetItems() {
+  public void resetItems() {
     if (hasStaticItems) {
       items.forEach(item -> item.setQuantity(0));
     } else {

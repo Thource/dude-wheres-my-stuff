@@ -17,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.api.events.ItemDespawned;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetClosed;
@@ -159,6 +160,11 @@ public abstract class Storage<T extends StorageType> {
 
   @SuppressWarnings("java:S1172") // the parameter is used in child classes
   public boolean onChatMessage(ChatMessage chatMessage) {
+    return false;
+  }
+
+  @SuppressWarnings("java:S1172") // the parameter is used in child classes
+  public boolean onItemDespawned(ItemDespawned itemDespawned) {
     return false;
   }
 

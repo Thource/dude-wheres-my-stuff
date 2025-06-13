@@ -10,7 +10,7 @@ import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.gameval.InterfaceID.Inventory;
 import net.runelite.api.gameval.InventoryID;
 
-interface DepositOnUse {
+interface UseDepositable {
 
   List<SuspendedItem> getItemsUsed();
 
@@ -22,16 +22,28 @@ interface DepositOnUse {
 
   CarryableStorageType getType();
 
-  boolean isDepositDialogOpen();
+  default boolean isDepositDialogOpen() {
+    return false;
+  }
 
-  default boolean checkUsedItems() {
+  boolean isHasStaticItems();
+
+  default List<Integer> getItemWhitelist() {
+    return List.of();
+  }
+
+  default boolean wasItemUsed(int itemId) {
+    return getItemsUsed().stream().anyMatch(i -> i.getId() == itemId);
+  }
+
+  default boolean onGameTick() {
     var updated = false;
     var itemsUsed = getItemsUsed();
 
     for (var itemStack :
         ItemContainerWatcher.getInventoryWatcher().getItemsRemovedLastTick()) {
-      if (itemsUsed.stream().anyMatch(i -> i.getId() == itemStack.getId())) {
-        ItemStackUtils.addItemStack(getItems(), itemStack);
+      if (wasItemUsed(itemStack.getId())) {
+        ItemStackUtils.addItemStack(getItems(), itemStack, isHasStaticItems());
         updated = true;
       }
     }
@@ -86,6 +98,11 @@ interface DepositOnUse {
     }
 
     var itemWidget = (item1IsThis ? item2Widget : item1Widget);
+    var itemWhitelist = getItemWhitelist();
+    if (!itemWhitelist.isEmpty() && !itemWhitelist.contains(itemWidget.getItemId())) {
+      return false;
+    }
+
     itemsUsed.add(
         new SuspendedItem(
             itemWidget.getIndex(),

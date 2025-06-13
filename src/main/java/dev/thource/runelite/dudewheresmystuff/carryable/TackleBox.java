@@ -1,24 +1,16 @@
 package dev.thource.runelite.dudewheresmystuff.carryable;
 
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
-import dev.thource.runelite.dudewheresmystuff.ItemContainerWatcher;
-import dev.thource.runelite.dudewheresmystuff.ItemStack;
-import dev.thource.runelite.dudewheresmystuff.ItemStackUtils;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ListIterator;
-import java.util.Objects;
 import lombok.Getter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.MenuOptionClicked;
-import net.runelite.api.gameval.InterfaceID.Inventory;
-import net.runelite.api.gameval.InventoryID;
-import net.runelite.api.widgets.Widget;
 
 /** TackleBox is responsible for tracking the player's items in their tackle box. */
 @Getter
-public class TackleBox extends CarryableStorage implements DepositOnUse {
+public class TackleBox extends CarryableStorage implements UseDepositable {
 
   private final List<SuspendedItem> itemsUsed = new ArrayList<>();
 
@@ -30,16 +22,11 @@ public class TackleBox extends CarryableStorage implements DepositOnUse {
   public boolean onGameTick() {
     boolean didUpdate = super.onGameTick();
 
-    if (checkUsedItems()) {
+    if (UseDepositable.super.onGameTick()) {
       didUpdate = true;
     }
 
     return didUpdate;
-  }
-
-  @Override
-  public List<SuspendedItem> getItemsUsed() {
-    return itemsUsed;
   }
 
   @Override
@@ -49,7 +36,7 @@ public class TackleBox extends CarryableStorage implements DepositOnUse {
 
   @Override
   public boolean onMenuOptionClicked(MenuOptionClicked menuOption) {
-    return DepositOnUse.super.onMenuOptionClicked(menuOption);
+    return UseDepositable.super.onMenuOptionClicked(menuOption);
   }
 
   @Override
@@ -62,6 +49,7 @@ public class TackleBox extends CarryableStorage implements DepositOnUse {
     if (chatMessage.getMessage().startsWith("The tackle box is now empty")) {
       resetItems();
       updateLastUpdated();
+      return true;
     }
 
     return false;
