@@ -19,8 +19,8 @@ public class CarryableStorage extends ItemStorage<CarryableStorageType> {
   }
 
   @Override
-  public boolean onItemContainerChanged(ItemContainerChanged itemContainerChanged) {
-    boolean updated = super.onItemContainerChanged(itemContainerChanged);
+  public boolean onGameTick() {
+    boolean updated = super.onGameTick();
 
     if (type == CarryableStorageType.EQUIPMENT && updated) {
       ItemStack empty = new ItemStack(-1, "empty", 1, 0, 0, false);
