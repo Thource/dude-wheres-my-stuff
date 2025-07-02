@@ -219,16 +219,16 @@ public class ItemStackUtils {
       for (CarryableStorage storage : carryableStorageManager.getStorages()) {
         CarryableStorageType storageType = storage.getType();
 
-        if (storageType == CarryableStorageType.LOOTING_BAG || storageType.getContainerIds()
-            .isEmpty() || !storageType.getContainerIds().contains(itemStack.getId())) {
+        if (storageType == CarryableStorageType.LOOTING_BAG
+            || storageType.getContainerIds().isEmpty()
+            || !storageType.getContainerIds().contains(itemStack.getId())
+            || storageType.getEmptyOnDeathVarbit() == -1
+            || storage.getPlugin().getClient().getVarbitValue(storageType.getEmptyOnDeathVarbit())
+                != 1) {
           continue;
         }
 
-        if (storageType.getEmptyOnDeathVarbit() == -1
-            || storage.getPlugin().getClient().getVarbitValue(storageType.getEmptyOnDeathVarbit())
-            == 1) {
-          storage.getItems().forEach(itemStacksIterator::add);
-        }
+        storage.getItems().forEach(itemStacksIterator::add);
       }
 
       if (CarryableStorageType.LOOTING_BAG.getContainerIds().contains(itemStack.getId())) {

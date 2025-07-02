@@ -6,6 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
@@ -15,6 +16,9 @@ import org.apache.commons.lang3.math.NumberUtils;
 /** MasteringMixology tracks paste/points at the Mastering Mixology minigame. */
 public class MasteringMixology extends MinigamesStorage {
 
+  private final ItemStack moxPaste;
+  private final ItemStack agaPaste;
+  private final ItemStack lyePaste;
   private final ItemStack moxResin;
   private final ItemStack agaResin;
   private final ItemStack lyeResin;
@@ -30,9 +34,12 @@ public class MasteringMixology extends MinigamesStorage {
     varbits =
         new int[] {VarbitID.MM_AVAILABLE_MOX, VarbitID.MM_AVAILABLE_AGA, VarbitID.MM_AVAILABLE_LYE};
 
-    items.add(new ItemStack(ItemID.MM_MOX_PASTE, plugin));
-    items.add(new ItemStack(ItemID.MM_AGA_PASTE, plugin));
-    items.add(new ItemStack(ItemID.MM_LYE_PASTE, plugin));
+    moxPaste = new ItemStack(ItemID.MM_MOX_PASTE, plugin);
+    items.add(moxPaste);
+    agaPaste = new ItemStack(ItemID.MM_AGA_PASTE, plugin);
+    items.add(agaPaste);
+    lyePaste = new ItemStack(ItemID.MM_LYE_PASTE, plugin);
+    items.add(lyePaste);
 
     moxResin = new ItemStack(-2, "Mox resin", 0, 0, 0, true); // sprite 5666
     moxResin.setSpriteId(5666);
@@ -91,8 +98,39 @@ public class MasteringMixology extends MinigamesStorage {
     return updateFromWidgets();
   }
 
-  boolean updateFromWidgets() {
-    Widget widget = plugin.getClient().getWidget(819, 18);
+  private boolean updateFromOverlay() {
+    Widget widget = plugin.getClient().getWidget(InterfaceID.MmOverlay.CONTENT);
+    if (widget == null) {
+      return false;
+    }
+
+    Widget[] widgetChildren = widget.getChildren();
+    if (widgetChildren == null || widgetChildren.length < 16) {
+      return false;
+    }
+
+    updateLastUpdated();
+
+    int newMoxPaste = Integer.parseInt(widgetChildren[8].getText());
+    if (newMoxPaste != moxPaste.getQuantity()) {
+      moxPaste.setQuantity(newMoxPaste);
+    }
+
+    int newAgaPaste = Integer.parseInt(widgetChildren[11].getText());
+    if (newAgaPaste != agaPaste.getQuantity()) {
+      agaPaste.setQuantity(newAgaPaste);
+    }
+
+    int newLyePaste = Integer.parseInt(widgetChildren[14].getText());
+    if (newLyePaste != lyePaste.getQuantity()) {
+      lyePaste.setQuantity(newLyePaste);
+    }
+
+    return true;
+  }
+
+  private boolean updateFromShop() {
+    Widget widget = plugin.getClient().getWidget(InterfaceID.OmnishopMain.POINTS_LAYER);
     if (widget == null) {
       return false;
     }
@@ -120,6 +158,10 @@ public class MasteringMixology extends MinigamesStorage {
     }
 
     return true;
+  }
+
+  private boolean updateFromWidgets() {
+    return updateFromOverlay() | updateFromShop();
   }
 
   @Override
