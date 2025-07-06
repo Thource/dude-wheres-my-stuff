@@ -62,7 +62,12 @@ public class ItemStorage<T extends StorageType> extends Storage<T> {
   public boolean onGameTick() {
     if (itemContainerWatcher != null && itemContainerWatcher.wasJustUpdated()) {
       items.clear();
-      items.addAll(itemContainerWatcher.getItems());
+      itemContainerWatcher.getItems().forEach(item -> {
+        ItemComposition itemComposition = plugin.getItemManager().getItemComposition(item.getId());
+        if (itemComposition.getPlaceholderTemplateId() == -1) {
+          items.add(new ItemStack(item.getId(), item.getQuantity(), plugin));
+        }
+      });
       updateLastUpdated();
 
       return true;
