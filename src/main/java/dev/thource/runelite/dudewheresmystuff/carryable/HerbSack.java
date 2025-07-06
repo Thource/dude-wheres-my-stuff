@@ -49,7 +49,10 @@ public class HerbSack extends CarryableStorage {
     items.stream()
         .filter(itemStack -> itemStack.getName().equals(name))
         .findFirst()
-        .ifPresent(itemStack -> itemStack.setQuantity(itemStack.getQuantity() + quantity));
+        .ifPresent(
+            itemStack ->
+                itemStack.setQuantity(
+                    Math.min(30, Math.max(0, itemStack.getQuantity() + quantity))));
   }
 
   private void setQuantityByName(String name, int quantity) {
@@ -92,8 +95,8 @@ public class HerbSack extends CarryableStorage {
     if (removingToBank) {
       ItemContainerWatcher.getBankWatcher()
           .getItemsAddedLastTick()
-          .forEach(itemStack -> addQuantityByName(itemStack.getName(),
-              (int) -itemStack.getQuantity()));
+          .forEach(
+              itemStack -> addQuantityByName(itemStack.getName(), (int) -itemStack.getQuantity()));
 
       removingToBank = false;
       updateLastUpdated();
@@ -163,12 +166,11 @@ public class HerbSack extends CarryableStorage {
       return true;
     }
 
-    if (USE_PATTERN.matcher(chatMessage.getMessage()).find()) {
+    if (USE_PATTERN.matcher(chatMessage.getMessage()).find()
+        || chatMessage.getMessage().startsWith("You add the herbs to your sack")) {
       addingToSack = true;
     } else if (chatMessage.getMessage().startsWith("You look in your herb sack")) {
       checkingSack = true;
-    } else if (chatMessage.getMessage().startsWith("You add the herbs to your sack")) {
-      addingToSack = true;
     } else if (chatMessage
         .getMessage()
         .startsWith("You rummage around to see if you can extract any herbs from your herb sack")) {
