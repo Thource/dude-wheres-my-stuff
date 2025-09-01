@@ -106,6 +106,18 @@ public enum CarryableStorageType implements StorageType {
       "chuggingBarrel",
       true,
       Collections.singletonList(ItemID.MM_PREPOT_DEVICE),
+      -1),
+  DIZANAS_QUIVER(
+      "Dizana's Quiver",
+      -1,
+      true,
+      "dizanasQuiver",
+      true,
+      List.of(
+          ItemID.DIZANAS_QUIVER_UNCHARGED,
+          ItemID.DIZANAS_QUIVER_CHARGED,
+          ItemID.DIZANAS_QUIVER_UNCHARGED_TROUVER,
+          ItemID.DIZANAS_QUIVER_CHARGED_TROUVER),
       -1);
 
   private final String name;
