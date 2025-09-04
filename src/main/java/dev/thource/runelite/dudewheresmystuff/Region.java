@@ -43,6 +43,7 @@ public enum Region {
   BOSS_CORP("Corporeal Beast", 11842, 11844),
   BOSS_DKS("Dagannoth Kings", 11588, 11589),
   BOSS_DUKE_SUCELLUS("Duke Sucellus", 12132),
+  BOSS_DOOM("Doom of Mokhaiotl", 5269),
   BOSS_GENERAL_GRAARDOR("General Graardor", 11347),
   BOSS_GIANT_MOLE("Giant Mole", 6993, 6992),
   BOSS_GROTESQUE_GUARDIANS("Grotesque Guardians", 6727),
