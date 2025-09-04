@@ -8,7 +8,8 @@ import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.gameval.VarPlayerID;
 
 /**
- * RunePouch is responsible for tracking how many runes the player has stored in their rune pouch.
+ * DizanasQuiver is responsible for tracking how many arrows the player has stored in their Dizana's
+ * quiver.
  */
 @Getter
 public class DizanasQuiver extends CarryableStorage {
