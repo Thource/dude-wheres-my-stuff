@@ -30,6 +30,7 @@ public class CoinsStorageManager extends StorageManager<CoinsStorageType, CoinsS
     storages.add(new GrandExchange(plugin));
     storages.add(new LootingBag(plugin));
     storages.add(new BountyHunterCoffer(plugin));
+    storages.add(new ScarEssenceMine(plugin));
   }
 
   @Override

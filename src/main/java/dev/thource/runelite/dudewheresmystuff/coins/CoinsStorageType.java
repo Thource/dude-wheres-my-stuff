@@ -21,7 +21,8 @@ public enum CoinsStorageType implements StorageType {
   GRAND_EXCHANGE("Grand Exchange", -1, -1, false, "grandexchange", false),
   SHILO_FURNACE("Shilo Furnace", -1, -1, false, "shilofurnace", true),
   BOUNTY_HUNTER("Bounty Hunter", -1, -1, false, "bountyhunter", true),
-  MANAGING_MISCELLANIA("Managing Miscellania", VarbitID.MISC_COFFERS, -1, true, "managingMiscellania", true);
+  MANAGING_MISCELLANIA("Managing Miscellania", VarbitID.MISC_COFFERS, -1, true, "managingMiscellania", true),
+  SCAR_ESSENCE_MINE("Scar Essence Mine", -1, -1, true, "scarEssenceMine", true);
 
   private final String name;
   private final int varbitId;
