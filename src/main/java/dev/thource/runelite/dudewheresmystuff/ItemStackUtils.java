@@ -87,7 +87,7 @@ public class ItemStackUtils {
           boolean wasCompounded = false;
           if (itemStack.isStackable() || compoundUnstackables) {
             for (ItemStack compoundedItemStack : compoundedItemStacks) {
-              if (compoundedItemStack.getId() != itemStack.getId()) {
+              if (compoundedItemStack.getId() != itemStack.getId() || compoundedItemStack.getId() < 0) {
                 continue;
               }
 
