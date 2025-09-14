@@ -143,17 +143,21 @@ public abstract class ExpiringDeathStorage extends DeathStorage {
     createComponentPopupMenu(storageManager);
   }
 
+  protected String getRegionName() {
+    var region = getRegion();
+    if (region == null) {
+      return "Unknown";
+    }
+
+    return region.getName();
+  }
+
   protected void setSubTitle() {
     if (storagePanel == null) {
       return;
     }
 
-    var region = getRegion();
-    if (region == null) {
-      storagePanel.setSubTitle("Unknown");
-    } else {
-      storagePanel.setSubTitle(region.getName());
-    }
+    storagePanel.setSubTitle(getRegionName());
   }
 
   public Region getRegion() {
