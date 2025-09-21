@@ -447,9 +447,11 @@ public class PotionStorage extends WorldStorage {
         continue;
       }
 
-      if (widgetText.startsWith("Doses:")) {
+      if (widgetText.startsWith("Doses: ") || widgetText.startsWith("Quantity: ")) {
         if (currentPotionString != null) {
-          doseMap.put(currentPotionString, Integer.parseInt(widgetText.replace("Doses: ", "")));
+          String qtyText = widgetText.replace("Doses: ", "").replace("Quantity: ", "");
+          doseMap.put(currentPotionString, Integer.parseInt(qtyText));
+          currentPotionString = null;
         }
 
         continue;
