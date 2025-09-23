@@ -447,6 +447,13 @@ public class PotionStorage extends WorldStorage {
         continue;
       }
 
+      if (widgetText.startsWith("Quantity:")) {
+        if (currentPotionString != null && currentPotionString.contains("(unf)")) {
+          doseMap.put(currentPotionString, Integer.parseInt(widgetText.replace("Quantity: ", "")));
+        }
+        continue;
+      }
+
       if (widgetText.startsWith("Doses:")) {
         if (currentPotionString != null) {
           doseMap.put(currentPotionString, Integer.parseInt(widgetText.replace("Doses: ", "")));
