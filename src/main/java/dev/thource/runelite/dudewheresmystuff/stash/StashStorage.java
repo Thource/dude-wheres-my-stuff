@@ -95,6 +95,16 @@ public class StashStorage extends ItemStorage<StashStorageType> {
         }
       }
     }
+
+    for (ItemStack itemStack :
+        ItemContainerWatcher.getWornWatcher().getItemsRemovedLastTick()) {
+      for (ItemRequirement itemRequirement : stashUnit.getItemRequirements()) {
+        if (itemRequirement.fulfilledBy(itemStack.getId())) {
+          items.add(itemStack);
+          break;
+        }
+      }
+    }
   }
 
   @Override
