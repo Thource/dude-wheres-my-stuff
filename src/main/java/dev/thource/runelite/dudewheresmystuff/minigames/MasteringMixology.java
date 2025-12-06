@@ -175,9 +175,4 @@ public class MasteringMixology extends MinigamesStorage {
   private boolean updateFromWidgets() {
     return updateFromOverlay() | updateFromShop();
   }
-
-  @Override
-  public boolean isWithdrawable() {
-    return false;
-  }
 }
