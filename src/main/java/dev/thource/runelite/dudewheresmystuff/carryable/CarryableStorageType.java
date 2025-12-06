@@ -47,7 +47,7 @@ public enum CarryableStorageType implements StorageType {
       VarbitID.EMPTYONDEATH_RUNEPOUCH),
   BOTTOMLESS_BUCKET(
       "Bottomless Compost Bucket", -1, false, "bottomlessbucket", true, new ArrayList<>(), -1),
-  PLANK_SACK("Plank Sack", -1, false, "planksack", true, new ArrayList<>(), -1),
+  PLANK_SACK("Plank Sack", -1, true, "plankSack", true, new ArrayList<>(), -1),
   BOLT_POUCH(
       "Bolt Pouch",
       -1,

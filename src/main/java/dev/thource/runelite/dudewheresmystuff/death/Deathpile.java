@@ -227,9 +227,13 @@ public class Deathpile extends ExpiringDeathStorage {
 
       var oldExpiryTime = this.expiryTime;
       this.expiryTime =
-          matchingItemsEntry.get().getKey()
+          (matchingItemsEntry.get().getKey() - plugin.getClient().getTickCount())
               - plugin.getConfig().deathpileContingencyMinutes() * 100;
       var difference = this.expiryTime - oldExpiryTime;
+
+      if (difference == 0) {
+        return false;
+      }
 
       final ChatMessageBuilder message =
           new ChatMessageBuilder()
@@ -304,7 +308,11 @@ public class Deathpile extends ExpiringDeathStorage {
   public void softUpdate() {
     super.softUpdate();
 
-    storagePanel.setSubTitle(items.size() + " stacks");
+    if (storagePanel == null) {
+      return;
+    }
+
+    storagePanel.setTitleToolTip(items.size() + " stacks");
   }
 
   @Override
