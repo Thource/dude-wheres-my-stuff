@@ -4,6 +4,7 @@ import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.widgets.Widget;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -50,7 +51,7 @@ public class ForestryShop extends WorldStorage {
   }
 
   private boolean checkForCheck() {
-    Widget widget = plugin.getClient().getWidget(229, 1);
+    Widget widget = plugin.getClient().getWidget(InterfaceID.Messagebox.TEXT);
     if (widget == null || !widget.getText().startsWith("Your log storage contains:")) {
       return false;
     }
@@ -73,9 +74,7 @@ public class ForestryShop extends WorldStorage {
       }
     }
 
-    if (updated) {
-      updateLastUpdated();
-    }
+    updateLastUpdated();
 
     return updated;
   }

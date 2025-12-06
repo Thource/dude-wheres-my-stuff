@@ -10,6 +10,7 @@ import lombok.Getter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.widgets.Widget;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -42,7 +43,7 @@ public class GuardiansOfTheRift extends MinigamesStorage {
 
   @Override
   public boolean onGameTick() {
-    Widget widget = plugin.getClient().getWidget(229, 1);
+    Widget widget = plugin.getClient().getWidget(InterfaceID.Messagebox.TEXT);
     if (widget == null) {
       return false;
     }
