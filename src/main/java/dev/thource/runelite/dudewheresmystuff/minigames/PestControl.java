@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 import lombok.Getter;
 import net.runelite.api.events.WidgetClosed;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.VarPlayerID;
 import net.runelite.api.widgets.Widget;
@@ -38,7 +39,7 @@ public class PestControl extends MinigamesStorage {
   public boolean onGameTick() {
     // This can't go in onWidgetLoaded because for some reason the text isn't populated at that
     // point
-    Widget widget = plugin.getClient().getWidget(229, 1);
+    Widget widget = plugin.getClient().getWidget(InterfaceID.Messagebox.TEXT);
     if (widget != null) {
       String widgetText = widget.getText().replace("<br>", " ").replace(",", "");
       Matcher matcher = afterGamePattern2.matcher(widgetText);
