@@ -160,7 +160,10 @@ public enum StashUnit {
           ItemRequirements.item(ItemID.AMULET_OF_GLORY_6),
           ItemRequirements.item(ItemID.AMULET_OF_GLORY_INF)),
       ItemRequirements.item(ItemID.HUNDRED_GAUNTLETS_LEVEL_10),
-      ItemRequirements.item(ItemID.DRAGON_MED_HELM)),
+      ItemRequirements.any(
+          "Any dragon med helm",
+          ItemRequirements.item(ItemID.DRAGON_MED_HELM),
+          ItemRequirements.item(ItemID.BH_DRAGON_MED_HELM_CORRUPTED))),
   DEATH_ALTAR(
       "Death altar",
       "Death Altar",
@@ -439,7 +442,10 @@ public enum StashUnit {
       STASHUnit.OUTSIDE_THE_LEGENDS_GUILD_DOOR,
       new int[]{ItemID.CAPE_OF_LEGENDS, ItemID.DRAGON_BATTLEAXE, ItemID.AMULET_OF_GLORY},
       ItemRequirements.item(ItemID.CAPE_OF_LEGENDS),
-      ItemRequirements.item(ItemID.DRAGON_BATTLEAXE),
+      ItemRequirements.any(
+          "Any dragon battleaxe",
+          ItemRequirements.item(ItemID.DRAGON_BATTLEAXE),
+          ItemRequirements.item(ItemID.BH_DRAGON_BATTLEAXE_CORRUPTED)),
       ItemRequirements.any(
           "Any amulet of glory",
           ItemRequirements.item(ItemID.AMULET_OF_GLORY),
@@ -801,7 +807,10 @@ public enum StashUnit {
       "Near the pier in Zul-Andra",
       STASHUnit.NEAR_THE_PIER_IN_ZULANDRA,
       new int[]{ItemID.DRAGON_2H_SWORD, ItemID.BANDOS_BOOTS, ItemID.TZHAAR_CAPE_OBSIDIAN},
-      ItemRequirements.item(ItemID.DRAGON_2H_SWORD),
+      ItemRequirements.any(
+          "Any dragon 2h sword",
+          ItemRequirements.item(ItemID.DRAGON_2H_SWORD),
+          ItemRequirements.item(ItemID.BH_DRAGON_2H_SWORD_CORRUPTED)),
       ItemRequirements.any(
           "Bandos boots",
           ItemRequirements.item(ItemID.BANDOS_BOOTS),
@@ -818,7 +827,12 @@ public enum StashUnit {
           "Dragon boots",
           ItemRequirements.item(ItemID.DRAGON_BOOTS),
           ItemRequirements.item(ItemID.DRAGON_BOOTS_GOLD),
-          ItemRequirements.item(ItemID.PRIMORDIAL_BOOTS)),
+          ItemRequirements.item(ItemID.BH_DRAGON_BOOTS_CORRUPTED),
+          ItemRequirements.item(ItemID.PRIMORDIAL_BOOTS),
+          ItemRequirements.item(ItemID.AVERNIC_TREADS_MELEE),
+          ItemRequirements.item(ItemID.AVERNIC_TREADS_MELEE_RANGED),
+          ItemRequirements.item(ItemID.AVERNIC_TREADS_MELEE_MAGIC),
+          ItemRequirements.item(ItemID.AVERNIC_TREADS_MAX)),
       ItemRequirements.item(ItemID.RUNE_LONGSWORD)),
   MOUNTAIN_CAMP_GOAT_ENCLOSURE(
       "Mountain Camp",
@@ -894,7 +908,10 @@ public enum StashUnit {
           ItemID.RUNE_PLATEBODY,
           ItemID.AMULET_OF_GLORY
       },
-      ItemRequirements.item(ItemID.DRAGON_MED_HELM),
+      ItemRequirements.any(
+          "Any dragon med helm",
+          ItemRequirements.item(ItemID.DRAGON_MED_HELM),
+          ItemRequirements.item(ItemID.BH_DRAGON_MED_HELM_CORRUPTED)),
       ItemRequirements.item(ItemID.TZHAAR_SPIKESHIELD),
       ItemRequirements.item(ItemID.OLAF2_BRINE_SABRE),
       ItemRequirements.item(ItemID.RUNE_PLATEBODY),
@@ -909,7 +926,16 @@ public enum StashUnit {
           ItemID.TROLLROMANCE_TOBOGGON_WAXED
       },
       ItemRequirements.item(ItemID.BLUE_DRAGON_VAMBRACES),
-      ItemRequirements.item(ItemID.DRAGON_SPEAR),
+      ItemRequirements.any(
+          "Any dragon spear",
+          ItemRequirements.item(ItemID.DRAGON_SPEAR),
+          ItemRequirements.item(ItemID.DRAGON_SPEAR_P),
+          ItemRequirements.item(ItemID.DRAGON_SPEAR_P_),
+          ItemRequirements.item(ItemID.DRAGON_SPEAR_P__),
+          ItemRequirements.item(ItemID.BH_DRAGON_SPEAR_CORRUPTED),
+          ItemRequirements.item(ItemID.BH_DRAGON_SPEAR_P_CORRUPTED),
+          ItemRequirements.item(ItemID.BH_DRAGON_SPEAR_P__CORRUPTED),
+          ItemRequirements.item(ItemID.BH_DRAGON_SPEAR_P___CORRUPTED)),
       ItemRequirements.item(ItemID.RUNE_PLATESKIRT),
       ItemRequirements.item(ItemID.TROLLROMANCE_TOBOGGON_WAXED)),
   WARRIORS_GUILD_BANK_29047(
@@ -917,7 +943,10 @@ public enum StashUnit {
       "Warriors' Guild bank (master)",
       STASHUnit.WARRIORS_GUILD_BANK_29047,
       new int[]{ItemID.DRAGON_BATTLEAXE, ItemID.DRAGON_PARRYINGDAGGER, ItemID.SLAYER_HELM},
-      ItemRequirements.item(ItemID.DRAGON_BATTLEAXE),
+      ItemRequirements.any(
+          "Any dragon battleaxe",
+          ItemRequirements.item(ItemID.DRAGON_BATTLEAXE),
+          ItemRequirements.item(ItemID.BH_DRAGON_BATTLEAXE_CORRUPTED)),
       ItemRequirements.any(
           "Dragon defender or Avernic defender",
           ItemRequirements.item(ItemID.DRAGON_PARRYINGDAGGER),
@@ -1100,7 +1129,16 @@ public enum StashUnit {
       "Chapel in West Ardougne",
       STASHUnit.CHAPEL_IN_WEST_ARDOUGNE,
       new int[]{ItemID.DRAGON_SPEAR, ItemID.RED_DRAGONHIDE_CHAPS},
-      ItemRequirements.item(ItemID.DRAGON_SPEAR),
+      ItemRequirements.any(
+          "Any dragon spear",
+          ItemRequirements.item(ItemID.DRAGON_SPEAR),
+          ItemRequirements.item(ItemID.DRAGON_SPEAR_P),
+          ItemRequirements.item(ItemID.DRAGON_SPEAR_P_),
+          ItemRequirements.item(ItemID.DRAGON_SPEAR_P__),
+          ItemRequirements.item(ItemID.BH_DRAGON_SPEAR_CORRUPTED),
+          ItemRequirements.item(ItemID.BH_DRAGON_SPEAR_P_CORRUPTED),
+          ItemRequirements.item(ItemID.BH_DRAGON_SPEAR_P__CORRUPTED),
+          ItemRequirements.item(ItemID.BH_DRAGON_SPEAR_P___CORRUPTED)),
       ItemRequirements.item(ItemID.RED_DRAGONHIDE_CHAPS)),
   EAST_OF_THE_BARBARIAN_VILLAGE_BRIDGE(
       "Barbarian Village",
@@ -1176,7 +1214,8 @@ public enum StashUnit {
       ItemRequirements.any(
           "Dragon sq shield",
           ItemRequirements.item(ItemID.DRAGON_SQ_SHIELD),
-          ItemRequirements.item(ItemID.DRAGON_SQ_SHIELD_GOLD)),
+          ItemRequirements.item(ItemID.DRAGON_SQ_SHIELD_GOLD),
+          ItemRequirements.item(ItemID.BH_DRAGON_SQ_SHIELD_CORRUPTED)),
       ItemRequirements.item(ItemID.SPLITBARK_BODY),
       ItemRequirements.any(
           "Any boater",
@@ -1295,12 +1334,14 @@ public enum StashUnit {
       ItemRequirements.any(
           "Dragon plateskirt",
           ItemRequirements.item(ItemID.DRAGON_PLATESKIRT),
-          ItemRequirements.item(ItemID.DRAGON_PLATESKIRT_GOLD)),
+          ItemRequirements.item(ItemID.DRAGON_PLATESKIRT_GOLD),
+          ItemRequirements.item(ItemID.BH_DRAGON_PLATESKIRT_CORRUPTED)),
       ItemRequirements.item(ItemID.DEATH_CLIMBINGBOOTS),
       ItemRequirements.any(
           "Dragon chainbody",
           ItemRequirements.item(ItemID.DRAGON_CHAINBODY),
-          ItemRequirements.item(ItemID.DRAGON_CHAINBODY_GOLD)),
+          ItemRequirements.item(ItemID.DRAGON_CHAINBODY_GOLD),
+          ItemRequirements.item(ItemID.BH_DRAGON_CHAINBODY_CORRUPTED)),
       ItemRequirements.item(ItemID.BULLROARER)),
   GYPSY_TENT_ENTRANCE(
       "Varrock",
