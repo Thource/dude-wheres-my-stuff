@@ -41,8 +41,9 @@ public class PlankSack extends CarryableStorage {
     items.add(rosewoodPlankStack);
 
     varbits = new int[] {
-        VarbitID.PLANK_SACK_OAK, VarbitID.PLANK_SACK_TEAK, VarbitID.PLANK_SACK_MAHOGANY,
-        VarbitID.PLANK_SACK_CAMPHOR, VarbitID.PLANK_SACK_IRONWOOD, VarbitID.PLANK_SACK_ROSEWOOD
+        VarbitID.PLANK_SACK_PLAIN, VarbitID.PLANK_SACK_OAK, VarbitID.PLANK_SACK_TEAK,
+        VarbitID.PLANK_SACK_MAHOGANY, VarbitID.PLANK_SACK_CAMPHOR, VarbitID.PLANK_SACK_IRONWOOD,
+        VarbitID.PLANK_SACK_ROSEWOOD
     };
   }
 }
