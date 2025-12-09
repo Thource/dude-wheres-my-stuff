@@ -9,6 +9,7 @@ import dev.thource.runelite.dudewheresmystuff.death.ExpiringDeathStorageTextOver
 import dev.thource.runelite.dudewheresmystuff.death.ExpiringDeathStorageTilesOverlay;
 import dev.thource.runelite.dudewheresmystuff.minigames.MinigamesStorageManager;
 import dev.thource.runelite.dudewheresmystuff.playerownedhouse.PlayerOwnedHouseStorageManager;
+import dev.thource.runelite.dudewheresmystuff.sailing.SailingStorageManager;
 import dev.thource.runelite.dudewheresmystuff.stash.StashStorageManager;
 import dev.thource.runelite.dudewheresmystuff.world.WorldStorageManager;
 import java.awt.Component;
@@ -115,6 +116,8 @@ public class DudeWheresMyStuffPlugin extends Plugin {
   @Inject private DeathStorageManager previewDeathStorageManager;
   @Inject private CoinsStorageManager coinsStorageManager;
   @Inject private CoinsStorageManager previewCoinsStorageManager;
+  @Getter @Inject private SailingStorageManager sailingStorageManager;
+  @Inject private SailingStorageManager previewSailingStorageManager;
   @Inject private CarryableStorageManager carryableStorageManager;
   @Inject private CarryableStorageManager previewCarryableStorageManager;
   @Getter @Inject private WorldStorageManager worldStorageManager;
@@ -181,6 +184,7 @@ public class DudeWheresMyStuffPlugin extends Plugin {
       storageManagerManager =
           new StorageManagerManager(
               this,
+              sailingStorageManager,
               carryableStorageManager,
               coinsStorageManager,
               deathStorageManager,
@@ -189,6 +193,7 @@ public class DudeWheresMyStuffPlugin extends Plugin {
               playerOwnedHouseStorageManager,
               worldStorageManager);
 
+      previewSailingStorageManager.setPreviewManager(true);
       previewCarryableStorageManager.setPreviewManager(true);
       previewCoinsStorageManager.setPreviewManager(true);
       previewDeathStorageManager.setPreviewManager(true);
@@ -205,6 +210,7 @@ public class DudeWheresMyStuffPlugin extends Plugin {
       previewStorageManagerManager =
           new StorageManagerManager(
               this,
+              previewSailingStorageManager,
               previewCarryableStorageManager,
               previewCoinsStorageManager,
               previewDeathStorageManager,

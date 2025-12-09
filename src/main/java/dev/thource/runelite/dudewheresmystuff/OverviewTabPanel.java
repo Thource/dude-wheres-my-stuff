@@ -62,6 +62,8 @@ class OverviewTabPanel extends TabContentPanel {
       + " of your deathbanks (including any active ones)?\nThis cannot be undone.";
   private static final String DELETE_ALL_LOST_DEATHBANKS_WARNING = "Are you sure you want to"
       + " delete all of your lost deathbanks?\nThis cannot be undone.";
+  private static final String DELETE_ALL_LOST_BOATS_WARNING = "Are you sure you want to"
+      + " delete all of your lost boats?\nThis cannot be undone.";
   private static final String DELETE_ALL_SAVE_WARNING = "Are you sure you want to delete ALL of your save data?\nThis cannot be undone.";
   private static final String DELETE_ALL_SAVE_FINAL_WARNING = "Are you REALLY sure you want to "
       + "delete ALL of your save data?\nThis REALLY cannot be undone.";
@@ -135,6 +137,7 @@ class OverviewTabPanel extends TabContentPanel {
                     }));
 
     createDeathStoragePopupMenu();
+    createSailingStoragePopupMenu();
   }
 
   private void createDeathStoragePopupMenu() {
@@ -173,6 +176,19 @@ class OverviewTabPanel extends TabContentPanel {
     popupMenu.add(deleteAllDeathbanks);
     popupMenu.add(deleteLostDeathbanks);
     overviews.get(Tab.DEATH).setComponentPopupMenu(popupMenu);
+  }
+
+  private void createSailingStoragePopupMenu() {
+    var deleteAllLostBoats = new JMenuItem("Delete all lost boats");
+    deleteAllLostBoats.addActionListener(
+        e -> {
+          if (DudeWheresMyStuffPlugin.getConfirmation(this, DELETE_ALL_LOST_BOATS_WARNING, CONFIRM_DELETION_TEXT)) {
+            storageManagerManager.getSailingStorageManager().deleteLostBoats();
+          }
+        });
+    JPopupMenu popupMenu = new JPopupMenu();
+    popupMenu.add(deleteAllLostBoats);
+    overviews.get(Tab.SAILING).setComponentPopupMenu(popupMenu);
   }
 
   @Override
@@ -228,6 +244,11 @@ class OverviewTabPanel extends TabContentPanel {
         .updateStatus(
             String.format(
                 GP_TOTAL, storageManagerManager.getWorldStorageManager().getTotalValue()));
+    overviews
+        .get(Tab.SAILING)
+        .updateStatus(
+            String.format(
+                GP_TOTAL, storageManagerManager.getSailingStorageManager().getTotalValue()));
   }
 
   private long getTotalValue() {

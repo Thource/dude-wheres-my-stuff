@@ -53,7 +53,7 @@ public abstract class StorageManager<T extends StorageType, S extends Storage<T>
         .sum();
   }
 
-  protected void updateStorages(List<? extends S> storages) {
+  public void updateStorages(List<? extends S> storages) {
     if (!storages.isEmpty()) {
       storages.forEach(
           storage -> {

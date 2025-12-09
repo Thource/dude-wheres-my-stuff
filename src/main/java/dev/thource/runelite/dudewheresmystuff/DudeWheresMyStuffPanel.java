@@ -32,6 +32,7 @@ import dev.thource.runelite.dudewheresmystuff.coins.CoinsStorageTabPanel;
 import dev.thource.runelite.dudewheresmystuff.death.DeathStorageTabPanel;
 import dev.thource.runelite.dudewheresmystuff.minigames.MinigamesStorageTabPanel;
 import dev.thource.runelite.dudewheresmystuff.playerownedhouse.PlayerOwnedHouseStorageTabPanel;
+import dev.thource.runelite.dudewheresmystuff.sailing.SailingStorageTabPanel;
 import dev.thource.runelite.dudewheresmystuff.stash.StashStorageTabPanel;
 import dev.thource.runelite.dudewheresmystuff.world.WorldStorageTabPanel;
 import java.awt.BorderLayout;
@@ -142,6 +143,9 @@ public class DudeWheresMyStuffPanel extends JPanel {
     addTab(
         Tab.WORLD,
         new WorldStorageTabPanel(plugin, storageManagerManager.getWorldStorageManager()));
+    addTab(
+        Tab.SAILING,
+        new SailingStorageTabPanel(plugin, storageManagerManager.getSailingStorageManager()));
     addTab(
         Tab.MINIGAMES,
         new MinigamesStorageTabPanel(plugin, storageManagerManager.getMinigamesStorageManager()));
