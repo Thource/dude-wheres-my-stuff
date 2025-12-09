@@ -17,6 +17,7 @@ import dev.thource.runelite.dudewheresmystuff.export.writers.CsvWriter;
 import dev.thource.runelite.dudewheresmystuff.export.writers.GoogleSheetsWriter;
 import dev.thource.runelite.dudewheresmystuff.minigames.MinigamesStorageManager;
 import dev.thource.runelite.dudewheresmystuff.playerownedhouse.PlayerOwnedHouseStorageManager;
+import dev.thource.runelite.dudewheresmystuff.sailing.SailingStorageManager;
 import dev.thource.runelite.dudewheresmystuff.stash.StashStorageManager;
 import dev.thource.runelite.dudewheresmystuff.world.WorldStorageManager;
 import java.awt.TrayIcon.MessageType;
@@ -46,6 +47,7 @@ import net.runelite.client.config.ConfigManager;
 @Getter
 public class StorageManagerManager {
 
+  private final SailingStorageManager sailingStorageManager;
   private final CarryableStorageManager carryableStorageManager;
   private final CoinsStorageManager coinsStorageManager;
   private final DeathStorageManager deathStorageManager;
@@ -61,6 +63,7 @@ public class StorageManagerManager {
   @SuppressWarnings("java:S107")
   StorageManagerManager(
       DudeWheresMyStuffPlugin plugin,
+      SailingStorageManager sailingStorageManager,
       CarryableStorageManager carryableStorageManager,
       CoinsStorageManager coinsStorageManager,
       DeathStorageManager deathStorageManager,
@@ -70,6 +73,7 @@ public class StorageManagerManager {
       WorldStorageManager worldStorageManager) {
     this.plugin = plugin;
     this.configManager = carryableStorageManager.getConfigManager();
+    this.sailingStorageManager = sailingStorageManager;
     this.carryableStorageManager = carryableStorageManager;
     this.coinsStorageManager = coinsStorageManager;
     this.deathStorageManager = deathStorageManager;
@@ -81,6 +85,7 @@ public class StorageManagerManager {
 
     storageManagers =
         Arrays.asList(
+            sailingStorageManager,
             carryableStorageManager,
             coinsStorageManager,
             deathStorageManager,
@@ -200,6 +205,7 @@ public class StorageManagerManager {
                             && storage.getType() != CoinsStorageType.BANK),
             getCarryableStorageManager().getStorages().stream(),
             getStashStorageManager().getStorages().stream(),
+            getSailingStorageManager().getStorages().stream(),
             getPlayerOwnedHouseStorageManager().getStorages().stream(),
             getWorldStorageManager().getStorages().stream())
         .flatMap(i -> i);

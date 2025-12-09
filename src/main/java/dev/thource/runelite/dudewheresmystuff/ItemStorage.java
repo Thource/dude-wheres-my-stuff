@@ -12,7 +12,7 @@ import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.VarbitChanged;
 
 /** ItemStorage builds upon Storage by adding items and some other functionality. */
-public class ItemStorage<T extends StorageType> extends Storage<T> {
+public abstract class ItemStorage<T extends StorageType> extends Storage<T> {
 
   @Nullable protected int[] varbits = null;
   // used when there are items before the varbit items
@@ -78,8 +78,13 @@ public class ItemStorage<T extends StorageType> extends Storage<T> {
 
   @Override
   public boolean onItemContainerChanged(ItemContainerChanged itemContainerChanged) {
+    var containerId = itemContainerChanged.getContainerId();
+    if (containerId > 0x8000) {
+      containerId -= 0x8000;
+    }
+
     if (itemContainerWatcher != null
-        || type.getItemContainerId() != itemContainerChanged.getContainerId()) {
+        || type.getItemContainerId() != containerId) {
       return false;
     }
 

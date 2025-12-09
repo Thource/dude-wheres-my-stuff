@@ -18,6 +18,7 @@ public enum SidebarIcon {
   STASH_UNITS(Tab.STASH_UNITS),
   POH_STORAGE(Tab.POH_STORAGE),
   WORLD(Tab.WORLD),
+  BOAT(Tab.SAILING),
   MINIGAMES(Tab.MINIGAMES);
 
   private final Tab tab;

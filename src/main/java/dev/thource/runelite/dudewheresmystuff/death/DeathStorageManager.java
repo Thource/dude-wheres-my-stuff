@@ -412,10 +412,6 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
     return storages.stream().filter(Deathpile.class::isInstance).map(Deathpile.class::cast);
   }
 
-  Stream<Grave> getGraves() {
-    return storages.stream().filter(Grave.class::isInstance).map(Grave.class::cast);
-  }
-
   Stream<ExpiringDeathStorage> getExpiringDeathStorages() {
     return storages.stream()
         .filter(ExpiringDeathStorage.class::isInstance)
@@ -661,7 +657,7 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
   }
 
   @Override
-  protected void updateStorages(List<? extends DeathStorage> storages) {
+  public void updateStorages(List<? extends DeathStorage> storages) {
     if (!storages.isEmpty()) {
       storages.forEach(
           storage -> {
