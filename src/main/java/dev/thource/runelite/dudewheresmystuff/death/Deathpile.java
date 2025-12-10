@@ -235,25 +235,6 @@ public class Deathpile extends ExpiringDeathStorage {
         return false;
       }
 
-      final ChatMessageBuilder message =
-          new ChatMessageBuilder()
-              .append(new Color(206, 162, 65), "[DWMS] ")
-              .append(
-                  getRegionName()
-                      + " deathpile expiry has been resynced from ground items, "
-                      + (difference > 0 ? "added" : "removed")
-                      + " "
-                      + Math.abs(difference)
-                      + " ticks.");
-
-      plugin
-          .getChatMessageManager()
-          .queue(
-              QueuedMessage.builder()
-                  .type(ChatMessageType.CONSOLE)
-                  .runeLiteFormattedMessage(message.build())
-                  .build());
-
       if (this.expiryTime < 1) {
         final ChatMessageBuilder contingencyMessage =
             new ChatMessageBuilder()
