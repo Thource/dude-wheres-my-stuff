@@ -20,6 +20,7 @@ enum RemoteDeathpileAreas {
   BOSS_DT2_LEVIATHAN(List.of(8291), 0, new WorldArea(2059, 6433, 8, 5, 0)),
   BOSS_DT2_VARDORVIS(new WorldArea(1118, 3407, 23, 21, 0), new WorldArea(1113, 3426, 7, 8, 0)),
   BOSS_DT2_WHISPERER(List.of(9571, 10595, 12898), 0, new WorldArea(2921, 5821, 3, 6, 0)),
+  BOSS_HUEYCOATL(new WorldArea(1501, 3273, 23, 26, 0), new WorldArea(1521, 3287, 10, 11, 0)),
   BOSS_GWD_ARMADYL(new WorldArea(2823, 5295, 21, 15, 2), new WorldArea(2834, 5288, 11, 7, 2)),
   BOSS_GWD_BANDOS(new WorldArea(2863, 5351, 15, 21, 2), new WorldArea(2857, 5349, 6, 11, 2)),
   BOSS_GWD_SARADOMIN(new WorldArea(2888, 5257, 21, 20, 0), new WorldArea(2908, 5261, 7, 10, 0)),
