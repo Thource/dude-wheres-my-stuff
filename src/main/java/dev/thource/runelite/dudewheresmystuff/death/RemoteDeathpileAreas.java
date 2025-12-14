@@ -15,7 +15,7 @@ enum RemoteDeathpileAreas {
   BOSS_ARAXXOR(new WorldArea(3616, 9797, 35, 40, 0), new WorldArea(3657, 9812, 5, 7, 0)),
   BOSS_CERBERUS(List.of(4883, 5140, 5395), 0, new WorldArea(1307, 1247, 7, 6, 0)),
   BOSS_COLOSSEUM(new WorldArea(1805, 3087, 40, 40, 0), new WorldArea(1800, 9504, 5, 5, 0)),
-  BOSS_DOOM(List.of(5269), 0, new WorldArea(1309, 9549, 5, 8, 0)),
+  BOSS_DOOM(List.of(5269, 13668, 14180), 0, new WorldArea(1309, 9549, 5, 8, 0)),
   BOSS_DT2_DUKE(new WorldArea(3028, 6434, 23, 24, 0), new WorldArea(3038, 6428, 3, 5, 0)),
   BOSS_DT2_LEVIATHAN(List.of(8291), 0, new WorldArea(2059, 6433, 8, 5, 0)),
   BOSS_DT2_VARDORVIS(new WorldArea(1118, 3407, 23, 21, 0), new WorldArea(1113, 3426, 7, 8, 0)),
