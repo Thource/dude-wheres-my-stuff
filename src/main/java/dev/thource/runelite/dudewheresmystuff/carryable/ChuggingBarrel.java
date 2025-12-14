@@ -102,6 +102,7 @@ public class ChuggingBarrel extends CarryableStorage {
     addPotion("Super restore(1)", "super restore potion", ItemID._1DOSE2RESTORE);
     addPotion("Super strength(1)", "strength potion", ItemID._1DOSE2STRENGTH);
     addPotion("Superantipoison(1)", "antipoison potion", ItemID._1DOSE2ANTIPOISON);
+    addPotion("Surge potion(1)", "surge potion", ItemID._1DOSESURGE);
     addPotion("Zamorak brew(1)", "foul liquid", ItemID._1DOSEPOTIONOFZAMORAK);
 
     // brutal potions
