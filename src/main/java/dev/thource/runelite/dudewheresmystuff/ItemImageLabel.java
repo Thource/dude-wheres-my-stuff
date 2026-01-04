@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import javax.annotation.Nonnull;
 import javax.swing.JLabel;
 import lombok.Setter;
 import net.runelite.client.plugins.itemidentification.ItemIdentificationMode;
@@ -28,12 +29,7 @@ class ItemImageLabel extends JLabel {
     }
 
     if (itemStack.getSpriteId() != -1) {
-      final TextComponent quantityText = new TextComponent();
-      quantityText.setPosition(new Point(0, 10));
-      quantityText.setFont(FontManager.getRunescapeSmallFont());
-      quantityText.setColor(Color.YELLOW);
-      quantityText.setText(String.valueOf(itemStack.getQuantity()));
-      quantityText.render((Graphics2D) g);
+      createQuantityTextComponent().render((Graphics2D) g);
     }
 
     if (itemStack.getItemIdentification() == null
@@ -58,5 +54,26 @@ class ItemImageLabel extends JLabel {
       textComponent.setText(itemStack.getItemIdentification().medName);
     }
     textComponent.render((Graphics2D) g);
+  }
+
+  @Nonnull
+  private TextComponent createQuantityTextComponent() {
+    final var quantity = itemStack.getQuantity();
+    final TextComponent quantityText = new TextComponent();
+    quantityText.setPosition(new Point(0, 10));
+    quantityText.setFont(FontManager.getRunescapeSmallFont());
+
+    if (quantity >= 10_000_000) {
+      quantityText.setColor(Color.GREEN);
+      quantityText.setText(quantity / 1_000_000 + "M");
+    } else if (quantity >= 100_000) {
+      quantityText.setColor(Color.WHITE);
+      quantityText.setText(quantity / 1_000 + "K");
+    } else {
+      quantityText.setColor(Color.YELLOW);
+      quantityText.setText(String.valueOf(quantity));
+    }
+
+    return quantityText;
   }
 }
