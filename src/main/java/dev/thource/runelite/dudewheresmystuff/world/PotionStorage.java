@@ -438,7 +438,7 @@ public class PotionStorage extends WorldStorage {
     for (Widget widget : potionStorageWidget.getChildren()) {
       var widgetText = widget.getText();
       if (widgetText.startsWith("Vials:")) {
-        var newVials = Integer.parseInt(widgetText.replace("Vials: ", ""));
+        var newVials = Integer.parseInt(widgetText.replace("Vials: ", "").replaceAll("\\D+", ""));
         if (newVials != vials.getQuantity()) {
           updated = true;
           vials.setQuantity(newVials);
@@ -449,7 +449,8 @@ public class PotionStorage extends WorldStorage {
 
       if (widgetText.startsWith("Doses: ") || widgetText.startsWith("Quantity: ")) {
         if (currentPotionString != null) {
-          String qtyText = widgetText.replace("Doses: ", "").replace("Quantity: ", "");
+          String qtyText =
+              widgetText.replace("Doses: ", "").replace("Quantity: ", "").replaceAll("\\D+", "");
           doseMap.put(currentPotionString, Integer.parseInt(qtyText));
           currentPotionString = null;
         }
