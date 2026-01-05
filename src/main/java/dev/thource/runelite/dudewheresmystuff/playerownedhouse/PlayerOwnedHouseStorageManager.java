@@ -28,7 +28,9 @@ public class PlayerOwnedHouseStorageManager
 
     for (PlayerOwnedHouseStorageType type : PlayerOwnedHouseStorageType.values()) {
       if (type == PlayerOwnedHouseStorageType.MENAGERIE
-          || type == PlayerOwnedHouseStorageType.CAPE_HANGER) {
+          || type == PlayerOwnedHouseStorageType.CAPE_HANGER
+          || type == PlayerOwnedHouseStorageType.SPICE_RACK
+          || type == PlayerOwnedHouseStorageType.UNCATEGORISED) {
         continue;
       }
 
@@ -38,6 +40,7 @@ public class PlayerOwnedHouseStorageManager
     storages.add(new CapeHanger(plugin));
     storages.add(new Menagerie(plugin));
     storages.add(new SpiceRack(plugin));
+    storages.add(new Uncategorised(plugin));
   }
 
   private boolean notInHouse() {

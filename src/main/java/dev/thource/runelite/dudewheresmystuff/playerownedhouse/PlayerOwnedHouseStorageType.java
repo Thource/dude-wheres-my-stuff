@@ -13,9 +13,10 @@ import net.runelite.api.gameval.ItemID;
 @RequiredArgsConstructor
 @Getter
 public enum PlayerOwnedHouseStorageType implements StorageType {
+  // Latest update: https://oldschool.runescape.wiki/w/Treasure_chest_space?oldid=14851882
   TREASURE_CHEST_BEGINNER(
       "Treasure Chest (Beginner)",
-      33405,
+      InventoryID.POH_COSTUMES,
       "treasureChestBeginner",
       Arrays.asList(
           ItemID.AMULET_OF_DEFENCE_T,
@@ -35,7 +36,7 @@ public enum PlayerOwnedHouseStorageType implements StorageType {
           ItemID.SHOULDER_PARROT)),
   TREASURE_CHEST_EASY(
       "Treasure Chest (Easy)",
-      33405,
+      InventoryID.POH_COSTUMES,
       "treasureChestEasy",
       Arrays.asList(
           ItemID.TRAIL_AMULET_OF_MAGIC,
@@ -200,7 +201,7 @@ public enum PlayerOwnedHouseStorageType implements StorageType {
           ItemID.WOODEN_SHIELD_GOLD)),
   TREASURE_CHEST_MEDIUM(
       "Treasure Chest (Medium)",
-      33405,
+      InventoryID.POH_COSTUMES,
       "treasureChestMedium",
       Arrays.asList(
           ItemID.ADAMANT_FULL_HELM_GOLD,
@@ -302,7 +303,7 @@ public enum PlayerOwnedHouseStorageType implements StorageType {
           ItemID.WOLF_CLOAK)),
   TREASURE_CHEST_HARD(
       "Treasure Chest (Hard)",
-      33405,
+      InventoryID.POH_COSTUMES,
       "treasureChestHard",
       Arrays.asList(
           ItemID.TRAIL_MAGE_AMULET,
@@ -457,7 +458,7 @@ public enum PlayerOwnedHouseStorageType implements StorageType {
           ItemID.ZOMBIE_HEAD)),
   TREASURE_CHEST_ELITE(
       "Treasure Chest (Elite)",
-      33405,
+      InventoryID.POH_COSTUMES,
       "treasureChestElite",
       Arrays.asList(
           ItemID.TRAIL_RANGER_BOW,
@@ -540,7 +541,7 @@ public enum PlayerOwnedHouseStorageType implements StorageType {
           ItemID.URIS_HAT)),
   TREASURE_CHEST_MASTER(
       "Treasure Chest (Master)",
-      33405,
+      InventoryID.POH_COSTUMES,
       "treasureChestMaster",
       Arrays.asList(
           ItemID._3A_AXE,
@@ -548,6 +549,7 @@ public enum PlayerOwnedHouseStorageType implements StorageType {
           ItemID._3A_DRUIDIC_BOTTOMS,
           ItemID._3A_DRUIDIC_TOP,
           ItemID._3A_DRUIDIC_STAFF,
+          ItemID._3A_AXE_2H,
           ItemID._3A_PICKAXE,
           ItemID.ALE_GODS,
           ItemID.ANKOU_HEAD,
@@ -590,9 +592,10 @@ public enum PlayerOwnedHouseStorageType implements StorageType {
           ItemID.SAMURAI_GLOVES,
           ItemID.SAMURAI_BOOTS,
           ItemID.SCROLL_SACK)),
+  // Latest update: https://oldschool.runescape.wiki/w/Armour_case_space?oldid=15008782
   ARMOUR_CASE(
       "Armour Case",
-      33405,
+      InventoryID.POH_COSTUMES,
       "armourCase",
       Arrays.asList(
           ItemID.ADVENTURERS_HOOD_T1,
@@ -683,6 +686,24 @@ public enum PlayerOwnedHouseStorageType implements StorageType {
           ItemID.CASTLEWARS_RANGE_TOP,
           ItemID.CASTLEWARS_RANGE_LEGS,
           ItemID.CASTLEWARS_RANGE_QUIVER,
+          ItemID.CBHAT1,
+          ItemID.CBHAT2,
+          ItemID.CBHAT3,
+          ItemID.CBHAT4,
+          ItemID.CBHAT5,
+          ItemID.CBHAT6,
+          ItemID.CBHAT7,
+          ItemID.CBHAT8,
+          ItemID.CBHAT9,
+          ItemID.CBHAT10,
+          ItemID.CBHAT11,
+          ItemID.CBHAT12,
+          ItemID.CBHAT13,
+          ItemID.CBHAT14,
+          ItemID.CBHAT15,
+          ItemID.CBHAT16,
+          ItemID.CBHAT17,
+          ItemID.CBHAT18,
           ItemID.RAEDWALD_HELM,
           ItemID.CLUE_HUNTER_GARB,
           ItemID.CLUE_HUNTER_TROUSERS,
@@ -717,6 +738,14 @@ public enum PlayerOwnedHouseStorageType implements StorageType {
           ItemID.TITHE_REWARD_TORSO_FEMALE,
           ItemID.FEDORA,
           ItemID.GIANT_STOPWATCH,
+          ItemID.BINGO_TABARD,
+          ItemID.BINGO_SWORDS,
+          ItemID.BINGO_TABARD_BLACK,
+          ItemID.BINGO_SWORDS_BLACK,
+          ItemID.BINGO_TABARD_GREEN,
+          ItemID.BINGO_SWORDS_GREEN,
+          ItemID.BINGO_TABARD_PINK,
+          ItemID.BINGO_SWORDS_PINK,
           ItemID.HAM_HOOD,
           ItemID.HAM_SHIRT,
           ItemID.HAM_ROBE,
@@ -779,6 +808,9 @@ public enum PlayerOwnedHouseStorageType implements StorageType {
           ItemID.MOURNING_MOURNER_BOOTS,
           ItemID.MOURNING_MOURNER_GLOVES,
           ItemID.MOURNING_MOURNER_CLOAK,
+          ItemID.OATHPLATE_HELM,
+          ItemID.OATHPLATE_CHEST,
+          ItemID.OATHPLATE_LEGS,
           ItemID.OBSIDIAN_HELMET,
           ItemID.OBSIDIAN_PLATEBODY,
           ItemID.OBSIDIAN_PLATELEGS,
@@ -804,6 +836,9 @@ public enum PlayerOwnedHouseStorageType implements StorageType {
           ItemID.MOTHERLODE_REWARD_TOP_GOLD,
           ItemID.MOTHERLODE_REWARD_LEGS_GOLD,
           ItemID.MOTHERLODE_REWARD_BOOTS_GOLD,
+          ItemID.RADIANT_OATHPLATE_HELM,
+          ItemID.RADIANT_OATHPLATE_CHEST,
+          ItemID.RADIANT_OATHPLATE_LEGS,
           ItemID.LEAGUE5_RELIC_HUNTER_HAT_T1,
           ItemID.LEAGUE5_RELIC_HUNTER_TOP_T1,
           ItemID.LEAGUE5_RELIC_HUNTER_LEGS_T1,
@@ -956,9 +991,10 @@ public enum PlayerOwnedHouseStorageType implements StorageType {
           ItemID.XERIC_HAT,
           ItemID.XERIC_TOP,
           ItemID.XERIC_ROBE)),
+  // Latest update: https://oldschool.runescape.wiki/w/Magic_wardrobe_space?oldid=14961466
   MAGIC_WARDROBE(
       "Magic Wardrobe",
-      33405,
+      InventoryID.POH_COSTUMES,
       "magicWardrobe",
       Arrays.asList(
           ItemID.WEARABLE_SAW,
@@ -1016,6 +1052,7 @@ public enum PlayerOwnedHouseStorageType implements StorageType {
           ItemID.BREW_FLAG_4,
           ItemID.BREW_FLAG_6,
           ItemID.BREW_FLAG_5,
+          ItemID.FLETCHING_KNIFE,
           ItemID.FORESTRY_BASKET_CLOSED,
           ItemID.FORESTRY_KIT,
           ItemID.SECRET_GHOST_BOOTS,
@@ -1108,6 +1145,13 @@ public enum PlayerOwnedHouseStorageType implements StorageType {
           ItemID.GRACEFUL_LEGS_WYRM,
           ItemID.GRACEFUL_GLOVES_WYRM,
           ItemID.GRACEFUL_BOOTS_WYRM,
+          ItemID.GREENMAN_MASK,
+          ItemID.GREENMAN_MASK_REGULAR,
+          ItemID.GREENMAN_MASK_OAK,
+          ItemID.GREENMAN_MASK_WILLOW,
+          ItemID.GREENMAN_MASK_MAPLE,
+          ItemID.GREENMAN_MASK_YEW,
+          ItemID.GREENMAN_MASK_MAGIC,
           ItemID.IMCANDO_HAMMER,
           ItemID.IMCANDO_HAMMER_OFFHAND,
           ItemID.MAGICTRAINING_INFINITYHAT,
@@ -1187,6 +1231,7 @@ public enum PlayerOwnedHouseStorageType implements StorageType {
           ItemID.BREW_UNIFORM_RED,
           ItemID.BREW_NAVY_SLACKS_RED,
           ItemID.FISHINGROD_PEARL_OILY,
+          ItemID.ORANGE_HAT,
           ItemID.FISHINGROD_PEARL_BRUT,
           ItemID.FISHINGROD_PEARL,
           ItemID.FISHINGROD_PEARL_FLY,
@@ -1272,9 +1317,10 @@ public enum PlayerOwnedHouseStorageType implements StorageType {
           ItemID.SHADES_PRAYER_HELM,
           ItemID.SHADES_PRAYER_BOTTOM,
           ItemID.SHADES_PRAYER_TOP)),
+  // Latest update: https://oldschool.runescape.wiki/w/Fancy_dress_box_space?oldid=14933020
   FANCY_DRESS_BOX(
       "Fancy Dress Box",
-      33405,
+      InventoryID.POH_COSTUMES,
       "fancyDressBox",
       Arrays.asList(
           ItemID.BEEKEEPER_HAT,
@@ -1309,9 +1355,10 @@ public enum PlayerOwnedHouseStorageType implements StorageType {
           ItemID.MACRO_DIGGER_LEGS,
           ItemID.MACRO_DIGGER_GLOVES,
           ItemID.MACRO_DIGGER_BOOTS)),
+  // Latest update: https://oldschool.runescape.wiki/w/Cape_rack_space?oldid=15089212
   CAPE_RACK(
       "Cape Rack",
-      33405,
+      InventoryID.POH_COSTUMES,
       "capeRack",
       Arrays.asList(
           ItemID.SKILLCAPE_AD,
@@ -1384,15 +1431,25 @@ public enum PlayerOwnedHouseStorageType implements StorageType {
           ItemID.SKILLCAPE_MAX_ANMA,
           ItemID.SKILLCAPE_MAX_ARDY,
           ItemID.SKILLCAPE_MAX_ASSEMBLER,
+          ItemID.SKILLCAPE_MAX_ASSEMBLER_TROUVER,
           ItemID.SKILLCAPE_MAX_DIZANAS,
+          ItemID.SKILLCAPE_MAX_DIZANAS_TROUVER,
           ItemID.SKILLCAPE_MAX_FIRECAPE,
+          ItemID.SKILLCAPE_MAX_FIRECAPE_TROUVER,
           ItemID.SKILLCAPE_MAX_GUTHIX,
           ItemID.SKILLCAPE_MAX_GUTHIX2,
+          ItemID.SKILLCAPE_MAX_GUTHIX2_TROUVER,
           ItemID.SKILLCAPE_MAX_SARADOMIN2,
+          ItemID.SKILLCAPE_MAX_SARADOMIN2_TROUVER,
           ItemID.SKILLCAPE_MAX_ZAMORAK2,
+          ItemID.SKILLCAPE_MAX_ZAMORAK2_TROUVER,
+          ItemID.SKILLCAPE_MAX_INFERNALCAPE,
+          ItemID.SKILLCAPE_MAX_INFERNALCAPE_TROUVER,
           ItemID.SKILLCAPE_MAX_INFERNALCAPE_DUMMY,
-          ItemID.SKILLCAPE_MAX_SARADOMIN,
+          ItemID.SKILLCAPE_MAX_ASSEMBLER_MASORI,
+          ItemID.SKILLCAPE_MAX_ASSEMBLER_MASORI_TROUVER,
           ItemID.SKILLCAPE_MAX_MYTHICAL,
+          ItemID.SKILLCAPE_MAX_SARADOMIN,
           ItemID.SKILLCAPE_MAX_ZAMORAK,
           ItemID.SKILLCAPE_MAX_HOOD,
           ItemID.SKILLCAPE_MAX_HOOD_ANMA,
@@ -1414,6 +1471,7 @@ public enum PlayerOwnedHouseStorageType implements StorageType {
           ItemID.MUSIC_CAPE,
           ItemID.MUSIC_CAPE_HOOD,
           ItemID.MUSIC_CAPE_TRIMMED,
+          ItemID.MYTHICAL_CAPE,
           ItemID.POH_TROPHY_MYTHICAL_CAPE,
           ItemID.TZHAAR_CAPE_OBSIDIAN,
           ItemID.SKILLCAPE_PRAYER,
@@ -1428,6 +1486,9 @@ public enum PlayerOwnedHouseStorageType implements StorageType {
           ItemID.SKILLCAPE_RUNECRAFTING,
           ItemID.SKILLCAPE_RUNECRAFTING_HOOD,
           ItemID.SKILLCAPE_RUNECRAFTING_TRIMMED,
+          ItemID.SKILLCAPE_SAILING,
+          ItemID.SKILLCAPE_SAILING_HOOD,
+          ItemID.SKILLCAPE_SAILING_TRIMMED,
           ItemID.SOUL_CAPE_RED,
           ItemID.SINHAZA_SHROUD_TIER1,
           ItemID.SINHAZA_SHROUD_TIER2,
@@ -1516,9 +1577,10 @@ public enum PlayerOwnedHouseStorageType implements StorageType {
           ItemID.COX_CHALLENGE_CAPE_T3,
           ItemID.COX_CHALLENGE_CAPE_T2)),
   MENAGERIE("Menagerie", InventoryID.POH_MENAGERIE_PETS, "menagerie", null),
+  // Latest update: https://oldschool.runescape.wiki/w/Boss_lair_display?oldid=15088622
   BOSS_LAIR_DISPLAY(
       "Boss Lair Display",
-      33405,
+      InventoryID.POH_COSTUMES,
       "bossLairDisplay",
       Arrays.asList(
           ItemID.JAR_OF_DIRT,
@@ -1534,10 +1596,12 @@ public enum PlayerOwnedHouseStorageType implements StorageType {
           ItemID.JAR_OF_DREAMS,
           ItemID.JAR_OF_SPIRITS,
           ItemID.JAR_OF_SMOKE,
-          ItemID.JAR_OF_VENOM
+          ItemID.JAR_OF_VENOM,
+          ItemID.JAR_OF_FEATHERS
       )),
   CAPE_HANGER("Cape Hanger", -1, "capeHanger", null),
   SPICE_RACK("Spice Rack", -1, "spiceRack", null),
+  UNCATEGORISED("Uncategorised", InventoryID.POH_COSTUMES, "uncategorised", null),
   ;
 
   private final String name;
