@@ -2,18 +2,19 @@ package dev.thource.runelite.dudewheresmystuff.playerownedhouse;
 
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
-import dev.thource.runelite.dudewheresmystuff.ItemStorage;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 import lombok.Getter;
 import net.runelite.api.Item;
 import net.runelite.api.events.ItemContainerChanged;
 
-/** PlayerOwnedHouseStorage is responsible for tracking storages in the player's house. */
+/** Uncategorised is responsible for tracking items that aren't accounted for in other POH
+ * storages. */
 @Getter
-public class PlayerOwnedHouseStorage extends ItemStorage<PlayerOwnedHouseStorageType> {
+public class Uncategorised extends PlayerOwnedHouseStorage {
 
-  protected PlayerOwnedHouseStorage(
-      PlayerOwnedHouseStorageType type, DudeWheresMyStuffPlugin plugin) {
-    super(type, plugin);
+  protected Uncategorised(DudeWheresMyStuffPlugin plugin) {
+    super(PlayerOwnedHouseStorageType.UNCATEGORISED, plugin);
   }
 
   @Override
@@ -29,8 +30,16 @@ public class PlayerOwnedHouseStorage extends ItemStorage<PlayerOwnedHouseStorage
 
     updateLastUpdated();
     items.clear();
+    var registeredIds =
+        Arrays.stream(PlayerOwnedHouseStorageType.values())
+            .filter(
+                t ->
+                    t.getItemContainerId() == type.getItemContainerId()
+                        && t.getStorableItemIds() != null)
+            .flatMap(t -> t.getStorableItemIds().stream())
+            .collect(Collectors.toList());
     for (Item item : itemContainerChanged.getItemContainer().getItems()) {
-      if (type.getStorableItemIds() == null || type.getStorableItemIds().contains(item.getId())) {
+      if (!registeredIds.contains(item.getId())) {
         items.add(new ItemStack(item.getId(), item.getQuantity(), plugin));
       }
     }
