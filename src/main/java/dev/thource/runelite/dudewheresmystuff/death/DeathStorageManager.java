@@ -369,7 +369,9 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
   private boolean checkIfDeathbankWindowIsEmpty() {
     Widget itemWindow = client.getWidget(602, 3);
     // This checks if the item collection window has been emptied while it was open
-    if (itemWindow != null && client.getVarpValue(VarPlayerID.IF1) == -1) {
+    if (itemWindow != null
+        && !itemWindow.isHidden()
+        && client.getVarpValue(VarPlayerID.IF1) == -1) {
       clearDeathbank(false);
       return true;
     }
