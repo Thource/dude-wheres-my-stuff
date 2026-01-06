@@ -118,7 +118,9 @@ public enum CarryableStorageType implements StorageType {
           ItemID.DIZANAS_QUIVER_CHARGED,
           ItemID.DIZANAS_QUIVER_UNCHARGED_TROUVER,
           ItemID.DIZANAS_QUIVER_CHARGED_TROUVER),
-      -1);
+      -1),
+  BOW_STRING_SPOOL(
+      "Bow String Spool", -1, true, "bowStringSpool", true, List.of(ItemID.BOWSTRING_SPOOL), -1);
 
   private final String name;
   private final int itemContainerId;

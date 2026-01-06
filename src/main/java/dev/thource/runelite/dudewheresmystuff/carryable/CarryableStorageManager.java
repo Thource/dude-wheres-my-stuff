@@ -35,6 +35,7 @@ public class CarryableStorageManager
     storages.add(new HerbSack(plugin));
     storages.add(new ChuggingBarrel(plugin));
     storages.add(new DizanasQuiver(plugin));
+    storages.add(new BowStringSpool(plugin));
   }
 
   @Override
