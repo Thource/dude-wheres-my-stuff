@@ -20,6 +20,8 @@ public class BarbarianAssault extends MinigamesStorage {
       new ItemStack(ItemID.BARBASSAULT_PLAYERICON_DEFENDER, "Defender Points", 0, 0, 0, true);
   private final ItemStack healerPoints =
       new ItemStack(ItemID.BARBASSAULT_PLAYERICON_HEALER, "Healer Points", 0, 0, 0, true);
+  private final ItemStack queenKills =
+      new ItemStack(ItemID.PENANCEPET, "Queen Kills", 0, 0, 0, true);
 
   BarbarianAssault(DudeWheresMyStuffPlugin plugin) {
     super(MinigamesStorageType.BARBARIAN_ASSAULT, plugin);
@@ -36,6 +38,7 @@ public class BarbarianAssault extends MinigamesStorage {
     items.add(collectorPoints);
     items.add(defenderPoints);
     items.add(healerPoints);
+    items.add(queenKills);
   }
 
   @Override
@@ -43,6 +46,8 @@ public class BarbarianAssault extends MinigamesStorage {
     if (varbits == null) {
       return false;
     }
+
+    var updated = false;
 
     for (int i = 0; i < varbits.length; i++) {
       var var = Var.bit(varbitChanged, varbits[i]);
@@ -58,9 +63,19 @@ public class BarbarianAssault extends MinigamesStorage {
       }
 
       itemStack.setQuantity(newPoints);
-      return true;
+      updated = true;
     }
 
-    return false;
+    var queenKillsVar1 = Var.bit(varbitChanged, VarbitID.BARBASSAULT_QUEENKILLS_EXTRA);
+    var queenKillsVar2 = Var.bit(varbitChanged, VarbitID.BARBASSAULT_QUEENKILLS_EXTRA_2);
+    if (queenKillsVar1.wasChanged() || queenKillsVar2.wasChanged()) {
+      var newQueenKills =
+          queenKillsVar1.getValue(plugin.getClient()) * 2
+              + queenKillsVar2.getValue(plugin.getClient()) * 16;
+      queenKills.setQuantity(newQueenKills);
+      updated = true;
+    }
+
+    return updated;
   }
 }
