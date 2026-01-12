@@ -1,6 +1,5 @@
 package dev.thource.runelite.dudewheresmystuff.playerownedhouse;
 
-import com.google.common.collect.ImmutableList;
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.ItemContainerWatcher;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
@@ -66,87 +65,10 @@ public class Menagerie extends PlayerOwnedHouseStorage {
           ItemID.FISHBOWL_SPINEFISH,
           ItemID.POH_TOY_CAT,
           ItemID.WGS_BROAV);
-  public static final List<List<Integer>> VARPLAYER_BITS_TO_ITEM_IDS_LIST;
-
-  static {
-    ImmutableList.Builder<List<Integer>> builder = new ImmutableList.Builder<>();
-
-    builder.add(
-        Arrays.asList(
-            ItemID.CHAOSELEPET,
-            ItemID.SUPREMEPET,
-            ItemID.PRIMEPET,
-            ItemID.REXPET,
-            ItemID.PENANCEPET,
-            ItemID.ARMADYLPET,
-            ItemID.BANDOSPET,
-            ItemID.SARADOMINPET,
-            ItemID.ZAMORAKPET,
-            ItemID.MOLEPET,
-            ItemID.KBDPET,
-            ItemID.KQPET_WALKING,
-            ItemID.SMOKEPET,
-            ItemID.KRAKENPET,
-            ItemID.COREPET,
-            ItemID.SNAKEPET,
-            ItemID.CHOMPYBIRD_PET,
-            ItemID.VENENATIS_PET,
-            ItemID.CALLISTO_PET,
-            ItemID.VETION_PET,
-            ItemID.SCORPIA_PET,
-            ItemID.JAD_PET,
-            ItemID.HELL_PET,
-            ItemID.ABYSSALSIRE_PET,
-            ItemID.SKILLPETFISH,
-            ItemID.SKILLPETMINING,
-            ItemID.SKILLPETWC,
-            ItemID.SKILLPETHUNTER_RED,
-            ItemID.BLOODHOUND_PET,
-            ItemID.SKILLPETAGILITY,
-            ItemID.SKILLPETFARMING,
-            ItemID.SKILLPETRUNECRAFTING_FIRE));
-    builder.add(
-        Arrays.asList(
-            ItemID.SKILLPETTHIEVING,
-            ItemID.PHOENIXPET,
-            ItemID.OLMPET,
-            ItemID.SKOTIZOPET,
-            ItemID.INFERNOPET,
-            ItemID.HERBIBOARPET,
-            ItemID.DAWNPET,
-            ItemID.VORKATHPET,
-            ItemID.VERZIKPET,
-            ItemID.HYDRAPET,
-            ItemID.SARACHNISPET,
-            ItemID.GAUNTLETPET,
-            ItemID.ZALCANOPET,
-            ItemID.NIGHTMAREPET,
-            ItemID.SOULWARSPET_BLUE,
-            ItemID.TEMPOROSSPET,
-            ItemID.NEXPET,
-            ItemID.ABYSSALPET,
-            ItemID.WARDENPET_TUMEKEN,
-            ItemID.MUSPAHPET,
-            ItemID.DUKESUCELLUSPET,
-            ItemID.VARDORVISPET,
-            ItemID.LEVIATHANPET,
-            ItemID.WHISPERERPET,
-            ItemID.SCURRIUSPET,
-            ItemID.SOLHEREDITPET,
-            ItemID.QUETZALPET,
-            ItemID.ARAXXORPET,
-            ItemID.ARAXXORPET_CUTE,
-            ItemID.HUEYPET,
-            ItemID.AMOXLIATLPET,
-            ItemID.RTBRANDAPET,
-            ItemID.RTELDRICPET,
-            ItemID.YAMAPET));
-
-    VARPLAYER_BITS_TO_ITEM_IDS_LIST = builder.build();
-  }
 
   private int petBits1;
   private int petBits2;
+  private int petBits3;
   private final List<ItemStack> compiledItems = new ArrayList<>();
   private final List<ItemStack> varplayerItems = new ArrayList<>();
   private boolean wasBeingFollowedLastTick = false;
@@ -161,6 +83,7 @@ public class Menagerie extends PlayerOwnedHouseStorage {
 
     saveValues.add(SaveFieldFormatter.format(petBits1));
     saveValues.add(SaveFieldFormatter.format(petBits2));
+    saveValues.add(SaveFieldFormatter.format(petBits3));
 
     return saveValues;
   }
@@ -171,6 +94,7 @@ public class Menagerie extends PlayerOwnedHouseStorage {
 
     petBits1 = SaveFieldLoader.loadInt(values, petBits1);
     petBits2 = SaveFieldLoader.loadInt(values, petBits2);
+    petBits3 = SaveFieldLoader.loadInt(values, petBits3);
   }
 
   private void updateItems() {
@@ -267,18 +191,18 @@ public class Menagerie extends PlayerOwnedHouseStorage {
 
   void rebuildPetsFromBits() {
     varplayerItems.clear();
-    int varpIndex = 0;
-    for (List<Integer> itemIds : VARPLAYER_BITS_TO_ITEM_IDS_LIST) {
-      int value = varpIndex == 0 ? petBits1 : petBits2;
-      for (int i = 0; i < itemIds.size(); i++) {
-        if ((value & (1L << i)) == 0) {
-          continue;
-        }
 
-        varplayerItems.add(new ItemStack(itemIds.get(i), 1, plugin));
+    var client = plugin.getClient();
+    var petEnum = client.getEnum(985);
+
+    for (var i = 0; i < petEnum.getIntVals().length; i++) {
+      if (i < 32 && (petBits1 & (1 << i)) != 0) {
+        varplayerItems.add(new ItemStack(petEnum.getIntValue(i), 1, plugin));
+      } else if (i >= 32 && i < 63 && (petBits2 & (1 << (i - 32))) != 0) {
+        varplayerItems.add(new ItemStack(petEnum.getIntValue(i), 1, plugin));
+      } else if (i >= 63 && i < 94 && (petBits3 & (1 << (i - 63))) != 0) {
+        varplayerItems.add(new ItemStack(petEnum.getIntValue(i), 1, plugin));
       }
-
-      varpIndex++;
     }
 
     updateItems();
@@ -288,17 +212,20 @@ public class Menagerie extends PlayerOwnedHouseStorage {
   public boolean onVarbitChanged(VarbitChanged varbitChanged) {
     var petVar1 = Var.player(varbitChanged, VarPlayerID.PRAYER20);
     var petVar2 = Var.player(varbitChanged, VarPlayerID.MENAGERIE_CONTENTS2);
-    if (!petVar1.wasChanged() && !petVar2.wasChanged()) {
+    var petVar3 = Var.player(varbitChanged, VarPlayerID.MENAGERIE_CONTENTS3);
+    if (!petVar1.wasChanged() && !petVar2.wasChanged() && !petVar3.wasChanged()) {
       return false;
     }
 
     final var oldPetBits1 = petBits1;
     final var oldPetBits2 = petBits2;
+    final var oldPetBits3 = petBits3;
     var client = plugin.getClient();
     petBits1 = petVar1.getValue(client);
     petBits2 = petVar2.getValue(client);
+    petBits3 = petVar3.getValue(client);
 
-    if (petBits1 != oldPetBits1 || petBits2 != oldPetBits2) {
+    if (petBits1 != oldPetBits1 || petBits2 != oldPetBits2 || petBits3 != oldPetBits3) {
       rebuildPetsFromBits();
       updateLastUpdated();
       return true;
@@ -321,6 +248,7 @@ public class Menagerie extends PlayerOwnedHouseStorage {
     varplayerItems.clear();
     petBits1 = 0;
     petBits2 = 0;
+    petBits3 = 0;
   }
 
   @Override

@@ -256,18 +256,6 @@ public class DudeWheresMyStuffPlugin extends Plugin {
 
     clientThread.invoke(() -> clientToolbar.addNavigation(navButton));
 
-    AtomicBoolean anyProfilesMigrated = new AtomicBoolean(false);
-    getProfilesWithData().forEach(runeScapeProfile -> {
-      if (configManager.getConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP,
-          runeScapeProfile.getKey(), CONFIG_KEY_SAVE_MIGRATED) == null) {
-        new SaveMigrator(configManager, runeScapeProfile.getKey()).migrate();
-        anyProfilesMigrated.set(true);
-      }
-    });
-    if (anyProfilesMigrated.get()) {
-      configManager.sendConfig();
-    }
-
     if (client.getGameState() == GameState.LOGGED_IN) {
       clientState = ClientState.LOGGING_IN;
       pluginStartedAlreadyLoggedIn = true;
