@@ -20,7 +20,10 @@ public class Var {
   }
 
   public int getValue(Client client) {
-    if (wasChanged() && varbitChanged.getVarbitId() != -999) {
+    if (wasChanged() && varbitChanged.getVarbitId() != -999
+        && (varpId == -1 || varbitChanged.getVarbitId() == -1)) {
+      // varbitChanged can have the wrong value for varps if a varbit covers the value already,
+      //  so check for the real varp value in those cases
       return varbitChanged.getValue();
     }
 
