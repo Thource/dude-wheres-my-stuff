@@ -33,6 +33,8 @@ import net.runelite.client.plugins.cluescrolls.clues.emote.STASHUnit;
 import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement;
 import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirements;
 
+// Latest update: https://oldschool.runescape.wiki/w/STASH?oldid=15102963
+
 /** StashUnit is used to define which items live at which locations. */
 // Suppress duplicate string literal warning because this class is copied from runelite
 @SuppressWarnings("java:S1192")
@@ -483,7 +485,8 @@ public enum StashUnit {
       "Lava maze",
       "Near a ladder in the Wilderness Lava Maze",
       STASHUnit.NEAR_A_LADDER_IN_THE_WILDERNESS_LAVA_MAZE,
-      new int[]{ItemID.BLACK_DRAGONHIDE_CHAPS, ItemID.HUNTING_LIGHT_CAPE, ItemID.HUNDRED_ROLLINGPIN},
+      new int[]{ItemID.BLACK_DRAGONHIDE_CHAPS, ItemID.HUNTING_LIGHT_CAPE,
+          ItemID.HUNDRED_ROLLINGPIN},
       ItemRequirements.item(ItemID.BLACK_DRAGONHIDE_CHAPS),
       ItemRequirements.any(
           "Spotted cape",
@@ -737,7 +740,12 @@ public enum StashUnit {
           ItemRequirements.range(ItemID.JEWL_BRACELET_OF_COMBAT_4, ItemID.JEWL_BRACELET_OF_COMBAT),
           ItemRequirements.item(ItemID.JEWL_BRACELET_OF_COMBAT_5),
           ItemRequirements.item(ItemID.JEWL_BRACELET_OF_COMBAT_6)),
-      ItemRequirements.item(ItemID.FRIS_KINGLY_HELM)),
+      ItemRequirements.any(
+          "Helm of neitiznot",
+          ItemRequirements.item(ItemID.FRIS_KINGLY_HELM),
+          ItemRequirements.item(ItemID.BH_FRIS_KINGLY_HELM_CORRUPTED)
+      )
+  ),
   OUTSIDE_THE_FISHING_GUILD(
       "Fishing Guild",
       "Outside the Fishing Guild",
@@ -858,7 +866,8 @@ public enum StashUnit {
           ItemID.RING_OF_FORGING},
       ItemRequirements.any(
           "Castle wars bracelet",
-          ItemRequirements.range(ItemID.JEWL_CASTLEWARS_BRACELET3, ItemID.JEWL_CASTLEWARS_BRACELET)),
+          ItemRequirements.range(ItemID.JEWL_CASTLEWARS_BRACELET3,
+              ItemID.JEWL_CASTLEWARS_BRACELET)),
       ItemRequirements.item(ItemID.STRUNG_DRAGONSTONE_AMULET),
       ItemRequirements.item(ItemID.RING_OF_FORGING)),
   LIMESTONE_MINE(
@@ -877,7 +886,7 @@ public enum StashUnit {
       ItemRequirements.item(ItemID.MITHRIL_PLATESKIRT),
       ItemRequirements.item(ItemID.MAPLE_LONGBOW)),
   VOLCANO_IN_THE_NORTHEASTERN_WILDERNESS(
-      "Wilderness volcano",
+      "Blighted volcano",
       "Volcano in the north-eastern Wilderness",
       STASHUnit.VOLCANO_IN_THE_NORTHEASTERN_WILDERNESS,
       new int[]{ItemID.HEADBAND_RED, ItemID.TRAIL_ANCIENT_STAFF},
@@ -961,38 +970,53 @@ public enum StashUnit {
       ItemRequirements.any(
           "Any slayer helmet",
           ItemRequirements.item(ItemID.SLAYER_HELM),
-          ItemRequirements.item(ItemID.SLAYER_HELM_BLACK),
-          ItemRequirements.item(ItemID.SLAYER_HELM_GREEN),
-          ItemRequirements.item(ItemID.SLAYER_HELM_PURPLE),
-          ItemRequirements.item(ItemID.SLAYER_HELM_RED),
-          ItemRequirements.item(ItemID.SLAYER_HELM_TURQUOISE),
-          ItemRequirements.item(ItemID.SLAYER_HELM_HYDRA),
-          ItemRequirements.item(ItemID.SLAYER_HELM_TWISTED),
-          ItemRequirements.item(ItemID.SLAYER_HELM_JAD),
-          ItemRequirements.item(ItemID.SLAYER_HELM_VERZIK),
-          ItemRequirements.item(ItemID.SLAYER_HELM_ZUK),
           ItemRequirements.item(ItemID.SLAYER_HELM_I),
-          ItemRequirements.item(ItemID.SLAYER_HELM_I_BLACK),
-          ItemRequirements.item(ItemID.SLAYER_HELM_I_GREEN),
-          ItemRequirements.item(ItemID.SLAYER_HELM_I_PURPLE),
-          ItemRequirements.item(ItemID.SLAYER_HELM_I_RED),
-          ItemRequirements.item(ItemID.SLAYER_HELM_I_TURQUOISE),
-          ItemRequirements.item(ItemID.SLAYER_HELM_I_HYDRA),
-          ItemRequirements.item(ItemID.SLAYER_HELM_I_TWISTED),
-          ItemRequirements.item(ItemID.SLAYER_HELM_I_JAD),
-          ItemRequirements.item(ItemID.SLAYER_HELM_I_VERZIK),
-          ItemRequirements.item(ItemID.SLAYER_HELM_I_ZUK),
           ItemRequirements.item(ItemID.SW_SLAYER_HELM_I),
+          ItemRequirements.item(ItemID.PVPA_SLAYER_HELM_I),
+          ItemRequirements.item(ItemID.SLAYER_HELM_ARAXYTE),
+          ItemRequirements.item(ItemID.SLAYER_HELM_I_ARAXYTE),
+          ItemRequirements.item(ItemID.SW_SLAYER_HELM_I_ARAXYTE),
+          ItemRequirements.item(ItemID.PVPA_SLAYER_HELM_I_ARAXYTE),
+          ItemRequirements.item(ItemID.SLAYER_HELM_BLACK),
+          ItemRequirements.item(ItemID.SLAYER_HELM_I_BLACK),
           ItemRequirements.item(ItemID.SW_SLAYER_HELM_I_BLACK),
+          ItemRequirements.item(ItemID.PVPA_SLAYER_HELM_I_BLACK),
+          ItemRequirements.item(ItemID.SLAYER_HELM_GREEN),
+          ItemRequirements.item(ItemID.SLAYER_HELM_I_GREEN),
           ItemRequirements.item(ItemID.SW_SLAYER_HELM_I_GREEN),
+          ItemRequirements.item(ItemID.PVPA_SLAYER_HELM_I_GREEN),
+          ItemRequirements.item(ItemID.SLAYER_HELM_RED),
+          ItemRequirements.item(ItemID.SLAYER_HELM_I_RED),
           ItemRequirements.item(ItemID.SW_SLAYER_HELM_I_RED),
+          ItemRequirements.item(ItemID.PVPA_SLAYER_HELM_I_RED),
+          ItemRequirements.item(ItemID.SLAYER_HELM_PURPLE),
+          ItemRequirements.item(ItemID.SLAYER_HELM_I_PURPLE),
           ItemRequirements.item(ItemID.SW_SLAYER_HELM_I_PURPLE),
+          ItemRequirements.item(ItemID.PVPA_SLAYER_HELM_I_PURPLE),
+          ItemRequirements.item(ItemID.SLAYER_HELM_TURQUOISE),
+          ItemRequirements.item(ItemID.SLAYER_HELM_I_TURQUOISE),
           ItemRequirements.item(ItemID.SW_SLAYER_HELM_I_TURQUOISE),
+          ItemRequirements.item(ItemID.PVPA_SLAYER_HELM_I_TURQUOISE),
+          ItemRequirements.item(ItemID.SLAYER_HELM_HYDRA),
+          ItemRequirements.item(ItemID.SLAYER_HELM_I_HYDRA),
           ItemRequirements.item(ItemID.SW_SLAYER_HELM_I_HYDRA),
+          ItemRequirements.item(ItemID.PVPA_SLAYER_HELM_I_HYDRA),
+          ItemRequirements.item(ItemID.SLAYER_HELM_TWISTED),
+          ItemRequirements.item(ItemID.SLAYER_HELM_I_TWISTED),
           ItemRequirements.item(ItemID.SW_SLAYER_HELM_I_TWISTED),
+          ItemRequirements.item(ItemID.PVPA_SLAYER_HELM_I_TWISTED),
+          ItemRequirements.item(ItemID.SLAYER_HELM_JAD),
+          ItemRequirements.item(ItemID.SLAYER_HELM_I_JAD),
           ItemRequirements.item(ItemID.SW_SLAYER_HELM_I_JAD),
+          ItemRequirements.item(ItemID.PVPA_SLAYER_HELM_I_JAD),
+          ItemRequirements.item(ItemID.SLAYER_HELM_VERZIK),
+          ItemRequirements.item(ItemID.SLAYER_HELM_I_VERZIK),
           ItemRequirements.item(ItemID.SW_SLAYER_HELM_I_VERZIK),
-          ItemRequirements.item(ItemID.SW_SLAYER_HELM_I_ZUK))),
+          ItemRequirements.item(ItemID.PVPA_SLAYER_HELM_I_VERZIK),
+          ItemRequirements.item(ItemID.SLAYER_HELM_ZUK),
+          ItemRequirements.item(ItemID.SLAYER_HELM_I_ZUK),
+          ItemRequirements.item(ItemID.SW_SLAYER_HELM_I_ZUK),
+          ItemRequirements.item(ItemID.PVPA_SLAYER_HELM_I_ZUK))),
   NEAR_THE_PARROTS_IN_ARDOUGNE_ZOO(
       "Ardougne Zoo",
       "Near the parrots in Ardougne Zoo",
@@ -1336,7 +1360,10 @@ public enum StashUnit {
           ItemRequirements.item(ItemID.DRAGON_PLATESKIRT),
           ItemRequirements.item(ItemID.DRAGON_PLATESKIRT_GOLD),
           ItemRequirements.item(ItemID.BH_DRAGON_PLATESKIRT_CORRUPTED)),
-      ItemRequirements.item(ItemID.DEATH_CLIMBINGBOOTS),
+      ItemRequirements.any(
+          "Climbing boots",
+          ItemRequirements.item(ItemID.DEATH_CLIMBINGBOOTS),
+          ItemRequirements.item(ItemID.CLIMBING_BOOTS_G)),
       ItemRequirements.any(
           "Dragon chainbody",
           ItemRequirements.item(ItemID.DRAGON_CHAINBODY),
@@ -1441,7 +1468,28 @@ public enum StashUnit {
       STASHUnit.WESTERN_SALVAGER_OVERLOOK,
       new int[]{ItemID.HUEY_COIF, ItemID.HUEY_VAMBRACES},
       ItemRequirements.item(ItemID.HUEY_COIF),
-      ItemRequirements.item(ItemID.HUEY_VAMBRACES));
+      ItemRequirements.item(ItemID.HUEY_VAMBRACES)),
+  PANDEMONIUM_BAR(
+      "Pandemonium Bar",
+      "The bar on the Pandemonium",
+      STASHUnit.PANDEMONIUM_BAR,
+      new int[]{ItemID.EYE_PATCH, ItemID.BRONZE_SCIMITAR},
+      ItemRequirements.item(ItemID.EYE_PATCH),
+      ItemRequirements.item(ItemID.BRONZE_SCIMITAR)),
+  WINTUMBER_ISLAND(
+      "Wintumber Island",
+      "On Wintumber Island",
+      STASHUnit.WINTUMBER_ISLAND,
+      new int[]{ItemID.HUNDRED_PIRATE_CRAB_SHELL_HELM, ItemID.HUNDRED_PIRATE_CRAB_SHELL_GAUNTLET},
+      ItemRequirements.item(ItemID.HUNDRED_PIRATE_CRAB_SHELL_HELM),
+      ItemRequirements.item(ItemID.HUNDRED_PIRATE_CRAB_SHELL_GAUNTLET)),
+  BRITTLE_ISLE(
+      "Brittle Isle",
+      "On Brittle Isle",
+      STASHUnit.BRITTLE_ISLE,
+      new int[]{ItemID.MEDALLION_OF_THE_DEEP, ItemID.ROSEWOOD_BLOWPIPE},
+      ItemRequirements.item(ItemID.MEDALLION_OF_THE_DEEP),
+      ItemRequirements.item(ItemID.ROSEWOOD_BLOWPIPE));
 
   private final String locationName;
   private final String chartText;
