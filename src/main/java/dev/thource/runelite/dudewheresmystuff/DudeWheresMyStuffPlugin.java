@@ -87,7 +87,6 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 public class DudeWheresMyStuffPlugin extends Plugin {
 
   private static final String CONFIG_KEY_IS_MEMBER = "isMember";
-  private static final String CONFIG_KEY_SAVE_MIGRATED = "saveMigrated";
 
   @Getter @Inject protected PluginManager pluginManager;
   @Getter @Inject protected ItemIdentificationPlugin itemIdentificationPlugin;
@@ -248,6 +247,19 @@ public class DudeWheresMyStuffPlugin extends Plugin {
           });
 
       clientThread.invoke(() -> navButton = buildNavigationButton());
+
+      var lastVersion = configManager.getConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP,
+          "version");
+      configManager.setConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP, "version", "2.11.2");
+      // Delete all lost boats from v2.11.1 and before
+      if (lastVersion == null) {
+        getProfilesWithData()
+            .forEach(profile ->
+                configManager.getRSProfileConfigurationKeys(DudeWheresMyStuffConfig.CONFIG_GROUP,
+                        profile.getKey(), "sailing.lostBoat")
+                    .forEach(key -> configManager.unsetConfiguration(
+                        DudeWheresMyStuffConfig.CONFIG_GROUP, profile.getKey(), key)));
+      }
 
       ItemContainerWatcher.init(client);
     }
@@ -477,13 +489,6 @@ public class DudeWheresMyStuffPlugin extends Plugin {
       final boolean isMember = client.getVarcIntValue(VarClientInt.MEMBERSHIP_STATUS) == 1;
       final int accountType = client.getVarbitValue(VarbitID.IRONMAN);
       final String displayName = getDisplayName(configManager.getRSProfileKey());
-
-      // All saves should be migrated on plugin start, so this must be a new account
-      if (configManager.getRSProfileConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP,
-          CONFIG_KEY_SAVE_MIGRATED) == null) {
-        configManager.setRSProfileConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP,
-            CONFIG_KEY_SAVE_MIGRATED, true);
-      }
 
       configManager.setRSProfileConfiguration(
           DudeWheresMyStuffConfig.CONFIG_GROUP, CONFIG_KEY_IS_MEMBER, isMember);
