@@ -155,13 +155,13 @@ public class DudeWheresMyStuffPanel extends JPanel {
     addTab(Tab.DEBUG, new DebugPanel(plugin));
 
     FasterMaterialTab donateTab = new FasterMaterialTab(
-        new ImageIcon(ImageUtil.loadImageResource(DudeWheresMyStuffPlugin.class, "kofi.png")),
+        new ImageIcon(ImageUtil.loadImageResource(DudeWheresMyStuffPlugin.class, "support.png")),
         tabGroup, null);
     donateTab.setPreferredSize(new Dimension(30, 27));
     donateTab.setName("Support me");
     donateTab.setToolTipText("Buy me a coffee? :)");
     donateTab.setOnSelectEvent(() -> {
-      LinkBrowser.browse("https://ko-fi.com/thource");
+      LinkBrowser.browse("https://linktr.ee/thource");
       return false;
     });
     tabGroup.addTabToEnd(donateTab);
