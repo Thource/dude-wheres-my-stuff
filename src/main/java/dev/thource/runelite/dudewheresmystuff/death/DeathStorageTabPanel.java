@@ -18,14 +18,15 @@ public class DeathStorageTabPanel
   }
 
   @Override
-  public void reorderStoragePanels() {
-    super.reorderStoragePanels();
+  protected void resetStoragePanels() {
+    super.resetStoragePanels();
 
     if (plugin.getConfig().showDeathStorageRiskWarning()) {
       OverviewItemPanel warningPanel = new OverviewItemPanel(plugin.getItemManager(), null,
           () -> false, ItemID.SIGIL_OF_CONSISTENCY_ATTUNED, 1, "WARNING!");
       warningPanel.updateStatus(
-          "<HTML>The information displayed<br> in this tab can be inaccurate!<br><br>By relying on this information,<br>you are risking your items!</HTML>");
+          "<HTML>The information displayed<br> in this tab can be<br>inaccurate!<br><br>"
+              + "By relying on this<br>information, you are risking<br>your items!</HTML>");
       warningPanel.setTitleColor(Color.RED);
       warningPanel.setToolTipText(
           "<html>Every effort has been made to make death tracking as accurate<br>" +
@@ -39,8 +40,7 @@ public class DeathStorageTabPanel
               "Please do not rely 100% on this plugin to track your death<br>" +
               "storages, you may lose items.</html>"
       );
-      storagePanelContainer.add(warningPanel, 0);
-      storagePanelContainer.revalidate();
+      storagePanelContainer.add(warningPanel);
     }
   }
 
