@@ -67,10 +67,14 @@ public abstract class StorageTabPanel<
         .thenComparing(s -> s.getType().getName());
   }
 
-  /** Sorts all the storage panels to be in the order specified by getStorageSorter. */
-  public void reorderStoragePanels() {
+  protected void resetStoragePanels() {
     EnhancedSwingUtilities.fastRemoveAll(storagePanelContainer, plugin.getChatMessageManager());
     storagePanels.clear();
+  }
+
+  /** Sorts all the storage panels to be in the order specified by getStorageSorter. */
+  public void reorderStoragePanels() {
+    resetStoragePanels();
 
     storageManager.getStorages().stream()
         .filter(storage -> storage.getStoragePanel() != null)
