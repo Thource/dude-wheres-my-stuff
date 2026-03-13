@@ -51,13 +51,14 @@ public class BarbarianAssault extends MinigamesStorage {
 
     for (int i = 0; i < varbits.length; i++) {
       var var = Var.bit(varbitChanged, varbits[i]);
-      if (!var.wasChanged()) {
+      var multiplierVar = Var.bit(varbitChanged, varbits[i] + 4);
+      if (!var.wasChanged() && !multiplierVar.wasChanged()) {
         continue;
       }
 
       var itemStack = items.get(i);
       var client = plugin.getClient();
-      var newPoints = var.getValue(client) + (client.getVarbitValue(varbits[i] + 4) * 512);
+      var newPoints = var.getValue(client) + multiplierVar.getValue(client) * 512;
       if (newPoints == itemStack.getQuantity()) {
         continue;
       }
