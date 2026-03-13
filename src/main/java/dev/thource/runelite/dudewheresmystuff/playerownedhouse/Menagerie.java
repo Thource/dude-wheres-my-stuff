@@ -64,7 +64,10 @@ public class Menagerie extends PlayerOwnedHouseStorage {
           ItemID.FISHBOWL_GREENFISH,
           ItemID.FISHBOWL_SPINEFISH,
           ItemID.POH_TOY_CAT,
-          ItemID.WGS_BROAV);
+          ItemID.WGS_BROAV,
+          ItemID.SCRAMBLED_EGG,
+          ItemID.HW25_CHAIR_OBJ_REWARD,
+          ItemID.CURRENT_AFFAIRS_MAYOR_OF_CATHERBY);
 
   private int petBits1;
   private int petBits2;
