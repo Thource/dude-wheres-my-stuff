@@ -29,7 +29,7 @@ public class GuardiansOfTheRift extends MinigamesStorage {
   private final Pattern chatPointsPattern =
       Pattern.compile(
           "Total elemental energy: <col=ef1020>(\\d+)</col>\\. "
-              + "Total catalytic energy: {2}<col=ef1020>(\\d+)</col>\\.");
+              + "Total catalytic energy: <col=ef1020>(\\d+)</col>\\.");
 
   private final Pattern widgetPattern =
       Pattern.compile("You have (\\d+) catalytic energy and (\\d+) elemental energy\\.");
