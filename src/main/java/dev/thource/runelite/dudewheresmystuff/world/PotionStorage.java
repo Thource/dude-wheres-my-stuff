@@ -356,6 +356,40 @@ public class PotionStorage extends WorldStorage {
         ItemID._2DOSEPOTIONOFZAMORAK,
         ItemID._3DOSEPOTIONOFZAMORAK,
         ItemID._4DOSEPOTIONOFZAMORAK);
+    addPotion(
+        "Armadyl brew",
+        ItemID._1DOSEARMADYLBREW,
+        ItemID._2DOSEARMADYLBREW,
+        ItemID._3DOSEARMADYLBREW,
+        ItemID._4DOSEARMADYLBREW);
+
+    addPotion(
+        "Extreme energy potion",
+        ItemID._1DOSE3ENERGY,
+        ItemID._2DOSE3ENERGY,
+        ItemID._3DOSE3ENERGY,
+        ItemID._4DOSE3ENERGY);
+
+    addPotion(
+        "Extended stamina potion",
+        ItemID._1DOSE2STAMINA,
+        ItemID._2DOSE2STAMINA,
+        ItemID._3DOSE2STAMINA,
+        ItemID._4DOSE2STAMINA);
+
+    addPotion(
+        "Super hunter potion",
+        ItemID._1DOSE2HUNTING,
+        ItemID._2DOSE2HUNTING,
+        ItemID._3DOSE2HUNTING,
+        ItemID._4DOSE2HUNTING);
+
+    addPotion(
+        "Super fishing potion",
+        ItemID._1DOSE2FISHERSPOTION,
+        ItemID._2DOSE2FISHERSPOTION,
+        ItemID._3DOSE2FISHERSPOTION,
+        ItemID._4DOSE2FISHERSPOTION);
 
     // brutal potions
     addPotion("Agility mix", ItemID.BRUTAL_1DOSE1AGILITY, ItemID.BRUTAL_2DOSE1AGILITY);
@@ -409,6 +443,10 @@ public class PotionStorage extends WorldStorage {
     addPotion("Tarromin potion (unf)", ItemID.TARROMINVIAL);
     addPotion("Toadflax potion (unf)", ItemID.TOADFLAXVIAL);
     addPotion("Torstol potion (unf)", ItemID.TORSTOLVIAL);
+
+    addPotion("Elkhorn potion (unf)", ItemID.ELKHORNVIAL);
+    addPotion("Pillar potion (unf)", ItemID.PILLARVIAL);
+    addPotion("Umbral potion (unf)", ItemID.UMBRALVIAL);
   }
 
   private void addPotion(String storageText, int oneDoseId, int... otherDoseIds) {
