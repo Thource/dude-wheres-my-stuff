@@ -30,8 +30,11 @@ public class Var {
     if (varbitId != -1) {
       return client.getVarbitValue(varbitId);
     }
+    if (varpId != -1) {
+      return client.getVarpValue(varpId);
+    }
 
-    return client.getVarpValue(varpId);
+    return -1;
   }
 
   public boolean wasChanged() {
