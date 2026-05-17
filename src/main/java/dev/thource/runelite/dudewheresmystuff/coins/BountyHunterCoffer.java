@@ -3,6 +3,7 @@ package dev.thource.runelite.dudewheresmystuff.coins;
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.Widget;
 import org.apache.commons.lang3.math.NumberUtils;
 
@@ -62,6 +63,14 @@ public class BountyHunterCoffer extends CoinsStorage {
 
   @Override
   public boolean onGameTick() {
+    var client = plugin.getClient();
+    var regionId = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()).getRegionID();
+
+    // Only check widgets in Ferox Enclave and at Daimon's Crater
+    if (regionId != 12600 && regionId != 12344 && regionId != 13631) {
+      return false;
+    }
+
     return updateFromMain() || updateFromDepositWithdraw();
   }
 }
