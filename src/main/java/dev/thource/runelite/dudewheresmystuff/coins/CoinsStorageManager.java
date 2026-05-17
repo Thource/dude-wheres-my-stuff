@@ -18,7 +18,8 @@ public class CoinsStorageManager extends StorageManager<CoinsStorageType, CoinsS
           || type == CoinsStorageType.SHILO_FURNACE
           || type == CoinsStorageType.GRAND_EXCHANGE
           || type == CoinsStorageType.LOOTING_BAG
-          || type == CoinsStorageType.BOUNTY_HUNTER) {
+          || type == CoinsStorageType.BOUNTY_HUNTER
+          || type == CoinsStorageType.SCAR_ESSENCE_MINE) {
         continue;
       }
 
