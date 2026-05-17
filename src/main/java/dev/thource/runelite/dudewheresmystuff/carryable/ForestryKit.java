@@ -32,6 +32,10 @@ public class ForestryKit extends CarryableStorage {
     items.add(new ItemStack(ItemID.FORESTRY_LUMBERJACK_HAT, plugin));
     items.add(new ItemStack(ItemID.FORESTRY_LUMBERJACK_BOOTS, plugin));
     items.add(new ItemStack(ItemID.SKILLCAPE_WOODCUTTING_TRIMMED, plugin));
+    items.add(new ItemStack(ItemID.RAMBLE_LUMBERJACK_TOP, plugin));
+    items.add(new ItemStack(ItemID.RAMBLE_LUMBERJACK_LEGS, plugin));
+    items.add(new ItemStack(ItemID.RAMBLE_LUMBERJACK_HAT, plugin));
+    items.add(new ItemStack(ItemID.RAMBLE_LUMBERJACK_BOOTS, plugin));
 
     // TODO: Forestry Basket Log Storage
   }
