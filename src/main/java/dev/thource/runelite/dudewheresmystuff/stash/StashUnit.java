@@ -429,6 +429,7 @@ public enum StashUnit {
           ItemRequirements.item(ItemID.BOW_OF_FAERDHINEN_INFINITE_CRWYS),
           ItemRequirements.item(ItemID.BOW_OF_FAERDHINEN_INFINITE_MEILYR),
           ItemRequirements.item(ItemID.BOW_OF_FAERDHINEN_INFINITE_AMLODD),
+          ItemRequirements.item(ItemID.BOW_OF_FAERDHINEN_INFINITE_DEADMAN),
           ItemRequirements.item(ItemID.BOW_OF_FAERDHINEN_INACTIVE))),
   OUTSIDE_THE_LEGENDS_GUILD_GATES(
       "Legend's Guild",
