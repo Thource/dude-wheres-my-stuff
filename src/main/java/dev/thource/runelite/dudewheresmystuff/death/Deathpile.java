@@ -142,6 +142,7 @@ public class Deathpile extends ExpiringDeathStorage {
       if (itemsToMatch.size() <= items.size() / 2) {
         worldPoint = tilePoint;
         worldArea = null;
+        refreshColor();
         deathStorageManager.refreshMapPoints();
         SwingUtilities.invokeLater(this::setSubTitle);
         return true;
