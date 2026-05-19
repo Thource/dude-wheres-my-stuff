@@ -1182,6 +1182,7 @@ public enum PlayerOwnedHouseStorageType implements StorageType {
           ItemID.INFINITY_BOTTOM_GOLD,
           ItemID.FORESTRY_BASKET_CLOSED,
           ItemID.LOG_BASKET_CLOSED,
+          ItemID.LOG_BASKET_OPEN,
           ItemID.LUNAR_AMULET,
           ItemID.LUNAR_BOOTS,
           ItemID.LUNAR_CAPE,
