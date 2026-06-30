@@ -171,6 +171,7 @@ public class HerbSack extends CarryableStorage {
       addingToSack = true;
     } else if (chatMessage.getMessage().startsWith("You look in your herb sack")) {
       checkingSack = true;
+      resetItems();
     } else if (chatMessage
         .getMessage()
         .startsWith("You rummage around to see if you can extract any herbs from your herb sack")) {
