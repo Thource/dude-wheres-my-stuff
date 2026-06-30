@@ -14,6 +14,7 @@ import com.google.api.services.sheets.v4.model.SheetProperties;
 import com.google.api.services.sheets.v4.model.Spreadsheet;
 import com.google.api.services.sheets.v4.model.SpreadsheetProperties;
 import com.google.api.services.sheets.v4.model.UpdateCellsRequest;
+import com.google.api.services.sheets.v4.model.UpdateSheetPropertiesRequest;
 import dev.thource.runelite.dudewheresmystuff.export.utils.GoogleSheetConnectionUtils;
 import java.util.ArrayList;
 import java.util.List;
@@ -141,6 +142,26 @@ public class GoogleSheetClient {
       List<Sheet> sheets = spreadsheet.getSheets();
       return sheets.stream()
           .anyMatch(x -> x.getProperties().getTitle().equalsIgnoreCase(sheetTitle));
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  public void updateSheetProperties(String spreadsheetId, SheetProperties sheetProperties) {
+    try {
+      sheetsService
+          .spreadsheets()
+          .batchUpdate(
+              spreadsheetId,
+              new BatchUpdateSpreadsheetRequest()
+                  .setRequests(
+                      List.of(
+                          new Request()
+                              .setUpdateSheetProperties(
+                                  new UpdateSheetPropertiesRequest()
+                                      .setFields("*")
+                                      .setProperties(sheetProperties)))))
+          .execute();
     } catch (Exception e) {
       throw new RuntimeException(e);
     }

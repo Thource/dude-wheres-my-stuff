@@ -75,11 +75,22 @@ public class GoogleSheetsWriter implements DataExportWriter {
 
   @Override
   public void close() {
-    if (itemBuffer.isEmpty()) return;
-    Sheet sheet = googleSheetClient.getSheet(spreadsheetId, displayName);
-    GridRange range =
+    if (itemBuffer.isEmpty()) {
+      return;
+    }
+
+    var sheet = googleSheetClient.getSheet(spreadsheetId, displayName);
+    var sheetProperties = sheet.getProperties();
+    var gridProperties = sheetProperties.getGridProperties();
+    var rowCount = gridProperties.getRowCount();
+    if (rowCount < itemBuffer.size() + 1) {
+      gridProperties.setRowCount(itemBuffer.size() + 1);
+      googleSheetClient.updateSheetProperties(spreadsheetId, sheetProperties);
+    }
+
+    var range =
         SheetUtils.getGridRange(
-            sheet.getProperties().getSheetId(),
+            sheetProperties.getSheetId(),
             0,
             1,
             itemBuffer.get(0).size() + 1,
