@@ -4,8 +4,6 @@ import dev.thource.runelite.dudewheresmystuff.carryable.CarryableStorage;
 import dev.thource.runelite.dudewheresmystuff.carryable.CarryableStorageManager;
 import dev.thource.runelite.dudewheresmystuff.carryable.CarryableStorageType;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
 import net.runelite.api.gameval.ItemID;
@@ -13,8 +11,8 @@ import net.runelite.api.gameval.ItemID;
 /** ItemStackUtils provides methods that interact with Lists of ItemStack. */
 public class ItemStackUtils {
 
-  public static final List<Integer> ITEM_IDS_DESTROYED_ON_DEATH = Collections.unmodifiableList(
-      Arrays.asList(
+  public static final List<Integer> ITEM_IDS_DESTROYED_ON_DEATH =
+      List.of(
           ItemID.LOOTING_BAG,
           ItemID.LOOTING_BAG_OPEN,
           ItemID.BH_CLUE_BOX,
@@ -61,17 +59,15 @@ public class ItemStackUtils {
           ItemID.TWISTED_RUNE_TROPHY,
           ItemID.TWISTED_DRAGON_TROPHY,
           ItemID.CRYSTAL_SEED_OLD_SMALL,
-          ItemID.EYEGLO_CRYSTAL_SAW
-      )
-  );
+          ItemID.EYEGLO_CRYSTAL_SAW,
+          ItemID.CAPTURED_WIND_MOTE);
 
-  private ItemStackUtils() {
-  }
+  private ItemStackUtils() {}
 
   /**
    * Compounds a List of ItemStacks, merging ItemStacks with the same id.
    *
-   * @param itemStacks           ItemStacks to be compounded
+   * @param itemStacks ItemStacks to be compounded
    * @param compoundUnstackables Whether unstackable ItemStacks should be compounded
    * @return a new List of new ItemStacks
    */
@@ -87,7 +83,8 @@ public class ItemStackUtils {
           boolean wasCompounded = false;
           if (itemStack.isStackable() || compoundUnstackables) {
             for (ItemStack compoundedItemStack : compoundedItemStacks) {
-              if (compoundedItemStack.getId() != itemStack.getId() || compoundedItemStack.getId() < 0) {
+              if (compoundedItemStack.getId() != itemStack.getId()
+                  || compoundedItemStack.getId() < 0) {
                 continue;
               }
 
@@ -110,7 +107,7 @@ public class ItemStackUtils {
    * exists in the list, it will merge quantities. If there's an empty slot, it will fill it,
    * otherwise it'll be added to the end of the list.
    *
-   * @param items     ItemStacks to be added to
+   * @param items ItemStacks to be added to
    * @param itemToAdd ItemStack to add
    */
   public static void addItemStack(List<ItemStack> items, ItemStack itemToAdd) {
@@ -122,12 +119,12 @@ public class ItemStackUtils {
    * exists in the list, it will merge quantities. If there's an empty slot, it will fill it,
    * otherwise it'll be added to the end of the list.
    *
-   * @param items         ItemStacks to be added to
-   * @param itemToAdd     ItemStack to add
+   * @param items ItemStacks to be added to
+   * @param itemToAdd ItemStack to add
    * @param forceStacking Whether to stack non-stackable items (like in the bank)
    */
-  public static void addItemStack(List<ItemStack> items, ItemStack itemToAdd,
-      boolean forceStacking) {
+  public static void addItemStack(
+      List<ItemStack> items, ItemStack itemToAdd, boolean forceStacking) {
     if (itemToAdd.isStackable() || forceStacking) {
       for (ItemStack item : items) {
         if (item.getId() != itemToAdd.getId()) {
@@ -157,8 +154,8 @@ public class ItemStackUtils {
    * Removes an ItemStack from the supplied List of ItemStacks. Any removed ItemStacks will be
    * replaced with empty slots.
    *
-   * @param items            ItemStacks to remove from
-   * @param itemToRemove     ItemStack to remove
+   * @param items ItemStacks to remove from
+   * @param itemToRemove ItemStack to remove
    * @param replaceWithEmpty whether fully removed items should be replaced by an "empty" item
    */
   public static void removeItemStack(
@@ -206,8 +203,8 @@ public class ItemStackUtils {
     }
   }
 
-  public static List<ItemStack> explodeStorageItems(List<ItemStack> itemStacks,
-      CarryableStorageManager carryableStorageManager) {
+  public static List<ItemStack> explodeStorageItems(
+      List<ItemStack> itemStacks, CarryableStorageManager carryableStorageManager) {
     ArrayList<ItemStack> explodedItemStacks = new ArrayList<>();
     itemStacks.forEach(itemStack -> explodedItemStacks.add(new ItemStack(itemStack)));
 
