@@ -3,18 +3,20 @@ plugins {
 }
 
 repositories {
+    mavenLocal()
     maven {
         url = 'https://repo.runelite.net'
     }
     mavenCentral()
 }
 
-def runeLiteVersion = 'latest.release'
+def runeLiteVersion = '1.12.23'
 
 dependencies {
     compileOnly group: 'net.runelite', name: 'client', version: runeLiteVersion
 
     compileOnly 'org.projectlombok:lombok:1.18.20'
+    compileOnly 'org.jetbrains:annotations:23.0.0'
 
     implementation('com.google.api-client:google-api-client:2.6.0') {
         exclude group: 'com.google.oauth-client'
@@ -34,6 +36,7 @@ dependencies {
     }
 
     annotationProcessor 'org.projectlombok:lombok:1.18.20'
+    annotationProcessor 'org.jetbrains:annotations:23.0.0'
 
     testImplementation 'junit:junit:4.13.1'
     testImplementation group: 'net.runelite', name: 'client', version: runeLiteVersion
