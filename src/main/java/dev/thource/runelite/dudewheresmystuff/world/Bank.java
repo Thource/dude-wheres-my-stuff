@@ -40,14 +40,10 @@ public class Bank extends WorldStorage {
       for (ItemStack itemStack :
           ItemContainerWatcher.getInventoryWatcher().getItemsRemovedLastTick()) {
         // Check if the item will be sent to PotionStorage
-        if (potionStorage != null
-            && potionStorage.getDoseMap().get(itemStack.getCanonicalId()) != null) {
-          continue;
+        if(potionStorage == null) {
+          ItemStackUtils.addItemStack(items, itemStack, true);
+          updated = true;
         }
-
-        ItemStackUtils.addItemStack(items, itemStack, true);
-
-        updated = true;
       }
     }
 
