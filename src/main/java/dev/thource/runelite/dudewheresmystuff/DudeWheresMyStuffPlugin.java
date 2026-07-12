@@ -52,10 +52,12 @@ import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneScapeProfile;
 import net.runelite.client.config.RuneScapeProfileType;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ClientShutdown;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.ConfigSync;
+import net.runelite.client.events.PluginMessage;
 import net.runelite.client.events.RuneScapeProfileChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
@@ -87,6 +89,14 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 public class DudeWheresMyStuffPlugin extends Plugin {
 
   private static final String CONFIG_KEY_IS_MEMBER = "isMember";
+  private static final String CONFIG_KEY_VERSION = "version";
+  private static final String PLUGIN_MESSAGE_STORAGES_REQUEST = "storages-request";
+  private static final String PLUGIN_MESSAGE_STORAGES_RESPONSE = "storages-response";
+  private static final int PLUGIN_MESSAGE_VERSION = 1;
+  private static final String PLUGIN_MESSAGE_KEY_SOURCE = "source";
+  private static final String PLUGIN_MESSAGE_KEY_TARGET = "target";
+  private static final String PLUGIN_MESSAGE_KEY_VERSION = "version";
+  private static final String PLUGIN_MESSAGE_KEY_STORAGES = "storages";
 
   @Getter @Inject protected PluginManager pluginManager;
   @Getter @Inject protected ItemIdentificationPlugin itemIdentificationPlugin;
@@ -106,6 +116,7 @@ public class DudeWheresMyStuffPlugin extends Plugin {
   @Inject private OverlayManager overlayManager;
   @Inject private KeyManager keyManager;
   @Getter @Inject private ChatMessageManager chatMessageManager;
+  @Inject private EventBus eventBus;
 
   private ExpiringDeathStorageTilesOverlay expiringDeathStorageTilesOverlay;
   private ExpiringDeathStorageTextOverlay expiringDeathStorageTextOverlay;
@@ -249,8 +260,9 @@ public class DudeWheresMyStuffPlugin extends Plugin {
       clientThread.invoke(() -> navButton = buildNavigationButton());
 
       var lastVersion = configManager.getConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP,
-          "version");
-      configManager.setConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP, "version", "2.11.4");
+          CONFIG_KEY_VERSION);
+      configManager.setConfiguration(
+          DudeWheresMyStuffConfig.CONFIG_GROUP, CONFIG_KEY_VERSION, "2.11.4");
       // Delete all lost boats from v2.11.1 and before
       if (lastVersion == null) {
         getProfilesWithData()
@@ -640,6 +652,48 @@ public class DudeWheresMyStuffPlugin extends Plugin {
     }
 
     storageManagerManager.onItemDespawned(itemDespawned);
+  }
+
+  /**
+   * Replies to "storages-request" PluginMessages with a "storages-response" PluginMessage, so
+   * that other plugins can use the tracked storage data of the logged in profile.
+   *
+   * <p>Request: namespace "dudewheresmystuff", name "storages-request", data: "source" (String,
+   * required) - the display name of the requesting plugin. Requests without a source are ignored.
+   *
+   * <p>Response: namespace "dudewheresmystuff", name "storages-response", data: "source" (String,
+   * "Dude, Where's My Stuff?"), "target" (String, the requester's "source", so that requesters
+   * can filter out responses meant for other plugins), "version" (Integer, 1), "storages"
+   * (List&lt;Map&gt;, one per non-empty enabled storage, with keys "category" (String, the
+   * storage manager's config key), "name" (String, the storage's display name), "lastUpdated"
+   * (Long, unix epoch ms, -1 if unknown) and "items" (List&lt;Map&gt; with keys "id" (Integer,
+   * canonical item id) and "quantity" (Long))). The response is posted on the client thread.
+   */
+  @Subscribe
+  void onPluginMessage(PluginMessage pluginMessage) {
+    if (!Objects.equals(pluginMessage.getNamespace(), DudeWheresMyStuffConfig.CONFIG_GROUP)
+        || !Objects.equals(pluginMessage.getName(), PLUGIN_MESSAGE_STORAGES_REQUEST)
+        || pluginMessage.getData() == null) {
+      return;
+    }
+
+    Object requestSource = pluginMessage.getData().get(PLUGIN_MESSAGE_KEY_SOURCE);
+    if (!(requestSource instanceof String) || ((String) requestSource).isEmpty()) {
+      return;
+    }
+
+    clientThread.invokeLater(
+        () -> {
+          Map<String, Object> data = new HashMap<>();
+          data.put(PLUGIN_MESSAGE_KEY_SOURCE, "Dude, Where's My Stuff?");
+          data.put(PLUGIN_MESSAGE_KEY_TARGET, requestSource);
+          data.put(PLUGIN_MESSAGE_KEY_VERSION, PLUGIN_MESSAGE_VERSION);
+          data.put(PLUGIN_MESSAGE_KEY_STORAGES, storageManagerManager.getPluginMessageStorages());
+
+          eventBus.post(
+              new PluginMessage(
+                  DudeWheresMyStuffConfig.CONFIG_GROUP, PLUGIN_MESSAGE_STORAGES_RESPONSE, data));
+        });
   }
 
   @Provides
