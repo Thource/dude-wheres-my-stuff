@@ -18,6 +18,7 @@ import dev.thource.runelite.dudewheresmystuff.export.writers.GoogleSheetsWriter;
 import dev.thource.runelite.dudewheresmystuff.minigames.MinigamesStorageManager;
 import dev.thource.runelite.dudewheresmystuff.playerownedhouse.PlayerOwnedHouseStorageManager;
 import dev.thource.runelite.dudewheresmystuff.sailing.SailingStorageManager;
+import dev.thource.runelite.dudewheresmystuff.stash.StashStorage;
 import dev.thource.runelite.dudewheresmystuff.stash.StashStorageManager;
 import dev.thource.runelite.dudewheresmystuff.world.WorldStorageManager;
 import java.awt.TrayIcon.MessageType;
@@ -305,6 +306,29 @@ public class StorageManagerManager {
       items.add(item);
     }
     return items;
+  }
+
+  /**
+   * Seeds never-observed STASH units from an external owned-item snapshot (see Loadout Lab
+   * import), letting a fresh install recover STASH contents the player already recorded
+   * elsewhere. Live observations always take precedence.
+   *
+   * @return true if any unit was seeded
+   */
+  public boolean seedStashFromImport(Map<Integer, Integer> ownedItems) {
+    boolean seeded = false;
+    for (StashStorage storage : stashStorageManager.getStorages()) {
+      if (storage.seedFromImport(ownedItems)) {
+        seeded = true;
+      }
+    }
+    return seeded;
+  }
+
+  /** True while any enabled STASH unit has never been observed (an import could still help). */
+  public boolean hasUnobservedStash() {
+    return stashStorageManager.getStorages().stream()
+        .anyMatch(storage -> storage.isEnabled() && storage.getLastUpdated() == -1L);
   }
 
   public void onMenuOptionClicked(MenuOptionClicked menuOption) {
