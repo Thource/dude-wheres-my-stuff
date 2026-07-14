@@ -168,6 +168,13 @@ public abstract class ExpiringDeathStorage extends DeathStorage {
     return Region.get((worldPoint != null ? worldPoint : worldArea.toWorldPoint()).getRegionID());
   }
 
+  protected void setWorldPoint(WorldPoint worldPoint) {
+    worldArea = null;
+    this.worldPoint = worldPoint;
+    deathStorageManager.refreshMapPoints();
+    SwingUtilities.invokeLater(this::setSubTitle);
+  }
+
   @Override
   protected void createComponentPopupMenu(StorageManager<?, ?> storageManager) {
     if (storagePanel == null) {
@@ -177,6 +184,18 @@ public abstract class ExpiringDeathStorage extends DeathStorage {
     final JPopupMenu popupMenu = new JPopupMenu();
     popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
     storagePanel.setComponentPopupMenu(popupMenu);
+
+    var setWorldPoint = new JMenuItem("Move " + this.getName() + " to current tile");
+    setWorldPoint.addActionListener(
+        e -> plugin.getClientThread().invokeLater(() -> {
+          WorldPoint currentWorldPoint = plugin.getClient().getLocalPlayer().getWorldLocation();
+          if (currentWorldPoint == null) {
+            return;
+          }
+
+          setWorldPoint(currentWorldPoint);
+        }));
+    popupMenu.add(setWorldPoint);
 
     final JMenuItem delete = new JMenuItem("Delete " + this.getName());
     delete.addActionListener(
