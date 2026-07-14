@@ -262,7 +262,7 @@ public class DudeWheresMyStuffPlugin extends Plugin {
       var lastVersion = configManager.getConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP,
           CONFIG_KEY_VERSION);
       configManager.setConfiguration(
-          DudeWheresMyStuffConfig.CONFIG_GROUP, CONFIG_KEY_VERSION, "2.11.4");
+          DudeWheresMyStuffConfig.CONFIG_GROUP, CONFIG_KEY_VERSION, "2.11.5");
       // Delete all lost boats from v2.11.1 and before
       if (lastVersion == null) {
         getProfilesWithData()
