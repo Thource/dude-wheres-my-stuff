@@ -5,6 +5,7 @@ import dev.thource.runelite.dudewheresmystuff.ItemContainerWatcher;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
 import dev.thource.runelite.dudewheresmystuff.ItemStorage;
 import dev.thource.runelite.dudewheresmystuff.StorageManager;
+import java.util.Map;
 import java.util.Objects;
 import lombok.Getter;
 import net.runelite.api.ChatMessageType;
@@ -105,6 +106,34 @@ public class StashStorage extends ItemStorage<StashStorageType> {
         }
       }
     }
+  }
+
+  /**
+   * Seeds this unit from an external owned-item snapshot (see Loadout Lab import) when it has
+   * never been observed ({@code lastUpdated == -1}). Adds the unit's default items that the
+   * snapshot reports as owned and stamps {@code lastUpdated}; a no-op once the unit has real data,
+   * so live observations always win and re-imports never clobber them.
+   *
+   * @return true if this unit was seeded
+   */
+  public boolean seedFromImport(Map<Integer, Integer> ownedItems) {
+    if (lastUpdated != -1L || !isEnabled()) {
+      return false;
+    }
+
+    boolean seeded = false;
+    for (int defaultItemId : stashUnit.getDefaultItemIds()) {
+      Integer quantity = ownedItems.get(defaultItemId);
+      if (quantity != null && quantity > 0) {
+        items.add(new ItemStack(defaultItemId, quantity, plugin));
+        seeded = true;
+      }
+    }
+
+    if (seeded) {
+      updateLastUpdated();
+    }
+    return seeded;
   }
 
   @Override

@@ -14,6 +14,7 @@ import dev.thource.runelite.dudewheresmystuff.stash.StashStorageManager;
 import dev.thource.runelite.dudewheresmystuff.world.WorldStorageManager;
 import java.awt.Component;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -52,10 +53,12 @@ import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneScapeProfile;
 import net.runelite.client.config.RuneScapeProfileType;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ClientShutdown;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.ConfigSync;
+import net.runelite.client.events.PluginMessage;
 import net.runelite.client.events.RuneScapeProfileChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
@@ -87,6 +90,18 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 public class DudeWheresMyStuffPlugin extends Plugin {
 
   private static final String CONFIG_KEY_IS_MEMBER = "isMember";
+  private static final String CONFIG_KEY_VERSION = "version";
+  private static final String PLUGIN_MESSAGE_STORAGES_REQUEST = "storages-request";
+  private static final String PLUGIN_MESSAGE_STORAGES_RESPONSE = "storages-response";
+  private static final int PLUGIN_MESSAGE_VERSION = 1;
+  private static final String PLUGIN_MESSAGE_KEY_SOURCE = "source";
+  private static final String PLUGIN_MESSAGE_KEY_TARGET = "target";
+  private static final String PLUGIN_MESSAGE_KEY_VERSION = "version";
+  private static final String PLUGIN_MESSAGE_KEY_STORAGES = "storages";
+  private static final String PLUGIN_NAME = "Dude, Where's My Stuff?";
+  private static final String LOADOUT_LAB_NAMESPACE = "loadoutlab";
+  private static final String LOADOUT_LAB_STASH_CATEGORY = "collection";
+  private static final String LOADOUT_LAB_STASH_NAME = "stash";
 
   @Getter @Inject protected PluginManager pluginManager;
   @Getter @Inject protected ItemIdentificationPlugin itemIdentificationPlugin;
@@ -106,6 +121,7 @@ public class DudeWheresMyStuffPlugin extends Plugin {
   @Inject private OverlayManager overlayManager;
   @Inject private KeyManager keyManager;
   @Getter @Inject private ChatMessageManager chatMessageManager;
+  @Inject private EventBus eventBus;
 
   private ExpiringDeathStorageTilesOverlay expiringDeathStorageTilesOverlay;
   private ExpiringDeathStorageTextOverlay expiringDeathStorageTextOverlay;
@@ -249,8 +265,9 @@ public class DudeWheresMyStuffPlugin extends Plugin {
       clientThread.invoke(() -> navButton = buildNavigationButton());
 
       var lastVersion = configManager.getConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP,
-          "version");
-      configManager.setConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP, "version", "2.11.4");
+          CONFIG_KEY_VERSION);
+      configManager.setConfiguration(
+          DudeWheresMyStuffConfig.CONFIG_GROUP, CONFIG_KEY_VERSION, "2.11.4");
       // Delete all lost boats from v2.11.1 and before
       if (lastVersion == null) {
         getProfilesWithData()
@@ -331,6 +348,7 @@ public class DudeWheresMyStuffPlugin extends Plugin {
         () -> {
           storageManagerManager.reset();
           storageManagerManager.load(profileKey);
+          requestLoadoutLabStorages();
           SwingUtilities.invokeLater(panelContainer.getPanel()::softUpdate);
         });
   }
@@ -386,7 +404,7 @@ public class DudeWheresMyStuffPlugin extends Plugin {
 
   private NavigationButton buildNavigationButton() {
     return NavigationButton.builder()
-        .tooltip("Dude, Where's My Stuff?")
+        .tooltip(PLUGIN_NAME)
         .icon(config.sidebarIcon().getIcon(itemManager))
         .panel(panelContainer)
         .priority(4)
@@ -640,6 +658,129 @@ public class DudeWheresMyStuffPlugin extends Plugin {
     }
 
     storageManagerManager.onItemDespawned(itemDespawned);
+  }
+
+  /**
+   * Replies to "storages-request" PluginMessages with a "storages-response" PluginMessage, so
+   * that other plugins can use the tracked storage data of the logged in profile.
+   *
+   * <p>Request: namespace "dudewheresmystuff", name "storages-request", data: "source" (String,
+   * required) - the display name of the requesting plugin. Requests without a source are ignored.
+   *
+   * <p>Response: namespace "dudewheresmystuff", name "storages-response", data: "source" (String,
+   * "Dude, Where's My Stuff?"), "target" (String, the requester's "source", so that requesters
+   * can filter out responses meant for other plugins), "version" (Integer, 1), "storages"
+   * (List&lt;Map&gt;, one per non-empty enabled storage, with keys "category" (String, the
+   * storage manager's config key), "name" (String, the storage's display name), "lastUpdated"
+   * (Long, unix epoch ms, -1 if unknown) and "items" (List&lt;Map&gt; with keys "id" (Integer,
+   * canonical item id) and "quantity" (Long))). The response is posted on the client thread.
+   */
+  @Subscribe
+  void onPluginMessage(PluginMessage pluginMessage) {
+    if (pluginMessage.getData() == null) {
+      return;
+    }
+
+    if (Objects.equals(pluginMessage.getNamespace(), LOADOUT_LAB_NAMESPACE)
+        && Objects.equals(pluginMessage.getName(), PLUGIN_MESSAGE_STORAGES_RESPONSE)) {
+      handleLoadoutLabStorages(pluginMessage.getData());
+      return;
+    }
+
+    if (!Objects.equals(pluginMessage.getNamespace(), DudeWheresMyStuffConfig.CONFIG_GROUP)
+        || !Objects.equals(pluginMessage.getName(), PLUGIN_MESSAGE_STORAGES_REQUEST)) {
+      return;
+    }
+
+    Object requestSource = pluginMessage.getData().get(PLUGIN_MESSAGE_KEY_SOURCE);
+    if (!(requestSource instanceof String) || ((String) requestSource).isEmpty()) {
+      return;
+    }
+
+    clientThread.invokeLater(
+        () -> {
+          Map<String, Object> data = new HashMap<>();
+          data.put(PLUGIN_MESSAGE_KEY_SOURCE, PLUGIN_NAME);
+          data.put(PLUGIN_MESSAGE_KEY_TARGET, requestSource);
+          data.put(PLUGIN_MESSAGE_KEY_VERSION, PLUGIN_MESSAGE_VERSION);
+          data.put(PLUGIN_MESSAGE_KEY_STORAGES, storageManagerManager.getPluginMessageStorages());
+
+          eventBus.post(
+              new PluginMessage(
+                  DudeWheresMyStuffConfig.CONFIG_GROUP, PLUGIN_MESSAGE_STORAGES_RESPONSE, data));
+        });
+  }
+
+  /**
+   * Asks Loadout Lab (if installed) for its tracked storages, so a fresh DWMS install can seed
+   * STASH units the player already recorded there. Fire-and-forget: an absent plugin simply never
+   * replies, and the reply (if any) is handled by {@link #handleLoadoutLabStorages}.
+   */
+  private void requestLoadoutLabStorages() {
+    if (!storageManagerManager.hasUnobservedStash()) {
+      return;
+    }
+
+    Map<String, Object> data = new HashMap<>();
+    data.put(PLUGIN_MESSAGE_KEY_SOURCE, PLUGIN_NAME);
+    eventBus.post(new PluginMessage(LOADOUT_LAB_NAMESPACE, PLUGIN_MESSAGE_STORAGES_REQUEST, data));
+  }
+
+  /**
+   * Consumes a Loadout Lab "storages-response" and seeds never-observed STASH units from the
+   * "stash" collection it reports (see {@link StorageManagerManager#seedStashFromImport}). Only
+   * the STASH category is used; live observations always take precedence.
+   */
+  private void handleLoadoutLabStorages(Map<String, Object> data) {
+    if (!PLUGIN_NAME.equals(data.get(PLUGIN_MESSAGE_KEY_TARGET))
+        || !(data.get(PLUGIN_MESSAGE_KEY_VERSION) instanceof Number)
+        || ((Number) data.get(PLUGIN_MESSAGE_KEY_VERSION)).intValue() != PLUGIN_MESSAGE_VERSION
+        || !(data.get(PLUGIN_MESSAGE_KEY_STORAGES) instanceof List)) {
+      return;
+    }
+
+    Map<Integer, Integer> stashItems = new HashMap<>();
+    for (Object storage : (List<?>) data.get(PLUGIN_MESSAGE_KEY_STORAGES)) {
+      collectLoadoutLabStashItems(storage, stashItems);
+    }
+
+    if (stashItems.isEmpty()) {
+      return;
+    }
+
+    clientThread.invokeLater(
+        () -> {
+          if (storageManagerManager.seedStashFromImport(stashItems)) {
+            SwingUtilities.invokeLater(panelContainer.getPanel()::softUpdate);
+          }
+        });
+  }
+
+  /** Merges one Loadout Lab storage entry into {@code stashItems} if it is the STASH collection. */
+  private void collectLoadoutLabStashItems(Object storage, Map<Integer, Integer> stashItems) {
+    if (!(storage instanceof Map)) {
+      return;
+    }
+
+    Map<?, ?> storageMap = (Map<?, ?>) storage;
+    if (!LOADOUT_LAB_STASH_CATEGORY.equals(storageMap.get("category"))
+        || !LOADOUT_LAB_STASH_NAME.equals(storageMap.get("name"))
+        || !(storageMap.get("items") instanceof List)) {
+      return;
+    }
+
+    for (Object item : (List<?>) storageMap.get("items")) {
+      if (!(item instanceof Map)) {
+        continue;
+      }
+
+      Object id = ((Map<?, ?>) item).get("id");
+      Object quantity = ((Map<?, ?>) item).get("quantity");
+      if (id instanceof Number && quantity instanceof Number) {
+        stashItems.merge(((Number) id).intValue(),
+            (int) Math.min(((Number) quantity).longValue(), Integer.MAX_VALUE), Integer::sum);
+      }
+    }
   }
 
   @Provides

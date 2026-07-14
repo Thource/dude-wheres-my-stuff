@@ -18,12 +18,16 @@ import dev.thource.runelite.dudewheresmystuff.export.writers.GoogleSheetsWriter;
 import dev.thource.runelite.dudewheresmystuff.minigames.MinigamesStorageManager;
 import dev.thource.runelite.dudewheresmystuff.playerownedhouse.PlayerOwnedHouseStorageManager;
 import dev.thource.runelite.dudewheresmystuff.sailing.SailingStorageManager;
+import dev.thource.runelite.dudewheresmystuff.stash.StashStorage;
 import dev.thource.runelite.dudewheresmystuff.stash.StashStorageManager;
 import dev.thource.runelite.dudewheresmystuff.world.WorldStorageManager;
 import java.awt.TrayIcon.MessageType;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.swing.SwingUtilities;
@@ -41,6 +45,7 @@ import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetClosed;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.game.ItemManager;
 
 /** The manager of storage managers. */
 @Slf4j
@@ -249,6 +254,81 @@ public class StorageManagerManager {
   public List<ItemStack> getItems() {
     return getStorages().filter(Storage::isEnabled).map(Storage::getItems).flatMap(List::stream)
         .collect(Collectors.toList());
+  }
+
+  /**
+   * Builds the storage data for the "storages-response" PluginMessage: one entry per non-empty
+   * enabled storage (the same set that getStorages() exposes), with the storage manager's config
+   * key as the category and canonical item ids.
+   *
+   * <p>Must be called on the client thread (item ids are canonicalized).
+   *
+   * @return a list of maps, one per storage, with keys "category", "name", "lastUpdated" and
+   *     "items"
+   */
+  public List<Map<String, Object>> getPluginMessageStorages() {
+    var itemManager = plugin.getItemManager();
+    var includedStorages = getStorages().filter(Storage::isEnabled).collect(Collectors.toSet());
+    List<Map<String, Object>> storageData = new ArrayList<>();
+
+    for (StorageManager<?, ?> storageManager : storageManagers) {
+      for (Storage<?> storage : storageManager.getStorages()) {
+        if (!includedStorages.contains(storage)) {
+          continue;
+        }
+
+        List<Map<String, Object>> items = pluginMessageItems(storage, itemManager);
+        if (!items.isEmpty()) {
+          Map<String, Object> storageDatum = new HashMap<>();
+          storageDatum.put("category", storageManager.getConfigKey());
+          storageDatum.put("name", storage.getName());
+          storageDatum.put("lastUpdated", storage.getLastUpdated());
+          storageDatum.put("items", items);
+          storageData.add(storageDatum);
+        }
+      }
+    }
+
+    return storageData;
+  }
+
+  /** The non-empty, canonicalized {@code {id, quantity}} entries of a single storage. */
+  private List<Map<String, Object>> pluginMessageItems(Storage<?> storage, ItemManager itemManager) {
+    List<Map<String, Object>> items = new ArrayList<>();
+    for (ItemStack itemStack : storage.getItems()) {
+      if (itemStack.getId() <= 0 || itemStack.getQuantity() <= 0) {
+        continue;
+      }
+
+      Map<String, Object> item = new HashMap<>();
+      item.put("id", itemManager.canonicalize(itemStack.getId()));
+      item.put("quantity", (long) itemStack.getQuantity());
+      items.add(item);
+    }
+    return items;
+  }
+
+  /**
+   * Seeds never-observed STASH units from an external owned-item snapshot (see Loadout Lab
+   * import), letting a fresh install recover STASH contents the player already recorded
+   * elsewhere. Live observations always take precedence.
+   *
+   * @return true if any unit was seeded
+   */
+  public boolean seedStashFromImport(Map<Integer, Integer> ownedItems) {
+    boolean seeded = false;
+    for (StashStorage storage : stashStorageManager.getStorages()) {
+      if (storage.seedFromImport(ownedItems)) {
+        seeded = true;
+      }
+    }
+    return seeded;
+  }
+
+  /** True while any enabled STASH unit has never been observed (an import could still help). */
+  public boolean hasUnobservedStash() {
+    return stashStorageManager.getStorages().stream()
+        .anyMatch(storage -> storage.isEnabled() && storage.getLastUpdated() == -1L);
   }
 
   public void onMenuOptionClicked(MenuOptionClicked menuOption) {
