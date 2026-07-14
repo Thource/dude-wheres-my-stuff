@@ -103,10 +103,7 @@ public class Grave extends ExpiringDeathStorage {
       return;
     }
 
-    worldPoint = graveObject.get().getWorldLocation();
-    worldArea = null;
-    deathStorageManager.refreshMapPoints();
-    SwingUtilities.invokeLater(this::setSubTitle);
+    setWorldPoint(graveObject.get().getWorldLocation());
   }
 
   void expire() {
