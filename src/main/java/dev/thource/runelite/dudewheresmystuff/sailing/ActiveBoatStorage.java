@@ -213,11 +213,12 @@ public class ActiveBoatStorage extends BoatStorage {
         .getClientThread()
         .invoke(
             () -> {
-              var name =
-                  client
-                      .getDBTableField(
-                          DBTableID.SailingDock.Row.SAILING_DOCK_PORT_SARIM + port, 1, 0)[0];
-              SwingUtilities.invokeLater(() -> storagePanel.setSubTitle(name.toString()));
+              var portRows = client.getDBRowsByValue(DBTableID.SailingDock.ID, 0, 0, port);
+
+              if (!portRows.isEmpty()) {
+                var name = client.getDBTableField(portRows.get(0), 1, 0)[0];
+                SwingUtilities.invokeLater(() -> storagePanel.setSubTitle(name.toString()));
+              }
             });
   }
 
