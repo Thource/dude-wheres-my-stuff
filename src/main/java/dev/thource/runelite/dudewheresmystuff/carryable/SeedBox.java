@@ -27,6 +27,8 @@ public class SeedBox extends CarryableStorage {
   };
   private static final Pattern[] removalPatterns = {
       Pattern.compile("Emptied (?<count>\\d+) x (?<seed>.+) to your inventory\\."),
+      Pattern.compile(
+          "(?:A|An|(?<count>\\d+)) (?<seed>.+) (?:was|were) taken from your seed box\\."),
   };
 
   SeedBox(DudeWheresMyStuffPlugin plugin) {
@@ -79,7 +81,7 @@ public class SeedBox extends CarryableStorage {
       }
 
       Optional<Seed> optionalSeed = Seed.findByName(matcher.group("seed"));
-      if (!optionalSeed.isPresent()) {
+      if (optionalSeed.isEmpty()) {
         return false;
       }
 
@@ -101,7 +103,7 @@ public class SeedBox extends CarryableStorage {
 
       int quantity = NumberUtils.toInt(matcher.group("count"), 1);
       Optional<Seed> optionalSeed = Seed.findByName(matcher.group("seed"));
-      if (!optionalSeed.isPresent()) {
+      if (optionalSeed.isEmpty()) {
         return false;
       }
 
