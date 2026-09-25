@@ -16,7 +16,6 @@ import java.awt.Component;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
@@ -63,11 +62,8 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
-import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginManager;
-import net.runelite.client.plugins.itemidentification.ItemIdentificationConfig;
-import net.runelite.client.plugins.itemidentification.ItemIdentificationPlugin;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -85,7 +81,6 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
     tags = {"uim", "storage", "deathbank", "deathstorage", "death", "deathpile", "coins", "poh",
         "stash", "minigames", "leprechaun", "fossils"}
 )
-@PluginDependency(ItemIdentificationPlugin.class)
 public class DudeWheresMyStuffPlugin extends Plugin {
 
   private static final String CONFIG_KEY_IS_MEMBER = "isMember";
@@ -99,8 +94,6 @@ public class DudeWheresMyStuffPlugin extends Plugin {
   private static final String PLUGIN_MESSAGE_KEY_STORAGES = "storages";
 
   @Getter @Inject protected PluginManager pluginManager;
-  @Getter @Inject protected ItemIdentificationPlugin itemIdentificationPlugin;
-  @Getter @Inject protected ItemIdentificationConfig itemIdentificationConfig;
 
   @Inject @Getter @Named("developerMode") boolean developerMode;
 
@@ -118,6 +111,7 @@ public class DudeWheresMyStuffPlugin extends Plugin {
   @Getter @Inject private ChatMessageManager chatMessageManager;
   @Inject private EventBus eventBus;
 
+  @Getter @Inject private ItemIdentificationConfig itemIdentificationConfig;
   private ExpiringDeathStorageTilesOverlay expiringDeathStorageTilesOverlay;
   private ExpiringDeathStorageTextOverlay expiringDeathStorageTextOverlay;
   @Inject private ItemCountOverlay itemCountOverlay;
@@ -181,6 +175,8 @@ public class DudeWheresMyStuffPlugin extends Plugin {
 
   @Override
   protected void startUp() {
+    itemIdentificationConfig.reloadConfig();
+
     if (panelContainer == null) {
       expiringDeathStorageTilesOverlay = new ExpiringDeathStorageTilesOverlay(config, client,
           deathStorageManager, this);
@@ -357,6 +353,11 @@ public class DudeWheresMyStuffPlugin extends Plugin {
 
   @Subscribe
   void onConfigChanged(ConfigChanged configChanged) {
+    if (configChanged.getGroup().equals(ItemIdentificationConfig.CONFIG_GROUP)) {
+      itemIdentificationConfig.reloadConfig();
+      return;
+    }
+
     if (!Objects.equals(configChanged.getGroup(), DudeWheresMyStuffConfig.CONFIG_GROUP)) {
       return;
     }

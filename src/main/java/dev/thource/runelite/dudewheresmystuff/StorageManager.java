@@ -22,8 +22,6 @@ import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.PluginManager;
-import net.runelite.client.plugins.itemidentification.ItemIdentificationConfig;
-import net.runelite.client.plugins.itemidentification.ItemIdentificationPlugin;
 
 /**
  * StorageManager manages Storages that are assigned to it, it passes on RuneLite events so that the
@@ -37,8 +35,6 @@ public abstract class StorageManager<T extends StorageType, S extends Storage<T>
   @Inject protected ItemManager itemManager;
   @Getter @Inject protected ConfigManager configManager;
   @Getter @Inject protected PluginManager pluginManager;
-  @Getter @Inject protected ItemIdentificationPlugin itemIdentificationPlugin;
-  @Getter @Inject protected ItemIdentificationConfig itemIdentificationConfig;
   @Getter @Inject protected ClientThread clientThread;
   @Getter protected boolean enabled = true;
   @Getter @Setter protected boolean isPreviewManager = false;

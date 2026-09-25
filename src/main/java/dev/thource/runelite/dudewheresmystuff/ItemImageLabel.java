@@ -7,7 +7,6 @@ import java.awt.Point;
 import javax.annotation.Nonnull;
 import javax.swing.JLabel;
 import lombok.Setter;
-import net.runelite.client.plugins.itemidentification.ItemIdentificationMode;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.components.TextComponent;
 
@@ -33,7 +32,9 @@ class ItemImageLabel extends JLabel {
     }
 
     if (itemStack.getItemIdentification() == null
-        || !plugin.getPluginManager().isPluginEnabled(plugin.getItemIdentificationPlugin())
+        || !Boolean.parseBoolean(
+            plugin.getConfigManager().getConfiguration(
+                "runelite", "itemidentificationplugin", Boolean.class))
         || !itemStack
         .getItemIdentification()
         .type

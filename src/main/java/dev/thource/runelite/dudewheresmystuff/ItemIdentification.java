@@ -30,7 +30,6 @@ import java.util.Map;
 import java.util.function.Predicate;
 import lombok.AllArgsConstructor;
 import net.runelite.api.gameval.ItemID;
-import net.runelite.client.plugins.itemidentification.ItemIdentificationConfig;
 
 // Suppress duplicate string literal warning because this class is copied from runelite
 @SuppressWarnings("java:S1192")
