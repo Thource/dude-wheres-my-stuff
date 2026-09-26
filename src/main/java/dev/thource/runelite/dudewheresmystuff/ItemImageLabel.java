@@ -33,8 +33,7 @@ class ItemImageLabel extends JLabel {
 
     if (itemStack.getItemIdentification() == null
         || !Boolean.parseBoolean(
-            plugin.getConfigManager().getConfiguration(
-                "runelite", "itemidentificationplugin", Boolean.class))
+            plugin.getConfigManager().getConfiguration("runelite", "itemidentificationplugin"))
         || !itemStack
         .getItemIdentification()
         .type
