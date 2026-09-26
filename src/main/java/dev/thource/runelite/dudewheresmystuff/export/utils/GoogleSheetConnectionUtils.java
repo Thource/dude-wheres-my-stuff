@@ -46,7 +46,7 @@ public class GoogleSheetConnectionUtils {
   private static final int LOCAL_SERVER_PORT = 8888;
   private static final String REDIRECT_URI = "http://localhost:" + LOCAL_SERVER_PORT + "/Callback";
 
-  private static final OkHttpClient HTTP_CLIENT = new OkHttpClient();
+  @Setter private static OkHttpClient HTTP_CLIENT;
   @Setter private static Gson GSON;
   private static final MediaType JSON_MEDIA_TYPE =
       MediaType.parse("application/json; charset=utf-8");
