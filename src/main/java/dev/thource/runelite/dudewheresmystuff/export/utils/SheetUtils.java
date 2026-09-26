@@ -1,6 +1,6 @@
 package dev.thource.runelite.dudewheresmystuff.export.utils;
 
-import com.google.api.services.sheets.v4.model.GridRange;
+import dev.thource.runelite.dudewheresmystuff.export.model.GridRange;
 
 public class SheetUtils {
   public static GridRange getGridRange(
