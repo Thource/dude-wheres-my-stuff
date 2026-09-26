@@ -1,5 +1,6 @@
 package dev.thource.runelite.dudewheresmystuff;
 
+import com.google.gson.Gson;
 import com.google.inject.Provides;
 import com.google.inject.name.Named;
 import dev.thource.runelite.dudewheresmystuff.carryable.CarryableStorageManager;
@@ -7,6 +8,7 @@ import dev.thource.runelite.dudewheresmystuff.coins.CoinsStorageManager;
 import dev.thource.runelite.dudewheresmystuff.death.DeathStorageManager;
 import dev.thource.runelite.dudewheresmystuff.death.ExpiringDeathStorageTextOverlay;
 import dev.thource.runelite.dudewheresmystuff.death.ExpiringDeathStorageTilesOverlay;
+import dev.thource.runelite.dudewheresmystuff.export.utils.GoogleSheetConnectionUtils;
 import dev.thource.runelite.dudewheresmystuff.minigames.MinigamesStorageManager;
 import dev.thource.runelite.dudewheresmystuff.playerownedhouse.PlayerOwnedHouseStorageManager;
 import dev.thource.runelite.dudewheresmystuff.sailing.SailingStorageManager;
@@ -68,6 +70,7 @@ import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+import okhttp3.OkHttpClient;
 
 /**
  * DudeWheresMyStuffPlugin is a RuneLite plugin designed to help accounts of all types find their
@@ -110,6 +113,8 @@ public class DudeWheresMyStuffPlugin extends Plugin {
   @Inject private KeyManager keyManager;
   @Getter @Inject private ChatMessageManager chatMessageManager;
   @Inject private EventBus eventBus;
+  @Getter @Inject private Gson gson;
+  @Inject private OkHttpClient okHttpClient;
 
   @Getter @Inject private ItemIdentificationConfig itemIdentificationConfig;
   private ExpiringDeathStorageTilesOverlay expiringDeathStorageTilesOverlay;
@@ -175,6 +180,9 @@ public class DudeWheresMyStuffPlugin extends Plugin {
 
   @Override
   protected void startUp() {
+    GoogleSheetConnectionUtils.setGSON(gson);
+    GoogleSheetConnectionUtils.setHTTP_CLIENT(okHttpClient);
+
     itemIdentificationConfig.reloadConfig();
 
     if (panelContainer == null) {

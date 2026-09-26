@@ -36,7 +36,7 @@ public class GoogleSheetsWriter implements DataExportWriter {
     this.plugin = plugin;
     this.spreadsheetId = plugin.getConfig().googleSpreadSheetId();
     this.displayName = displayName;
-    this.googleSheetClient = new GoogleSheetClient(GoogleSheetConnectionUtils.EXPORT_ACCOUNT_EMAIL);
+    this.googleSheetClient = new GoogleSheetClient(GoogleSheetConnectionUtils.EXPORT_ACCOUNT_EMAIL, plugin.getGson());
     itemBuffer = new ArrayList<>();
   }
 

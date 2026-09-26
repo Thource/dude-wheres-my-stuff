@@ -20,6 +20,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.time.Instant;
 import java.util.concurrent.CompletableFuture;
+import lombok.Setter;
 import okhttp3.FormBody;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -45,8 +46,8 @@ public class GoogleSheetConnectionUtils {
   private static final int LOCAL_SERVER_PORT = 8888;
   private static final String REDIRECT_URI = "http://localhost:" + LOCAL_SERVER_PORT + "/Callback";
 
-  private static final OkHttpClient HTTP_CLIENT = new OkHttpClient();
-  private static final Gson GSON = new Gson();
+  @Setter private static OkHttpClient HTTP_CLIENT;
+  @Setter private static Gson GSON;
   private static final MediaType JSON_MEDIA_TYPE =
       MediaType.parse("application/json; charset=utf-8");
 
