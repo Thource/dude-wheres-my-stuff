@@ -1,6 +1,5 @@
 package dev.thource.runelite.dudewheresmystuff;
 
-import com.google.api.client.auth.oauth2.TokenResponseException;
 import dev.thource.runelite.dudewheresmystuff.carryable.CarryableStorageManager;
 import dev.thource.runelite.dudewheresmystuff.coins.CoinsStorageManager;
 import dev.thource.runelite.dudewheresmystuff.coins.CoinsStorageType;
@@ -13,6 +12,7 @@ import dev.thource.runelite.dudewheresmystuff.export.DataExportWriter;
 import dev.thource.runelite.dudewheresmystuff.export.DataExporter;
 import dev.thource.runelite.dudewheresmystuff.export.exporters.StorageManagerExporter;
 import dev.thource.runelite.dudewheresmystuff.export.utils.GoogleSheetConnectionUtils;
+import dev.thource.runelite.dudewheresmystuff.export.utils.GoogleSheetsAuthException;
 import dev.thource.runelite.dudewheresmystuff.export.writers.CsvWriter;
 import dev.thource.runelite.dudewheresmystuff.export.writers.GoogleSheetsWriter;
 import dev.thource.runelite.dudewheresmystuff.minigames.MinigamesStorageManager;
@@ -334,15 +334,24 @@ public class StorageManagerManager {
               } catch (IOException | IllegalArgumentException e) {
                 log.error("Unable to export: " + e.getMessage());
                 plugin.getNotifier().notify("Item export failed.", MessageType.ERROR);
-              } catch (Exception ex) {
-                if (ex instanceof TokenResponseException) {
-                  GoogleSheetConnectionUtils.invalidateCredentials();
-                  try {
-                    export(exporter, writer);
-                  } catch (IOException e) {
-                    throw new RuntimeException(e);
-                  }
+              } catch (GoogleSheetsAuthException authEx) {
+                log.warn(
+                    "Google rejected our credentials, clearing them and retrying once", authEx);
+                GoogleSheetConnectionUtils.invalidateCredentials(
+                    GoogleSheetConnectionUtils.EXPORT_ACCOUNT_EMAIL);
+                // The old writer/exporter hold a GoogleSheetClient built with the now-rejected
+                // access token, so the retry needs a brand new one rather than reusing them.
+                try {
+                  DataExportWriter retryWriter = new GoogleSheetsWriter(plugin, displayName);
+                  DataExporter retryExporter = new StorageManagerExporter(retryWriter, s);
+                  export(retryExporter, retryWriter);
+                } catch (IOException | IllegalArgumentException e) {
+                  log.error("Unable to export after re-authenticating: " + e.getMessage());
+                  plugin.getNotifier().notify("Item export failed.", MessageType.ERROR);
                 }
+              } catch (Exception ex) {
+                log.error("Unable to export: " + ex.getMessage(), ex);
+                plugin.getNotifier().notify("Item export failed.", MessageType.ERROR);
               }
             });
     t.start();

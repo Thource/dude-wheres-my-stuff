@@ -26,8 +26,8 @@
 
 package dev.thource.runelite.dudewheresmystuff;
 
-import com.google.api.services.sheets.v4.model.CellData;
-import com.google.api.services.sheets.v4.model.ExtendedValue;
+import dev.thource.runelite.dudewheresmystuff.export.model.CellData;
+import dev.thource.runelite.dudewheresmystuff.export.model.ExtendedValue;
 import java.util.List;
 import javax.annotation.Nullable;
 import lombok.EqualsAndHashCode;

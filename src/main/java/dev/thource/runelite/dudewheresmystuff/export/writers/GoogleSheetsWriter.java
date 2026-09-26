@@ -1,16 +1,17 @@
 package dev.thource.runelite.dudewheresmystuff.export.writers;
 
-import com.google.api.services.sheets.v4.model.CellData;
-import com.google.api.services.sheets.v4.model.ExtendedValue;
-import com.google.api.services.sheets.v4.model.GridRange;
-import com.google.api.services.sheets.v4.model.Sheet;
-import com.google.api.services.sheets.v4.model.Spreadsheet;
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
 import dev.thource.runelite.dudewheresmystuff.Storage;
 import dev.thource.runelite.dudewheresmystuff.StorageManager;
 import dev.thource.runelite.dudewheresmystuff.export.DataExportWriter;
 import dev.thource.runelite.dudewheresmystuff.export.clients.GoogleSheetClient;
+import dev.thource.runelite.dudewheresmystuff.export.model.CellData;
+import dev.thource.runelite.dudewheresmystuff.export.model.ExtendedValue;
+import dev.thource.runelite.dudewheresmystuff.export.model.GridRange;
+import dev.thource.runelite.dudewheresmystuff.export.model.Sheet;
+import dev.thource.runelite.dudewheresmystuff.export.model.Spreadsheet;
+import dev.thource.runelite.dudewheresmystuff.export.utils.GoogleSheetConnectionUtils;
 import dev.thource.runelite.dudewheresmystuff.export.utils.SheetUtils;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +36,7 @@ public class GoogleSheetsWriter implements DataExportWriter {
     this.plugin = plugin;
     this.spreadsheetId = plugin.getConfig().googleSpreadSheetId();
     this.displayName = displayName;
-    this.googleSheetClient = new GoogleSheetClient("rldudewms@gmail.com");
+    this.googleSheetClient = new GoogleSheetClient(GoogleSheetConnectionUtils.EXPORT_ACCOUNT_EMAIL);
     itemBuffer = new ArrayList<>();
   }
 
