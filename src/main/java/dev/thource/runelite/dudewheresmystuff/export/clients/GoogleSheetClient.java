@@ -21,12 +21,12 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class GoogleSheetClient {
-  private static final Gson GSON = new Gson();
-
   private final SheetsClient sheetsClient;
+  private final Gson gson;
 
-  public GoogleSheetClient(String email) {
+  public GoogleSheetClient(String email, Gson gson) {
     this.sheetsClient = GoogleSheetConnectionUtils.getSheetsConnection(email);
+    this.gson = gson;
   }
 
   public JsonObject writeCellData(
@@ -37,9 +37,9 @@ public class GoogleSheetClient {
 
       JsonObject updateCellsRequest = new JsonObject();
       updateCellsRequest.addProperty("fields", "*");
-      updateCellsRequest.add("range", GSON.toJsonTree(gridRange));
+      updateCellsRequest.add("range", gson.toJsonTree(gridRange));
       JsonArray rows = new JsonArray();
-      rowData.forEach(row -> rows.add(GSON.toJsonTree(row)));
+      rowData.forEach(row -> rows.add(gson.toJsonTree(row)));
       updateCellsRequest.add("rows", rows);
 
       JsonObject request = new JsonObject();
@@ -96,8 +96,8 @@ public class GoogleSheetClient {
         Spreadsheet newSpreadsheet =
             new Spreadsheet().setProperties(new SpreadsheetProperties().setTitle(displayName));
         JsonObject response =
-            sheetsClient.createSpreadsheet(GSON.toJsonTree(newSpreadsheet).getAsJsonObject());
-        return GSON.fromJson(response, Spreadsheet.class);
+            sheetsClient.createSpreadsheet(gson.toJsonTree(newSpreadsheet).getAsJsonObject());
+        return gson.fromJson(response, Spreadsheet.class);
       }
       return fetchSpreadsheet(spreadsheetId);
     } catch (GoogleSheetsAuthException e) {
@@ -167,7 +167,7 @@ public class GoogleSheetClient {
     try {
       JsonObject updateSheetPropertiesRequest = new JsonObject();
       updateSheetPropertiesRequest.addProperty("fields", "*");
-      updateSheetPropertiesRequest.add("properties", GSON.toJsonTree(sheetProperties));
+      updateSheetPropertiesRequest.add("properties", gson.toJsonTree(sheetProperties));
 
       JsonObject request = new JsonObject();
       request.add("updateSheetProperties", updateSheetPropertiesRequest);
@@ -188,6 +188,6 @@ public class GoogleSheetClient {
 
   private Spreadsheet fetchSpreadsheet(String spreadsheetId) throws IOException {
     JsonObject response = sheetsClient.getSpreadsheet(spreadsheetId);
-    return GSON.fromJson(response, Spreadsheet.class);
+    return gson.fromJson(response, Spreadsheet.class);
   }
 }
