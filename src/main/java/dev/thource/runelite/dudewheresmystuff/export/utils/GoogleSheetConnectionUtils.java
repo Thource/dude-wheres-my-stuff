@@ -6,14 +6,12 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.sun.net.httpserver.HttpServer;
-import java.awt.Desktop;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.InetSocketAddress;
-import java.net.URI;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -21,6 +19,7 @@ import java.nio.file.Files;
 import java.time.Instant;
 import java.util.concurrent.CompletableFuture;
 import lombok.Setter;
+import net.runelite.client.util.LinkBrowser;
 import okhttp3.FormBody;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -193,9 +192,7 @@ public class GoogleSheetConnectionUtils {
               + "&scope=" + URLEncoder.encode(SCOPE, StandardCharsets.UTF_8)
               + "&access_type=offline"
               + "&prompt=consent";
-      if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
-        Desktop.getDesktop().browse(URI.create(authUrl));
-      }
+      LinkBrowser.browse(authUrl);
       return codeFuture.get();
     } catch (Exception e) {
       throw new IOException("Authorization flow failed", e);
