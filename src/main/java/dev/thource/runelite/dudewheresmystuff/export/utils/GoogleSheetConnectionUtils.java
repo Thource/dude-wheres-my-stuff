@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.sun.net.httpserver.HttpServer;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -70,9 +69,6 @@ public class GoogleSheetConnectionUtils {
   private static ClientSecrets loadClientSecrets() throws IOException {
     try (InputStream in =
         GoogleSheetConnectionUtils.class.getResourceAsStream(CREDENTIALS_FILE_PATH)) {
-      if (in == null) {
-        throw new FileNotFoundException("Resource not found: " + CREDENTIALS_FILE_PATH);
-      }
       JsonObject root =
           new JsonParser()
               .parse(new InputStreamReader(in, StandardCharsets.UTF_8))
