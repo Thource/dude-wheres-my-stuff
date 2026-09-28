@@ -16,6 +16,7 @@ import dev.thource.runelite.dudewheresmystuff.stash.StashStorageManager;
 import dev.thource.runelite.dudewheresmystuff.stash.StashUnit;
 import dev.thource.runelite.dudewheresmystuff.world.WorldStorageManager;
 import java.awt.Component;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -25,6 +26,7 @@ import java.util.stream.Stream;
 import javax.inject.Inject;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -71,6 +73,7 @@ import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+import net.runelite.client.util.Filepath;
 import okhttp3.OkHttpClient;
 
 /**
@@ -80,6 +83,7 @@ import okhttp3.OkHttpClient;
 @Slf4j
 @PluginDescriptor(
     name = "Dude, Where's My Stuff?",
+    internalName = "dude-wheres-my-stuff",
     description =
         "Helps you keep track of your stuff (items, gp, minigame points) by recording "
             + "and showing you where they are in an easy to view way.",
@@ -163,6 +167,9 @@ public class DudeWheresMyStuffPlugin extends Plugin {
   private String profileKey;
   @Getter private String previewProfileKey;
 
+  @Getter(AccessLevel.PACKAGE)
+  private Filepath pluginDir;
+
   /**
    * Displays a confirmation popup to the user and returns true if they confirmed it.
    *
@@ -203,11 +210,24 @@ public class DudeWheresMyStuffPlugin extends Plugin {
 
   @Override
   protected void startUp() {
+    if (pluginDir == null) {
+      try {
+        pluginDir = getPluginDirectory();
+        if (!pluginDir.exists()) {
+          pluginDir.createDirectory();
+        }
+
+        GoogleSheetConnectionUtils.setTokenFilePath(pluginDir);
+      } catch (IOException e) {
+        log.error("Failed to get plugin directory within RL folder.", e);
+      }
+    }
+
     GoogleSheetConnectionUtils.setGSON(gson);
     GoogleSheetConnectionUtils.setHTTP_CLIENT(okHttpClient);
 
-    // CarryableStorageType and PlayerOwnedHouseStorageType are loaded via constructors
-    ItemIdentification.load(gson);
+    // CarryableStorageType, PlayerOwnedHouseStorageType and ItemIdentification are loaded via
+    //   constructors
     Region.load(gson);
     StashUnit.load(gson);
 

@@ -11,7 +11,6 @@ import dev.thource.runelite.dudewheresmystuff.export.model.ExtendedValue;
 import dev.thource.runelite.dudewheresmystuff.export.model.GridRange;
 import dev.thource.runelite.dudewheresmystuff.export.model.Sheet;
 import dev.thource.runelite.dudewheresmystuff.export.model.Spreadsheet;
-import dev.thource.runelite.dudewheresmystuff.export.utils.GoogleSheetConnectionUtils;
 import dev.thource.runelite.dudewheresmystuff.export.utils.SheetUtils;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,8 +35,7 @@ public class GoogleSheetsWriter implements DataExportWriter {
     this.plugin = plugin;
     this.spreadsheetId = plugin.getConfig().googleSpreadSheetId();
     this.displayName = displayName;
-    this.googleSheetClient =
-        new GoogleSheetClient(GoogleSheetConnectionUtils.EXPORT_ACCOUNT_EMAIL, plugin.getGson());
+    this.googleSheetClient = new GoogleSheetClient(plugin.getGson());
     itemBuffer = new ArrayList<>();
   }
 

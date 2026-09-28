@@ -24,8 +24,8 @@ public class GoogleSheetClient {
   private final SheetsClient sheetsClient;
   private final Gson gson;
 
-  public GoogleSheetClient(String email, Gson gson) {
-    this.sheetsClient = GoogleSheetConnectionUtils.getSheetsConnection(email);
+  public GoogleSheetClient(Gson gson) {
+    this.sheetsClient = GoogleSheetConnectionUtils.getSheetsConnection();
     this.gson = gson;
   }
 
