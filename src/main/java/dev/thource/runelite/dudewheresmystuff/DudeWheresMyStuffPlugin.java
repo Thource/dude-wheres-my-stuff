@@ -186,6 +186,9 @@ public class DudeWheresMyStuffPlugin extends Plugin {
     GoogleSheetConnectionUtils.setGSON(gson);
     GoogleSheetConnectionUtils.setHTTP_CLIENT(okHttpClient);
 
+    // CarryableStorageType and PlayerOwnedHouseStorageType are loaded via constructors
+    ItemIdentification.load(gson);
+    Region.load(gson);
     StashUnit.load(gson);
 
     itemIdentificationConfig.reloadConfig();
