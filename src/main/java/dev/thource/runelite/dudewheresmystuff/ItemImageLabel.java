@@ -35,10 +35,10 @@ class ItemImageLabel extends JLabel {
         || !Boolean.parseBoolean(
             plugin.getConfigManager().getConfiguration("runelite", "itemidentificationplugin"))
         || !itemStack
-        .getItemIdentification()
-        .type
-        .enabled
-        .test(plugin.getItemIdentificationConfig())) {
+            .getItemIdentification()
+            .getType()
+            .enabled
+            .test(plugin.getItemIdentificationConfig())) {
       return;
     }
 
@@ -49,9 +49,9 @@ class ItemImageLabel extends JLabel {
     ItemIdentificationMode itemIdentificationMode =
         plugin.getItemIdentificationConfig().identificationType();
     if (itemIdentificationMode == ItemIdentificationMode.SHORT) {
-      textComponent.setText(itemStack.getItemIdentification().shortName);
+      textComponent.setText(itemStack.getItemIdentification().getShortName());
     } else if (itemIdentificationMode == ItemIdentificationMode.MEDIUM) {
-      textComponent.setText(itemStack.getItemIdentification().medName);
+      textComponent.setText(itemStack.getItemIdentification().getMedName());
     }
     textComponent.render((Graphics2D) g);
   }

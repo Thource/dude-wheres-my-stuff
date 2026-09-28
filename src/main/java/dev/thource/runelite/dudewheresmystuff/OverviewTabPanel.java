@@ -53,20 +53,26 @@ class OverviewTabPanel extends TabContentPanel {
 
   private static final String LOGGED_OUT_SUMMARY = "Log in to find your stuff!";
   private static final String GP_TOTAL = "%,d gp";
-  private static final String DELETE_SAVE_WARNING = "Are you sure you want to delete your save data?\nThis cannot be undone.";
-  private static final String DELETE_ALL_DEATHPILES_WARNING = "Are you sure you want to delete all"
-      + " of your deathpiles/graves (including any active ones)?\nThis cannot be undone.";
-  private static final String DELETE_ALL_EXPIRED_DEATHPILES_WARNING = "Are you sure you want to"
-      + " delete all of your expired deathpiles/graves?\nThis cannot be undone.";
-  private static final String DELETE_ALL_DEATHBANKS_WARNING = "Are you sure you want to delete all"
-      + " of your deathbanks (including any active ones)?\nThis cannot be undone.";
-  private static final String DELETE_ALL_LOST_DEATHBANKS_WARNING = "Are you sure you want to"
-      + " delete all of your lost deathbanks?\nThis cannot be undone.";
-  private static final String DELETE_ALL_LOST_BOATS_WARNING = "Are you sure you want to"
-      + " delete all of your lost boats?\nThis cannot be undone.";
-  private static final String DELETE_ALL_SAVE_WARNING = "Are you sure you want to delete ALL of your save data?\nThis cannot be undone.";
-  private static final String DELETE_ALL_SAVE_FINAL_WARNING = "Are you REALLY sure you want to "
-      + "delete ALL of your save data?\nThis REALLY cannot be undone.";
+  private static final String DELETE_SAVE_WARNING =
+      "Are you sure you want to delete your save data?\nThis cannot be undone.";
+  private static final String DELETE_ALL_DEATHPILES_WARNING =
+      "Are you sure you want to delete all"
+          + " of your deathpiles/graves (including any active ones)?\nThis cannot be undone.";
+  private static final String DELETE_ALL_EXPIRED_DEATHPILES_WARNING =
+      "Are you sure you want to"
+          + " delete all of your expired deathpiles/graves?\nThis cannot be undone.";
+  private static final String DELETE_ALL_DEATHBANKS_WARNING =
+      "Are you sure you want to delete all"
+          + " of your deathbanks (including any active ones)?\nThis cannot be undone.";
+  private static final String DELETE_ALL_LOST_DEATHBANKS_WARNING =
+      "Are you sure you want to" + " delete all of your lost deathbanks?\nThis cannot be undone.";
+  private static final String DELETE_ALL_LOST_BOATS_WARNING =
+      "Are you sure you want to" + " delete all of your lost boats?\nThis cannot be undone.";
+  private static final String DELETE_ALL_SAVE_WARNING =
+      "Are you sure you want to delete ALL of your save data?\nThis cannot be undone.";
+  private static final String DELETE_ALL_SAVE_FINAL_WARNING =
+      "Are you REALLY sure you want to "
+          + "delete ALL of your save data?\nThis REALLY cannot be undone.";
   private static final String EXPORT_ITEMS_TO_CSV_TEXT = "Export items to CSV";
   private static final String EXPORT_ITEMS_TO_GOOGLE_SHEETS_TEXT = "Export items to Google Sheets";
   private static final String CONFIRM_DELETION_TEXT = "Confirm deletion";
@@ -92,7 +98,8 @@ class OverviewTabPanel extends TabContentPanel {
     setBackground(ColorScheme.DARK_GRAY_COLOR);
 
     summaryOverview =
-        new OverviewItemPanel(itemManager, null, () -> false, ItemID.HW16_CLUE_LIBRARY, 1, LOGGED_OUT_SUMMARY);
+        new OverviewItemPanel(
+            itemManager, null, () -> false, ItemID.HW16_CLUE_LIBRARY, 1, LOGGED_OUT_SUMMARY);
     add(summaryOverview);
     add(Box.createVerticalStrut(8));
     if (developerMode) {
@@ -144,28 +151,32 @@ class OverviewTabPanel extends TabContentPanel {
     JMenuItem deleteAllDeathpiles = new JMenuItem("Delete all deathpiles/graves");
     deleteAllDeathpiles.addActionListener(
         e -> {
-          if (DudeWheresMyStuffPlugin.getConfirmation(this, DELETE_ALL_DEATHPILES_WARNING, CONFIRM_DELETION_TEXT)) {
+          if (DudeWheresMyStuffPlugin.getConfirmation(
+              this, DELETE_ALL_DEATHPILES_WARNING, CONFIRM_DELETION_TEXT)) {
             storageManagerManager.getDeathStorageManager().deleteExpiringDeathStorages(true);
           }
         });
     JMenuItem deleteExpiredDeathpiles = new JMenuItem("Delete expired deathpiles/graves");
     deleteExpiredDeathpiles.addActionListener(
         e -> {
-          if (DudeWheresMyStuffPlugin.getConfirmation(this, DELETE_ALL_EXPIRED_DEATHPILES_WARNING, CONFIRM_DELETION_TEXT)) {
+          if (DudeWheresMyStuffPlugin.getConfirmation(
+              this, DELETE_ALL_EXPIRED_DEATHPILES_WARNING, CONFIRM_DELETION_TEXT)) {
             storageManagerManager.getDeathStorageManager().deleteExpiringDeathStorages(false);
           }
         });
     JMenuItem deleteAllDeathbanks = new JMenuItem("Delete all deathbanks");
     deleteAllDeathbanks.addActionListener(
         e -> {
-          if (DudeWheresMyStuffPlugin.getConfirmation(this, DELETE_ALL_DEATHBANKS_WARNING, CONFIRM_DELETION_TEXT)) {
+          if (DudeWheresMyStuffPlugin.getConfirmation(
+              this, DELETE_ALL_DEATHBANKS_WARNING, CONFIRM_DELETION_TEXT)) {
             storageManagerManager.getDeathStorageManager().deleteDeathbanks(true);
           }
         });
     JMenuItem deleteLostDeathbanks = new JMenuItem("Delete lost deathbanks");
     deleteLostDeathbanks.addActionListener(
         e -> {
-          if (DudeWheresMyStuffPlugin.getConfirmation(this, DELETE_ALL_LOST_DEATHBANKS_WARNING, CONFIRM_DELETION_TEXT)) {
+          if (DudeWheresMyStuffPlugin.getConfirmation(
+              this, DELETE_ALL_LOST_DEATHBANKS_WARNING, CONFIRM_DELETION_TEXT)) {
             storageManagerManager.getDeathStorageManager().deleteDeathbanks(false);
           }
         });
@@ -182,7 +193,8 @@ class OverviewTabPanel extends TabContentPanel {
     var deleteAllLostBoats = new JMenuItem("Delete all lost boats");
     deleteAllLostBoats.addActionListener(
         e -> {
-          if (DudeWheresMyStuffPlugin.getConfirmation(this, DELETE_ALL_LOST_BOATS_WARNING, CONFIRM_DELETION_TEXT)) {
+          if (DudeWheresMyStuffPlugin.getConfirmation(
+              this, DELETE_ALL_LOST_BOATS_WARNING, CONFIRM_DELETION_TEXT)) {
             storageManagerManager.getSailingStorageManager().deleteLostBoats();
           }
         });
@@ -298,9 +310,10 @@ class OverviewTabPanel extends TabContentPanel {
       final JMenuItem deleteAllData = new JMenuItem("Delete all data");
       deleteAllData.addActionListener(
           e -> {
-            if (DudeWheresMyStuffPlugin.getConfirmation(this, DELETE_ALL_SAVE_WARNING,
-                CONFIRM_DELETION_TEXT) && DudeWheresMyStuffPlugin.getConfirmation(this,
-                DELETE_ALL_SAVE_FINAL_WARNING, CONFIRM_DELETION_TEXT)) {
+            if (DudeWheresMyStuffPlugin.getConfirmation(
+                    this, DELETE_ALL_SAVE_WARNING, CONFIRM_DELETION_TEXT)
+                && DudeWheresMyStuffPlugin.getConfirmation(
+                    this, DELETE_ALL_SAVE_FINAL_WARNING, CONFIRM_DELETION_TEXT)) {
               plugin.deleteAllData();
 
               resetSummaryContextMenu();
@@ -320,7 +333,8 @@ class OverviewTabPanel extends TabContentPanel {
     final JMenuItem clearDeathbank = new JMenuItem("Delete data");
     clearDeathbank.addActionListener(
         e -> {
-          if (DudeWheresMyStuffPlugin.getConfirmation(this, DELETE_SAVE_WARNING, CONFIRM_DELETION_TEXT)) {
+          if (DudeWheresMyStuffPlugin.getConfirmation(
+              this, DELETE_SAVE_WARNING, CONFIRM_DELETION_TEXT)) {
             plugin.disablePreviewMode(true);
             resetSummaryContextMenu();
           }
@@ -331,9 +345,11 @@ class OverviewTabPanel extends TabContentPanel {
   private void addPreviewModeMenuOption(JPopupMenu popupMenu) {
     JMenu previewMenu = new JMenu("Preview data");
 
-    plugin.getProfilesWithData()
-        .filter(runeScapeProfile -> !plugin.getDisplayName(runeScapeProfile)
-            .equals(pluginPanel.getDisplayName()))
+    plugin
+        .getProfilesWithData()
+        .filter(
+            runeScapeProfile ->
+                !plugin.getDisplayName(runeScapeProfile).equals(pluginPanel.getDisplayName()))
         .forEach(
             profile -> {
               String displayName = plugin.getDisplayName(profile);

@@ -14,9 +14,7 @@ import javax.swing.border.EmptyBorder;
 import lombok.Getter;
 import net.runelite.api.coords.WorldPoint;
 
-/**
- * LostBoatStorage is responsible for tracking what the player lost when their boat capsized.
- */
+/** LostBoatStorage is responsible for tracking what the player lost when their boat capsized. */
 @Getter
 public class LostBoatStorage extends BoatStorage {
 
@@ -49,8 +47,7 @@ public class LostBoatStorage extends BoatStorage {
     storagePanel.setComponentPopupMenu(popupMenu);
 
     final JMenuItem delete = new JMenuItem("Delete lost boat");
-    delete.addActionListener(
-        e -> ((SailingStorageManager) storageManager).deleteStorage(this));
+    delete.addActionListener(e -> ((SailingStorageManager) storageManager).deleteStorage(this));
     popupMenu.add(delete);
   }
 

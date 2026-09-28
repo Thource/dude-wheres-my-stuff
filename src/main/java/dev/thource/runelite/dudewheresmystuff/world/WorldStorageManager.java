@@ -45,5 +45,4 @@ public class WorldStorageManager extends StorageManager<WorldStorageType, WorldS
   public String getConfigKey() {
     return "world";
   }
-
 }

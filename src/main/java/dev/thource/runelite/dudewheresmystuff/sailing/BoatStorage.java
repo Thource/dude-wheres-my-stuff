@@ -57,8 +57,7 @@ public abstract class BoatStorage extends SailingStorage {
                           DBTableID.SailingBoatNameOptions.Row.SAILING_BOAT_NAME_NOUN_OPTIONS,
                           1,
                           0)[name3Id - 1];
-              SwingUtilities.invokeLater(
-                  () -> storagePanel.setTitle(name2 + " " + name3));
+              SwingUtilities.invokeLater(() -> storagePanel.setTitle(name2 + " " + name3));
             });
   }
 

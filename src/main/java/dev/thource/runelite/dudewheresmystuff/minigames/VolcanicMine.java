@@ -15,7 +15,8 @@ public class VolcanicMine extends MinigamesStorage {
 
   private static final Pattern SHOP_PATTERN = Pattern.compile("Points: (\\d+)");
 
-  private final ItemStack points = new ItemStack(ItemID.FOSSIL_VOLCANIC_ASH, "Points", 0, 0, 0, true);
+  private final ItemStack points =
+      new ItemStack(ItemID.FOSSIL_VOLCANIC_ASH, "Points", 0, 0, 0, true);
 
   VolcanicMine(DudeWheresMyStuffPlugin plugin) {
     super(MinigamesStorageType.VOLCANIC_MINE, plugin);

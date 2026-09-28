@@ -1,0 +1,4482 @@
+{
+  "NORTHEAST_CORNER_OF_THE_KHARAZI_JUNGLE": {
+    "locationName": "Kharazi Jungle",
+    "chartText": "North-east corner of the Kharazi Jungle",
+    "stashUnit": "NORTHEAST_CORNER_OF_THE_KHARAZI_JUNGLE",
+    "defaultItemIds": [
+      10472,
+      7336
+    ],
+    "itemRequirements": [
+      {
+        "type": "any",
+        "name": "Any stole",
+        "requirements": [
+          {
+            "type": "item",
+            "id": 10472
+          },
+          {
+            "type": "item",
+            "id": 10470
+          },
+          {
+            "type": "item",
+            "id": 10474
+          },
+          {
+            "type": "item",
+            "id": 12257
+          },
+          {
+            "type": "item",
+            "id": 12269
+          },
+          {
+            "type": "item",
+            "id": 12201
+          }
+        ]
+      },
+      {
+        "type": "any",
+        "name": "Any heraldic rune shield",
+        "requirements": [
+          {
+            "type": "item",
+            "id": 7336
+          },
+          {
+            "type": "item",
+            "id": 7342
+          },
+          {
+            "type": "item",
+            "id": 7348
+          },
+          {
+            "type": "item",
+            "id": 7354
+          },
+          {
+            "type": "item",
+            "id": 7360
+          }
+        ]
+      }
+    ]
+  },
+  "BARBARIAN_OUTPOST_OBSTACLE_COURSE": {
+    "locationName": "Barbarian Outpost",
+    "chartText": "Barbarian Outpost obstacle course",
+    "stashUnit": "BARBARIAN_OUTPOST_OBSTACLE_COURSE",
+    "defaultItemIds": [
+      1119,
+      853,
+      4315
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 1119
+      },
+      {
+        "type": "item",
+        "id": 853
+      },
+      {
+        "type": "any",
+        "name": "Any team cape",
+        "requirements": [
+          {
+            "type": "range",
+            "min": 4315,
+            "max": 4413
+          },
+          {
+            "type": "item",
+            "id": 20217
+          },
+          {
+            "type": "item",
+            "id": 20214
+          },
+          {
+            "type": "item",
+            "id": 20211
+          }
+        ]
+      }
+    ]
+  },
+  "SOUTHEAST_CORNER_OF_THE_MONASTERY": {
+    "locationName": "Edgeville Monastery",
+    "chartText": "South-east corner of the Monastery",
+    "stashUnit": "SOUTHEAST_CORNER_OF_THE_MONASTERY",
+    "defaultItemIds": [
+      3840
+    ],
+    "itemRequirements": [
+      {
+        "type": "any",
+        "name": "Any god book",
+        "requirements": [
+          {
+            "type": "item",
+            "id": 3840
+          },
+          {
+            "type": "item",
+            "id": 3844
+          },
+          {
+            "type": "item",
+            "id": 3842
+          },
+          {
+            "type": "item",
+            "id": 12610
+          },
+          {
+            "type": "item",
+            "id": 12608
+          },
+          {
+            "type": "item",
+            "id": 12612
+          },
+          {
+            "type": "item",
+            "id": 26496
+          },
+          {
+            "type": "item",
+            "id": 26488
+          },
+          {
+            "type": "item",
+            "id": 26498
+          },
+          {
+            "type": "item",
+            "id": 26492
+          },
+          {
+            "type": "item",
+            "id": 26494
+          },
+          {
+            "type": "item",
+            "id": 26490
+          }
+        ]
+      }
+    ]
+  },
+  "ENTRANCE_OF_THE_CAVE_OF_DAMIS": {
+    "locationName": "Shadow dungeon",
+    "chartText": "Entrance of the cave of Damis",
+    "stashUnit": "ENTRANCE_OF_THE_CAVE_OF_DAMIS",
+    "defaultItemIds": [
+      10454,
+      9185,
+      3105,
+      4657
+    ],
+    "itemRequirements": [
+      {
+        "type": "any",
+        "name": "Any mitre",
+        "requirements": [
+          {
+            "type": "item",
+            "id": 10454
+          },
+          {
+            "type": "item",
+            "id": 10452
+          },
+          {
+            "type": "item",
+            "id": 10456
+          },
+          {
+            "type": "item",
+            "id": 12203
+          },
+          {
+            "type": "item",
+            "id": 12271
+          },
+          {
+            "type": "item",
+            "id": 12259
+          }
+        ]
+      },
+      {
+        "type": "any",
+        "name": "Rune crossbow",
+        "requirements": [
+          {
+            "type": "item",
+            "id": 9185
+          },
+          {
+            "type": "item",
+            "id": 26486
+          }
+        ]
+      },
+      {
+        "type": "any",
+        "name": "Climbing boots",
+        "requirements": [
+          {
+            "type": "item",
+            "id": 3105
+          },
+          {
+            "type": "item",
+            "id": 23413
+          }
+        ]
+      },
+      {
+        "type": "any",
+        "name": "Ring of visibility or ring of shadows",
+        "requirements": [
+          {
+            "type": "item",
+            "id": 4657
+          },
+          {
+            "type": "item",
+            "id": 28327
+          },
+          {
+            "type": "item",
+            "id": 28329
+          }
+        ]
+      }
+    ]
+  },
+  "AGILITY_PYRAMID": {
+    "locationName": "Agility Pyramid",
+    "chartText": "Agility Pyramid",
+    "stashUnit": "AGILITY_PYRAMID",
+    "defaultItemIds": [
+      4091,
+      7336
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 4091
+      },
+      {
+        "type": "any",
+        "name": "Any rune heraldic shield",
+        "requirements": [
+          {
+            "type": "item",
+            "id": 7336
+          },
+          {
+            "type": "item",
+            "id": 7342
+          },
+          {
+            "type": "item",
+            "id": 7348
+          },
+          {
+            "type": "item",
+            "id": 7354
+          },
+          {
+            "type": "item",
+            "id": 7360
+          }
+        ]
+      }
+    ]
+  },
+  "WELL_OF_VOYAGE": {
+    "locationName": "Iban's temple",
+    "chartText": "Well of Voyage",
+    "stashUnit": "WELL_OF_VOYAGE",
+    "defaultItemIds": [
+      1409,
+      4101,
+      4103
+    ],
+    "itemRequirements": [
+      {
+        "type": "any",
+        "name": "Any iban's staff",
+        "requirements": [
+          {
+            "type": "item",
+            "id": 1409
+          },
+          {
+            "type": "item",
+            "id": 12658
+          }
+        ]
+      },
+      {
+        "type": "item",
+        "id": 4101
+      },
+      {
+        "type": "item",
+        "id": 4103
+      }
+    ]
+  },
+  "SOUTHEAST_CORNER_OF_THE_FISHING_PLATFORM": {
+    "locationName": "Fishing Platform",
+    "chartText": "South-east corner of the Fishing Platform",
+    "stashUnit": "SOUTHEAST_CORNER_OF_THE_FISHING_PLATFORM",
+    "defaultItemIds": [
+      1704,
+      7462,
+      1149
+    ],
+    "itemRequirements": [
+      {
+        "type": "any",
+        "name": "Any amulet of glory",
+        "requirements": [
+          {
+            "type": "item",
+            "id": 1704
+          },
+          {
+            "type": "item",
+            "id": 1706
+          },
+          {
+            "type": "item",
+            "id": 1708
+          },
+          {
+            "type": "item",
+            "id": 1710
+          },
+          {
+            "type": "item",
+            "id": 1712
+          },
+          {
+            "type": "item",
+            "id": 11976
+          },
+          {
+            "type": "item",
+            "id": 11978
+          },
+          {
+            "type": "item",
+            "id": 19707
+          }
+        ]
+      },
+      {
+        "type": "item",
+        "id": 7462
+      },
+      {
+        "type": "any",
+        "name": "Any dragon med helm",
+        "requirements": [
+          {
+            "type": "item",
+            "id": 1149
+          },
+          {
+            "type": "item",
+            "id": 28057
+          }
+        ]
+      }
+    ]
+  },
+  "DEATH_ALTAR": {
+    "locationName": "Death altar",
+    "chartText": "Death Altar",
+    "stashUnit": "DEATH_ALTAR",
+    "defaultItemIds": [
+      2572,
+      5547,
+      1052
+    ],
+    "itemRequirements": [
+      {
+        "type": "any",
+        "name": "Any ring of wealth",
+        "requirements": [
+          {
+            "type": "item",
+            "id": 2572
+          },
+          {
+            "type": "item",
+            "id": 11988
+          },
+          {
+            "type": "item",
+            "id": 11986
+          },
+          {
+            "type": "item",
+            "id": 11984
+          },
+          {
+            "type": "item",
+            "id": 11982
+          },
+          {
+            "type": "item",
+            "id": 11980
+          },
+          {
+            "type": "item",
+            "id": 12785
+          },
+          {
+            "type": "item",
+            "id": 20790
+          },
+          {
+            "type": "item",
+            "id": 20789
+          },
+          {
+            "type": "item",
+            "id": 20788
+          },
+          {
+            "type": "item",
+            "id": 20787
+          },
+          {
+            "type": "item",
+            "id": 20786
+          }
+        ]
+      },
+      {
+        "type": "item",
+        "id": 5547
+      },
+      {
+        "type": "item",
+        "id": 1052
+      }
+    ]
+  },
+  "OUTSIDE_THE_BAR_BY_THE_FIGHT_ARENA": {
+    "locationName": "Fight Arena pub",
+    "chartText": "Outside the bar by the Fight Arena",
+    "stashUnit": "OUTSIDE_THE_BAR_BY_THE_FIGHT_ARENA",
+    "defaultItemIds": [
+      7112,
+      1664,
+      859
+    ],
+    "itemRequirements": [
+      {
+        "type": "any",
+        "name": "Any pirate bandana",
+        "requirements": [
+          {
+            "type": "item",
+            "id": 7112
+          },
+          {
+            "type": "item",
+            "id": 7124
+          },
+          {
+            "type": "item",
+            "id": 7130
+          },
+          {
+            "type": "item",
+            "id": 7136
+          }
+        ]
+      },
+      {
+        "type": "item",
+        "id": 1664
+      },
+      {
+        "type": "item",
+        "id": 859
+      }
+    ]
+  },
+  "BARROWS_CHEST": {
+    "locationName": "Barrows chest",
+    "chartText": "Barrows Chest",
+    "stashUnit": "BARROWS_CHEST",
+    "defaultItemIds": [
+      4716,
+      4718,
+      4720,
+      4722
+    ],
+    "itemRequirements": [
+      {
+        "type": "any",
+        "name": "Any full barrows set",
+        "requirements": [
+          {
+            "type": "all",
+            "requirements": [
+              {
+                "type": "any",
+                "name": "Ahrim's hood",
+                "requirements": [
+                  {
+                    "type": "item",
+                    "id": 4708
+                  },
+                  {
+                    "type": "range",
+                    "min": 4856,
+                    "max": 4860
+                  }
+                ]
+              },
+              {
+                "type": "any",
+                "name": "Ahrim's staff",
+                "requirements": [
+                  {
+                    "type": "item",
+                    "id": 4710
+                  },
+                  {
+                    "type": "range",
+                    "min": 4862,
+                    "max": 4866
+                  }
+                ]
+              },
+              {
+                "type": "any",
+                "name": "Ahrim's robetop",
+                "requirements": [
+                  {
+                    "type": "item",
+                    "id": 4712
+                  },
+                  {
+                    "type": "range",
+                    "min": 4868,
+                    "max": 4872
+                  }
+                ]
+              },
+              {
+                "type": "any",
+                "name": "Ahrim's robeskirt",
+                "requirements": [
+                  {
+                    "type": "item",
+                    "id": 4714
+                  },
+                  {
+                    "type": "range",
+                    "min": 4874,
+                    "max": 4878
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "all",
+            "requirements": [
+              {
+                "type": "any",
+                "name": "Dharok's helm",
+                "requirements": [
+                  {
+                    "type": "item",
+                    "id": 4716
+                  },
+                  {
+                    "type": "range",
+                    "min": 4880,
+                    "max": 4884
+                  }
+                ]
+              },
+              {
+                "type": "any",
+                "name": "Dharok's greataxe",
+                "requirements": [
+                  {
+                    "type": "item",
+                    "id": 4718
+                  },
+                  {
+                    "type": "range",
+                    "min": 4886,
+                    "max": 4890
+                  }
+                ]
+              },
+              {
+                "type": "any",
+                "name": "Dharok's platebody",
+                "requirements": [
+                  {
+                    "type": "item",
+                    "id": 4720
+                  },
+                  {
+                    "type": "range",
+                    "min": 4892,
+                    "max": 4896
+                  }
+                ]
+              },
+              {
+                "type": "any",
+                "name": "Dharok's platelegs",
+                "requirements": [
+                  {
+                    "type": "item",
+                    "id": 4722
+                  },
+                  {
+                    "type": "range",
+                    "min": 4898,
+                    "max": 4902
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "all",
+            "requirements": [
+              {
+                "type": "any",
+                "name": "Guthan's helm",
+                "requirements": [
+                  {
+                    "type": "item",
+                    "id": 4724
+                  },
+                  {
+                    "type": "range",
+                    "min": 4904,
+                    "max": 4908
+                  }
+                ]
+              },
+              {
+                "type": "any",
+                "name": "Guthan's warspear",
+                "requirements": [
+                  {
+                    "type": "item",
+                    "id": 4726
+                  },
+                  {
+                    "type": "range",
+                    "min": 4910,
+                    "max": 4914
+                  }
+                ]
+              },
+              {
+                "type": "any",
+                "name": "Guthan's platebody",
+                "requirements": [
+                  {
+                    "type": "item",
+                    "id": 4728
+                  },
+                  {
+                    "type": "range",
+                    "min": 4916,
+                    "max": 4920
+                  }
+                ]
+              },
+              {
+                "type": "any",
+                "name": "Guthan's chainskirt",
+                "requirements": [
+                  {
+                    "type": "item",
+                    "id": 4730
+                  },
+                  {
+                    "type": "range",
+                    "min": 4922,
+                    "max": 4926
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "all",
+            "requirements": [
+              {
+                "type": "any",
+                "name": "Karil's coif",
+                "requirements": [
+                  {
+                    "type": "item",
+                    "id": 4732
+                  },
+                  {
+                    "type": "range",
+                    "min": 4928,
+                    "max": 4932
+                  }
+                ]
+              },
+              {
+                "type": "any",
+                "name": "Karil's crossbow",
+                "requirements": [
+                  {
+                    "type": "item",
+                    "id": 4734
+                  },
+                  {
+                    "type": "range",
+                    "min": 4934,
+                    "max": 4938
+                  }
+                ]
+              },
+              {
+                "type": "any",
+                "name": "Karil's leathertop",
+                "requirements": [
+                  {
+                    "type": "item",
+                    "id": 4736
+                  },
+                  {
+                    "type": "range",
+                    "min": 4940,
+                    "max": 4944
+                  }
+                ]
+              },
+              {
+                "type": "any",
+                "name": "Karil's leatherskirt",
+                "requirements": [
+                  {
+                    "type": "item",
+                    "id": 4738
+                  },
+                  {
+                    "type": "range",
+                    "min": 4946,
+                    "max": 4950
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "all",
+            "requirements": [
+              {
+                "type": "any",
+                "name": "Torag's helm",
+                "requirements": [
+                  {
+                    "type": "item",
+                    "id": 4745
+                  },
+                  {
+                    "type": "range",
+                    "min": 4952,
+                    "max": 4956
+                  }
+                ]
+              },
+              {
+                "type": "any",
+                "name": "Torag's hammers",
+                "requirements": [
+                  {
+                    "type": "item",
+                    "id": 4747
+                  },
+                  {
+                    "type": "range",
+                    "min": 4958,
+                    "max": 4962
+                  }
+                ]
+              },
+              {
+                "type": "any",
+                "name": "Torag's platebody",
+                "requirements": [
+                  {
+                    "type": "item",
+                    "id": 4749
+                  },
+                  {
+                    "type": "range",
+                    "min": 4964,
+                    "max": 4968
+                  }
+                ]
+              },
+              {
+                "type": "any",
+                "name": "Torag's platelegs",
+                "requirements": [
+                  {
+                    "type": "item",
+                    "id": 4751
+                  },
+                  {
+                    "type": "range",
+                    "min": 4970,
+                    "max": 4974
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "all",
+            "requirements": [
+              {
+                "type": "any",
+                "name": "Verac's helm",
+                "requirements": [
+                  {
+                    "type": "item",
+                    "id": 4753
+                  },
+                  {
+                    "type": "range",
+                    "min": 4976,
+                    "max": 4980
+                  }
+                ]
+              },
+              {
+                "type": "any",
+                "name": "Verac's flail",
+                "requirements": [
+                  {
+                    "type": "item",
+                    "id": 4755
+                  },
+                  {
+                    "type": "range",
+                    "min": 4982,
+                    "max": 4986
+                  }
+                ]
+              },
+              {
+                "type": "any",
+                "name": "Verac's brassard",
+                "requirements": [
+                  {
+                    "type": "item",
+                    "id": 4757
+                  },
+                  {
+                    "type": "range",
+                    "min": 4988,
+                    "max": 4992
+                  }
+                ]
+              },
+              {
+                "type": "any",
+                "name": "Verac's plateskirt",
+                "requirements": [
+                  {
+                    "type": "item",
+                    "id": 4759
+                  },
+                  {
+                    "type": "range",
+                    "min": 4994,
+                    "max": 4998
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "IN_THE_MIDDLE_OF_JIGGIG": {
+    "locationName": "Jiggig",
+    "chartText": "In the middle of Jiggig",
+    "stashUnit": "IN_THE_MIDDLE_OF_JIGGIG",
+    "defaultItemIds": [
+      10286,
+      1247,
+      1079
+    ],
+    "itemRequirements": [
+      {
+        "type": "range",
+        "min": 10286,
+        "max": 10294
+      },
+      {
+        "type": "item",
+        "id": 1247
+      },
+      {
+        "type": "item",
+        "id": 1079
+      }
+    ]
+  },
+  "BY_THE_BEAR_CAGE_IN_VARROCK_PALACE_GARDENS": {
+    "locationName": "Varrock Castle",
+    "chartText": "By the bear cage in Varrock Palace gardens",
+    "stashUnit": "BY_THE_BEAR_CAGE_IN_VARROCK_PALACE_GARDENS",
+    "defaultItemIds": [
+      11808
+    ],
+    "itemRequirements": [
+      {
+        "type": "any",
+        "name": "Zamorak godsword",
+        "requirements": [
+          {
+            "type": "item",
+            "id": 11808
+          },
+          {
+            "type": "item",
+            "id": 20374
+          }
+        ]
+      }
+    ]
+  },
+  "BEHIND_MISS_SCHISM_IN_DRAYNOR_VILLAGE": {
+    "locationName": "Draynor Village",
+    "chartText": "Behind Miss Schism in Draynor Village",
+    "stashUnit": "BEHIND_MISS_SCHISM_IN_DRAYNOR_VILLAGE",
+    "defaultItemIds": [
+      4151,
+      1052,
+      6135
+    ],
+    "itemRequirements": [
+      {
+        "type": "any",
+        "name": "Abyssal whip",
+        "requirements": [
+          {
+            "type": "item",
+            "id": 4151
+          },
+          {
+            "type": "item",
+            "id": 12773
+          },
+          {
+            "type": "item",
+            "id": 12774
+          },
+          {
+            "type": "item",
+            "id": 26482
+          },
+          {
+            "type": "item",
+            "id": 12006
+          },
+          {
+            "type": "item",
+            "id": 26484
+          }
+        ]
+      },
+      {
+        "type": "item",
+        "id": 1052
+      },
+      {
+        "type": "item",
+        "id": 6135
+      }
+    ]
+  },
+  "CRYSTALLINE_MAPLE_TREES": {
+    "locationName": "North of Prifddinas",
+    "chartText": "North of Prifddinas by several maple trees",
+    "stashUnit": "CRYSTALLINE_MAPLE_TREES",
+    "defaultItemIds": [
+      22368,
+      5541
+    ],
+    "itemRequirements": [
+      {
+        "type": "range",
+        "min": 22368,
+        "max": 22370
+      },
+      {
+        "type": "item",
+        "id": 5541
+      }
+    ]
+  },
+  "DIGSITE": {
+    "locationName": "Digsite",
+    "chartText": "Digsite",
+    "stashUnit": "DIGSITE",
+    "defaultItemIds": [
+      658,
+      6328,
+      1267
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 658
+      },
+      {
+        "type": "item",
+        "id": 6328
+      },
+      {
+        "type": "item",
+        "id": 1267
+      }
+    ]
+  },
+  "SOUTH_OF_THE_SHRINE_IN_TAI_BWO_WANNAI_VILLAGE": {
+    "locationName": "Tai Bwo Wannai",
+    "chartText": "South of the shrine in Tai Bwo Wannai Village",
+    "stashUnit": "SOUTH_OF_THE_SHRINE_IN_TAI_BWO_WANNAI_VILLAGE",
+    "defaultItemIds": [
+      1099,
+      2566,
+      1143
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 1099
+      },
+      {
+        "type": "any",
+        "name": "Ring of dueling",
+        "requirements": [
+          {
+            "type": "item",
+            "id": 2566
+          },
+          {
+            "type": "item",
+            "id": 2564
+          },
+          {
+            "type": "item",
+            "id": 2562
+          },
+          {
+            "type": "item",
+            "id": 2560
+          },
+          {
+            "type": "item",
+            "id": 2558
+          },
+          {
+            "type": "item",
+            "id": 2556
+          },
+          {
+            "type": "item",
+            "id": 2554
+          },
+          {
+            "type": "item",
+            "id": 2552
+          }
+        ]
+      },
+      {
+        "type": "item",
+        "id": 1143
+      }
+    ]
+  },
+  "WEST_OF_THE_SHAYZIEN_COMBAT_RING": {
+    "locationName": "Shayzien Combat Ring",
+    "chartText": "North of the Shayzien combat ring",
+    "stashUnit": "WEST_OF_THE_SHAYZIEN_COMBAT_RING",
+    "defaultItemIds": [
+      1073,
+      1123,
+      1161
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 1073
+      },
+      {
+        "type": "item",
+        "id": 1123
+      },
+      {
+        "type": "item",
+        "id": 1161
+      }
+    ]
+  },
+  "TENT_IN_LORD_IORWERTHS_ENCAMPMENT": {
+    "locationName": "Lord Iorwerth's camp",
+    "chartText": "Tent in Lord Iorwerth's encampment",
+    "stashUnit": "TENT_IN_LORD_IORWERTHS_ENCAMPMENT",
+    "defaultItemIds": [
+      23983
+    ],
+    "itemRequirements": [
+      {
+        "type": "any",
+        "name": "Crystal Bow",
+        "requirements": [
+          {
+            "type": "item",
+            "id": 23983
+          },
+          {
+            "type": "item",
+            "id": 24123
+          },
+          {
+            "type": "item",
+            "id": 25865
+          },
+          {
+            "type": "item",
+            "id": 25867
+          },
+          {
+            "type": "item",
+            "id": 25869
+          },
+          {
+            "type": "item",
+            "id": 25884
+          },
+          {
+            "type": "item",
+            "id": 25886
+          },
+          {
+            "type": "item",
+            "id": 25888
+          },
+          {
+            "type": "item",
+            "id": 25890
+          },
+          {
+            "type": "item",
+            "id": 25892
+          },
+          {
+            "type": "item",
+            "id": 25894
+          },
+          {
+            "type": "item",
+            "id": 25896
+          },
+          {
+            "type": "item",
+            "id": 33021
+          },
+          {
+            "type": "item",
+            "id": 25862
+          }
+        ]
+      }
+    ]
+  },
+  "OUTSIDE_THE_LEGENDS_GUILD_GATES": {
+    "locationName": "Legend's Guild",
+    "chartText": "Outside the Legends' Guild gates",
+    "stashUnit": "OUTSIDE_THE_LEGENDS_GUILD_GATES",
+    "defaultItemIds": [
+      1067,
+      845,
+      1696
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 1067
+      },
+      {
+        "type": "item",
+        "id": 845
+      },
+      {
+        "type": "item",
+        "id": 1696
+      }
+    ]
+  },
+  "OUTSIDE_THE_LEGENDS_GUILD_DOOR": {
+    "locationName": "Legend's Guild",
+    "chartText": "Outside the Legends' Guild door",
+    "stashUnit": "OUTSIDE_THE_LEGENDS_GUILD_DOOR",
+    "defaultItemIds": [
+      1052,
+      1377,
+      1704
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 1052
+      },
+      {
+        "type": "any",
+        "name": "Any dragon battleaxe",
+        "requirements": [
+          {
+            "type": "item",
+            "id": 1377
+          },
+          {
+            "type": "item",
+            "id": 28037
+          }
+        ]
+      },
+      {
+        "type": "any",
+        "name": "Any amulet of glory",
+        "requirements": [
+          {
+            "type": "item",
+            "id": 1704
+          },
+          {
+            "type": "item",
+            "id": 1706
+          },
+          {
+            "type": "item",
+            "id": 1708
+          },
+          {
+            "type": "item",
+            "id": 1710
+          },
+          {
+            "type": "item",
+            "id": 1712
+          },
+          {
+            "type": "item",
+            "id": 11976
+          },
+          {
+            "type": "item",
+            "id": 11978
+          },
+          {
+            "type": "item",
+            "id": 19707
+          }
+        ]
+      }
+    ]
+  },
+  "MUBARIZS_ROOM_AT_THE_DUEL_ARENA": {
+    "locationName": "Emir's Arena",
+    "chartText": "Mubariz's room at the Emir's Arena",
+    "stashUnit": "EMIRS_ARENA_TICKET_OFFICE",
+    "defaultItemIds": [
+      1101,
+      1095,
+      1169
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 1101
+      },
+      {
+        "type": "item",
+        "id": 1095
+      },
+      {
+        "type": "item",
+        "id": 1169
+      }
+    ]
+  },
+  "TOP_FLOOR_OF_THE_LIGHTHOUSE": {
+    "locationName": "Lighthouse",
+    "chartText": "Top floor of the Lighthouse",
+    "stashUnit": "TOP_FLOOR_OF_THE_LIGHTHOUSE",
+    "defaultItemIds": [
+      2499,
+      2487
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 2499
+      },
+      {
+        "type": "item",
+        "id": 2487
+      }
+    ]
+  },
+  "SHILO_VILLAGE_BANK": {
+    "locationName": "Shilo Village",
+    "chartText": "Shilo Village bank",
+    "stashUnit": "SHILO_VILLAGE_BANK",
+    "defaultItemIds": [
+      4089,
+      5016,
+      1127
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 4089
+      },
+      {
+        "type": "item",
+        "id": 5016
+      },
+      {
+        "type": "item",
+        "id": 1127
+      }
+    ]
+  },
+  "NEAR_A_LADDER_IN_THE_WILDERNESS_LAVA_MAZE": {
+    "locationName": "Lava maze",
+    "chartText": "Near a ladder in the Wilderness Lava Maze",
+    "stashUnit": "NEAR_A_LADDER_IN_THE_WILDERNESS_LAVA_MAZE",
+    "defaultItemIds": [
+      2497,
+      10069,
+      7445
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 2497
+      },
+      {
+        "type": "any",
+        "name": "Spotted cape",
+        "requirements": [
+          {
+            "type": "item",
+            "id": 10069
+          },
+          {
+            "type": "item",
+            "id": 10073
+          }
+        ]
+      },
+      {
+        "type": "item",
+        "id": 7445
+      }
+    ]
+  },
+  "OUTSIDE_KRIL_TSUTSAROTHS_ROOM": {
+    "locationName": "K'ril's chamber",
+    "chartText": "Outside K'ril Tsutsaroth's room",
+    "stashUnit": "OUTSIDE_KRIL_TSUTSAROTHS_ROOM",
+    "defaultItemIds": [
+      2657,
+      10858
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 2657
+      },
+      {
+        "type": "item",
+        "id": 10858
+      }
+    ]
+  },
+  "TAVERLEY_STONE_CIRCLE": {
+    "locationName": "Taverley stone circle",
+    "chartText": "Taverley Stone Circle",
+    "stashUnit": "TAVERLEY_STONE_CIRCLE",
+    "defaultItemIds": [
+      579,
+      1307,
+      4310
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 579
+      },
+      {
+        "type": "item",
+        "id": 1307
+      },
+      {
+        "type": "item",
+        "id": 4310
+      }
+    ]
+  },
+  "NORTH_OF_EVIL_DAVES_HOUSE_IN_EDGEVILLE": {
+    "locationName": "Edgeville",
+    "chartText": "North of Evil Dave's house in Edgeville",
+    "stashUnit": "NORTH_OF_EVIL_DAVES_HOUSE_IN_EDGEVILLE",
+    "defaultItemIds": [
+      1757,
+      1061,
+      1059
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 1757
+      },
+      {
+        "type": "item",
+        "id": 1061
+      },
+      {
+        "type": "item",
+        "id": 1059
+      }
+    ]
+  },
+  "OGRE_CAGE_IN_KING_LATHAS_TRAINING_CAMP": {
+    "locationName": "King Lathas' camp",
+    "chartText": "Ogre cage in the Ardougne Training Camp",
+    "stashUnit": "OGRE_CAGE_IN_KING_LATHAS_TRAINING_CAMP",
+    "defaultItemIds": [
+      1135,
+      1099,
+      1177
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 1135
+      },
+      {
+        "type": "item",
+        "id": 1099
+      },
+      {
+        "type": "item",
+        "id": 1177
+      }
+    ]
+  },
+  "ENTRANA_CHAPEL": {
+    "locationName": "Entrana church",
+    "chartText": "Entrana Chapel",
+    "stashUnit": "ENTRANA_CHAPEL",
+    "defaultItemIds": [
+      2491,
+      2497,
+      2503
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 2491
+      },
+      {
+        "type": "item",
+        "id": 2497
+      },
+      {
+        "type": "item",
+        "id": 2503
+      }
+    ]
+  },
+  "NEAR_THE_ENTRANA_FERRY_IN_PORT_SARIM": {
+    "locationName": "Port Sarim",
+    "chartText": "Near the Entrana ferry in Port Sarim",
+    "stashUnit": "NEAR_THE_ENTRANA_FERRY_IN_PORT_SARIM",
+    "defaultItemIds": [
+      1169,
+      1083,
+      1656
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 1169
+      },
+      {
+        "type": "item",
+        "id": 1083
+      },
+      {
+        "type": "item",
+        "id": 1656
+      }
+    ]
+  },
+  "OUTSIDE_THE_DIGSITE_EXAM_CENTRE": {
+    "locationName": "Exam Centre",
+    "chartText": "Outside the Digsite Exam Centre",
+    "stashUnit": "OUTSIDE_THE_DIGSITE_EXAM_CENTRE",
+    "defaultItemIds": [
+      1005,
+      628,
+      1059
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 1005
+      },
+      {
+        "type": "item",
+        "id": 628
+      },
+      {
+        "type": "item",
+        "id": 1059
+      }
+    ]
+  },
+  "ON_THE_BRIDGE_TO_THE_MISTHALIN_WIZARDS_TOWER": {
+    "locationName": "Wizards' Tower",
+    "chartText": "On the bridge to the Misthalin Wizards' Tower",
+    "stashUnit": "ON_THE_BRIDGE_TO_THE_MISTHALIN_WIZARDS_TOWER",
+    "defaultItemIds": [
+      1137,
+      1639,
+      1005
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 1137
+      },
+      {
+        "type": "item",
+        "id": 1639
+      },
+      {
+        "type": "item",
+        "id": 1005
+      }
+    ]
+  },
+  "UPSTAIRS_IN_THE_ARDOUGNE_WINDMILL": {
+    "locationName": "East Ardougne",
+    "chartText": "Upstairs in the Ardougne windmill",
+    "stashUnit": "UPSTAIRS_IN_THE_ARDOUGNE_WINDMILL",
+    "defaultItemIds": [
+      640,
+      4300,
+      5525
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 640
+      },
+      {
+        "type": "item",
+        "id": 4300
+      },
+      {
+        "type": "item",
+        "id": 5525
+      }
+    ]
+  },
+  "OUTSIDE_THE_SEERS_VILLAGE_COURTHOUSE": {
+    "locationName": "Seers Village",
+    "chartText": "Outside the Seers' Village courthouse",
+    "stashUnit": "OUTSIDE_THE_SEERS_VILLAGE_COURTHOUSE",
+    "defaultItemIds": [
+      3200,
+      4093,
+      1643
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 3200
+      },
+      {
+        "type": "item",
+        "id": 4093
+      },
+      {
+        "type": "item",
+        "id": 1643
+      }
+    ]
+  },
+  "OUTSIDE_THE_WILDERNESS_AXE_HUT": {
+    "locationName": "Magic axe hut",
+    "chartText": "Outside the Wilderness axe hut",
+    "stashUnit": "OUTSIDE_THE_WILDERNESS_AXE_HUT",
+    "defaultItemIds": [
+      10394,
+      1523
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 10394
+      },
+      {
+        "type": "item",
+        "id": 1523
+      }
+    ]
+  },
+  "NORTH_OF_MOUNT_KARUULM": {
+    "locationName": "Mount Karuulm",
+    "chartText": "North of Mount Karuulm",
+    "stashUnit": "NORTH_OF_MOUNT_KARUULM",
+    "defaultItemIds": [
+      1345,
+      2570,
+      4127
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 1345
+      },
+      {
+        "type": "item",
+        "id": 2570
+      },
+      {
+        "type": "item",
+        "id": 4127
+      }
+    ]
+  },
+  "HICKTONS_ARCHERY_EMPORIUM": {
+    "locationName": "Catherby",
+    "chartText": "Hickton's Archery Emporium",
+    "stashUnit": "HICKTONS_ARCHERY_EMPORIUM",
+    "defaultItemIds": [
+      630,
+      1131,
+      2961
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 630
+      },
+      {
+        "type": "item",
+        "id": 1131
+      },
+      {
+        "type": "item",
+        "id": 2961
+      }
+    ]
+  },
+  "OUTSIDE_HARRYS_FISHING_SHOP_IN_CATHERBY": {
+    "locationName": "Catherby",
+    "chartText": "Outside Harry's Fishing Shop in Catherby",
+    "stashUnit": "OUTSIDE_HARRYS_FISHING_SHOP_IN_CATHERBY",
+    "defaultItemIds": [
+      1183,
+      8872,
+      1121
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 1183
+      },
+      {
+        "type": "item",
+        "id": 8872
+      },
+      {
+        "type": "item",
+        "id": 1121
+      }
+    ]
+  },
+  "GNOME_STRONGHOLD_BALANCING_ROPE": {
+    "locationName": "Gnome Stronghold",
+    "chartText": "Gnome Stronghold balancing rope",
+    "stashUnit": "GNOME_STRONGHOLD_BALANCING_ROPE",
+    "defaultItemIds": [
+      1193,
+      2568,
+      1099
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 1193
+      },
+      {
+        "type": "item",
+        "id": 2568
+      },
+      {
+        "type": "item",
+        "id": 1099
+      }
+    ]
+  },
+  "TZHAAR_GEM_STORE": {
+    "locationName": "Tzhaar gem store",
+    "chartText": "TzHaar gem store",
+    "stashUnit": "TZHAAR_GEM_STORE",
+    "defaultItemIds": [
+      6570,
+      6522
+    ],
+    "itemRequirements": [
+      {
+        "type": "any",
+        "name": "Fire cape",
+        "requirements": [
+          {
+            "type": "item",
+            "id": 6570
+          },
+          {
+            "type": "item",
+            "id": 24223
+          },
+          {
+            "type": "item",
+            "id": 13329
+          },
+          {
+            "type": "item",
+            "id": 24134
+          },
+          {
+            "type": "item",
+            "id": 21295
+          },
+          {
+            "type": "item",
+            "id": 24224
+          },
+          {
+            "type": "item",
+            "id": 21285
+          },
+          {
+            "type": "item",
+            "id": 24133
+          }
+        ]
+      },
+      {
+        "type": "item",
+        "id": 6522
+      }
+    ]
+  },
+  "OUTSIDE_DRAYNOR_VILLAGE_JAIL": {
+    "locationName": "Draynor Village jail",
+    "chartText": "Outside Draynor Village jail",
+    "stashUnit": "OUTSIDE_DRAYNOR_VILLAGE_JAIL",
+    "defaultItemIds": [
+      1287,
+      1694,
+      1091
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 1287
+      },
+      {
+        "type": "item",
+        "id": 1694
+      },
+      {
+        "type": "item",
+        "id": 1091
+      }
+    ]
+  },
+  "CROSSROADS_NORTH_OF_DRAYNOR_VILLAGE": {
+    "locationName": "Draynor Village",
+    "chartText": "Crossroads north of Draynor Village",
+    "stashUnit": "CROSSROADS_NORTH_OF_DRAYNOR_VILLAGE",
+    "defaultItemIds": [
+      1101,
+      1637,
+      839
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 1101
+      },
+      {
+        "type": "item",
+        "id": 1637
+      },
+      {
+        "type": "item",
+        "id": 839
+      }
+    ]
+  },
+  "OUTSIDE_THE_FALADOR_PARTY_ROOM": {
+    "locationName": "Falador Party Room",
+    "chartText": "Outside the Falador Party Room",
+    "stashUnit": "OUTSIDE_THE_FALADOR_PARTY_ROOM",
+    "defaultItemIds": [
+      1157,
+      1119,
+      1081
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 1157
+      },
+      {
+        "type": "item",
+        "id": 1119
+      },
+      {
+        "type": "item",
+        "id": 1081
+      }
+    ]
+  },
+  "NEAR_A_SHED_IN_LUMBRIDGE_SWAMP": {
+    "locationName": "Lumbridge swamp",
+    "chartText": "Near a shed in Lumbridge Swamp",
+    "stashUnit": "NEAR_A_SHED_IN_LUMBRIDGE_SWAMP",
+    "defaultItemIds": [
+      1205,
+      1153,
+      1635
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 1205
+      },
+      {
+        "type": "item",
+        "id": 1153
+      },
+      {
+        "type": "item",
+        "id": 1635
+      }
+    ]
+  },
+  "LUMBRIDGE_SWAMP_CAVES": {
+    "locationName": "Lumbridge swamp caves",
+    "chartText": "Lumbridge Swamp caves",
+    "stashUnit": "LUMBRIDGE_SWAMP_CAVES",
+    "defaultItemIds": [
+      1381,
+      1155,
+      1731
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 1381
+      },
+      {
+        "type": "item",
+        "id": 1155
+      },
+      {
+        "type": "item",
+        "id": 1731
+      }
+    ]
+  },
+  "OUTSIDE_THE_GREAT_PYRAMID_OF_SOPHANEM": {
+    "locationName": "Pyramid Of Sophanem",
+    "chartText": "Outside the great pyramid of Sophanem",
+    "stashUnit": "OUTSIDE_THE_GREAT_PYRAMID_OF_SOPHANEM",
+    "defaultItemIds": [
+      2570,
+      1704,
+      1317
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 2570
+      },
+      {
+        "type": "item",
+        "id": 1704
+      },
+      {
+        "type": "item",
+        "id": 1317
+      }
+    ]
+  },
+  "CENTRE_OF_CANIFIS": {
+    "locationName": "Canifis",
+    "chartText": "Centre of Canifis",
+    "stashUnit": "CENTRE_OF_CANIFIS",
+    "defaultItemIds": [
+      638,
+      1071,
+      1309
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 638
+      },
+      {
+        "type": "item",
+        "id": 1071
+      },
+      {
+        "type": "item",
+        "id": 1309
+      }
+    ]
+  },
+  "KING_BLACK_DRAGONS_LAIR": {
+    "locationName": "King black dragon's lair",
+    "chartText": "King Black Dragon's lair",
+    "stashUnit": "KING_BLACK_DRAGONS_LAIR",
+    "defaultItemIds": [
+      2503,
+      2491,
+      12524
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 2503
+      },
+      {
+        "type": "item",
+        "id": 2491
+      },
+      {
+        "type": "item",
+        "id": 12524
+      }
+    ]
+  },
+  "SOUTH_OF_THE_GRAND_EXCHANGE": {
+    "locationName": "Grand Exchange",
+    "chartText": "South of the Grand Exchange",
+    "stashUnit": "SOUTH_OF_THE_GRAND_EXCHANGE",
+    "defaultItemIds": [
+      1013,
+      636,
+      5533
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 1013
+      },
+      {
+        "type": "item",
+        "id": 636
+      },
+      {
+        "type": "item",
+        "id": 5533
+      }
+    ]
+  },
+  "OUTSIDE_MUDKNUCKLES_HUT": {
+    "locationName": "Goblin Village",
+    "chartText": "Outside Mudknuckles' hut",
+    "stashUnit": "OUTSIDE_MUDKNUCKLES_HUT",
+    "defaultItemIds": [
+      12480,
+      12273,
+      11804
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 12480
+      },
+      {
+        "type": "item",
+        "id": 12273
+      },
+      {
+        "type": "any",
+        "name": "Bandos godsword",
+        "requirements": [
+          {
+            "type": "item",
+            "id": 11804
+          },
+          {
+            "type": "item",
+            "id": 20370
+          }
+        ]
+      }
+    ]
+  },
+  "AL_KHARID_SCORPION_MINE": {
+    "locationName": "Al Kharid mine",
+    "chartText": "Al Kharid scorpion mine",
+    "stashUnit": "AL_KHARID_SCORPION_MINE",
+    "defaultItemIds": [
+      1833,
+      1059,
+      1061
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 1833
+      },
+      {
+        "type": "item",
+        "id": 1059
+      },
+      {
+        "type": "item",
+        "id": 1061
+      }
+    ]
+  },
+  "INSIDE_THE_DIGSITE_EXAM_CENTRE": {
+    "locationName": "Exam Centre",
+    "chartText": "Inside the Digsite Exam Centre",
+    "stashUnit": "INSIDE_THE_DIGSITE_EXAM_CENTRE",
+    "defaultItemIds": [
+      1401,
+      11092,
+      4131
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 1401
+      },
+      {
+        "type": "item",
+        "id": 11092
+      },
+      {
+        "type": "item",
+        "id": 4131
+      }
+    ]
+  },
+  "OUTSIDE_THE_SLAYER_TOWER_GARGOYLE_ROOM": {
+    "locationName": "Slayer Tower",
+    "chartText": "Outside the Slayer Tower gargoyle room",
+    "stashUnit": "OUTSIDE_THE_SLAYER_TOWER_GARGOYLE_ROOM",
+    "defaultItemIds": [
+      6724,
+      11118,
+      10828
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 6724
+      },
+      {
+        "type": "any",
+        "name": "Combat bracelet",
+        "requirements": [
+          {
+            "type": "range",
+            "min": 11118,
+            "max": 11126
+          },
+          {
+            "type": "item",
+            "id": 11974
+          },
+          {
+            "type": "item",
+            "id": 11972
+          }
+        ]
+      },
+      {
+        "type": "any",
+        "name": "Helm of neitiznot",
+        "requirements": [
+          {
+            "type": "item",
+            "id": 10828
+          },
+          {
+            "type": "item",
+            "id": 28070
+          }
+        ]
+      }
+    ]
+  },
+  "OUTSIDE_THE_FISHING_GUILD": {
+    "locationName": "Fishing Guild",
+    "chartText": "Outside the Fishing Guild",
+    "stashUnit": "OUTSIDE_THE_FISHING_GUILD",
+    "defaultItemIds": [
+      1639,
+      1694,
+      1103
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 1639
+      },
+      {
+        "type": "item",
+        "id": 1694
+      },
+      {
+        "type": "item",
+        "id": 1103
+      }
+    ]
+  },
+  "SHANTAY_PASS": {
+    "locationName": "Shantay Pass",
+    "chartText": "Shantay Pass",
+    "stashUnit": "SHANTAY_PASS",
+    "defaultItemIds": [
+      3343,
+      1381,
+      1173
+    ],
+    "itemRequirements": [
+      {
+        "type": "any",
+        "name": "Bruise blue snelm (pointed)",
+        "requirements": [
+          {
+            "type": "item",
+            "id": 3343
+          }
+        ]
+      },
+      {
+        "type": "item",
+        "id": 1381
+      },
+      {
+        "type": "item",
+        "id": 1173
+      }
+    ]
+  },
+  "AUBURYS_SHOP_IN_VARROCK": {
+    "locationName": "Varrock rune store",
+    "chartText": "Aubury's shop in Varrock",
+    "stashUnit": "AUBURYS_SHOP_IN_VARROCK",
+    "defaultItemIds": [
+      5527,
+      1383
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 5527
+      },
+      {
+        "type": "item",
+        "id": 1383
+      }
+    ]
+  },
+  "CATHERBY_BEEHIVE_FIELD": {
+    "locationName": "Catherby",
+    "chartText": "Catherby beehive field",
+    "stashUnit": "CATHERBY_BEEHIVE_FIELD",
+    "defaultItemIds": [
+      1833,
+      648,
+      1353
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 1833
+      },
+      {
+        "type": "item",
+        "id": 648
+      },
+      {
+        "type": "item",
+        "id": 1353
+      }
+    ]
+  },
+  "OUTSIDE_YANILLE_BANK": {
+    "locationName": "Yanille",
+    "chartText": "Outside Yanille bank",
+    "stashUnit": "OUTSIDE_YANILLE_BANK",
+    "defaultItemIds": [
+      1757,
+      1145,
+      6324
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 1757
+      },
+      {
+        "type": "item",
+        "id": 1145
+      },
+      {
+        "type": "item",
+        "id": 6324
+      }
+    ]
+  },
+  "TZHAAR_WEAPONS_STORE": {
+    "locationName": "Tzhaar weapon store",
+    "chartText": "TzHaar weapons store",
+    "stashUnit": "TZHAAR_WEAPONS_STORE",
+    "defaultItemIds": [
+      1295,
+      2499,
+      4095
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 1295
+      },
+      {
+        "type": "item",
+        "id": 2499
+      },
+      {
+        "type": "item",
+        "id": 4095
+      }
+    ]
+  },
+  "ENTRANCE_OF_THE_CAVERN_UNDER_THE_WHIRLPOOL": {
+    "locationName": "Ancient cavern",
+    "chartText": "Entrance of the cavern under the whirlpool",
+    "stashUnit": "ENTRANCE_OF_THE_CAVERN_UNDER_THE_WHIRLPOOL",
+    "defaultItemIds": [
+      3122,
+      3387,
+      10286
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 3122
+      },
+      {
+        "type": "item",
+        "id": 3387
+      },
+      {
+        "type": "range",
+        "min": 10286,
+        "max": 10294
+      }
+    ]
+  },
+  "NEAR_A_RUNITE_ROCK_IN_THE_FREMENNIK_ISLES": {
+    "locationName": "Fremennik Isles",
+    "chartText": "Near a runite rock in the Fremennik Isles",
+    "stashUnit": "NEAR_A_RUNITE_ROCK_IN_THE_FREMENNIK_ISLES",
+    "defaultItemIds": [
+      4131,
+      9674,
+      1645
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 4131
+      },
+      {
+        "type": "item",
+        "id": 9674
+      },
+      {
+        "type": "item",
+        "id": 1645
+      }
+    ]
+  },
+  "NEAR_THE_PIER_IN_ZULANDRA": {
+    "locationName": "Zul-Andra",
+    "chartText": "Near the pier in Zul-Andra",
+    "stashUnit": "NEAR_THE_PIER_IN_ZULANDRA",
+    "defaultItemIds": [
+      7158,
+      11836,
+      6568
+    ],
+    "itemRequirements": [
+      {
+        "type": "any",
+        "name": "Any dragon 2h sword",
+        "requirements": [
+          {
+            "type": "item",
+            "id": 7158
+          },
+          {
+            "type": "item",
+            "id": 28051
+          }
+        ]
+      },
+      {
+        "type": "any",
+        "name": "Bandos boots",
+        "requirements": [
+          {
+            "type": "item",
+            "id": 11836
+          },
+          {
+            "type": "item",
+            "id": 21733
+          },
+          {
+            "type": "item",
+            "id": 28945
+          }
+        ]
+      },
+      {
+        "type": "item",
+        "id": 6568
+      }
+    ]
+  },
+  "FOUNTAIN_OF_HEROES": {
+    "locationName": "Fountain of heroes",
+    "chartText": "Fountain of Heroes",
+    "stashUnit": "FOUNTAIN_OF_HEROES",
+    "defaultItemIds": [
+      3389,
+      11840,
+      1303
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 3389
+      },
+      {
+        "type": "any",
+        "name": "Dragon boots",
+        "requirements": [
+          {
+            "type": "item",
+            "id": 11840
+          },
+          {
+            "type": "item",
+            "id": 22234
+          },
+          {
+            "type": "item",
+            "id": 28055
+          },
+          {
+            "type": "item",
+            "id": 13239
+          },
+          {
+            "type": "item",
+            "id": 31091
+          },
+          {
+            "type": "item",
+            "id": 31094
+          },
+          {
+            "type": "item",
+            "id": 31095
+          },
+          {
+            "type": "item",
+            "id": 31097
+          }
+        ]
+      },
+      {
+        "type": "item",
+        "id": 1303
+      }
+    ]
+  },
+  "MOUNTAIN_CAMP_GOAT_ENCLOSURE": {
+    "locationName": "Mountain Camp",
+    "chartText": "Mountain Camp goat enclosure",
+    "stashUnit": "MOUNTAIN_CAMP_GOAT_ENCLOSURE",
+    "defaultItemIds": [
+      1163,
+      2493,
+      1393
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 1163
+      },
+      {
+        "type": "item",
+        "id": 2493
+      },
+      {
+        "type": "item",
+        "id": 1393
+      }
+    ]
+  },
+  "ROAD_JUNCTION_SOUTH_OF_SINCLAIR_MANSION": {
+    "locationName": "Sinclair Mansion",
+    "chartText": "Road junction south of Sinclair Mansion",
+    "stashUnit": "ROAD_JUNCTION_SOUTH_OF_SINCLAIR_MANSION",
+    "defaultItemIds": [
+      1167,
+      577,
+      1323
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 1167
+      },
+      {
+        "type": "item",
+        "id": 577
+      },
+      {
+        "type": "item",
+        "id": 1323
+      }
+    ]
+  },
+  "NEAR_THE_GEM_STALL_IN_ARDOUGNE_MARKET": {
+    "locationName": "Ardougne",
+    "chartText": "Near the gem stall in Ardougne market",
+    "stashUnit": "NEAR_THE_GEM_STALL_IN_ARDOUGNE_MARKET",
+    "defaultItemIds": [
+      11079,
+      1702,
+      2568
+    ],
+    "itemRequirements": [
+      {
+        "type": "any",
+        "name": "Castle wars bracelet",
+        "requirements": [
+          {
+            "type": "range",
+            "min": 11079,
+            "max": 11083
+          }
+        ]
+      },
+      {
+        "type": "item",
+        "id": 1702
+      },
+      {
+        "type": "item",
+        "id": 2568
+      }
+    ]
+  },
+  "LIMESTONE_MINE": {
+    "locationName": "Limestone Mine",
+    "chartText": "Limestone mine",
+    "stashUnit": "LIMESTONE_MINE",
+    "defaultItemIds": [
+      1075,
+      1269,
+      1141
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 1075
+      },
+      {
+        "type": "item",
+        "id": 1269
+      },
+      {
+        "type": "item",
+        "id": 1141
+      }
+    ]
+  },
+  "MAUSOLEUM_OFF_THE_MORYTANIA_COAST": {
+    "locationName": "Morytania mausoleum",
+    "chartText": "Mausoleum off the Morytania coast",
+    "stashUnit": "MAUSOLEUM_OFF_THE_MORYTANIA_COAST",
+    "defaultItemIds": [
+      1085,
+      851
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 1085
+      },
+      {
+        "type": "item",
+        "id": 851
+      }
+    ]
+  },
+  "VOLCANO_IN_THE_NORTHEASTERN_WILDERNESS": {
+    "locationName": "Blighted volcano",
+    "chartText": "Volcano in the north-eastern Wilderness",
+    "stashUnit": "VOLCANO_IN_THE_NORTHEASTERN_WILDERNESS",
+    "defaultItemIds": [
+      2645,
+      12199
+    ],
+    "itemRequirements": [
+      {
+        "type": "any",
+        "name": "Any headband",
+        "requirements": [
+          {
+            "type": "range",
+            "min": 2645,
+            "max": 2649
+          },
+          {
+            "type": "range",
+            "min": 12299,
+            "max": 12307
+          }
+        ]
+      },
+      {
+        "type": "any",
+        "name": "Any crozier",
+        "requirements": [
+          {
+            "type": "item",
+            "id": 12199
+          },
+          {
+            "type": "item",
+            "id": 12263
+          },
+          {
+            "type": "item",
+            "id": 12275
+          },
+          {
+            "type": "range",
+            "min": 10440,
+            "max": 10444
+          }
+        ]
+      }
+    ]
+  },
+  "GNOME_GLIDER_ON_WHITE_WOLF_MOUNTAIN": {
+    "locationName": "White Wolf Mountain",
+    "chartText": "Gnome Glider on White Wolf Mountain",
+    "stashUnit": "GNOME_GLIDER_ON_WHITE_WOLF_MOUNTAIN",
+    "defaultItemIds": [
+      1071,
+      2570,
+      1359
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 1071
+      },
+      {
+        "type": "item",
+        "id": 2570
+      },
+      {
+        "type": "item",
+        "id": 1359
+      }
+    ]
+  },
+  "SOUTHEAST_CORNER_OF_LAVA_DRAGON_ISLE": {
+    "locationName": "Lava dragon isle",
+    "chartText": "South-east corner of Lava Dragon Isle",
+    "stashUnit": "SOUTHEAST_CORNER_OF_LAVA_DRAGON_ISLE",
+    "defaultItemIds": [
+      1149,
+      6524,
+      11037,
+      1127,
+      1704
+    ],
+    "itemRequirements": [
+      {
+        "type": "any",
+        "name": "Any dragon med helm",
+        "requirements": [
+          {
+            "type": "item",
+            "id": 1149
+          },
+          {
+            "type": "item",
+            "id": 28057
+          }
+        ]
+      },
+      {
+        "type": "item",
+        "id": 6524
+      },
+      {
+        "type": "item",
+        "id": 11037
+      },
+      {
+        "type": "item",
+        "id": 1127
+      },
+      {
+        "type": "any",
+        "name": "Uncharged Amulet of glory",
+        "requirements": [
+          {
+            "type": "item",
+            "id": 1704
+          }
+        ]
+      }
+    ]
+  },
+  "HALFWAY_DOWN_TROLLWEISS_MOUNTAIN": {
+    "locationName": "Trollweiss mountain",
+    "chartText": "Half-way down Trollweiss Mountain",
+    "stashUnit": "HALFWAY_DOWN_TROLLWEISS_MOUNTAIN",
+    "defaultItemIds": [
+      2487,
+      1249,
+      1093,
+      4084
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 2487
+      },
+      {
+        "type": "any",
+        "name": "Any dragon spear",
+        "requirements": [
+          {
+            "type": "item",
+            "id": 1249
+          },
+          {
+            "type": "item",
+            "id": 1263
+          },
+          {
+            "type": "item",
+            "id": 5716
+          },
+          {
+            "type": "item",
+            "id": 5730
+          },
+          {
+            "type": "item",
+            "id": 28041
+          },
+          {
+            "type": "item",
+            "id": 28043
+          },
+          {
+            "type": "item",
+            "id": 28045
+          },
+          {
+            "type": "item",
+            "id": 28047
+          }
+        ]
+      },
+      {
+        "type": "item",
+        "id": 1093
+      },
+      {
+        "type": "item",
+        "id": 4084
+      }
+    ]
+  },
+  "WARRIORS_GUILD_BANK_29047": {
+    "locationName": "Warriors' guild",
+    "chartText": "Warriors' Guild bank (master)",
+    "stashUnit": "WARRIORS_GUILD_BANK_29047",
+    "defaultItemIds": [
+      1377,
+      12954,
+      11864
+    ],
+    "itemRequirements": [
+      {
+        "type": "any",
+        "name": "Any dragon battleaxe",
+        "requirements": [
+          {
+            "type": "item",
+            "id": 1377
+          },
+          {
+            "type": "item",
+            "id": 28037
+          }
+        ]
+      },
+      {
+        "type": "any",
+        "name": "Dragon defender or Avernic defender",
+        "requirements": [
+          {
+            "type": "item",
+            "id": 12954
+          },
+          {
+            "type": "item",
+            "id": 19722
+          },
+          {
+            "type": "item",
+            "id": 24143
+          },
+          {
+            "type": "item",
+            "id": 22322
+          },
+          {
+            "type": "item",
+            "id": 24186
+          },
+          {
+            "type": "item",
+            "id": 27550
+          },
+          {
+            "type": "item",
+            "id": 27551
+          },
+          {
+            "type": "item",
+            "id": 27552
+          },
+          {
+            "type": "item",
+            "id": 27553
+          }
+        ]
+      },
+      {
+        "type": "any",
+        "name": "Any slayer helmet",
+        "requirements": [
+          {
+            "type": "item",
+            "id": 11864
+          },
+          {
+            "type": "item",
+            "id": 11865
+          },
+          {
+            "type": "item",
+            "id": 25177
+          },
+          {
+            "type": "item",
+            "id": 26674
+          },
+          {
+            "type": "item",
+            "id": 29816
+          },
+          {
+            "type": "item",
+            "id": 29818
+          },
+          {
+            "type": "item",
+            "id": 29820
+          },
+          {
+            "type": "item",
+            "id": 29822
+          },
+          {
+            "type": "item",
+            "id": 19639
+          },
+          {
+            "type": "item",
+            "id": 19641
+          },
+          {
+            "type": "item",
+            "id": 25179
+          },
+          {
+            "type": "item",
+            "id": 26675
+          },
+          {
+            "type": "item",
+            "id": 19643
+          },
+          {
+            "type": "item",
+            "id": 19645
+          },
+          {
+            "type": "item",
+            "id": 25181
+          },
+          {
+            "type": "item",
+            "id": 26676
+          },
+          {
+            "type": "item",
+            "id": 19647
+          },
+          {
+            "type": "item",
+            "id": 19649
+          },
+          {
+            "type": "item",
+            "id": 25183
+          },
+          {
+            "type": "item",
+            "id": 26677
+          },
+          {
+            "type": "item",
+            "id": 21264
+          },
+          {
+            "type": "item",
+            "id": 21266
+          },
+          {
+            "type": "item",
+            "id": 25185
+          },
+          {
+            "type": "item",
+            "id": 26678
+          },
+          {
+            "type": "item",
+            "id": 21888
+          },
+          {
+            "type": "item",
+            "id": 21890
+          },
+          {
+            "type": "item",
+            "id": 25187
+          },
+          {
+            "type": "item",
+            "id": 26679
+          },
+          {
+            "type": "item",
+            "id": 23073
+          },
+          {
+            "type": "item",
+            "id": 23075
+          },
+          {
+            "type": "item",
+            "id": 25189
+          },
+          {
+            "type": "item",
+            "id": 26680
+          },
+          {
+            "type": "item",
+            "id": 24370
+          },
+          {
+            "type": "item",
+            "id": 24444
+          },
+          {
+            "type": "item",
+            "id": 25191
+          },
+          {
+            "type": "item",
+            "id": 26681
+          },
+          {
+            "type": "item",
+            "id": 25898
+          },
+          {
+            "type": "item",
+            "id": 25900
+          },
+          {
+            "type": "item",
+            "id": 25902
+          },
+          {
+            "type": "item",
+            "id": 26682
+          },
+          {
+            "type": "item",
+            "id": 25904
+          },
+          {
+            "type": "item",
+            "id": 25906
+          },
+          {
+            "type": "item",
+            "id": 25908
+          },
+          {
+            "type": "item",
+            "id": 26683
+          },
+          {
+            "type": "item",
+            "id": 25910
+          },
+          {
+            "type": "item",
+            "id": 25912
+          },
+          {
+            "type": "item",
+            "id": 25914
+          },
+          {
+            "type": "item",
+            "id": 26684
+          }
+        ]
+      }
+    ]
+  },
+  "NEAR_THE_PARROTS_IN_ARDOUGNE_ZOO": {
+    "locationName": "Ardougne Zoo",
+    "chartText": "Near the parrots in Ardougne Zoo",
+    "stashUnit": "NEAR_THE_PARROTS_IN_ARDOUGNE_ZOO",
+    "defaultItemIds": [
+      1133,
+      1075,
+      1379
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 1133
+      },
+      {
+        "type": "item",
+        "id": 1075
+      },
+      {
+        "type": "item",
+        "id": 1379
+      }
+    ]
+  },
+  "OUTSIDE_KEEP_LE_FAYE": {
+    "locationName": "Keep Le Faye",
+    "chartText": "Outside Keep Le Faye",
+    "stashUnit": "OUTSIDE_KEEP_LE_FAYE",
+    "defaultItemIds": [
+      1169,
+      1115,
+      1059
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 1169
+      },
+      {
+        "type": "item",
+        "id": 1115
+      },
+      {
+        "type": "item",
+        "id": 1059
+      }
+    ]
+  },
+  "FISHING_GUILD_BANK": {
+    "locationName": "Fishing Guild",
+    "chartText": "Fishing Guild bank",
+    "stashUnit": "FISHING_GUILD_BANK",
+    "defaultItemIds": [
+      2890,
+      2493,
+      1347
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 2890
+      },
+      {
+        "type": "item",
+        "id": 2493
+      },
+      {
+        "type": "item",
+        "id": 1347
+      }
+    ]
+  },
+  "WEST_SIDE_OF_THE_KARAMJA_BANANA_PLANTATION": {
+    "locationName": "Karamja",
+    "chartText": "West side of the Karamja banana plantation",
+    "stashUnit": "WEST_SIDE_OF_THE_KARAMJA_BANANA_PLANTATION",
+    "defaultItemIds": [
+      1643,
+      1731
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 1643
+      },
+      {
+        "type": "item",
+        "id": 1731
+      }
+    ]
+  },
+  "WARRIORS_GUILD_BANK": {
+    "locationName": "Warriors' guild",
+    "chartText": "Warriors' Guild bank",
+    "stashUnit": "WARRIORS_GUILD_BANK",
+    "defaultItemIds": [
+      10148
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 10148
+      }
+    ]
+  },
+  "HOSIDIUS_MESS": {
+    "locationName": "Hosidius mess hall",
+    "chartText": "Hosidius Mess",
+    "stashUnit": "HOSIDIUS_MESS",
+    "defaultItemIds": [
+      3202,
+      1127,
+      1725
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 3202
+      },
+      {
+        "type": "item",
+        "id": 1127
+      },
+      {
+        "type": "item",
+        "id": 1725
+      }
+    ]
+  },
+  "RIMMINGTON_MINE": {
+    "locationName": "Rimmington mine",
+    "chartText": "Rimmington mine",
+    "stashUnit": "RIMMINGTON_MINE",
+    "defaultItemIds": [
+      1654,
+      1635,
+      1237
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 1654
+      },
+      {
+        "type": "item",
+        "id": 1635
+      },
+      {
+        "type": "item",
+        "id": 1237
+      }
+    ]
+  },
+  "OUTSIDE_CATHERBY_BANK": {
+    "locationName": "Catherby",
+    "chartText": "Outside Catherby bank",
+    "stashUnit": "OUTSIDE_CATHERBY_BANK",
+    "defaultItemIds": [
+      851,
+      1099,
+      1137
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 851
+      },
+      {
+        "type": "item",
+        "id": 1099
+      },
+      {
+        "type": "item",
+        "id": 1137
+      }
+    ]
+  },
+  "CHAOS_TEMPLE_IN_THE_SOUTHEASTERN_WILDERNESS": {
+    "locationName": "East of the Level 19 Wilderness Obelisk",
+    "chartText": "Chaos Temple in the south-eastern Wilderness",
+    "stashUnit": "EAST_OF_THE_LEVEL_19_WILDERNESS_OBELISK",
+    "defaultItemIds": [
+      1079,
+      1115,
+      2487
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 1079
+      },
+      {
+        "type": "item",
+        "id": 1115
+      },
+      {
+        "type": "item",
+        "id": 2487
+      }
+    ]
+  },
+  "SHAYZIEN_WAR_TENT": {
+    "locationName": "Shayzien war tent",
+    "chartText": "Shayzien War Tent",
+    "stashUnit": "SHAYZIEN_WAR_TENT",
+    "defaultItemIds": [
+      4093,
+      1201,
+      10316
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 4093
+      },
+      {
+        "type": "item",
+        "id": 1201
+      },
+      {
+        "type": "range",
+        "min": 10316,
+        "max": 10324
+      }
+    ]
+  },
+  "CENTRE_OF_THE_CATACOMBS_OF_KOUREND": {
+    "locationName": "Kourend catacombs",
+    "chartText": "Centre of the Catacombs of Kourend",
+    "stashUnit": "CENTRE_OF_THE_CATACOMBS_OF_KOUREND",
+    "defaultItemIds": [
+      19675,
+      12853
+    ],
+    "itemRequirements": [
+      {
+        "type": "any",
+        "name": "Arclight or Emberlight",
+        "requirements": [
+          {
+            "type": "item",
+            "id": 19675
+          },
+          {
+            "type": "item",
+            "id": 29589
+          }
+        ]
+      },
+      {
+        "type": "any",
+        "name": "Amulet of the damned",
+        "requirements": [
+          {
+            "type": "item",
+            "id": 12853
+          },
+          {
+            "type": "item",
+            "id": 12851
+          }
+        ]
+      }
+    ]
+  },
+  "ROAD_JUNCTION_NORTH_OF_RIMMINGTON": {
+    "locationName": "Rimmington",
+    "chartText": "Road junction north of Rimmington",
+    "stashUnit": "ROAD_JUNCTION_NORTH_OF_RIMMINGTON",
+    "defaultItemIds": [
+      658,
+      642,
+      1095
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 658
+      },
+      {
+        "type": "item",
+        "id": 642
+      },
+      {
+        "type": "item",
+        "id": 1095
+      }
+    ]
+  },
+  "DRAYNOR_MANOR_BY_THE_FOUNTAIN": {
+    "locationName": "Draynor Manor",
+    "chartText": "Draynor Manor by the fountain",
+    "stashUnit": "DRAYNOR_MANOR_BY_THE_FOUNTAIN",
+    "defaultItemIds": [
+      1115,
+      1097,
+      1155
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 1115
+      },
+      {
+        "type": "item",
+        "id": 1097
+      },
+      {
+        "type": "item",
+        "id": 1155
+      }
+    ]
+  },
+  "SOUL_ALTAR": {
+    "locationName": "Soul altar",
+    "chartText": "Soul Altar",
+    "stashUnit": "SOUL_ALTAR",
+    "defaultItemIds": [
+      11920,
+      10828,
+      4131
+    ],
+    "itemRequirements": [
+      {
+        "type": "any",
+        "name": "Dragon or Crystal pickaxe",
+        "requirements": [
+          {
+            "type": "item",
+            "id": 11920
+          },
+          {
+            "type": "item",
+            "id": 12797
+          },
+          {
+            "type": "item",
+            "id": 13243
+          },
+          {
+            "type": "item",
+            "id": 13244
+          },
+          {
+            "type": "item",
+            "id": 23677
+          },
+          {
+            "type": "item",
+            "id": 25376
+          },
+          {
+            "type": "item",
+            "id": 23680
+          },
+          {
+            "type": "item",
+            "id": 23682
+          },
+          {
+            "type": "item",
+            "id": 25063
+          },
+          {
+            "type": "item",
+            "id": 25369
+          }
+        ]
+      },
+      {
+        "type": "item",
+        "id": 10828
+      },
+      {
+        "type": "item",
+        "id": 4131
+      }
+    ]
+  },
+  "OUTSIDE_VARROCK_PALACE_COURTYARD": {
+    "locationName": "Varrock Castle",
+    "chartText": "Outside Varrock Palace courtyard",
+    "stashUnit": "OUTSIDE_VARROCK_PALACE_COURTYARD",
+    "defaultItemIds": [
+      1361,
+      1169,
+      1641
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 1361
+      },
+      {
+        "type": "item",
+        "id": 1169
+      },
+      {
+        "type": "item",
+        "id": 1641
+      }
+    ]
+  },
+  "CHAPEL_IN_WEST_ARDOUGNE": {
+    "locationName": "West Ardougne Church",
+    "chartText": "Chapel in West Ardougne",
+    "stashUnit": "CHAPEL_IN_WEST_ARDOUGNE",
+    "defaultItemIds": [
+      1249,
+      2495
+    ],
+    "itemRequirements": [
+      {
+        "type": "any",
+        "name": "Any dragon spear",
+        "requirements": [
+          {
+            "type": "item",
+            "id": 1249
+          },
+          {
+            "type": "item",
+            "id": 1263
+          },
+          {
+            "type": "item",
+            "id": 5716
+          },
+          {
+            "type": "item",
+            "id": 5730
+          },
+          {
+            "type": "item",
+            "id": 28041
+          },
+          {
+            "type": "item",
+            "id": 28043
+          },
+          {
+            "type": "item",
+            "id": 28045
+          },
+          {
+            "type": "item",
+            "id": 28047
+          }
+        ]
+      },
+      {
+        "type": "item",
+        "id": 2495
+      }
+    ]
+  },
+  "EAST_OF_THE_BARBARIAN_VILLAGE_BRIDGE": {
+    "locationName": "Barbarian Village",
+    "chartText": "East of the Barbarian Village bridge",
+    "stashUnit": "EAST_OF_THE_BARBARIAN_VILLAGE_BRIDGE",
+    "defaultItemIds": [
+      2942,
+      1193,
+      1159
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 2942
+      },
+      {
+        "type": "item",
+        "id": 1193
+      },
+      {
+        "type": "item",
+        "id": 1159
+      }
+    ]
+  },
+  "NORTHWESTERN_CORNER_OF_THE_ENCHANTED_VALLEY": {
+    "locationName": "Enchanted Valley (BKQ)",
+    "chartText": "North-western corner of the Enchanted Valley",
+    "stashUnit": "NORTHWESTERN_CORNER_OF_THE_ENCHANTED_VALLEY",
+    "defaultItemIds": [
+      6739
+    ],
+    "itemRequirements": [
+      {
+        "type": "any",
+        "name": "Dragon or Crystal axe",
+        "requirements": [
+          {
+            "type": "item",
+            "id": 6739
+          },
+          {
+            "type": "item",
+            "id": 25378
+          },
+          {
+            "type": "item",
+            "id": 28217
+          },
+          {
+            "type": "item",
+            "id": 23673
+          },
+          {
+            "type": "item",
+            "id": 23675
+          },
+          {
+            "type": "item",
+            "id": 28220
+          },
+          {
+            "type": "item",
+            "id": 28223
+          },
+          {
+            "type": "item",
+            "id": 13241
+          },
+          {
+            "type": "item",
+            "id": 13242
+          },
+          {
+            "type": "item",
+            "id": 25066
+          },
+          {
+            "type": "item",
+            "id": 25371
+          }
+        ]
+      }
+    ]
+  },
+  "WHEAT_FIELD_NEAR_THE_LUMBRIDGE_WINDMILL": {
+    "locationName": "Lumbridge mill",
+    "chartText": "Wheat field near the Lumbridge windmill",
+    "stashUnit": "WHEAT_FIELD_NEAR_THE_LUMBRIDGE_WINDMILL",
+    "defaultItemIds": [
+      640,
+      654,
+      843
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 640
+      },
+      {
+        "type": "item",
+        "id": 654
+      },
+      {
+        "type": "item",
+        "id": 843
+      }
+    ]
+  },
+  "OBSERVATORY": {
+    "locationName": "Observatory",
+    "chartText": "Observatory",
+    "stashUnit": "OBSERVATORY",
+    "defaultItemIds": [
+      1109,
+      1099,
+      1698
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 1109
+      },
+      {
+        "type": "item",
+        "id": 1099
+      },
+      {
+        "type": "item",
+        "id": 1698
+      }
+    ]
+  },
+  "NEAR_THE_SAWMILL_OPERATORS_BOOTH": {
+    "locationName": "Lumber Yard",
+    "chartText": "Near the Sawmill Operator's booth",
+    "stashUnit": "NEAR_THE_SAWMILL_OPERATORS_BOOTH",
+    "defaultItemIds": [
+      1131,
+      1095,
+      1351
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 1131
+      },
+      {
+        "type": "item",
+        "id": 1095
+      },
+      {
+        "type": "item",
+        "id": 1351
+      }
+    ]
+  },
+  "NEAR_HERQUINS_SHOP_IN_FALADOR": {
+    "locationName": "Falador",
+    "chartText": "Near Herquin's shop in Falador",
+    "stashUnit": "NEAR_HERQUINS_SHOP_IN_FALADOR",
+    "defaultItemIds": [
+      1273,
+      1125,
+      1191
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 1273
+      },
+      {
+        "type": "item",
+        "id": 1125
+      },
+      {
+        "type": "item",
+        "id": 1191
+      }
+    ]
+  },
+  "MUDSKIPPER_POINT": {
+    "locationName": "Mudskipper Point (AIQ)",
+    "chartText": "Mudskipper Point",
+    "stashUnit": "MUDSKIPPER_POINT",
+    "defaultItemIds": [
+      1019,
+      1095,
+      1424
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 1019
+      },
+      {
+        "type": "item",
+        "id": 1095
+      },
+      {
+        "type": "item",
+        "id": 1424
+      }
+    ]
+  },
+  "NORTHERN_WALL_OF_CASTLE_DRAKAN": {
+    "locationName": "Castle Drakan",
+    "chartText": "Northern wall of Castle Drakan",
+    "stashUnit": "NORTHERN_WALL_OF_CASTLE_DRAKAN",
+    "defaultItemIds": [
+      1187,
+      3387,
+      7319
+    ],
+    "itemRequirements": [
+      {
+        "type": "any",
+        "name": "Dragon sq shield",
+        "requirements": [
+          {
+            "type": "item",
+            "id": 1187
+          },
+          {
+            "type": "item",
+            "id": 12418
+          },
+          {
+            "type": "item",
+            "id": 28059
+          }
+        ]
+      },
+      {
+        "type": "item",
+        "id": 3387
+      },
+      {
+        "type": "any",
+        "name": "Any boater",
+        "requirements": [
+          {
+            "type": "item",
+            "id": 7319
+          },
+          {
+            "type": "item",
+            "id": 7321
+          },
+          {
+            "type": "item",
+            "id": 7323
+          },
+          {
+            "type": "item",
+            "id": 7325
+          },
+          {
+            "type": "item",
+            "id": 7327
+          },
+          {
+            "type": "item",
+            "id": 12309
+          },
+          {
+            "type": "item",
+            "id": 12311
+          },
+          {
+            "type": "item",
+            "id": 12313
+          }
+        ]
+      }
+    ]
+  },
+  "SEVENTH_CHAMBER_OF_JALSAVRAH": {
+    "locationName": "Pyramid Plunder",
+    "chartText": "7th Chamber of Jalsavrah",
+    "stashUnit": "_7TH_CHAMBER_OF_JALSAVRAH",
+    "defaultItemIds": [
+      9044,
+      6392,
+      6394,
+      6396
+    ],
+    "itemRequirements": [
+      {
+        "type": "any",
+        "name": "Pharaoh's sceptre",
+        "requirements": [
+          {
+            "type": "item",
+            "id": 9044
+          },
+          {
+            "type": "item",
+            "id": 9044
+          },
+          {
+            "type": "item",
+            "id": 9045
+          },
+          {
+            "type": "item",
+            "id": 9046
+          },
+          {
+            "type": "item",
+            "id": 9047
+          },
+          {
+            "type": "item",
+            "id": 9048
+          },
+          {
+            "type": "item",
+            "id": 9049
+          },
+          {
+            "type": "item",
+            "id": 9050
+          },
+          {
+            "type": "item",
+            "id": 9051
+          },
+          {
+            "type": "item",
+            "id": 13074
+          },
+          {
+            "type": "item",
+            "id": 13075
+          },
+          {
+            "type": "item",
+            "id": 13077
+          },
+          {
+            "type": "item",
+            "id": 13078
+          },
+          {
+            "type": "item",
+            "id": 16176
+          },
+          {
+            "type": "item",
+            "id": 21445
+          },
+          {
+            "type": "item",
+            "id": 21446
+          },
+          {
+            "type": "item",
+            "id": 26948
+          },
+          {
+            "type": "item",
+            "id": 26950
+          }
+        ]
+      },
+      {
+        "type": "any",
+        "name": "Full set of menaphite robes",
+        "requirements": [
+          {
+            "type": "all",
+            "requirements": [
+              {
+                "type": "item",
+                "id": 6392
+              },
+              {
+                "type": "item",
+                "id": 6394
+              },
+              {
+                "type": "range",
+                "min": 6396,
+                "max": 6398
+              }
+            ]
+          },
+          {
+            "type": "all",
+            "requirements": [
+              {
+                "type": "item",
+                "id": 6400
+              },
+              {
+                "type": "item",
+                "id": 6402
+              },
+              {
+                "type": "range",
+                "min": 6404,
+                "max": 6406
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "VARROCK_PALACE_LIBRARY": {
+    "locationName": "Varrock Castle",
+    "chartText": "Varrock Palace Library",
+    "stashUnit": "VARROCK_PALACE_LIBRARY",
+    "defaultItemIds": [
+      638,
+      4300,
+      1335
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 638
+      },
+      {
+        "type": "item",
+        "id": 4300
+      },
+      {
+        "type": "item",
+        "id": 1335
+      }
+    ]
+  },
+  "DRAYNOR_VILLAGE_MARKET": {
+    "locationName": "Draynor",
+    "chartText": "Draynor Village market",
+    "stashUnit": "DRAYNOR_VILLAGE_MARKET",
+    "defaultItemIds": [
+      1097,
+      1191,
+      1295
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 1097
+      },
+      {
+        "type": "item",
+        "id": 1191
+      },
+      {
+        "type": "item",
+        "id": 1295
+      }
+    ]
+  },
+  "CASTLE_WARS_BANK": {
+    "locationName": "Castle Wars",
+    "chartText": "Castle Wars bank",
+    "stashUnit": "CASTLE_WARS_BANK",
+    "defaultItemIds": [
+      1698,
+      1329,
+      4315
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 1698
+      },
+      {
+        "type": "item",
+        "id": 1329
+      },
+      {
+        "type": "range",
+        "min": 4315,
+        "max": 4413
+      }
+    ]
+  },
+  "NOTERAZZOS_SHOP_IN_THE_WILDERNESS": {
+    "locationName": "Rogues general store",
+    "chartText": "Noterazzo's shop in the Wilderness",
+    "stashUnit": "NOTERAZZOS_SHOP_IN_THE_WILDERNESS",
+    "defaultItemIds": [
+      1183,
+      2487,
+      1275
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 1183
+      },
+      {
+        "type": "item",
+        "id": 2487
+      },
+      {
+        "type": "item",
+        "id": 1275
+      }
+    ]
+  },
+  "ON_TOP_OF_TROLLHEIM_MOUNTAIN": {
+    "locationName": "Trollheim Mountain",
+    "chartText": "On top of Trollheim Mountain",
+    "stashUnit": "ON_TOP_OF_TROLLHEIM_MOUNTAIN",
+    "defaultItemIds": [
+      3053,
+      2491,
+      9731
+    ],
+    "itemRequirements": [
+      {
+        "type": "any",
+        "name": "Lava battlestaff",
+        "requirements": [
+          {
+            "type": "item",
+            "id": 3053
+          },
+          {
+            "type": "item",
+            "id": 21198
+          }
+        ]
+      },
+      {
+        "type": "item",
+        "id": 2491
+      },
+      {
+        "type": "item",
+        "id": 9731
+      }
+    ]
+  },
+  "ENTRANCE_OF_THE_ARCEUUS_LIBRARY": {
+    "locationName": "Arceuus library",
+    "chartText": "Entrance of the Arceuus library",
+    "stashUnit": "ENTRANCE_OF_THE_ARCEUUS_LIBRARY",
+    "defaultItemIds": [
+      2487,
+      4129,
+      1211
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 2487
+      },
+      {
+        "type": "item",
+        "id": 4129
+      },
+      {
+        "type": "item",
+        "id": 1211
+      }
+    ]
+  },
+  "TOP_FLOOR_OF_THE_YANILLE_WATCHTOWER": {
+    "locationName": "Yanille Watchtower",
+    "chartText": "Top floor of the Yanille Watchtower",
+    "stashUnit": "TOP_FLOOR_OF_THE_YANILLE_WATCHTOWER",
+    "defaultItemIds": [
+      4585,
+      3105,
+      3140,
+      716
+    ],
+    "itemRequirements": [
+      {
+        "type": "any",
+        "name": "Dragon plateskirt",
+        "requirements": [
+          {
+            "type": "item",
+            "id": 4585
+          },
+          {
+            "type": "item",
+            "id": 12416
+          },
+          {
+            "type": "item",
+            "id": 28063
+          }
+        ]
+      },
+      {
+        "type": "any",
+        "name": "Climbing boots",
+        "requirements": [
+          {
+            "type": "item",
+            "id": 3105
+          },
+          {
+            "type": "item",
+            "id": 23413
+          }
+        ]
+      },
+      {
+        "type": "any",
+        "name": "Dragon chainbody",
+        "requirements": [
+          {
+            "type": "item",
+            "id": 3140
+          },
+          {
+            "type": "item",
+            "id": 12414
+          },
+          {
+            "type": "item",
+            "id": 28065
+          }
+        ]
+      },
+      {
+        "type": "item",
+        "id": 716
+      }
+    ]
+  },
+  "GYPSY_TENT_ENTRANCE": {
+    "locationName": "Varrock",
+    "chartText": "Aris's tent",
+    "stashUnit": "GYPSY_TENT_ENTRANCE",
+    "defaultItemIds": [
+      1635,
+      1654
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 1635
+      },
+      {
+        "type": "item",
+        "id": 1654
+      }
+    ]
+  },
+  "FINE_CLOTHES_ENTRANCE": {
+    "locationName": "Varrock",
+    "chartText": "Iffie Nitter in Varrock",
+    "stashUnit": "FINE_CLOTHES_ENTRANCE",
+    "defaultItemIds": [
+      1949,
+      1007
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 1949
+      },
+      {
+        "type": "item",
+        "id": 1007
+      }
+    ]
+  },
+  "BOB_AXES_ENTRANCE": {
+    "locationName": "Lumbridge",
+    "chartText": "Bob's Brilliant Axes in Lumbridge",
+    "stashUnit": "BOB_AXES_ENTRANCE",
+    "defaultItemIds": [
+      1351,
+      1061
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 1351
+      },
+      {
+        "type": "item",
+        "id": 1061
+      }
+    ]
+  },
+  "CHARCOAL_BURNERS": {
+    "locationName": "Charcoal Burners",
+    "chartText": "Near the Charcoal Burners",
+    "stashUnit": "CHARCOAL_BURNERS",
+    "defaultItemIds": [
+      13646,
+      13381,
+      20706
+    ],
+    "itemRequirements": [
+      {
+        "type": "any",
+        "name": "Farmer's strawhat",
+        "requirements": [
+          {
+            "type": "item",
+            "id": 13646
+          },
+          {
+            "type": "item",
+            "id": 13647
+          }
+        ]
+      },
+      {
+        "type": "item",
+        "id": 13381
+      },
+      {
+        "type": "item",
+        "id": 20706
+      }
+    ]
+  },
+  "FORTIS_GRAND_MUSEUM": {
+    "locationName": "Fortis Grand Museum",
+    "chartText": "Near the entrance of the Civitas illa Fortis Grand Museum",
+    "stashUnit": "FORTIS_GRAND_MUSEUM",
+    "defaultItemIds": [
+      1658,
+      1011,
+      644
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 1658
+      },
+      {
+        "type": "item",
+        "id": 1011
+      },
+      {
+        "type": "item",
+        "id": 644
+      }
+    ]
+  },
+  "CAM_TORUM_ENTRANCE": {
+    "locationName": "Cam Torum",
+    "chartText": "South of the gates to Cam Torum",
+    "stashUnit": "CAM_TORUM_ENTRANCE",
+    "defaultItemIds": [
+      29019,
+      29013,
+      29016,
+      28988
+    ],
+    "itemRequirements": [
+      {
+        "type": "any",
+        "name": "Blue moon helm",
+        "requirements": [
+          {
+            "type": "item",
+            "id": 29019
+          },
+          {
+            "type": "item",
+            "id": 29041
+          }
+        ]
+      },
+      {
+        "type": "any",
+        "name": "Blue moon chestplate",
+        "requirements": [
+          {
+            "type": "item",
+            "id": 29013
+          },
+          {
+            "type": "item",
+            "id": 29037
+          }
+        ]
+      },
+      {
+        "type": "any",
+        "name": "Blue moon tassets",
+        "requirements": [
+          {
+            "type": "item",
+            "id": 29016
+          },
+          {
+            "type": "item",
+            "id": 29039
+          }
+        ]
+      },
+      {
+        "type": "item",
+        "id": 28988
+      }
+    ]
+  },
+  "TEMPLE_SOUTHEAST_OF_THE_BAZAAR": {
+    "locationName": "Civitas illa Fortis",
+    "chartText": "Outside the temple in Civitas illa Fortis",
+    "stashUnit": "TEMPLE_SOUTHEAST_OF_THE_BAZAAR",
+    "defaultItemIds": [
+      28933,
+      28936,
+      28939
+    ],
+    "itemRequirements": [
+      {
+        "type": "any",
+        "name": "Any piece of Sunfire Fanatic armour",
+        "requirements": [
+          {
+            "type": "item",
+            "id": 28933
+          },
+          {
+            "type": "item",
+            "id": 28936
+          },
+          {
+            "type": "item",
+            "id": 28939
+          }
+        ]
+      }
+    ]
+  },
+  "TWILIGHT_TEMPLE_MINE": {
+    "locationName": "Twilight Temple mine",
+    "chartText": "North of the Twilight Temple",
+    "stashUnit": "TWILIGHT_TEMPLE_MINE",
+    "defaultItemIds": [
+      851,
+      1698,
+      1069
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 851
+      },
+      {
+        "type": "item",
+        "id": 1698
+      },
+      {
+        "type": "item",
+        "id": 1069
+      }
+    ]
+  },
+  "ORTUS_MEETS_PROUDSPIRE": {
+    "locationName": "East of Proudspire",
+    "chartText": "Where the River Ortus meets the Proudspire",
+    "stashUnit": "ORTUS_MEETS_PROUDSPIRE",
+    "defaultItemIds": [
+      579,
+      577
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 579
+      },
+      {
+        "type": "item",
+        "id": 577
+      }
+    ]
+  },
+  "OUTSIDE_TWILIGHT_TEMPLE": {
+    "locationName": "Twilight Temple",
+    "chartText": "Twilight Temple",
+    "stashUnit": "OUTSIDE_TWILIGHT_TEMPLE",
+    "defaultItemIds": [
+      1303,
+      1127,
+      1093
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 1303
+      },
+      {
+        "type": "item",
+        "id": 1127
+      },
+      {
+        "type": "item",
+        "id": 1093
+      }
+    ]
+  },
+  "WESTERN_SALVAGER_OVERLOOK": {
+    "locationName": "Western Salvager Overlook",
+    "chartText": "West side of Salvager Overlook",
+    "stashUnit": "WESTERN_SALVAGER_OVERLOOK",
+    "defaultItemIds": [
+      30073,
+      30082
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 30073
+      },
+      {
+        "type": "item",
+        "id": 30082
+      }
+    ]
+  },
+  "PANDEMONIUM_BAR": {
+    "locationName": "Pandemonium Bar",
+    "chartText": "The bar on the Pandemonium",
+    "stashUnit": "PANDEMONIUM_BAR",
+    "defaultItemIds": [
+      1025,
+      1321
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 1025
+      },
+      {
+        "type": "item",
+        "id": 1321
+      }
+    ]
+  },
+  "WINTUMBER_ISLAND": {
+    "locationName": "Wintumber Island",
+    "chartText": "On Wintumber Island",
+    "stashUnit": "WINTUMBER_ISLAND",
+    "defaultItemIds": [
+      7539,
+      7537
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 7539
+      },
+      {
+        "type": "item",
+        "id": 7537
+      }
+    ]
+  },
+  "BRITTLE_ISLE": {
+    "locationName": "Brittle Isle",
+    "chartText": "On Brittle Isle",
+    "stashUnit": "BRITTLE_ISLE",
+    "defaultItemIds": [
+      32386,
+      31583
+    ],
+    "itemRequirements": [
+      {
+        "type": "item",
+        "id": 32386
+      },
+      {
+        "type": "item",
+        "id": 31583
+      }
+    ]
+  }
+}

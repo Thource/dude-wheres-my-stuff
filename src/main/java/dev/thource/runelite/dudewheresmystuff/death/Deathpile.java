@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
-import javax.swing.SwingUtilities;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
@@ -244,7 +243,8 @@ public class Deathpile extends ExpiringDeathStorage {
                 .append(new Color(206, 162, 65), "[DWMS] ")
                 .append(ChatColorType.HIGHLIGHT)
                 .append(
-                    " Your contingency setting has caused the deathpile to expire! Real ticks remaining: "
+                    " Your contingency setting has caused the deathpile to expire! Real ticks"
+                        + " remaining: "
                         + matchingItemsEntry.get().getKey());
 
         plugin

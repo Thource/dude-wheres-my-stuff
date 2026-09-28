@@ -38,17 +38,16 @@ public class Deathbank extends DeathStorage {
     this.deathStorageManager = deathStorageManager;
   }
 
-  static Deathbank load(DudeWheresMyStuffPlugin plugin, DeathStorageManager deathStorageManager,
-      String profileKey, String uuid) {
-    Deathbank deathbank = new Deathbank(
-        DeathbankType.UNKNOWN,
-        plugin,
-        deathStorageManager
-    );
+  static Deathbank load(
+      DudeWheresMyStuffPlugin plugin,
+      DeathStorageManager deathStorageManager,
+      String profileKey,
+      String uuid) {
+    Deathbank deathbank = new Deathbank(DeathbankType.UNKNOWN, plugin, deathStorageManager);
 
     deathbank.uuid = UUID.fromString(uuid);
-    deathbank.load(deathStorageManager.getConfigManager(), deathStorageManager.getConfigKey(),
-        profileKey);
+    deathbank.load(
+        deathStorageManager.getConfigManager(), deathStorageManager.getConfigKey(), profileKey);
 
     if (deathbank.getItems().isEmpty()) {
       deathbank.deleteData(deathStorageManager);
@@ -109,9 +108,12 @@ public class Deathbank extends DeathStorage {
     final JMenuItem clearDeathbank = new JMenuItem("Delete Deathbank");
     clearDeathbank.addActionListener(
         e -> {
-          boolean confirmed = lostAt != -1L || DudeWheresMyStuffPlugin.getConfirmation(storagePanel,
-              "Are you sure you want to delete this deathbank?\nThis cannot be undone.",
-              "Confirm deletion");
+          boolean confirmed =
+              lostAt != -1L
+                  || DudeWheresMyStuffPlugin.getConfirmation(
+                      storagePanel,
+                      "Are you sure you want to delete this deathbank?\nThis cannot be undone.",
+                      "Confirm deletion");
 
           if (confirmed) {
             if (this == deathStorageManager.getDeathbank()) {
@@ -137,8 +139,7 @@ public class Deathbank extends DeathStorage {
 
       for (DeathbankType dbType : DeathbankType.values()) {
         var setType = new JMenuItem(dbType.getName());
-        setType.addActionListener(
-            e -> setDeathbankType(dbType));
+        setType.addActionListener(e -> setDeathbankType(dbType));
         setTypeMenu.add(setType);
       }
 
@@ -153,29 +154,30 @@ public class Deathbank extends DeathStorage {
 
       var lock = new JMenuItem("Toggle lock");
       debugMenu.add(lock);
-      lock.addActionListener(
-          e -> setLocked(!locked));
+      lock.addActionListener(e -> setLocked(!locked));
     }
   }
 
   void setLocked(boolean locked) {
     this.locked = locked;
 
-    SwingUtilities.invokeLater(() -> {
-      if (storagePanel != null) {
-        storagePanel.setSubTitle(locked ? "Locked" : "Unlocked");
-      }
-    });
+    SwingUtilities.invokeLater(
+        () -> {
+          if (storagePanel != null) {
+            storagePanel.setSubTitle(locked ? "Locked" : "Unlocked");
+          }
+        });
   }
 
   void setDeathbankType(DeathbankType dbType) {
     deathbankType = dbType;
 
-    SwingUtilities.invokeLater(() -> {
-      if (storagePanel != null) {
-        storagePanel.setTitle(deathbankType.getName());
-      }
-    });
+    SwingUtilities.invokeLater(
+        () -> {
+          if (storagePanel != null) {
+            storagePanel.setTitle(deathbankType.getName());
+          }
+        });
   }
 
   @Override

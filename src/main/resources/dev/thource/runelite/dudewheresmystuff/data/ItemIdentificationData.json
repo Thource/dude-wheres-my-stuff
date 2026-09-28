@@ -1,0 +1,3552 @@
+{
+  "GUAM_SEED": {
+    "type": "SEED_HERB",
+    "medName": "Guam",
+    "shortName": "G",
+    "itemIds": [
+      5291
+    ]
+  },
+  "MARRENTILL_SEED": {
+    "type": "SEED_HERB",
+    "medName": "Marren",
+    "shortName": "M",
+    "itemIds": [
+      5292
+    ]
+  },
+  "TARROMIN_SEED": {
+    "type": "SEED_HERB",
+    "medName": "Tarro",
+    "shortName": "TAR",
+    "itemIds": [
+      5293
+    ]
+  },
+  "HARRALANDER_SEED": {
+    "type": "SEED_HERB",
+    "medName": "Harra",
+    "shortName": "HAR",
+    "itemIds": [
+      5294
+    ]
+  },
+  "RANARR_SEED": {
+    "type": "SEED_HERB",
+    "medName": "Ranarr",
+    "shortName": "R",
+    "itemIds": [
+      5295
+    ]
+  },
+  "TOADFLAX_SEED": {
+    "type": "SEED_HERB",
+    "medName": "Toad",
+    "shortName": "TOA",
+    "itemIds": [
+      5296
+    ]
+  },
+  "IRIT_SEED": {
+    "type": "SEED_HERB",
+    "medName": "Irit",
+    "shortName": "I",
+    "itemIds": [
+      5297
+    ]
+  },
+  "AVANTOE_SEED": {
+    "type": "SEED_HERB",
+    "medName": "Avan",
+    "shortName": "A",
+    "itemIds": [
+      5298
+    ]
+  },
+  "KWUARM_SEED": {
+    "type": "SEED_HERB",
+    "medName": "Kwuarm",
+    "shortName": "K",
+    "itemIds": [
+      5299
+    ]
+  },
+  "SNAPDRAGON_SEED": {
+    "type": "SEED_HERB",
+    "medName": "Snap",
+    "shortName": "S",
+    "itemIds": [
+      5300
+    ]
+  },
+  "CADANTINE_SEED": {
+    "type": "SEED_HERB",
+    "medName": "Cadan",
+    "shortName": "C",
+    "itemIds": [
+      5301
+    ]
+  },
+  "LANTADYME_SEED": {
+    "type": "SEED_HERB",
+    "medName": "Lanta",
+    "shortName": "L",
+    "itemIds": [
+      5302
+    ]
+  },
+  "DWARF_WEED_SEED": {
+    "type": "SEED_HERB",
+    "medName": "Dwarf",
+    "shortName": "D",
+    "itemIds": [
+      5303
+    ]
+  },
+  "TORSTOL_SEED": {
+    "type": "SEED_HERB",
+    "medName": "Torstol",
+    "shortName": "TOR",
+    "itemIds": [
+      5304
+    ]
+  },
+  "HUASCA_SEED": {
+    "type": "SEED_HERB",
+    "medName": "Huasca",
+    "shortName": "HUA",
+    "itemIds": [
+      30088
+    ]
+  },
+  "REDBERRY_SEED": {
+    "type": "SEED_BERRY",
+    "medName": "Redberry",
+    "shortName": "RED",
+    "itemIds": [
+      5101
+    ]
+  },
+  "CADAVABERRY_SEED": {
+    "type": "SEED_BERRY",
+    "medName": "Cadava",
+    "shortName": "CAD",
+    "itemIds": [
+      5102
+    ]
+  },
+  "DWELLBERRY_SEED": {
+    "type": "SEED_BERRY",
+    "medName": "Dwell",
+    "shortName": "DWEL",
+    "itemIds": [
+      5103
+    ]
+  },
+  "JANGERBERRY_SEED": {
+    "type": "SEED_BERRY",
+    "medName": "Janger",
+    "shortName": "JANG",
+    "itemIds": [
+      5104
+    ]
+  },
+  "WHITEBERRY_SEED": {
+    "type": "SEED_BERRY",
+    "medName": "White",
+    "shortName": "WHIT",
+    "itemIds": [
+      5105
+    ]
+  },
+  "POISON_IVY_SEED": {
+    "type": "SEED_BERRY",
+    "medName": "Ivy",
+    "shortName": "POI",
+    "itemIds": [
+      5106
+    ]
+  },
+  "GRAPE_SEED": {
+    "type": "SEED_SPECIAL",
+    "medName": "Grape",
+    "shortName": "GRA",
+    "itemIds": [
+      13657
+    ]
+  },
+  "MUSHROOM_SPORE": {
+    "type": "SEED_SPECIAL",
+    "medName": "Mushroom",
+    "shortName": "MUSH",
+    "itemIds": [
+      5282
+    ]
+  },
+  "BELLADONNA_SEED": {
+    "type": "SEED_SPECIAL",
+    "medName": "Bella",
+    "shortName": "BELL",
+    "itemIds": [
+      5281
+    ]
+  },
+  "SEAWEED_SPORE": {
+    "type": "SEED_SPECIAL",
+    "medName": "Seaweed",
+    "shortName": "SW",
+    "itemIds": [
+      21490
+    ]
+  },
+  "HESPORI_SEED": {
+    "type": "SEED_SPECIAL",
+    "medName": "Hespori",
+    "shortName": "HES",
+    "itemIds": [
+      22875
+    ]
+  },
+  "KRONOS_SEED": {
+    "type": "SEED_SPECIAL",
+    "medName": "Kronos",
+    "shortName": "KRO",
+    "itemIds": [
+      22885
+    ]
+  },
+  "IASOR_SEED": {
+    "type": "SEED_SPECIAL",
+    "medName": "Iasor",
+    "shortName": "IA",
+    "itemIds": [
+      22883
+    ]
+  },
+  "ATTAS_SEED": {
+    "type": "SEED_SPECIAL",
+    "medName": "Attas",
+    "shortName": "AT",
+    "itemIds": [
+      22881
+    ]
+  },
+  "CACTUS_SEED": {
+    "type": "SEED_SPECIAL",
+    "medName": "Cactus",
+    "shortName": "CAC",
+    "itemIds": [
+      5280
+    ]
+  },
+  "POTATO_CACTUS_SEED": {
+    "type": "SEED_SPECIAL",
+    "medName": "P.Cact",
+    "shortName": "P.CAC",
+    "itemIds": [
+      22873
+    ]
+  },
+  "ACORN": {
+    "type": "SEED_TREE",
+    "medName": "Oak",
+    "shortName": "OAK",
+    "itemIds": [
+      5312
+    ]
+  },
+  "WILLOW_SEED": {
+    "type": "SEED_TREE",
+    "medName": "Willow",
+    "shortName": "WIL",
+    "itemIds": [
+      5313
+    ]
+  },
+  "MAPLE_SEED": {
+    "type": "SEED_TREE",
+    "medName": "Maple",
+    "shortName": "MAP",
+    "itemIds": [
+      5314
+    ]
+  },
+  "YEW_SEED": {
+    "type": "SEED_TREE",
+    "medName": "Yew",
+    "shortName": "YEW",
+    "itemIds": [
+      5315
+    ]
+  },
+  "MAGIC_SEED": {
+    "type": "SEED_TREE",
+    "medName": "Magic",
+    "shortName": "MAG",
+    "itemIds": [
+      5316
+    ]
+  },
+  "REDWOOD_SEED": {
+    "type": "SEED_TREE",
+    "medName": "Red",
+    "shortName": "RED",
+    "itemIds": [
+      22871
+    ]
+  },
+  "TEAK_SEED": {
+    "type": "SEED_TREE",
+    "medName": "Teak",
+    "shortName": "TEAK",
+    "itemIds": [
+      21486
+    ]
+  },
+  "MAHOGANY_SEED": {
+    "type": "SEED_TREE",
+    "medName": "Mahog",
+    "shortName": "MAH",
+    "itemIds": [
+      21488
+    ]
+  },
+  "CRYSTAL_ACORN": {
+    "type": "SEED_TREE",
+    "medName": "Crystal",
+    "shortName": "CRY",
+    "itemIds": [
+      23661
+    ]
+  },
+  "CELASTRUS_SEED": {
+    "type": "SEED_TREE",
+    "medName": "Celas",
+    "shortName": "CEL",
+    "itemIds": [
+      22869
+    ]
+  },
+  "SPIRIT_SEED": {
+    "type": "SEED_TREE",
+    "medName": "Spirit",
+    "shortName": "SPI",
+    "itemIds": [
+      5317
+    ]
+  },
+  "CALQUAT_SEED": {
+    "type": "SEED_TREE",
+    "medName": "Calquat",
+    "shortName": "CAL",
+    "itemIds": [
+      5290
+    ]
+  },
+  "APPLE_TREE_SEED": {
+    "type": "SEED_FRUIT_TREE",
+    "medName": "Apple",
+    "shortName": "APP",
+    "itemIds": [
+      5283
+    ]
+  },
+  "BANANA_TREE_SEED": {
+    "type": "SEED_FRUIT_TREE",
+    "medName": "Banana",
+    "shortName": "BAN",
+    "itemIds": [
+      5284
+    ]
+  },
+  "ORANGE_TREE_SEED": {
+    "type": "SEED_FRUIT_TREE",
+    "medName": "Orange",
+    "shortName": "ORA",
+    "itemIds": [
+      5285
+    ]
+  },
+  "CURRY_TREE_SEED": {
+    "type": "SEED_FRUIT_TREE",
+    "medName": "Curry",
+    "shortName": "CUR",
+    "itemIds": [
+      5286
+    ]
+  },
+  "PINEAPPLE_SEED": {
+    "type": "SEED_FRUIT_TREE",
+    "medName": "Pine.A",
+    "shortName": "PINE",
+    "itemIds": [
+      5287
+    ]
+  },
+  "PAPAYA_TREE_SEED": {
+    "type": "SEED_FRUIT_TREE",
+    "medName": "Papaya",
+    "shortName": "PAPA",
+    "itemIds": [
+      5288
+    ]
+  },
+  "PALM_TREE_SEED": {
+    "type": "SEED_FRUIT_TREE",
+    "medName": "Palm",
+    "shortName": "PALM",
+    "itemIds": [
+      5289
+    ]
+  },
+  "DRAGONFRIUT_TREE_SEED": {
+    "type": "SEED_FRUIT_TREE",
+    "medName": "Dragon",
+    "shortName": "DRA",
+    "itemIds": [
+      22877
+    ]
+  },
+  "POTATO_SEED": {
+    "type": "SEED_ALLOTMENT",
+    "medName": "Potato",
+    "shortName": "POT",
+    "itemIds": [
+      5318
+    ]
+  },
+  "ONION_SEED": {
+    "type": "SEED_ALLOTMENT",
+    "medName": "Onion",
+    "shortName": "ONI",
+    "itemIds": [
+      5319
+    ]
+  },
+  "CABBAGE_SEED": {
+    "type": "SEED_ALLOTMENT",
+    "medName": "Cabbage",
+    "shortName": "CAB",
+    "itemIds": [
+      5324
+    ]
+  },
+  "TOMATO_SEED": {
+    "type": "SEED_ALLOTMENT",
+    "medName": "Tomato",
+    "shortName": "TOM",
+    "itemIds": [
+      5322
+    ]
+  },
+  "SWEETCORN_SEED": {
+    "type": "SEED_ALLOTMENT",
+    "medName": "S.Corn",
+    "shortName": "CORN",
+    "itemIds": [
+      5320
+    ]
+  },
+  "STRAWBERRY_SEED": {
+    "type": "SEED_ALLOTMENT",
+    "medName": "S.Berry",
+    "shortName": "STRA",
+    "itemIds": [
+      5323
+    ]
+  },
+  "WATERMELON_SEED": {
+    "type": "SEED_ALLOTMENT",
+    "medName": "Melon",
+    "shortName": "MEL",
+    "itemIds": [
+      5321
+    ]
+  },
+  "SNAPE_GRASS_SEED": {
+    "type": "SEED_ALLOTMENT",
+    "medName": "Snape",
+    "shortName": "SNA",
+    "itemIds": [
+      22879
+    ]
+  },
+  "MARIGOLD_SEED": {
+    "type": "SEED_FLOWER",
+    "medName": "Marigo",
+    "shortName": "MARI",
+    "itemIds": [
+      5096
+    ]
+  },
+  "ROSEMARY_SEED": {
+    "type": "SEED_FLOWER",
+    "medName": "Rosemar",
+    "shortName": "ROSE",
+    "itemIds": [
+      5097
+    ]
+  },
+  "NASTURTIUM_SEED": {
+    "type": "SEED_FLOWER",
+    "medName": "Nastur",
+    "shortName": "NAS",
+    "itemIds": [
+      5098
+    ]
+  },
+  "WOAD_SEED": {
+    "type": "SEED_FLOWER",
+    "medName": "Woad",
+    "shortName": "WOAD",
+    "itemIds": [
+      5099
+    ]
+  },
+  "LIMPWURT_SEED": {
+    "type": "SEED_FLOWER",
+    "medName": "Limpwurt",
+    "shortName": "LIMP",
+    "itemIds": [
+      5100
+    ]
+  },
+  "WHITE_LILY_SEED": {
+    "type": "SEED_FLOWER",
+    "medName": "Lily",
+    "shortName": "LILY",
+    "itemIds": [
+      22887
+    ]
+  },
+  "BARLEY_SEED": {
+    "type": "HOPS_SEED",
+    "medName": "Barley",
+    "shortName": "BAR",
+    "itemIds": [
+      5305
+    ]
+  },
+  "HAMMERSTONE_SEED": {
+    "type": "HOPS_SEED",
+    "medName": "Hammer",
+    "shortName": "HAMM",
+    "itemIds": [
+      5307
+    ]
+  },
+  "ASGARNIAN_SEED": {
+    "type": "HOPS_SEED",
+    "medName": "Asgar",
+    "shortName": "ASG",
+    "itemIds": [
+      5308
+    ]
+  },
+  "JUTE_SEED": {
+    "type": "HOPS_SEED",
+    "medName": "Jute",
+    "shortName": "JUTE",
+    "itemIds": [
+      5306
+    ]
+  },
+  "YANILLIAN_SEED": {
+    "type": "HOPS_SEED",
+    "medName": "Yani",
+    "shortName": "YAN",
+    "itemIds": [
+      5309
+    ]
+  },
+  "KRANDORIAN_SEED": {
+    "type": "HOPS_SEED",
+    "medName": "Krand",
+    "shortName": "KRA",
+    "itemIds": [
+      5310
+    ]
+  },
+  "WILDBLOOD_SEED": {
+    "type": "HOPS_SEED",
+    "medName": "Wild.B",
+    "shortName": "WILD",
+    "itemIds": [
+      5311
+    ]
+  },
+  "SACK": {
+    "type": "SACK",
+    "medName": "Empty",
+    "shortName": "EMP",
+    "itemIds": [
+      5418
+    ]
+  },
+  "CABBAGE_SACK": {
+    "type": "SACK",
+    "medName": "Cabbage",
+    "shortName": "CAB",
+    "itemIds": [
+      5460,
+      5462,
+      5464,
+      5466,
+      5468,
+      5470,
+      5472,
+      5474,
+      5476,
+      5478
+    ]
+  },
+  "ONION_SACK": {
+    "type": "SACK",
+    "medName": "Onion",
+    "shortName": "ONI",
+    "itemIds": [
+      5440,
+      5442,
+      5444,
+      5446,
+      5448,
+      5450,
+      5452,
+      5454,
+      5456,
+      5458
+    ]
+  },
+  "POTATO_SACK": {
+    "type": "SACK",
+    "medName": "Potato",
+    "shortName": "POT",
+    "itemIds": [
+      5420,
+      5422,
+      5424,
+      5426,
+      5428,
+      5430,
+      5432,
+      5434,
+      5436,
+      5438
+    ]
+  },
+  "GUAM": {
+    "type": "HERB",
+    "medName": "Guam",
+    "shortName": "G",
+    "itemIds": [
+      249,
+      199
+    ]
+  },
+  "MARRENTILL": {
+    "type": "HERB",
+    "medName": "Marren",
+    "shortName": "M",
+    "itemIds": [
+      251,
+      201
+    ]
+  },
+  "TARROMIN": {
+    "type": "HERB",
+    "medName": "Tarro",
+    "shortName": "TAR",
+    "itemIds": [
+      253,
+      203
+    ]
+  },
+  "HARRALANDER": {
+    "type": "HERB",
+    "medName": "Harra",
+    "shortName": "Har",
+    "itemIds": [
+      255,
+      205
+    ]
+  },
+  "RANARR": {
+    "type": "HERB",
+    "medName": "Ranarr",
+    "shortName": "R",
+    "itemIds": [
+      257,
+      207
+    ]
+  },
+  "TOADFLAX": {
+    "type": "HERB",
+    "medName": "Toad",
+    "shortName": "TOA",
+    "itemIds": [
+      2998,
+      3049
+    ]
+  },
+  "IRIT": {
+    "type": "HERB",
+    "medName": "Irit",
+    "shortName": "I",
+    "itemIds": [
+      259,
+      209
+    ]
+  },
+  "AVANTOE": {
+    "type": "HERB",
+    "medName": "Avan",
+    "shortName": "A",
+    "itemIds": [
+      261,
+      211
+    ]
+  },
+  "KWUARM": {
+    "type": "HERB",
+    "medName": "Kwuarm",
+    "shortName": "K",
+    "itemIds": [
+      263,
+      213
+    ]
+  },
+  "SNAPDRAGON": {
+    "type": "HERB",
+    "medName": "Snap",
+    "shortName": "S",
+    "itemIds": [
+      3000,
+      3051
+    ]
+  },
+  "CADANTINE": {
+    "type": "HERB",
+    "medName": "Cadan",
+    "shortName": "C",
+    "itemIds": [
+      265,
+      215
+    ]
+  },
+  "LANTADYME": {
+    "type": "HERB",
+    "medName": "Lanta",
+    "shortName": "L",
+    "itemIds": [
+      2481,
+      2485
+    ]
+  },
+  "DWARF_WEED": {
+    "type": "HERB",
+    "medName": "Dwarf",
+    "shortName": "D",
+    "itemIds": [
+      267,
+      217
+    ]
+  },
+  "TORSTOL": {
+    "type": "HERB",
+    "medName": "Torstol",
+    "shortName": "TOR",
+    "itemIds": [
+      269,
+      219
+    ]
+  },
+  "HUASCA": {
+    "type": "HERB",
+    "medName": "Huasca",
+    "shortName": "HUA",
+    "itemIds": [
+      30097,
+      30094
+    ]
+  },
+  "ARDRIGAL": {
+    "type": "HERB",
+    "medName": "Ardrig",
+    "shortName": "ARD",
+    "itemIds": [
+      1528,
+      1527
+    ]
+  },
+  "ROGUES_PURSE": {
+    "type": "HERB",
+    "medName": "Rogue",
+    "shortName": "ROG",
+    "itemIds": [
+      1534,
+      1533
+    ]
+  },
+  "SITO_FOIL": {
+    "type": "HERB",
+    "medName": "Sito",
+    "shortName": "SF",
+    "itemIds": [
+      1530,
+      1529
+    ]
+  },
+  "SNAKE_WEED": {
+    "type": "HERB",
+    "medName": "Snake",
+    "shortName": "SW",
+    "itemIds": [
+      1526,
+      1525
+    ]
+  },
+  "VOLENCIA_MOSS": {
+    "type": "HERB",
+    "medName": "Volenc",
+    "shortName": "V",
+    "itemIds": [
+      1532,
+      1531
+    ]
+  },
+  "RED_LOGS": {
+    "type": "LOGS",
+    "medName": "Red",
+    "shortName": "RED",
+    "itemIds": [
+      7404
+    ]
+  },
+  "GREEN_LOGS": {
+    "type": "LOGS",
+    "medName": "Green",
+    "shortName": "GRE",
+    "itemIds": [
+      7405
+    ]
+  },
+  "BLUE_LOGS": {
+    "type": "LOGS",
+    "medName": "Blue",
+    "shortName": "BLU",
+    "itemIds": [
+      7406
+    ]
+  },
+  "WHITE_LOGS": {
+    "type": "LOGS",
+    "medName": "White",
+    "shortName": "WHI",
+    "itemIds": [
+      10328
+    ]
+  },
+  "PURPLE_LOGS": {
+    "type": "LOGS",
+    "medName": "Purple",
+    "shortName": "PUR",
+    "itemIds": [
+      10329
+    ]
+  },
+  "SCRAPEY_TREE_LOGS": {
+    "type": "LOGS",
+    "medName": "Scrapey",
+    "shortName": "SCRAP",
+    "itemIds": [
+      8934
+    ]
+  },
+  "LOG": {
+    "type": "LOGS",
+    "medName": "Log",
+    "shortName": "LOG",
+    "itemIds": [
+      1511
+    ]
+  },
+  "ACHEY_TREE_LOG": {
+    "type": "LOGS",
+    "medName": "Achey",
+    "shortName": "ACH",
+    "itemIds": [
+      2862
+    ]
+  },
+  "OAK_LOG": {
+    "type": "LOGS",
+    "medName": "Oak",
+    "shortName": "OAK",
+    "itemIds": [
+      1521
+    ]
+  },
+  "WILLOW_LOG": {
+    "type": "LOGS",
+    "medName": "Willow",
+    "shortName": "WIL",
+    "itemIds": [
+      1519
+    ]
+  },
+  "TEAK_LOG": {
+    "type": "LOGS",
+    "medName": "Teak",
+    "shortName": "TEAK",
+    "itemIds": [
+      6333
+    ]
+  },
+  "JUNIPER_LOG": {
+    "type": "LOGS",
+    "medName": "Juniper",
+    "shortName": "JUN",
+    "itemIds": [
+      13355
+    ]
+  },
+  "MAPLE_LOG": {
+    "type": "LOGS",
+    "medName": "Maple",
+    "shortName": "MAP",
+    "itemIds": [
+      1517
+    ]
+  },
+  "MAHOGANY_LOG": {
+    "type": "LOGS",
+    "medName": "Mahog",
+    "shortName": "MAH",
+    "itemIds": [
+      6332
+    ]
+  },
+  "ARCTIC_PINE_LOG": {
+    "type": "LOGS",
+    "medName": "Arctic",
+    "shortName": "ARC",
+    "itemIds": [
+      10810
+    ]
+  },
+  "YEW_LOG": {
+    "type": "LOGS",
+    "medName": "Yew",
+    "shortName": "YEW",
+    "itemIds": [
+      1515
+    ]
+  },
+  "BLISTERWOOD_LOG": {
+    "type": "LOGS",
+    "medName": "Blister",
+    "shortName": "BLI",
+    "itemIds": [
+      24691
+    ]
+  },
+  "MAGIC_LOG": {
+    "type": "LOGS",
+    "medName": "Magic",
+    "shortName": "MAG",
+    "itemIds": [
+      1513
+    ]
+  },
+  "REDWOOD_LOG": {
+    "type": "LOGS",
+    "medName": "Red",
+    "shortName": "RED",
+    "itemIds": [
+      19669
+    ]
+  },
+  "PYRE_LOGS": {
+    "type": "LOGS_PYRE",
+    "medName": "Pyre",
+    "shortName": "P",
+    "itemIds": [
+      3438
+    ]
+  },
+  "ARCTIC_PYRE_LOGS": {
+    "type": "LOGS_PYRE",
+    "medName": "Art P",
+    "shortName": "AP",
+    "itemIds": [
+      10808
+    ]
+  },
+  "OAK_PYRE_LOGS": {
+    "type": "LOGS_PYRE",
+    "medName": "Oak P",
+    "shortName": "OAKP",
+    "itemIds": [
+      3440
+    ]
+  },
+  "WILLOW_PYRE_LOGS": {
+    "type": "LOGS_PYRE",
+    "medName": "Wil P",
+    "shortName": "WILP",
+    "itemIds": [
+      3442
+    ]
+  },
+  "TEAK_PYRE_LOGS": {
+    "type": "LOGS_PYRE",
+    "medName": "Teak P",
+    "shortName": "TEAKP",
+    "itemIds": [
+      6211
+    ]
+  },
+  "MAPLE_PYRE_LOGS": {
+    "type": "LOGS_PYRE",
+    "medName": "Map P",
+    "shortName": "MAPP",
+    "itemIds": [
+      3444
+    ]
+  },
+  "MAHOGANY_PYRE_LOGS": {
+    "type": "LOGS_PYRE",
+    "medName": "Mah P",
+    "shortName": "MAHP",
+    "itemIds": [
+      6213
+    ]
+  },
+  "YEW_PYRE_LOGS": {
+    "type": "LOGS_PYRE",
+    "medName": "Yew P",
+    "shortName": "YEWP",
+    "itemIds": [
+      3446
+    ]
+  },
+  "MAGIC_PYRE_LOGS": {
+    "type": "LOGS_PYRE",
+    "medName": "Mag P",
+    "shortName": "MAGP",
+    "itemIds": [
+      3448
+    ]
+  },
+  "REDWOOD_PYRE_LOGS": {
+    "type": "LOGS_PYRE",
+    "medName": "Red P",
+    "shortName": "REDP",
+    "itemIds": [
+      19672
+    ]
+  },
+  "PLANK": {
+    "type": "PLANK",
+    "medName": "Plank",
+    "shortName": "PLANK",
+    "itemIds": [
+      960
+    ]
+  },
+  "OAK_PLANK": {
+    "type": "PLANK",
+    "medName": "Oak",
+    "shortName": "OAK",
+    "itemIds": [
+      8778
+    ]
+  },
+  "TEAK_PLANK": {
+    "type": "PLANK",
+    "medName": "Teak",
+    "shortName": "TEAK",
+    "itemIds": [
+      8780
+    ]
+  },
+  "MAHOGANY_PLANK": {
+    "type": "PLANK",
+    "medName": "Mahog",
+    "shortName": "MAH",
+    "itemIds": [
+      8782
+    ]
+  },
+  "WAXWOOD_PLANK": {
+    "type": "PLANK",
+    "medName": "Wax",
+    "shortName": "WAX",
+    "itemIds": [
+      24939
+    ]
+  },
+  "MALLIGNUM_ROOT_PLANK": {
+    "type": "PLANK",
+    "medName": "Mallig",
+    "shortName": "MALL",
+    "itemIds": [
+      21036
+    ]
+  },
+  "OAK_SAPLING": {
+    "type": "SAPLING",
+    "medName": "Oak",
+    "shortName": "OAK",
+    "itemIds": [
+      5370,
+      5358,
+      5364
+    ]
+  },
+  "WILLOW_SAPLING": {
+    "type": "SAPLING",
+    "medName": "Willow",
+    "shortName": "WIL",
+    "itemIds": [
+      5371,
+      5359,
+      5365
+    ]
+  },
+  "MAPLE_SAPLING": {
+    "type": "SAPLING",
+    "medName": "Maple",
+    "shortName": "MAP",
+    "itemIds": [
+      5372,
+      5360,
+      5366
+    ]
+  },
+  "YEW_SAPLING": {
+    "type": "SAPLING",
+    "medName": "Yew",
+    "shortName": "YEW",
+    "itemIds": [
+      5373,
+      5361,
+      5367
+    ]
+  },
+  "MAGIC_SAPLING": {
+    "type": "SAPLING",
+    "medName": "Magic",
+    "shortName": "MAG",
+    "itemIds": [
+      5374,
+      5362,
+      5368
+    ]
+  },
+  "REDWOOD_SAPLING": {
+    "type": "SAPLING",
+    "medName": "Red",
+    "shortName": "RED",
+    "itemIds": [
+      22859,
+      22850,
+      22854
+    ]
+  },
+  "SPIRIT_SAPLING": {
+    "type": "SAPLING",
+    "medName": "Spirit",
+    "shortName": "SPI",
+    "itemIds": [
+      5375,
+      5363,
+      5369
+    ]
+  },
+  "CRYSTAL_SAPLING": {
+    "type": "SAPLING",
+    "medName": "Crystal",
+    "shortName": "CRY",
+    "itemIds": [
+      23659,
+      23655,
+      23657
+    ]
+  },
+  "APPLE_SAPLING": {
+    "type": "SAPLING",
+    "medName": "Apple",
+    "shortName": "APP",
+    "itemIds": [
+      5496,
+      5480,
+      5488
+    ]
+  },
+  "BANANA_SAPLING": {
+    "type": "SAPLING",
+    "medName": "Banana",
+    "shortName": "BAN",
+    "itemIds": [
+      5497,
+      5481,
+      5489
+    ]
+  },
+  "ORANGE_SAPLING": {
+    "type": "SAPLING",
+    "medName": "Orange",
+    "shortName": "ORA",
+    "itemIds": [
+      5498,
+      5482,
+      5490
+    ]
+  },
+  "CURRY_SAPLING": {
+    "type": "SAPLING",
+    "medName": "Curry",
+    "shortName": "CUR",
+    "itemIds": [
+      5499,
+      5483,
+      5491
+    ]
+  },
+  "PINEAPPLE_SAPLING": {
+    "type": "SAPLING",
+    "medName": "Pine",
+    "shortName": "PINE",
+    "itemIds": [
+      5500,
+      5484,
+      5492
+    ]
+  },
+  "PAPAYA_SAPLING": {
+    "type": "SAPLING",
+    "medName": "Papaya",
+    "shortName": "PAP",
+    "itemIds": [
+      5501,
+      5485,
+      5493
+    ]
+  },
+  "PALM_SAPLING": {
+    "type": "SAPLING",
+    "medName": "Palm",
+    "shortName": "PALM",
+    "itemIds": [
+      5502,
+      5486,
+      5494
+    ]
+  },
+  "DRAGONFRUIT_SAPLING": {
+    "type": "SAPLING",
+    "medName": "Dragon",
+    "shortName": "DRAG",
+    "itemIds": [
+      22866,
+      22862,
+      22864
+    ]
+  },
+  "TEAK_SAPLING": {
+    "type": "SAPLING",
+    "medName": "Teak",
+    "shortName": "TEAK",
+    "itemIds": [
+      21477,
+      21469,
+      21473
+    ]
+  },
+  "MAHOGANY_SAPLING": {
+    "type": "SAPLING",
+    "medName": "Mahog",
+    "shortName": "MAHOG",
+    "itemIds": [
+      21480,
+      21471,
+      21475
+    ]
+  },
+  "CALQUAT_SAPLING": {
+    "type": "SAPLING",
+    "medName": "Calquat",
+    "shortName": "CALQ",
+    "itemIds": [
+      5503,
+      5487,
+      5495
+    ]
+  },
+  "CELASTRUS_SAPLING": {
+    "type": "SAPLING",
+    "medName": "Celas",
+    "shortName": "CEL",
+    "itemIds": [
+      22856,
+      22848,
+      22852
+    ]
+  },
+  "COMPOST": {
+    "type": "COMPOST",
+    "medName": "Compost",
+    "shortName": "COM",
+    "itemIds": [
+      6032
+    ]
+  },
+  "SUPERCOMPOST": {
+    "type": "COMPOST",
+    "medName": "Sup Com",
+    "shortName": "SCOM",
+    "itemIds": [
+      6034
+    ]
+  },
+  "ULTRACOMPOST": {
+    "type": "COMPOST",
+    "medName": "Ult Com",
+    "shortName": "UCOM",
+    "itemIds": [
+      21483
+    ]
+  },
+  "COPPER_ORE": {
+    "type": "ORE",
+    "medName": "Copper",
+    "shortName": "COP",
+    "itemIds": [
+      436
+    ]
+  },
+  "TIN_ORE": {
+    "type": "ORE",
+    "medName": "Tin",
+    "shortName": "TIN",
+    "itemIds": [
+      438
+    ]
+  },
+  "IRON_ORE": {
+    "type": "ORE",
+    "medName": "Iron",
+    "shortName": "IRO",
+    "itemIds": [
+      440
+    ]
+  },
+  "SILVER_ORE": {
+    "type": "ORE",
+    "medName": "Silver",
+    "shortName": "SIL",
+    "itemIds": [
+      442
+    ]
+  },
+  "COAL_ORE": {
+    "type": "ORE",
+    "medName": "Coal",
+    "shortName": "COA",
+    "itemIds": [
+      453
+    ]
+  },
+  "GOLD_ORE": {
+    "type": "ORE",
+    "medName": "Gold",
+    "shortName": "GOL",
+    "itemIds": [
+      444
+    ]
+  },
+  "MITHRIL_ORE": {
+    "type": "ORE",
+    "medName": "Mithril",
+    "shortName": "MIT",
+    "itemIds": [
+      447
+    ]
+  },
+  "ADAMANTITE_ORE": {
+    "type": "ORE",
+    "medName": "Adaman",
+    "shortName": "ADA",
+    "itemIds": [
+      449
+    ]
+  },
+  "RUNITE_ORE": {
+    "type": "ORE",
+    "medName": "Runite",
+    "shortName": "RUN",
+    "itemIds": [
+      451
+    ]
+  },
+  "RUNE_ESSENCE": {
+    "type": "ORE",
+    "medName": "R.Ess",
+    "shortName": "R.E.",
+    "itemIds": [
+      1436
+    ]
+  },
+  "PURE_ESSENCE": {
+    "type": "ORE",
+    "medName": "P.Ess",
+    "shortName": "P.E.",
+    "itemIds": [
+      7936
+    ]
+  },
+  "PAYDIRT": {
+    "type": "ORE",
+    "medName": "Paydirt",
+    "shortName": "PAY",
+    "itemIds": [
+      12011
+    ]
+  },
+  "AMETHYST": {
+    "type": "ORE",
+    "medName": "Amethy",
+    "shortName": "AME",
+    "itemIds": [
+      21347
+    ]
+  },
+  "LOVAKITE_ORE": {
+    "type": "ORE",
+    "medName": "Lovakit",
+    "shortName": "LOV",
+    "itemIds": [
+      13356
+    ]
+  },
+  "BLURITE_ORE": {
+    "type": "ORE",
+    "medName": "Blurite",
+    "shortName": "BLU",
+    "itemIds": [
+      668
+    ]
+  },
+  "ELEMENTAL_ORE": {
+    "type": "ORE",
+    "medName": "Element",
+    "shortName": "ELE",
+    "itemIds": [
+      2892
+    ]
+  },
+  "DAEYALT_ORE": {
+    "type": "ORE",
+    "medName": "Daeyalt",
+    "shortName": "DAE",
+    "itemIds": [
+      9632
+    ]
+  },
+  "LUNAR_ORE": {
+    "type": "ORE",
+    "medName": "Lunar",
+    "shortName": "LUN",
+    "itemIds": [
+      9076
+    ]
+  },
+  "BRONZE_BAR": {
+    "type": "BAR",
+    "medName": "Bronze",
+    "shortName": "BRO",
+    "itemIds": [
+      2349
+    ]
+  },
+  "IRON_BAR": {
+    "type": "BAR",
+    "medName": "Iron",
+    "shortName": "IRO",
+    "itemIds": [
+      2351
+    ]
+  },
+  "SILVER_BAR": {
+    "type": "BAR",
+    "medName": "Silver",
+    "shortName": "SIL",
+    "itemIds": [
+      2355
+    ]
+  },
+  "STEEL_BAR": {
+    "type": "BAR",
+    "medName": "Steel",
+    "shortName": "STE",
+    "itemIds": [
+      2353
+    ]
+  },
+  "GOLD_BAR": {
+    "type": "BAR",
+    "medName": "Gold",
+    "shortName": "GOL",
+    "itemIds": [
+      2357
+    ]
+  },
+  "MITHRIL_BAR": {
+    "type": "BAR",
+    "medName": "Mithril",
+    "shortName": "MIT",
+    "itemIds": [
+      2359
+    ]
+  },
+  "ADAMANTITE_BAR": {
+    "type": "BAR",
+    "medName": "Adaman",
+    "shortName": "ADA",
+    "itemIds": [
+      2361
+    ]
+  },
+  "RUNITE_BAR": {
+    "type": "BAR",
+    "medName": "Runite",
+    "shortName": "RUN",
+    "itemIds": [
+      2363
+    ]
+  },
+  "SAPPHIRE": {
+    "type": "GEM",
+    "medName": "Sapphir",
+    "shortName": "S",
+    "itemIds": [
+      1623,
+      1607
+    ]
+  },
+  "EMERALD": {
+    "type": "GEM",
+    "medName": "Emerald",
+    "shortName": "E",
+    "itemIds": [
+      1621,
+      1605
+    ]
+  },
+  "RUBY": {
+    "type": "GEM",
+    "medName": "Ruby",
+    "shortName": "R",
+    "itemIds": [
+      1619,
+      1603
+    ]
+  },
+  "DIAMOND": {
+    "type": "GEM",
+    "medName": "Diamon",
+    "shortName": "DI",
+    "itemIds": [
+      1617,
+      1601
+    ]
+  },
+  "OPAL": {
+    "type": "GEM",
+    "medName": "Opal",
+    "shortName": "OP",
+    "itemIds": [
+      1625,
+      1609
+    ]
+  },
+  "JADE": {
+    "type": "GEM",
+    "medName": "Jade",
+    "shortName": "J",
+    "itemIds": [
+      1627,
+      1611
+    ]
+  },
+  "RED_TOPAZ": {
+    "type": "GEM",
+    "medName": "Topaz",
+    "shortName": "T",
+    "itemIds": [
+      1629,
+      1613
+    ]
+  },
+  "DRAGONSTONE": {
+    "type": "GEM",
+    "medName": "Dragon",
+    "shortName": "DR",
+    "itemIds": [
+      1631,
+      1615
+    ]
+  },
+  "ONYX": {
+    "type": "GEM",
+    "medName": "Onyx",
+    "shortName": "ON",
+    "itemIds": [
+      6571,
+      6573
+    ]
+  },
+  "ZENYTE": {
+    "type": "GEM",
+    "medName": "Zenyte",
+    "shortName": "Z",
+    "itemIds": [
+      19496,
+      19493
+    ]
+  },
+  "ATTACK": {
+    "type": "POTION",
+    "medName": "Att",
+    "shortName": "A",
+    "itemIds": [
+      2428,
+      121,
+      123,
+      125
+    ]
+  },
+  "STRENGTH": {
+    "type": "POTION",
+    "medName": "Str",
+    "shortName": "S",
+    "itemIds": [
+      113,
+      115,
+      117,
+      119
+    ]
+  },
+  "DEFENCE": {
+    "type": "POTION",
+    "medName": "Def",
+    "shortName": "D",
+    "itemIds": [
+      2432,
+      133,
+      135,
+      137
+    ]
+  },
+  "COMBAT": {
+    "type": "POTION",
+    "medName": "Com",
+    "shortName": "C",
+    "itemIds": [
+      9739,
+      9741,
+      9743,
+      9745
+    ]
+  },
+  "MAGIC": {
+    "type": "POTION",
+    "medName": "Magic",
+    "shortName": "M",
+    "itemIds": [
+      3040,
+      3042,
+      3044,
+      3046
+    ]
+  },
+  "RANGING": {
+    "type": "POTION",
+    "medName": "Range",
+    "shortName": "R",
+    "itemIds": [
+      2444,
+      169,
+      171,
+      173
+    ]
+  },
+  "BASTION": {
+    "type": "POTION",
+    "medName": "Bastion",
+    "shortName": "B",
+    "itemIds": [
+      22461,
+      22464,
+      22467,
+      22470
+    ]
+  },
+  "BATTLEMAGE": {
+    "type": "POTION",
+    "medName": "BatMage",
+    "shortName": "B.M",
+    "itemIds": [
+      22449,
+      22452,
+      22455,
+      22458
+    ]
+  },
+  "SUPER_ATTACK": {
+    "type": "POTION",
+    "medName": "S.Att",
+    "shortName": "S.A",
+    "itemIds": [
+      2436,
+      145,
+      147,
+      149
+    ]
+  },
+  "SUPER_STRENGTH": {
+    "type": "POTION",
+    "medName": "S.Str",
+    "shortName": "S.S",
+    "itemIds": [
+      2440,
+      157,
+      159,
+      161
+    ]
+  },
+  "SUPER_DEFENCE": {
+    "type": "POTION",
+    "medName": "S.Def",
+    "shortName": "S.D",
+    "itemIds": [
+      2442,
+      163,
+      165,
+      167
+    ]
+  },
+  "SUPER_COMBAT": {
+    "type": "POTION",
+    "medName": "S.Com",
+    "shortName": "S.C",
+    "itemIds": [
+      12695,
+      12697,
+      12699,
+      12701
+    ]
+  },
+  "SUPER_RANGING": {
+    "type": "POTION",
+    "medName": "S.Range",
+    "shortName": "S.Ra",
+    "itemIds": [
+      11722,
+      11723,
+      11724,
+      11725
+    ]
+  },
+  "SUPER_MAGIC": {
+    "type": "POTION",
+    "medName": "S.Magic",
+    "shortName": "S.M",
+    "itemIds": [
+      11726,
+      11727,
+      11728,
+      11729
+    ]
+  },
+  "DIVINE_SUPER_ATTACK": {
+    "type": "POTION",
+    "medName": "S.Att",
+    "shortName": "S.A",
+    "itemIds": [
+      23697,
+      23700,
+      23703,
+      23706
+    ]
+  },
+  "DIVINE_SUPER_DEFENCE": {
+    "type": "POTION",
+    "medName": "S.Def",
+    "shortName": "S.D",
+    "itemIds": [
+      23721,
+      23724,
+      23727,
+      23730
+    ]
+  },
+  "DIVINE_SUPER_STRENGTH": {
+    "type": "POTION",
+    "medName": "S.Str",
+    "shortName": "S.S",
+    "itemIds": [
+      23709,
+      23712,
+      23715,
+      23718
+    ]
+  },
+  "DIVINE_SUPER_COMBAT": {
+    "type": "POTION",
+    "medName": "S.Com",
+    "shortName": "S.C",
+    "itemIds": [
+      23685,
+      23688,
+      23691,
+      23694
+    ]
+  },
+  "DIVINE_RANGING": {
+    "type": "POTION",
+    "medName": "Range",
+    "shortName": "R",
+    "itemIds": [
+      23733,
+      23736,
+      23739,
+      23742
+    ]
+  },
+  "DIVINE_MAGIC": {
+    "type": "POTION",
+    "medName": "Magic",
+    "shortName": "M",
+    "itemIds": [
+      23745,
+      23748,
+      23751,
+      23754
+    ]
+  },
+  "DIVINE_BASTION": {
+    "type": "POTION",
+    "medName": "Bastion",
+    "shortName": "B",
+    "itemIds": [
+      24635,
+      24638,
+      24641,
+      24644
+    ]
+  },
+  "DIVINE_BATTLEMAGE": {
+    "type": "POTION",
+    "medName": "BatMage",
+    "shortName": "B.M",
+    "itemIds": [
+      24623,
+      24626,
+      24629,
+      24632
+    ]
+  },
+  "RESTORE": {
+    "type": "POTION",
+    "medName": "Restore",
+    "shortName": "Re",
+    "itemIds": [
+      2430,
+      127,
+      129,
+      131
+    ]
+  },
+  "GUTHIX_BALANCE": {
+    "type": "POTION",
+    "medName": "GuthBal",
+    "shortName": "G.B.",
+    "itemIds": [
+      7660,
+      7662,
+      7664,
+      7666
+    ]
+  },
+  "SUPER_RESTORE": {
+    "type": "POTION",
+    "medName": "S.Rest",
+    "shortName": "S.Re",
+    "itemIds": [
+      3024,
+      3026,
+      3028,
+      3030
+    ]
+  },
+  "PRAYER": {
+    "type": "POTION",
+    "medName": "Prayer",
+    "shortName": "P",
+    "itemIds": [
+      2434,
+      139,
+      141,
+      143
+    ]
+  },
+  "ENERGY": {
+    "type": "POTION",
+    "medName": "Energy",
+    "shortName": "En",
+    "itemIds": [
+      3008,
+      3010,
+      3012,
+      3014
+    ]
+  },
+  "SUPER_ENERGY": {
+    "type": "POTION",
+    "medName": "S.Energ",
+    "shortName": "S.En",
+    "itemIds": [
+      3016,
+      3018,
+      3020,
+      3022
+    ]
+  },
+  "STAMINA": {
+    "type": "POTION",
+    "medName": "Stamina",
+    "shortName": "St",
+    "itemIds": [
+      12625,
+      12627,
+      12629,
+      12631
+    ]
+  },
+  "OVERLOAD": {
+    "type": "POTION",
+    "medName": "Overloa",
+    "shortName": "OL",
+    "itemIds": [
+      11730,
+      11731,
+      11732,
+      11733
+    ]
+  },
+  "ABSORPTION": {
+    "type": "POTION",
+    "medName": "Absorb",
+    "shortName": "Ab",
+    "itemIds": [
+      11734,
+      11735,
+      11736,
+      11737
+    ]
+  },
+  "ZAMORAK_BREW": {
+    "type": "POTION",
+    "medName": "ZammyBr",
+    "shortName": "Za",
+    "itemIds": [
+      2450,
+      189,
+      191,
+      193
+    ]
+  },
+  "SARADOMIN_BREW": {
+    "type": "POTION",
+    "medName": "SaraBr",
+    "shortName": "Sa",
+    "itemIds": [
+      6685,
+      6687,
+      6689,
+      6691
+    ]
+  },
+  "ANCIENT_BREW": {
+    "type": "POTION",
+    "medName": "AncBr",
+    "shortName": "A.Br",
+    "itemIds": [
+      26340,
+      26342,
+      26344,
+      26346
+    ]
+  },
+  "ANTIPOISON": {
+    "type": "POTION",
+    "medName": "AntiP",
+    "shortName": "AP",
+    "itemIds": [
+      2446,
+      175,
+      177,
+      179
+    ]
+  },
+  "SUPERANTIPOISON": {
+    "type": "POTION",
+    "medName": "S.AntiP",
+    "shortName": "S.AP",
+    "itemIds": [
+      2448,
+      181,
+      183,
+      185
+    ]
+  },
+  "ANTIDOTE_P": {
+    "type": "POTION",
+    "medName": "Antid+",
+    "shortName": "A+",
+    "itemIds": [
+      5943,
+      5945,
+      5947,
+      5949
+    ]
+  },
+  "ANTIDOTE_PP": {
+    "type": "POTION",
+    "medName": "Antid++",
+    "shortName": "A++",
+    "itemIds": [
+      5952,
+      5954,
+      5956,
+      5958
+    ]
+  },
+  "ANTIVENOM": {
+    "type": "POTION",
+    "medName": "Anti-V",
+    "shortName": "AV",
+    "itemIds": [
+      12905,
+      12907,
+      12909,
+      12911
+    ]
+  },
+  "ANTIVENOM_P": {
+    "type": "POTION",
+    "medName": "Anti-V+",
+    "shortName": "AV+",
+    "itemIds": [
+      12913,
+      12915,
+      12917,
+      12919
+    ]
+  },
+  "RELICYMS_BALM": {
+    "type": "POTION",
+    "medName": "Relicym",
+    "shortName": "R.B",
+    "itemIds": [
+      4842,
+      4844,
+      4846,
+      4848
+    ]
+  },
+  "SANFEW_SERUM": {
+    "type": "POTION",
+    "medName": "Sanfew",
+    "shortName": "Sf",
+    "itemIds": [
+      10925,
+      10927,
+      10929,
+      10931
+    ]
+  },
+  "ANTIFIRE": {
+    "type": "POTION",
+    "medName": "Antif",
+    "shortName": "Af",
+    "itemIds": [
+      2452,
+      2454,
+      2456,
+      2458
+    ]
+  },
+  "EXTENDED_ANTIFIRE": {
+    "type": "POTION",
+    "medName": "E.Antif",
+    "shortName": "E.Af",
+    "itemIds": [
+      11951,
+      11953,
+      11955,
+      11957
+    ]
+  },
+  "SUPER_ANTIFIRE": {
+    "type": "POTION",
+    "medName": "S.Antif",
+    "shortName": "S.Af",
+    "itemIds": [
+      21978,
+      21981,
+      21984,
+      21987
+    ]
+  },
+  "EXTENDED_SUPER_ANTIFIRE": {
+    "type": "POTION",
+    "medName": "ES.Antif",
+    "shortName": "ES.Af",
+    "itemIds": [
+      22209,
+      22212,
+      22215,
+      22218
+    ]
+  },
+  "SERUM_207": {
+    "type": "POTION",
+    "medName": "Ser207",
+    "shortName": "S7",
+    "itemIds": [
+      3408,
+      3410,
+      3412,
+      3414
+    ]
+  },
+  "SERUM_208": {
+    "type": "POTION",
+    "medName": "Ser208",
+    "shortName": "S8",
+    "itemIds": [
+      3416,
+      3417,
+      3418,
+      3419
+    ]
+  },
+  "COMPOST_POTION": {
+    "type": "POTION",
+    "medName": "Compost",
+    "shortName": "COM",
+    "itemIds": [
+      6470,
+      6472,
+      6474,
+      6476
+    ]
+  },
+  "AGILITY": {
+    "type": "POTION",
+    "medName": "Agility",
+    "shortName": "Ag",
+    "itemIds": [
+      3032,
+      3034,
+      3036,
+      3038
+    ]
+  },
+  "FISHING": {
+    "type": "POTION",
+    "medName": "Fishing",
+    "shortName": "Fi",
+    "itemIds": [
+      2438,
+      151,
+      153,
+      155
+    ]
+  },
+  "HUNTER": {
+    "type": "POTION",
+    "medName": "Hunter",
+    "shortName": "Hu",
+    "itemIds": [
+      9998,
+      10000,
+      10002,
+      10004
+    ]
+  },
+  "GOBLIN": {
+    "type": "POTION",
+    "medName": "Goblin",
+    "shortName": "G",
+    "itemIds": [
+      26581,
+      26583,
+      26585,
+      26587
+    ]
+  },
+  "MAGIC_ESS": {
+    "type": "POTION",
+    "medName": "MagEss",
+    "shortName": "M.E",
+    "itemIds": [
+      9021,
+      9022,
+      9023,
+      9024
+    ]
+  },
+  "REJUVENATION": {
+    "type": "POTION",
+    "medName": "Rejuv",
+    "shortName": "Rj",
+    "itemIds": [
+      20699,
+      20700,
+      20701,
+      20702
+    ]
+  },
+  "GUAM_POTION": {
+    "type": "POTION",
+    "medName": "Guam",
+    "shortName": "G",
+    "itemIds": [
+      91
+    ]
+  },
+  "MARRENTILL_POTION": {
+    "type": "POTION",
+    "medName": "Marren",
+    "shortName": "M",
+    "itemIds": [
+      93
+    ]
+  },
+  "TARROMIN_POTION": {
+    "type": "POTION",
+    "medName": "Tarro",
+    "shortName": "TAR",
+    "itemIds": [
+      95
+    ]
+  },
+  "HARRALANDER_POTION": {
+    "type": "POTION",
+    "medName": "Harra",
+    "shortName": "HAR",
+    "itemIds": [
+      97
+    ]
+  },
+  "RANARR_POTION": {
+    "type": "POTION",
+    "medName": "Ranarr",
+    "shortName": "R",
+    "itemIds": [
+      99
+    ]
+  },
+  "TOADFLAX_POTION": {
+    "type": "POTION",
+    "medName": "Toad",
+    "shortName": "TOA",
+    "itemIds": [
+      3002
+    ]
+  },
+  "IRIT_POTION": {
+    "type": "POTION",
+    "medName": "Irit",
+    "shortName": "I",
+    "itemIds": [
+      101
+    ]
+  },
+  "AVANTOE_POTION": {
+    "type": "POTION",
+    "medName": "Avan",
+    "shortName": "A",
+    "itemIds": [
+      103
+    ]
+  },
+  "KWUARM_POTION": {
+    "type": "POTION",
+    "medName": "Kwuarm",
+    "shortName": "K",
+    "itemIds": [
+      105
+    ]
+  },
+  "SNAPDRAGON_POTION": {
+    "type": "POTION",
+    "medName": "Snap",
+    "shortName": "S",
+    "itemIds": [
+      3004
+    ]
+  },
+  "CADANTINE_POTION": {
+    "type": "POTION",
+    "medName": "Cadan",
+    "shortName": "C",
+    "itemIds": [
+      107
+    ]
+  },
+  "LANTADYME_POTION": {
+    "type": "POTION",
+    "medName": "Lanta",
+    "shortName": "L",
+    "itemIds": [
+      2483
+    ]
+  },
+  "DWARF_WEED_POTION": {
+    "type": "POTION",
+    "medName": "Dwarf",
+    "shortName": "D",
+    "itemIds": [
+      109
+    ]
+  },
+  "TORSTOL_POTION": {
+    "type": "POTION",
+    "medName": "Torstol",
+    "shortName": "TOR",
+    "itemIds": [
+      111
+    ]
+  },
+  "HUASCA_POTION": {
+    "type": "POTION",
+    "medName": "Huasca",
+    "shortName": "HUA",
+    "itemIds": [
+      30100
+    ]
+  },
+  "BABY_IMPLING": {
+    "type": "IMPLING_JAR",
+    "medName": "Baby",
+    "shortName": "B",
+    "itemIds": [
+      11238
+    ]
+  },
+  "YOUNG_IMPLING": {
+    "type": "IMPLING_JAR",
+    "medName": "Young",
+    "shortName": "Y",
+    "itemIds": [
+      11240
+    ]
+  },
+  "GOURMET_IMPLING": {
+    "type": "IMPLING_JAR",
+    "medName": "Gourmet",
+    "shortName": "G",
+    "itemIds": [
+      11242
+    ]
+  },
+  "EARTH_IMPLING": {
+    "type": "IMPLING_JAR",
+    "medName": "Earth",
+    "shortName": "EAR",
+    "itemIds": [
+      11244
+    ]
+  },
+  "ESSENCE_IMPLING": {
+    "type": "IMPLING_JAR",
+    "medName": "Essen",
+    "shortName": "ESS",
+    "itemIds": [
+      11246
+    ]
+  },
+  "ECLECTIC_IMPLING": {
+    "type": "IMPLING_JAR",
+    "medName": "Eclect",
+    "shortName": "ECL",
+    "itemIds": [
+      11248
+    ]
+  },
+  "NATURE_IMPLING": {
+    "type": "IMPLING_JAR",
+    "medName": "Nature",
+    "shortName": "NAT",
+    "itemIds": [
+      11250
+    ]
+  },
+  "MAGPIE_IMPLING": {
+    "type": "IMPLING_JAR",
+    "medName": "Magpie",
+    "shortName": "M",
+    "itemIds": [
+      11252
+    ]
+  },
+  "NINJA_IMPLING": {
+    "type": "IMPLING_JAR",
+    "medName": "Ninja",
+    "shortName": "NIN",
+    "itemIds": [
+      11254
+    ]
+  },
+  "CRYSTAL_IMPLING": {
+    "type": "IMPLING_JAR",
+    "medName": "Crystal",
+    "shortName": "C",
+    "itemIds": [
+      23768
+    ]
+  },
+  "DRAGON_IMPLING": {
+    "type": "IMPLING_JAR",
+    "medName": "Dragon",
+    "shortName": "D",
+    "itemIds": [
+      11256
+    ]
+  },
+  "LUCKY_IMPLING": {
+    "type": "IMPLING_JAR",
+    "medName": "Lucky",
+    "shortName": "L",
+    "itemIds": [
+      19732
+    ]
+  },
+  "VARROCK_TELEPORT": {
+    "type": "TABLET",
+    "medName": "Varro",
+    "shortName": "VAR",
+    "itemIds": [
+      8007
+    ]
+  },
+  "LUMBRIDGE_TELEPORT": {
+    "type": "TABLET",
+    "medName": "Lumbr",
+    "shortName": "LUM",
+    "itemIds": [
+      8008
+    ]
+  },
+  "FALADOR_TELEPORT": {
+    "type": "TABLET",
+    "medName": "Fala",
+    "shortName": "FAL",
+    "itemIds": [
+      8009
+    ]
+  },
+  "CAMELOT_TELEPORT": {
+    "type": "TABLET",
+    "medName": "Cammy",
+    "shortName": "CAM",
+    "itemIds": [
+      8010
+    ]
+  },
+  "ARDOUGNE_TELEPORT": {
+    "type": "TABLET",
+    "medName": "Ardoug",
+    "shortName": "ARD",
+    "itemIds": [
+      8011
+    ]
+  },
+  "WATCHTOWER_TELEPORT": {
+    "type": "TABLET",
+    "medName": "W.tow",
+    "shortName": "WT",
+    "itemIds": [
+      8012
+    ]
+  },
+  "TELEPORT_TO_HOUSE": {
+    "type": "TABLET",
+    "medName": "House",
+    "shortName": "POH",
+    "itemIds": [
+      8013
+    ]
+  },
+  "ENCHANT_SAPPHIRE_OR_OPAL": {
+    "type": "TABLET",
+    "medName": "E.Saph",
+    "shortName": "E SO",
+    "itemIds": [
+      8016
+    ]
+  },
+  "ENCHANT_EMERALD_OR_JADE": {
+    "type": "TABLET",
+    "medName": "E.Emer",
+    "shortName": "E EJ",
+    "itemIds": [
+      8017
+    ]
+  },
+  "ENCHANT_RUBY_OR_TOPAZ": {
+    "type": "TABLET",
+    "medName": "E.Ruby",
+    "shortName": "E RT",
+    "itemIds": [
+      8018
+    ]
+  },
+  "ENCHANT_DIAMOND": {
+    "type": "TABLET",
+    "medName": "E.Diam",
+    "shortName": "E DIA",
+    "itemIds": [
+      8019
+    ]
+  },
+  "ENCHANT_DRAGONSTONE": {
+    "type": "TABLET",
+    "medName": "E.Dstn",
+    "shortName": "E DS",
+    "itemIds": [
+      8020
+    ]
+  },
+  "ENCHANT_ONYX": {
+    "type": "TABLET",
+    "medName": "E.Onyx",
+    "shortName": "E ONX",
+    "itemIds": [
+      8021
+    ]
+  },
+  "TELEKINETIC_GRAB": {
+    "type": "TABLET",
+    "medName": "T.grab",
+    "shortName": "T.GRB",
+    "itemIds": [
+      8022
+    ]
+  },
+  "BONES_TO_PEACHES": {
+    "type": "TABLET",
+    "medName": "Peach",
+    "shortName": "BtP",
+    "itemIds": [
+      8015
+    ]
+  },
+  "BONES_TO_BANANAS": {
+    "type": "TABLET",
+    "medName": "Banana",
+    "shortName": "BtB",
+    "itemIds": [
+      8014
+    ]
+  },
+  "RIMMINGTON_TELEPORT": {
+    "type": "TABLET",
+    "medName": "Rimmi",
+    "shortName": "RIM",
+    "itemIds": [
+      11741
+    ]
+  },
+  "TAVERLEY_TELEPORT": {
+    "type": "TABLET",
+    "medName": "Taver",
+    "shortName": "TAV",
+    "itemIds": [
+      11742
+    ]
+  },
+  "POLLNIVNEACH_TELEPORT": {
+    "type": "TABLET",
+    "medName": "Pollnv",
+    "shortName": "POL",
+    "itemIds": [
+      11743
+    ]
+  },
+  "RELLEKKA_TELEPORT": {
+    "type": "TABLET",
+    "medName": "Rell",
+    "shortName": "REL",
+    "itemIds": [
+      11744
+    ]
+  },
+  "BRIMHAVEN_TELEPORT": {
+    "type": "TABLET",
+    "medName": "Brimh",
+    "shortName": "BRIM",
+    "itemIds": [
+      11745
+    ]
+  },
+  "YANILLE_TELEPORT": {
+    "type": "TABLET",
+    "medName": "Yanille",
+    "shortName": "YAN",
+    "itemIds": [
+      11746
+    ]
+  },
+  "TROLLHEIM_TELEPORT": {
+    "type": "TABLET",
+    "medName": "Trollh",
+    "shortName": "T.HM",
+    "itemIds": [
+      11747
+    ]
+  },
+  "PRIFDDINAS_TELEPORT": {
+    "type": "TABLET",
+    "medName": "Prifd",
+    "shortName": "PRIF",
+    "itemIds": [
+      23771
+    ]
+  },
+  "HOSIDIUS_TELEPORT": {
+    "type": "TABLET",
+    "medName": "Hosid",
+    "shortName": "HOS",
+    "itemIds": [
+      19651
+    ]
+  },
+  "ANNAKARL_TELEPORT": {
+    "type": "TABLET",
+    "medName": "Annak",
+    "shortName": "GDZ",
+    "itemIds": [
+      12775
+    ]
+  },
+  "CARRALLANGER_TELEPORT": {
+    "type": "TABLET",
+    "medName": "Carra",
+    "shortName": "CAR",
+    "itemIds": [
+      12776
+    ]
+  },
+  "DAREEYAK_TELEPORT": {
+    "type": "TABLET",
+    "medName": "Dareey",
+    "shortName": "DAR",
+    "itemIds": [
+      12777
+    ]
+  },
+  "GHORROCK_TELEPORT": {
+    "type": "TABLET",
+    "medName": "Ghorr",
+    "shortName": "GHRK",
+    "itemIds": [
+      12778
+    ]
+  },
+  "KHARYRLL_TELEPORT": {
+    "type": "TABLET",
+    "medName": "Khary",
+    "shortName": "KHRL",
+    "itemIds": [
+      12779
+    ]
+  },
+  "LASSAR_TELEPORT": {
+    "type": "TABLET",
+    "medName": "Lass",
+    "shortName": "LSR",
+    "itemIds": [
+      12780
+    ]
+  },
+  "PADDEWWA_TELEPORT": {
+    "type": "TABLET",
+    "medName": "Paddew",
+    "shortName": "PDW",
+    "itemIds": [
+      12781
+    ]
+  },
+  "SENNTISTEN_TELEPORT": {
+    "type": "TABLET",
+    "medName": "Sennt",
+    "shortName": "SNT",
+    "itemIds": [
+      12782
+    ]
+  },
+  "ARCEUUS_LIBRARY_TELEPORT": {
+    "type": "TABLET",
+    "medName": "Arc.Lib",
+    "shortName": "A.LIB",
+    "itemIds": [
+      19613
+    ]
+  },
+  "DRAYNOR_MANOR_TELEPORT": {
+    "type": "TABLET",
+    "medName": "D.Manor",
+    "shortName": "D.MNR",
+    "itemIds": [
+      19615
+    ]
+  },
+  "MIND_ALTAR_TELEPORT": {
+    "type": "TABLET",
+    "medName": "M.Altar",
+    "shortName": "M.ALT",
+    "itemIds": [
+      19617
+    ]
+  },
+  "SALVE_GRAVEYARD_TELEPORT": {
+    "type": "TABLET",
+    "medName": "S.Grave",
+    "shortName": "S.GRV",
+    "itemIds": [
+      19619
+    ]
+  },
+  "FENKENSTRAINS_CASTLE_TELEPORT": {
+    "type": "TABLET",
+    "medName": "Fenk",
+    "shortName": "FNK",
+    "itemIds": [
+      19621
+    ]
+  },
+  "WEST_ARDOUGNE_TELEPORT": {
+    "type": "TABLET",
+    "medName": "W.Ardy",
+    "shortName": "W.ARD",
+    "itemIds": [
+      19623
+    ]
+  },
+  "HARMONY_ISLAND_TELEPORT": {
+    "type": "TABLET",
+    "medName": "H.Isle",
+    "shortName": "HRM",
+    "itemIds": [
+      19625
+    ]
+  },
+  "CEMETERY_TELEPORT": {
+    "type": "TABLET",
+    "medName": "Cemet",
+    "shortName": "CEM",
+    "itemIds": [
+      19627
+    ]
+  },
+  "BARROWS_TELEPORT": {
+    "type": "TABLET",
+    "medName": "Barrow",
+    "shortName": "BAR",
+    "itemIds": [
+      19629
+    ]
+  },
+  "APE_ATOLL_TELEPORT": {
+    "type": "TABLET",
+    "medName": "Atoll",
+    "shortName": "APE",
+    "itemIds": [
+      19631
+    ]
+  },
+  "BATTLEFRONT_TELEPORT": {
+    "type": "TABLET",
+    "medName": "B.Front",
+    "shortName": "BF",
+    "itemIds": [
+      22949
+    ]
+  },
+  "MOONCLAN_TELEPORT": {
+    "type": "TABLET",
+    "medName": "Moon",
+    "shortName": "MOON",
+    "itemIds": [
+      24949
+    ]
+  },
+  "OURANIA_TELEPORT": {
+    "type": "TABLET",
+    "medName": "Ourania",
+    "shortName": "ZMI",
+    "itemIds": [
+      24951
+    ]
+  },
+  "WATERBIRTH_TELEPORT": {
+    "type": "TABLET",
+    "medName": "W.Birth",
+    "shortName": "WAT",
+    "itemIds": [
+      24953
+    ]
+  },
+  "BARBARIAN_TELEPORT": {
+    "type": "TABLET",
+    "medName": "Barb",
+    "shortName": "BARB",
+    "itemIds": [
+      24955
+    ]
+  },
+  "KHAZARD_TELEPORT": {
+    "type": "TABLET",
+    "medName": "Khaz",
+    "shortName": "KHA",
+    "itemIds": [
+      24957
+    ]
+  },
+  "FISHING_GUILD_TELEPORT": {
+    "type": "TABLET",
+    "medName": "Fish G.",
+    "shortName": "FIS",
+    "itemIds": [
+      24959
+    ]
+  },
+  "CATHERBY_TELEPORT": {
+    "type": "TABLET",
+    "medName": "Cathy",
+    "shortName": "CATH",
+    "itemIds": [
+      24961
+    ]
+  },
+  "ICE_PLATEAU": {
+    "type": "TABLET",
+    "medName": "Ice Pl.",
+    "shortName": "ICE",
+    "itemIds": [
+      24963
+    ]
+  },
+  "TARGET_TELEPORT": {
+    "type": "TABLET",
+    "medName": "Target",
+    "shortName": "TRG",
+    "itemIds": [
+      24336
+    ]
+  },
+  "VOLCANIC_MINE_TELEPORT": {
+    "type": "TABLET",
+    "medName": "V.Mine",
+    "shortName": "VM",
+    "itemIds": [
+      21541
+    ]
+  },
+  "WILDERNESS_CRABS_TELEPORT": {
+    "type": "TABLET",
+    "medName": "W.Crab",
+    "shortName": "CRAB",
+    "itemIds": [
+      24251
+    ]
+  },
+  "NARDAH_TELEPORT": {
+    "type": "SCROLL",
+    "medName": "Nardah",
+    "shortName": "NAR",
+    "itemIds": [
+      12402
+    ]
+  },
+  "DIGSITE_TELEPORT": {
+    "type": "SCROLL",
+    "medName": "Digsite",
+    "shortName": "DIG",
+    "itemIds": [
+      12403
+    ]
+  },
+  "FELDIP_HILLS_TELEPORT": {
+    "type": "SCROLL",
+    "medName": "F.Hills",
+    "shortName": "F.H",
+    "itemIds": [
+      12404
+    ]
+  },
+  "LUNAR_ISLE_TELEPORT": {
+    "type": "SCROLL",
+    "medName": "L.Isle",
+    "shortName": "L.I",
+    "itemIds": [
+      12405
+    ]
+  },
+  "MORTTON_TELEPORT": {
+    "type": "SCROLL",
+    "medName": "Mort'ton",
+    "shortName": "MORT",
+    "itemIds": [
+      12406
+    ]
+  },
+  "PEST_CONTROL_TELEPORT": {
+    "type": "SCROLL",
+    "medName": "P.Cont",
+    "shortName": "PEST",
+    "itemIds": [
+      12407
+    ]
+  },
+  "PISCATORIS_TELEPORT": {
+    "type": "SCROLL",
+    "medName": "Pisca",
+    "shortName": "PISC",
+    "itemIds": [
+      12408
+    ]
+  },
+  "TAI_BWO_WANNAI_TELEPORT": {
+    "type": "SCROLL",
+    "medName": "TaiBwo",
+    "shortName": "TAI",
+    "itemIds": [
+      12409
+    ]
+  },
+  "IORWERTH_CAMP_TELEPORT": {
+    "type": "SCROLL",
+    "medName": "Iorwerth",
+    "shortName": "IOR",
+    "itemIds": [
+      12410
+    ]
+  },
+  "MOS_LEHARMLESS_TELEPORT": {
+    "type": "SCROLL",
+    "medName": "M.LeHarm",
+    "shortName": "M.L",
+    "itemIds": [
+      12411
+    ]
+  },
+  "LUMBERYARD_TELEPORT": {
+    "type": "SCROLL",
+    "medName": "Lumber",
+    "shortName": "LUMB",
+    "itemIds": [
+      12642
+    ]
+  },
+  "ZUL_ANDRA_TELEPORT": {
+    "type": "SCROLL",
+    "medName": "Zul-andra",
+    "shortName": "ZUL",
+    "itemIds": [
+      12938
+    ]
+  },
+  "KEY_MASTER_TELEPORT": {
+    "type": "SCROLL",
+    "medName": "Key master",
+    "shortName": "KEY",
+    "itemIds": [
+      13249
+    ]
+  },
+  "REVENANT_CAVE_TELEPORT": {
+    "type": "SCROLL",
+    "medName": "Rev cave",
+    "shortName": "REV",
+    "itemIds": [
+      21802
+    ]
+  },
+  "WATSON_TELEPORT": {
+    "type": "SCROLL",
+    "medName": "Watson",
+    "shortName": "WATS",
+    "itemIds": [
+      23387
+    ]
+  },
+  "OPAL_JEWELLERY": {
+    "type": "JEWELLERY",
+    "medName": "Opal",
+    "shortName": "OP",
+    "itemIds": [
+      21081,
+      21090,
+      21117,
+      21099,
+      21108
+    ]
+  },
+  "JADE_JEWELLERY": {
+    "type": "JEWELLERY",
+    "medName": "Jade",
+    "shortName": "J",
+    "itemIds": [
+      21084,
+      21093,
+      21120,
+      21102,
+      21111
+    ]
+  },
+  "TOPAZ_JEWELLERY": {
+    "type": "JEWELLERY",
+    "medName": "Topaz",
+    "shortName": "T",
+    "itemIds": [
+      21087,
+      21096,
+      21123,
+      21105,
+      21114
+    ]
+  },
+  "GOLD_JEWELLERY": {
+    "type": "JEWELLERY",
+    "medName": "Gold",
+    "shortName": "GOL",
+    "itemIds": [
+      1635,
+      1654,
+      11068,
+      1673,
+      1692
+    ]
+  },
+  "SAPPHIRE_JEWELLERY": {
+    "type": "JEWELLERY",
+    "medName": "Sapphir",
+    "shortName": "S",
+    "itemIds": [
+      1637,
+      1656,
+      11071,
+      1675,
+      1694
+    ]
+  },
+  "EMERALD_JEWELLERY": {
+    "type": "JEWELLERY",
+    "medName": "Emerald",
+    "shortName": "E",
+    "itemIds": [
+      1639,
+      1658,
+      11076,
+      1677,
+      1696
+    ]
+  },
+  "RUBY_JEWELLERY": {
+    "type": "JEWELLERY",
+    "medName": "Ruby",
+    "shortName": "R",
+    "itemIds": [
+      1641,
+      1660,
+      11085,
+      1679,
+      1698
+    ]
+  },
+  "DIAMOND_JEWELLERY": {
+    "type": "JEWELLERY",
+    "medName": "Diamon",
+    "shortName": "DI",
+    "itemIds": [
+      1643,
+      1662,
+      11092,
+      1681,
+      1700
+    ]
+  },
+  "DRAGONSTONE_JEWELLERY": {
+    "type": "JEWELLERY",
+    "medName": "Dragon",
+    "shortName": "DR",
+    "itemIds": [
+      1645,
+      1664,
+      11115,
+      1683,
+      1702
+    ]
+  },
+  "ONYX_JEWELLERY": {
+    "type": "JEWELLERY",
+    "medName": "Onyx",
+    "shortName": "ON",
+    "itemIds": [
+      6575,
+      6577,
+      11130,
+      6579,
+      6581
+    ]
+  },
+  "ZENYTE_JEWELLERY": {
+    "type": "JEWELLERY",
+    "medName": "Zenyte",
+    "shortName": "Z",
+    "itemIds": [
+      19538,
+      19535,
+      19492,
+      19501,
+      19541
+    ]
+  },
+  "RING_OF_PURSUIT": {
+    "type": "JEWELLERY_ENCHANTED",
+    "medName": "Pursuit",
+    "shortName": "PUR",
+    "itemIds": [
+      21126
+    ]
+  },
+  "DODGY_NECKLACE": {
+    "type": "JEWELLERY_ENCHANTED",
+    "medName": "Dodgy",
+    "shortName": "DOD",
+    "itemIds": [
+      21143
+    ]
+  },
+  "EXPEDITIOUS_BRACELET": {
+    "type": "JEWELLERY_ENCHANTED",
+    "medName": "Exped",
+    "shortName": "EXP",
+    "itemIds": [
+      21177
+    ]
+  },
+  "AMULET_OF_BOUNTY": {
+    "type": "JEWELLERY_ENCHANTED",
+    "medName": "Bounty",
+    "shortName": "BOU",
+    "itemIds": [
+      21160
+    ]
+  },
+  "RING_OF_RETURNING": {
+    "type": "JEWELLERY_ENCHANTED",
+    "medName": "Return",
+    "shortName": "RET",
+    "itemIds": [
+      21138,
+      21136,
+      21134,
+      21132,
+      21129
+    ]
+  },
+  "NECKLACE_OF_PASSAGE": {
+    "type": "JEWELLERY_ENCHANTED",
+    "medName": "Passage",
+    "shortName": "PASS",
+    "itemIds": [
+      21155,
+      21153,
+      21151,
+      21149,
+      21146
+    ]
+  },
+  "FLAMTAER_BRACELET": {
+    "type": "JEWELLERY_ENCHANTED",
+    "medName": "Flamta",
+    "shortName": "FLA",
+    "itemIds": [
+      21180
+    ]
+  },
+  "AMULET_OF_CHEMISTRY": {
+    "type": "JEWELLERY_ENCHANTED",
+    "medName": "Chem",
+    "shortName": "CH",
+    "itemIds": [
+      21163
+    ]
+  },
+  "EFARITAYS_AID": {
+    "type": "JEWELLERY_ENCHANTED",
+    "medName": "Efarit",
+    "shortName": "EFA",
+    "itemIds": [
+      21140
+    ]
+  },
+  "NECKLACE_OF_FAITH": {
+    "type": "JEWELLERY_ENCHANTED",
+    "medName": "Faith",
+    "shortName": "FAI",
+    "itemIds": [
+      21157
+    ]
+  },
+  "BRACELET_OF_SLAUGHTER": {
+    "type": "JEWELLERY_ENCHANTED",
+    "medName": "Slaught",
+    "shortName": "SLA",
+    "itemIds": [
+      21183
+    ]
+  },
+  "BURNING_AMULET": {
+    "type": "JEWELLERY_ENCHANTED",
+    "medName": "Burning",
+    "shortName": "BUR",
+    "itemIds": [
+      21175,
+      21173,
+      21171,
+      21169,
+      21166
+    ]
+  },
+  "RING_OF_RECOIL": {
+    "type": "JEWELLERY_ENCHANTED",
+    "medName": "Recoil",
+    "shortName": "REC",
+    "itemIds": [
+      2550
+    ]
+  },
+  "GAMES_NECKLACE": {
+    "type": "JEWELLERY_ENCHANTED",
+    "medName": "Games",
+    "shortName": "GAME",
+    "itemIds": [
+      3867,
+      3865,
+      3863,
+      3861,
+      3859,
+      3857,
+      3855,
+      3853
+    ]
+  },
+  "BRACELET_OF_CLAY": {
+    "type": "JEWELLERY_ENCHANTED",
+    "medName": "Clay",
+    "shortName": "CLA",
+    "itemIds": [
+      11074
+    ]
+  },
+  "AMULET_OF_MAGIC": {
+    "type": "JEWELLERY_ENCHANTED",
+    "medName": "Magic",
+    "shortName": "MAG",
+    "itemIds": [
+      1727
+    ]
+  },
+  "RING_OF_DUELING": {
+    "type": "JEWELLERY_ENCHANTED",
+    "medName": "Duel",
+    "shortName": "DU",
+    "itemIds": [
+      2566,
+      2564,
+      2562,
+      2560,
+      2558,
+      2556,
+      2554,
+      2552
+    ]
+  },
+  "BINDING_NECKLACE": {
+    "type": "JEWELLERY_ENCHANTED",
+    "medName": "Binding",
+    "shortName": "BIND",
+    "itemIds": [
+      5521
+    ]
+  },
+  "CASTLE_WARS_BRACELET": {
+    "type": "JEWELLERY_ENCHANTED",
+    "medName": "Castle",
+    "shortName": "CAS",
+    "itemIds": [
+      11083,
+      11081,
+      11079
+    ]
+  },
+  "AMULET_OF_DEFENCE": {
+    "type": "JEWELLERY_ENCHANTED",
+    "medName": "Defence",
+    "shortName": "DEF",
+    "itemIds": [
+      1729
+    ]
+  },
+  "AMULET_OF_NATURE": {
+    "type": "JEWELLERY_ENCHANTED",
+    "medName": "Nature",
+    "shortName": "NAT",
+    "itemIds": [
+      6040
+    ]
+  },
+  "RING_OF_FORGING": {
+    "type": "JEWELLERY_ENCHANTED",
+    "medName": "Forging",
+    "shortName": "FOR",
+    "itemIds": [
+      2568
+    ]
+  },
+  "DIGSITE_PENDANT": {
+    "type": "JEWELLERY_ENCHANTED",
+    "medName": "Digsite",
+    "shortName": "DIG",
+    "itemIds": [
+      11190,
+      11191,
+      11192,
+      11193,
+      11194
+    ]
+  },
+  "INOCULATION_BRACELET": {
+    "type": "JEWELLERY_ENCHANTED",
+    "medName": "Inocul",
+    "shortName": "INO",
+    "itemIds": [
+      11088
+    ]
+  },
+  "AMULET_OF_STRENGTH": {
+    "type": "JEWELLERY_ENCHANTED",
+    "medName": "Strengt",
+    "shortName": "STR",
+    "itemIds": [
+      1725
+    ]
+  },
+  "RING_OF_LIFE": {
+    "type": "JEWELLERY_ENCHANTED",
+    "medName": "Life",
+    "shortName": "LI",
+    "itemIds": [
+      2570
+    ]
+  },
+  "PHOENIX_NECKLACE": {
+    "type": "JEWELLERY_ENCHANTED",
+    "medName": "Phoenix",
+    "shortName": "PHO",
+    "itemIds": [
+      11090
+    ]
+  },
+  "ABYSSAL_BRACELET": {
+    "type": "JEWELLERY_ENCHANTED",
+    "medName": "Abyss",
+    "shortName": "ABY",
+    "itemIds": [
+      11103,
+      11101,
+      11099,
+      11097,
+      11095
+    ]
+  },
+  "AMULET_OF_POWER": {
+    "type": "JEWELLERY_ENCHANTED",
+    "medName": "Power",
+    "shortName": "POW",
+    "itemIds": [
+      1731
+    ]
+  },
+  "RING_OF_WEALTH": {
+    "type": "JEWELLERY_ENCHANTED",
+    "medName": "Wealth",
+    "shortName": "WE",
+    "itemIds": [
+      2572,
+      11988,
+      11986,
+      11984,
+      11982,
+      11980
+    ]
+  },
+  "SKILLS_NECKLACE": {
+    "type": "JEWELLERY_ENCHANTED",
+    "medName": "Skill",
+    "shortName": "SK",
+    "itemIds": [
+      11113,
+      11111,
+      11109,
+      11107,
+      11105,
+      11970,
+      11968
+    ]
+  },
+  "COMBAT_BRACELET": {
+    "type": "JEWELLERY_ENCHANTED",
+    "medName": "Combat",
+    "shortName": "COM",
+    "itemIds": [
+      11126,
+      11124,
+      11122,
+      11120,
+      11118,
+      11974,
+      11972
+    ]
+  },
+  "AMULET_OF_GLORY": {
+    "type": "JEWELLERY_ENCHANTED",
+    "medName": "Glory",
+    "shortName": "GLO",
+    "itemIds": [
+      1704,
+      1706,
+      1708,
+      1710,
+      1712,
+      11976,
+      11978,
+      19707
+    ]
+  },
+  "RING_OF_STONE": {
+    "type": "JEWELLERY_ENCHANTED",
+    "medName": "Stone",
+    "shortName": "STO",
+    "itemIds": [
+      6583
+    ]
+  },
+  "BERSERKER_NECKLACE": {
+    "type": "JEWELLERY_ENCHANTED",
+    "medName": "Berserk",
+    "shortName": "BER",
+    "itemIds": [
+      11128
+    ]
+  },
+  "REGEN_BRACELET": {
+    "type": "JEWELLERY_ENCHANTED",
+    "medName": "Regen",
+    "shortName": "REG",
+    "itemIds": [
+      11133
+    ]
+  },
+  "AMULET_OF_FURY": {
+    "type": "JEWELLERY_ENCHANTED",
+    "medName": "Fury",
+    "shortName": "FU",
+    "itemIds": [
+      6585
+    ]
+  },
+  "RING_OF_SUFFERING": {
+    "type": "JEWELLERY_ENCHANTED",
+    "medName": "Suffer",
+    "shortName": "SUF",
+    "itemIds": [
+      19550
+    ]
+  },
+  "NECKLACE_OF_ANGUISH": {
+    "type": "JEWELLERY_ENCHANTED",
+    "medName": "Anguish",
+    "shortName": "ANG",
+    "itemIds": [
+      19547
+    ]
+  },
+  "TORMENTED_BRACELET": {
+    "type": "JEWELLERY_ENCHANTED",
+    "medName": "Torment",
+    "shortName": "TOR",
+    "itemIds": [
+      19544
+    ]
+  },
+  "AMULET_OF_TORTURE": {
+    "type": "JEWELLERY_ENCHANTED",
+    "medName": "Torture",
+    "shortName": "TOR",
+    "itemIds": [
+      19553
+    ]
+  },
+  "OCCULT_NECKLACE": {
+    "type": "JEWELLERY_ENCHANTED",
+    "medName": "Occult",
+    "shortName": "OCC",
+    "itemIds": [
+      12002
+    ]
+  },
+  "DRAGONBONE_NECKLACE": {
+    "type": "JEWELLERY_ENCHANTED",
+    "medName": "Dragon",
+    "shortName": "DRA",
+    "itemIds": [
+      22111
+    ]
+  },
+  "SLAYER_RING": {
+    "type": "JEWELLERY_ENCHANTED",
+    "medName": "Slayer",
+    "shortName": "SLA",
+    "itemIds": [
+      11873,
+      11872,
+      11871,
+      11870,
+      11869,
+      11868,
+      11867,
+      11866,
+      21268
+    ]
+  }
+}

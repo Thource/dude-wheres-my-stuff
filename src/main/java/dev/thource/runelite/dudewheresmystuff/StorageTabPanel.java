@@ -16,7 +16,7 @@ import net.runelite.client.ui.FontManager;
 
 /** StorageTabPanel is a base class that shows the player their data. */
 public abstract class StorageTabPanel<
-    T extends StorageType, S extends Storage<T>, M extends StorageManager<T, S>>
+        T extends StorageType, S extends Storage<T>, M extends StorageManager<T, S>>
     extends TabContentPanel {
 
   protected final transient DudeWheresMyStuffPlugin plugin;

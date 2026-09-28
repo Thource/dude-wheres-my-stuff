@@ -142,8 +142,8 @@ public class MasteringMixology extends MinigamesStorage {
 
     updateLastUpdated();
 
-    int newMoxResin = Integer.parseInt(widgetChildren[2].getText()
-        .replace(",", "").replace("k", ""));
+    int newMoxResin =
+        Integer.parseInt(widgetChildren[2].getText().replace(",", "").replace("k", ""));
     if (widgetChildren[2].getText().endsWith("k")) {
       newMoxResin *= 1000;
     }
@@ -151,8 +151,8 @@ public class MasteringMixology extends MinigamesStorage {
       moxResin.setQuantity(newMoxResin);
     }
 
-    int newAgaResin = Integer.parseInt(widgetChildren[5].getText()
-        .replace(",", "").replace("k", ""));
+    int newAgaResin =
+        Integer.parseInt(widgetChildren[5].getText().replace(",", "").replace("k", ""));
     if (widgetChildren[5].getText().endsWith("k")) {
       newAgaResin *= 1000;
     }
@@ -160,8 +160,8 @@ public class MasteringMixology extends MinigamesStorage {
       agaResin.setQuantity(newAgaResin);
     }
 
-    int newLyeResin = Integer.parseInt(widgetChildren[8].getText()
-        .replace(",", "").replace("k", ""));
+    int newLyeResin =
+        Integer.parseInt(widgetChildren[8].getText().replace(",", "").replace("k", ""));
     if (widgetChildren[8].getText().endsWith("k")) {
       newLyeResin *= 1000;
     }

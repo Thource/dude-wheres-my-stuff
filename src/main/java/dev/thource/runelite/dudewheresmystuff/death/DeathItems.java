@@ -34,17 +34,28 @@ public class DeathItems extends DeathStorage {
   }
 
   public void createDebugDeathpile(WorldPoint worldPoint) {
-    var deathpile = deathStorageManager.createDeathpile(RemoteDeathpileAreas.getPileArea(plugin.getClient(), worldPoint), items);
-    SwingUtilities.invokeLater(() ->
-        plugin.getClientThread().invoke(() ->
-            deathStorageManager.updateStorages(Collections.singletonList(deathpile))));
+    var deathpile =
+        deathStorageManager.createDeathpile(
+            RemoteDeathpileAreas.getPileArea(plugin.getClient(), worldPoint), items);
+    SwingUtilities.invokeLater(
+        () ->
+            plugin
+                .getClientThread()
+                .invoke(
+                    () ->
+                        deathStorageManager.updateStorages(Collections.singletonList(deathpile))));
   }
 
   public void createDebugGrave(WorldPoint worldPoint) {
-    var grave = deathStorageManager.createGrave(RemoteDeathpileAreas.getPileArea(plugin.getClient(), worldPoint), items);
-    SwingUtilities.invokeLater(() ->
-        plugin.getClientThread().invoke(() ->
-            deathStorageManager.updateStorages(Collections.singletonList(grave))));
+    var grave =
+        deathStorageManager.createGrave(
+            RemoteDeathpileAreas.getPileArea(plugin.getClient(), worldPoint), items);
+    SwingUtilities.invokeLater(
+        () ->
+            plugin
+                .getClientThread()
+                .invoke(
+                    () -> deathStorageManager.updateStorages(Collections.singletonList(grave))));
   }
 
   public void createDebugDeathbank() {
@@ -60,7 +71,8 @@ public class DeathItems extends DeathStorage {
 
   @Override
   protected void createComponentPopupMenu(StorageManager<?, ?> storageManager) {
-    if (!plugin.isDeveloperMode() || deathStorageManager.isPreviewManager()
+    if (!plugin.isDeveloperMode()
+        || deathStorageManager.isPreviewManager()
         || storagePanel == null) {
       return;
     }
@@ -70,19 +82,21 @@ public class DeathItems extends DeathStorage {
     storagePanel.setComponentPopupMenu(popupMenu);
 
     final JMenuItem createDeathpileItem = new JMenuItem("Create Deathpile");
-    createDeathpileItem.addActionListener(e -> {
-      var client = plugin.getClient();
-      createDebugDeathpile(
-          WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()));
-    });
+    createDeathpileItem.addActionListener(
+        e -> {
+          var client = plugin.getClient();
+          createDebugDeathpile(
+              WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()));
+        });
     popupMenu.add(createDeathpileItem);
 
     final JMenuItem createGrave = new JMenuItem("Create Grave");
-    createGrave.addActionListener(e -> {
-      var client = plugin.getClient();
-      createDebugGrave(
-          WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()));
-    });
+    createGrave.addActionListener(
+        e -> {
+          var client = plugin.getClient();
+          createDebugGrave(
+              WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()));
+        });
     popupMenu.add(createGrave);
 
     final JMenuItem createDeathbank = new JMenuItem("Create Deathbank");
@@ -92,21 +106,23 @@ public class DeathItems extends DeathStorage {
 
   @Override
   public void softUpdate() {
-    plugin.getClientThread().invoke(() -> {
-      items.clear();
-      items.addAll(deathStorageManager.getDeathItems());
+    plugin
+        .getClientThread()
+        .invoke(
+            () -> {
+              items.clear();
+              items.addAll(deathStorageManager.getDeathItems());
 
-      if (storagePanel != null) {
-        storagePanel.refreshItems();
+              if (storagePanel != null) {
+                storagePanel.refreshItems();
 
-        SwingUtilities.invokeLater(() -> storagePanel.update());
-      }
-    });
+                SwingUtilities.invokeLater(() -> storagePanel.update());
+              }
+            });
   }
 
   @Override
-  public void save(ConfigManager configManager, String profileKey,
-      String managerConfigKey) {
+  public void save(ConfigManager configManager, String profileKey, String managerConfigKey) {
     // No saving
   }
 

@@ -26,1488 +26,233 @@
 
 package dev.thource.runelite.dudewheresmystuff.stash;
 
-import javax.annotation.Nonnull;
+import com.google.gson.Gson;
+import dev.thource.runelite.dudewheresmystuff.JsonEnumData;
+import java.util.List;
 import lombok.Getter;
-import net.runelite.api.gameval.ItemID;
 import net.runelite.client.plugins.cluescrolls.clues.emote.STASHUnit;
 import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement;
-import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirements;
 
-// Latest update: https://oldschool.runescape.wiki/w/STASH?oldid=15102963
-
-/** StashUnit is used to define which items live at which locations. */
-// Suppress duplicate string literal warning because this class is copied from runelite
-@SuppressWarnings("java:S1192")
-@Getter
+/**
+ * StashUnit is used to define which items live at which locations.
+ *
+ * <p>The data for each unit is loaded from {@code data/StashUnitData.json}, which is generated from
+ * {@code StashUnitData} in the test source set by {@code EnumJsonGenerator}. Do not edit the JSON
+ * by hand.
+ *
+ * <p>Call {@link #load(Gson)} with the plugin's injected Gson before using any unit.
+ */
 public enum StashUnit {
-  NORTHEAST_CORNER_OF_THE_KHARAZI_JUNGLE(
-      "Kharazi Jungle",
-      "North-east corner of the Kharazi Jungle",
-      STASHUnit.NORTHEAST_CORNER_OF_THE_KHARAZI_JUNGLE,
-      new int[]{ItemID.TRAIL_GUTHIX_SCARF, ItemID.RUNE_HERALDIC_KITESHIELD1},
-      ItemRequirements.any(
-          "Any stole",
-          ItemRequirements.item(ItemID.TRAIL_GUTHIX_SCARF),
-          ItemRequirements.item(ItemID.TRAIL_SARADOMIN_SCARF),
-          ItemRequirements.item(ItemID.TRAIL_ZAMORAK_SCARF),
-          ItemRequirements.item(ItemID.TRAIL_ARMADYL_SCARF),
-          ItemRequirements.item(ItemID.TRAIL_BANDOS_SCARF),
-          ItemRequirements.item(ItemID.TRAIL_ANCIENT_SCARF)),
-      ItemRequirements.any(
-          "Any heraldic rune shield",
-          ItemRequirements.item(ItemID.RUNE_HERALDIC_KITESHIELD1),
-          ItemRequirements.item(ItemID.RUNE_HERALDIC_KITESHIELD2),
-          ItemRequirements.item(ItemID.RUNE_HERALDIC_KITESHIELD3),
-          ItemRequirements.item(ItemID.RUNE_HERALDIC_KITESHIELD4),
-          ItemRequirements.item(ItemID.RUNE_HERALDIC_KITESHIELD5))),
-  BARBARIAN_OUTPOST_OBSTACLE_COURSE(
-      "Barbarian Outpost",
-      "Barbarian Outpost obstacle course",
-      STASHUnit.BARBARIAN_OUTPOST_OBSTACLE_COURSE,
-      new int[]{ItemID.STEEL_PLATEBODY, ItemID.MAPLE_SHORTBOW, ItemID.WILDERNESS_CAPE_1},
-      ItemRequirements.item(ItemID.STEEL_PLATEBODY),
-      ItemRequirements.item(ItemID.MAPLE_SHORTBOW),
-      ItemRequirements.any(
-          "Any team cape",
-          ItemRequirements.range(ItemID.WILDERNESS_CAPE_1, ItemID.WILDERNESS_CAPE_50),
-          ItemRequirements.item(ItemID.WILDERNESS_CAPE_I),
-          ItemRequirements.item(ItemID.WILDERNESS_CAPE_X),
-          ItemRequirements.item(ItemID.WILDERNESS_CAPE_ZERO)
-      )),
-  SOUTHEAST_CORNER_OF_THE_MONASTERY(
-      "Edgeville Monastery",
-      "South-east corner of the Monastery",
-      STASHUnit.SOUTHEAST_CORNER_OF_THE_MONASTERY,
-      new int[]{ItemID.SARADOMINBOOK_COMPLETE},
-      ItemRequirements.any(
-          "Any god book",
-          ItemRequirements.item(ItemID.SARADOMINBOOK_COMPLETE),
-          ItemRequirements.item(ItemID.GUTHIXBOOK_COMPLETE),
-          ItemRequirements.item(ItemID.ZAMORAKBOOK_COMPLETE),
-          ItemRequirements.item(ItemID.ARMADYLBOOK_COMPLETE),
-          ItemRequirements.item(ItemID.BANDOSBOOK_COMPLETE),
-          ItemRequirements.item(ItemID.ZAROSBOOK_COMPLETE),
-          ItemRequirements.item(ItemID.LEAGUE_3_BOOK_SARADOMIN),
-          ItemRequirements.item(ItemID.LEAGUE_3_BOOK_GUTHIX),
-          ItemRequirements.item(ItemID.LEAGUE_3_BOOK_ZAMORAK),
-          ItemRequirements.item(ItemID.LEAGUE_3_BOOK_ARMADYL),
-          ItemRequirements.item(ItemID.LEAGUE_3_BOOK_BANDOS),
-          ItemRequirements.item(ItemID.LEAGUE_3_BOOK_ZAROS))),
-  ENTRANCE_OF_THE_CAVE_OF_DAMIS(
-      "Shadow dungeon",
-      "Entrance of the cave of Damis",
-      STASHUnit.ENTRANCE_OF_THE_CAVE_OF_DAMIS,
-      new int[]{
-          ItemID.TRAIL_GUTHIX_MITRE, ItemID.XBOWS_CROSSBOW_RUNITE, ItemID.DEATH_CLIMBINGBOOTS,
-          ItemID.FD_RING_VISIBILITY
-      },
-      ItemRequirements.any(
-          "Any mitre",
-          ItemRequirements.item(ItemID.TRAIL_GUTHIX_MITRE),
-          ItemRequirements.item(ItemID.TRAIL_SARADOMIN_MITRE),
-          ItemRequirements.item(ItemID.TRAIL_ZAMORAK_MITRE),
-          ItemRequirements.item(ItemID.TRAIL_ANCIENT_MITRE),
-          ItemRequirements.item(ItemID.TRAIL_BANDOS_MITRE),
-          ItemRequirements.item(ItemID.TRAIL_ARMADYL_MITRE)),
-      ItemRequirements.any(
-          "Rune crossbow",
-          ItemRequirements.item(ItemID.XBOWS_CROSSBOW_RUNITE),
-          ItemRequirements.item(ItemID.LEAGUE_3_RUNE_XBOW)),
-      ItemRequirements.any(
-          "Climbing boots",
-          ItemRequirements.item(ItemID.DEATH_CLIMBINGBOOTS),
-          ItemRequirements.item(ItemID.CLIMBING_BOOTS_G)),
-      ItemRequirements.any(
-          "Ring of visibility or ring of shadows",
-          ItemRequirements.item(ItemID.FD_RING_VISIBILITY),
-          ItemRequirements.item(ItemID.RING_OF_SHADOWS),
-          ItemRequirements.item(ItemID.RING_OF_SHADOWS_UNCHARGED))),
-  AGILITY_PYRAMID(
-      "Agility Pyramid",
-      "Agility Pyramid",
-      STASHUnit.AGILITY_PYRAMID,
-      new int[]{ItemID.MYSTIC_ROBE_TOP, ItemID.RUNE_HERALDIC_KITESHIELD1},
-      ItemRequirements.item(ItemID.MYSTIC_ROBE_TOP),
-      ItemRequirements.any(
-          "Any rune heraldic shield",
-          ItemRequirements.item(ItemID.RUNE_HERALDIC_KITESHIELD1),
-          ItemRequirements.item(ItemID.RUNE_HERALDIC_KITESHIELD2),
-          ItemRequirements.item(ItemID.RUNE_HERALDIC_KITESHIELD3),
-          ItemRequirements.item(ItemID.RUNE_HERALDIC_KITESHIELD4),
-          ItemRequirements.item(ItemID.RUNE_HERALDIC_KITESHIELD5))),
-  WELL_OF_VOYAGE(
-      "Iban's temple",
-      "Well of Voyage",
-      STASHUnit.WELL_OF_VOYAGE,
-      new int[]{ItemID.IBANSTAFF, ItemID.MYSTIC_ROBE_TOP_DARK, ItemID.MYSTIC_ROBE_BOTTOM_DARK},
-      ItemRequirements.any(
-          "Any iban's staff",
-          ItemRequirements.item(ItemID.IBANSTAFF),
-          ItemRequirements.item(ItemID.IBANSTAFF_UPGRADED)),
-      ItemRequirements.item(ItemID.MYSTIC_ROBE_TOP_DARK),
-      ItemRequirements.item(ItemID.MYSTIC_ROBE_BOTTOM_DARK)),
-  SOUTHEAST_CORNER_OF_THE_FISHING_PLATFORM(
-      "Fishing Platform",
-      "South-east corner of the Fishing Platform",
-      STASHUnit.SOUTHEAST_CORNER_OF_THE_FISHING_PLATFORM,
-      new int[]{ItemID.AMULET_OF_GLORY, ItemID.HUNDRED_GAUNTLETS_LEVEL_10, ItemID.DRAGON_MED_HELM},
-      ItemRequirements.any(
-          "Any amulet of glory",
-          ItemRequirements.item(ItemID.AMULET_OF_GLORY),
-          ItemRequirements.item(ItemID.AMULET_OF_GLORY_1),
-          ItemRequirements.item(ItemID.AMULET_OF_GLORY_2),
-          ItemRequirements.item(ItemID.AMULET_OF_GLORY_3),
-          ItemRequirements.item(ItemID.AMULET_OF_GLORY_4),
-          ItemRequirements.item(ItemID.AMULET_OF_GLORY_5),
-          ItemRequirements.item(ItemID.AMULET_OF_GLORY_6),
-          ItemRequirements.item(ItemID.AMULET_OF_GLORY_INF)),
-      ItemRequirements.item(ItemID.HUNDRED_GAUNTLETS_LEVEL_10),
-      ItemRequirements.any(
-          "Any dragon med helm",
-          ItemRequirements.item(ItemID.DRAGON_MED_HELM),
-          ItemRequirements.item(ItemID.BH_DRAGON_MED_HELM_CORRUPTED))),
-  DEATH_ALTAR(
-      "Death altar",
-      "Death Altar",
-      STASHUnit.DEATH_ALTAR,
-      new int[]{ItemID.RING_OF_WEALTH, ItemID.TIARA_DEATH, ItemID.CAPE_OF_LEGENDS},
-      ItemRequirements.any(
-          "Any ring of wealth",
-          ItemRequirements.item(ItemID.RING_OF_WEALTH),
-          ItemRequirements.item(ItemID.RING_OF_WEALTH_1),
-          ItemRequirements.item(ItemID.RING_OF_WEALTH_2),
-          ItemRequirements.item(ItemID.RING_OF_WEALTH_3),
-          ItemRequirements.item(ItemID.RING_OF_WEALTH_4),
-          ItemRequirements.item(ItemID.RING_OF_WEALTH_5),
-          ItemRequirements.item(ItemID.RING_OF_WEALTH_I),
-          ItemRequirements.item(ItemID.RING_OF_WEALTH_I1),
-          ItemRequirements.item(ItemID.RING_OF_WEALTH_I2),
-          ItemRequirements.item(ItemID.RING_OF_WEALTH_I3),
-          ItemRequirements.item(ItemID.RING_OF_WEALTH_I4),
-          ItemRequirements.item(ItemID.RING_OF_WEALTH_I5)),
-      ItemRequirements.item(ItemID.TIARA_DEATH),
-      ItemRequirements.item(ItemID.CAPE_OF_LEGENDS)),
-  OUTSIDE_THE_BAR_BY_THE_FIGHT_ARENA(
-      "Fight Arena pub",
-      "Outside the bar by the Fight Arena",
-      STASHUnit.OUTSIDE_THE_BAR_BY_THE_FIGHT_ARENA,
-      new int[]{ItemID.PIRATE_BANDANNA, ItemID.DRAGONSTONE_NECKLACE, ItemID.MAGIC_LONGBOW},
-      ItemRequirements.any(
-          "Any pirate bandana",
-          ItemRequirements.item(ItemID.PIRATE_BANDANNA),
-          ItemRequirements.item(ItemID.PIRATE_BANDANA_RED),
-          ItemRequirements.item(ItemID.PIRATE_BANDANA_BLUE),
-          ItemRequirements.item(ItemID.PIRATE_BANDANA_BROWN)),
-      ItemRequirements.item(ItemID.DRAGONSTONE_NECKLACE),
-      ItemRequirements.item(ItemID.MAGIC_LONGBOW)),
-  BARROWS_CHEST(
-      "Barrows chest",
-      "Barrows Chest",
-      STASHUnit.BARROWS_CHEST,
-      new int[]{
-          ItemID.BARROWS_DHAROK_HEAD,
-          ItemID.BARROWS_DHAROK_WEAPON,
-          ItemID.BARROWS_DHAROK_BODY,
-          ItemID.BARROWS_DHAROK_LEGS
-      },
-      ItemRequirements.any(
-          "Any full barrows set",
-          ItemRequirements.all(
-              ItemRequirements.any(
-                  "Ahrim's hood",
-                  ItemRequirements.item(ItemID.BARROWS_AHRIM_HEAD),
-                  ItemRequirements.range(ItemID.BARROWS_AHRIM_HEAD_100,
-                      ItemID.BARROWS_AHRIM_HEAD_BROKEN)),
-              ItemRequirements.any(
-                  "Ahrim's staff",
-                  ItemRequirements.item(ItemID.BARROWS_AHRIM_WEAPON),
-                  ItemRequirements.range(ItemID.BARROWS_AHRIM_WEAPON_100,
-                      ItemID.BARROWS_AHRIM_WEAPON_BROKEN)),
-              ItemRequirements.any(
-                  "Ahrim's robetop",
-                  ItemRequirements.item(ItemID.BARROWS_AHRIM_BODY),
-                  ItemRequirements.range(ItemID.BARROWS_AHRIM_BODY_100,
-                      ItemID.BARROWS_AHRIM_BODY_BROKEN)),
-              ItemRequirements.any(
-                  "Ahrim's robeskirt",
-                  ItemRequirements.item(ItemID.BARROWS_AHRIM_LEGS),
-                  ItemRequirements.range(ItemID.BARROWS_AHRIM_LEGS_100,
-                      ItemID.BARROWS_AHRIM_LEGS_BROKEN))),
-          ItemRequirements.all(
-              ItemRequirements.any(
-                  "Dharok's helm",
-                  ItemRequirements.item(ItemID.BARROWS_DHAROK_HEAD),
-                  ItemRequirements.range(ItemID.BARROWS_DHAROK_HEAD_100,
-                      ItemID.BARROWS_DHAROK_HEAD_BROKEN)),
-              ItemRequirements.any(
-                  "Dharok's greataxe",
-                  ItemRequirements.item(ItemID.BARROWS_DHAROK_WEAPON),
-                  ItemRequirements.range(ItemID.BARROWS_DHAROK_WEAPON_100,
-                      ItemID.BARROWS_DHAROK_WEAPON_BROKEN)),
-              ItemRequirements.any(
-                  "Dharok's platebody",
-                  ItemRequirements.item(ItemID.BARROWS_DHAROK_BODY),
-                  ItemRequirements.range(ItemID.BARROWS_DHAROK_BODY_100,
-                      ItemID.BARROWS_DHAROK_BODY_BROKEN)),
-              ItemRequirements.any(
-                  "Dharok's platelegs",
-                  ItemRequirements.item(ItemID.BARROWS_DHAROK_LEGS),
-                  ItemRequirements.range(
-                      ItemID.BARROWS_DHAROK_LEGS_100, ItemID.BARROWS_DHAROK_LEGS_BROKEN))),
-          ItemRequirements.all(
-              ItemRequirements.any(
-                  "Guthan's helm",
-                  ItemRequirements.item(ItemID.BARROWS_GUTHAN_HEAD),
-                  ItemRequirements.range(ItemID.BARROWS_GUTHAN_HEAD_100,
-                      ItemID.BARROWS_GUTHAN_HEAD_BROKEN)),
-              ItemRequirements.any(
-                  "Guthan's warspear",
-                  ItemRequirements.item(ItemID.BARROWS_GUTHAN_WEAPON),
-                  ItemRequirements.range(ItemID.BARROWS_GUTHAN_WEAPON_100,
-                      ItemID.BARROWS_GUTHAN_WEAPON_BROKEN)),
-              ItemRequirements.any(
-                  "Guthan's platebody",
-                  ItemRequirements.item(ItemID.BARROWS_GUTHAN_BODY),
-                  ItemRequirements.range(ItemID.BARROWS_GUTHAN_BODY_100,
-                      ItemID.BARROWS_GUTHAN_BODY_BROKEN)),
-              ItemRequirements.any(
-                  "Guthan's chainskirt",
-                  ItemRequirements.item(ItemID.BARROWS_GUTHAN_LEGS),
-                  ItemRequirements.range(
-                      ItemID.BARROWS_GUTHAN_LEGS_100, ItemID.BARROWS_GUTHAN_LEGS_BROKEN))),
-          ItemRequirements.all(
-              ItemRequirements.any(
-                  "Karil's coif",
-                  ItemRequirements.item(ItemID.BARROWS_KARIL_HEAD),
-                  ItemRequirements.range(ItemID.BARROWS_KARIL_HEAD_100,
-                      ItemID.BARROWS_KARIL_HEAD_BROKEN)),
-              ItemRequirements.any(
-                  "Karil's crossbow",
-                  ItemRequirements.item(ItemID.BARROWS_KARIL_WEAPON),
-                  ItemRequirements.range(ItemID.BARROWS_KARIL_WEAPON_100,
-                      ItemID.BARROWS_KARIL_WEAPON_BROKEN)),
-              ItemRequirements.any(
-                  "Karil's leathertop",
-                  ItemRequirements.item(ItemID.BARROWS_KARIL_BODY),
-                  ItemRequirements.range(ItemID.BARROWS_KARIL_BODY_100,
-                      ItemID.BARROWS_KARIL_BODY_BROKEN)),
-              ItemRequirements.any(
-                  "Karil's leatherskirt",
-                  ItemRequirements.item(ItemID.BARROWS_KARIL_LEGS),
-                  ItemRequirements.range(
-                      ItemID.BARROWS_KARIL_LEGS_100, ItemID.BARROWS_KARIL_LEGS_BROKEN))),
-          ItemRequirements.all(
-              ItemRequirements.any(
-                  "Torag's helm",
-                  ItemRequirements.item(ItemID.BARROWS_TORAG_HEAD),
-                  ItemRequirements.range(ItemID.BARROWS_TORAG_HEAD_100,
-                      ItemID.BARROWS_TORAG_HEAD_BROKEN)),
-              ItemRequirements.any(
-                  "Torag's hammers",
-                  ItemRequirements.item(ItemID.BARROWS_TORAG_WEAPON),
-                  ItemRequirements.range(ItemID.BARROWS_TORAG_WEAPON_100,
-                      ItemID.BARROWS_TORAG_WEAPON_BROKEN)),
-              ItemRequirements.any(
-                  "Torag's platebody",
-                  ItemRequirements.item(ItemID.BARROWS_TORAG_BODY),
-                  ItemRequirements.range(ItemID.BARROWS_TORAG_BODY_100,
-                      ItemID.BARROWS_TORAG_BODY_BROKEN)),
-              ItemRequirements.any(
-                  "Torag's platelegs",
-                  ItemRequirements.item(ItemID.BARROWS_TORAG_LEGS),
-                  ItemRequirements.range(ItemID.BARROWS_TORAG_LEGS_100,
-                      ItemID.BARROWS_TORAG_LEGS_BROKEN))),
-          ItemRequirements.all(
-              ItemRequirements.any(
-                  "Verac's helm",
-                  ItemRequirements.item(ItemID.BARROWS_VERAC_HEAD),
-                  ItemRequirements.range(ItemID.BARROWS_VERAC_HEAD_100,
-                      ItemID.BARROWS_VERAC_HEAD_BROKEN)),
-              ItemRequirements.any(
-                  "Verac's flail",
-                  ItemRequirements.item(ItemID.BARROWS_VERAC_WEAPON),
-                  ItemRequirements.range(ItemID.BARROWS_VERAC_WEAPON_100,
-                      ItemID.BARROWS_VERAC_WEAPON_BROKEN)),
-              ItemRequirements.any(
-                  "Verac's brassard",
-                  ItemRequirements.item(ItemID.BARROWS_VERAC_BODY),
-                  ItemRequirements.range(ItemID.BARROWS_VERAC_BODY_100,
-                      ItemID.BARROWS_VERAC_BODY_BROKEN)),
-              ItemRequirements.any(
-                  "Verac's plateskirt",
-                  ItemRequirements.item(ItemID.BARROWS_VERAC_LEGS),
-                  ItemRequirements.range(
-                      ItemID.BARROWS_VERAC_LEGS_100, ItemID.BARROWS_VERAC_LEGS_BROKEN))))),
-  IN_THE_MIDDLE_OF_JIGGIG(
-      "Jiggig",
-      "In the middle of Jiggig",
-      STASHUnit.IN_THE_MIDDLE_OF_JIGGIG,
-      new int[]{ItemID.TRAIL_HERALDIC_HELM_1_RUNE, ItemID.RUNE_SPEAR, ItemID.RUNE_PLATELEGS},
-      ItemRequirements.range(ItemID.TRAIL_HERALDIC_HELM_1_RUNE, ItemID.TRAIL_HERALDIC_HELM_5_RUNE),
-      ItemRequirements.item(ItemID.RUNE_SPEAR),
-      ItemRequirements.item(ItemID.RUNE_PLATELEGS)),
-  BY_THE_BEAR_CAGE_IN_VARROCK_PALACE_GARDENS(
-      "Varrock Castle",
-      "By the bear cage in Varrock Palace gardens",
-      STASHUnit.BY_THE_BEAR_CAGE_IN_VARROCK_PALACE_GARDENS,
-      new int[]{ItemID.ZGS},
-      ItemRequirements.any(
-          "Zamorak godsword",
-          ItemRequirements.item(ItemID.ZGS),
-          ItemRequirements.item(ItemID.ZGSG))),
-  BEHIND_MISS_SCHISM_IN_DRAYNOR_VILLAGE(
-      "Draynor Village",
-      "Behind Miss Schism in Draynor Village",
-      STASHUnit.BEHIND_MISS_SCHISM_IN_DRAYNOR_VILLAGE,
-      new int[]{ItemID.ABYSSAL_WHIP, ItemID.CAPE_OF_LEGENDS, ItemID.DAGGANOTH_RANGED_LEGS},
-      ItemRequirements.any(
-          "Abyssal whip",
-          ItemRequirements.item(ItemID.ABYSSAL_WHIP),
-          ItemRequirements.item(ItemID.ABYSSAL_WHIP_LAVA),
-          ItemRequirements.item(ItemID.ABYSSAL_WHIP_ICE),
-          ItemRequirements.item(ItemID.LEAGUE_3_WHIP),
-          ItemRequirements.item(ItemID.ABYSSAL_TENTACLE),
-          ItemRequirements.item(ItemID.LEAGUE_3_WHIP_TENTACLE)),
-      ItemRequirements.item(ItemID.CAPE_OF_LEGENDS),
-      ItemRequirements.item(ItemID.DAGGANOTH_RANGED_LEGS)),
-  CRYSTALLINE_MAPLE_TREES(
-      "North of Prifddinas",
-      "North of Prifddinas by several maple trees",
-      STASHUnit.CRYSTALLINE_MAPLE_TREES,
-      new int[]{ItemID.NATURE_STAFF_UNCHARGED, ItemID.TIARA_NATURE},
-      ItemRequirements.range(ItemID.NATURE_STAFF_UNCHARGED, ItemID.NATURE_STAFF_CHARGED),
-      ItemRequirements.item(ItemID.TIARA_NATURE)),
-  DIGSITE(
-      "Digsite",
-      "Digsite",
-      STASHUnit.DIGSITE,
-      new int[]{ItemID.GNOME_HAT_GREEN, ItemID.SNAKESKIN_BOOTS, ItemID.IRON_PICKAXE},
-      ItemRequirements.item(ItemID.GNOME_HAT_GREEN),
-      ItemRequirements.item(ItemID.SNAKESKIN_BOOTS),
-      ItemRequirements.item(ItemID.IRON_PICKAXE)),
-  SOUTH_OF_THE_SHRINE_IN_TAI_BWO_WANNAI_VILLAGE(
-      "Tai Bwo Wannai",
-      "South of the shrine in Tai Bwo Wannai Village",
-      STASHUnit.SOUTH_OF_THE_SHRINE_IN_TAI_BWO_WANNAI_VILLAGE,
-      new int[]{ItemID.DRAGONHIDE_CHAPS, ItemID.RING_OF_DUELING_1, ItemID.MITHRIL_MED_HELM},
-      ItemRequirements.item(ItemID.DRAGONHIDE_CHAPS),
-      ItemRequirements.any(
-          "Ring of dueling",
-          ItemRequirements.item(ItemID.RING_OF_DUELING_1),
-          ItemRequirements.item(ItemID.RING_OF_DUELING_2),
-          ItemRequirements.item(ItemID.RING_OF_DUELING_3),
-          ItemRequirements.item(ItemID.RING_OF_DUELING_4),
-          ItemRequirements.item(ItemID.RING_OF_DUELING_5),
-          ItemRequirements.item(ItemID.RING_OF_DUELING_6),
-          ItemRequirements.item(ItemID.RING_OF_DUELING_7),
-          ItemRequirements.item(ItemID.RING_OF_DUELING_8)),
-      ItemRequirements.item(ItemID.MITHRIL_MED_HELM)),
-  WEST_OF_THE_SHAYZIEN_COMBAT_RING(
-      "Shayzien Combat Ring",
-      "North of the Shayzien combat ring",
-      STASHUnit.WEST_OF_THE_SHAYZIEN_COMBAT_RING,
-      new int[]{ItemID.ADAMANT_PLATELEGS, ItemID.ADAMANT_PLATEBODY, ItemID.ADAMANT_FULL_HELM},
-      ItemRequirements.item(ItemID.ADAMANT_PLATELEGS),
-      ItemRequirements.item(ItemID.ADAMANT_PLATEBODY),
-      ItemRequirements.item(ItemID.ADAMANT_FULL_HELM)),
-  TENT_IN_LORD_IORWERTHS_ENCAMPMENT(
-      "Lord Iorwerth's camp",
-      "Tent in Lord Iorwerth's encampment",
-      STASHUnit.TENT_IN_LORD_IORWERTHS_ENCAMPMENT,
-      new int[]{ItemID.CRYSTAL_BOW},
-      ItemRequirements.any(
-          "Crystal Bow",
-          ItemRequirements.item(ItemID.CRYSTAL_BOW),
-          ItemRequirements.item(ItemID.CRYSTAL_BOW_2500),
-          ItemRequirements.item(ItemID.BOW_OF_FAERDHINEN),
-          ItemRequirements.item(ItemID.BOW_OF_FAERDHINEN_INFINITE),
-          ItemRequirements.item(ItemID.BOW_OF_FAERDHINEN_INFINITE_DUMMY),
-          ItemRequirements.item(ItemID.BOW_OF_FAERDHINEN_INFINITE_ITHELL),
-          ItemRequirements.item(ItemID.BOW_OF_FAERDHINEN_INFINITE_IORWERTH),
-          ItemRequirements.item(ItemID.BOW_OF_FAERDHINEN_INFINITE_TRAHAEARN),
-          ItemRequirements.item(ItemID.BOW_OF_FAERDHINEN_INFINITE_CADARN),
-          ItemRequirements.item(ItemID.BOW_OF_FAERDHINEN_INFINITE_CRWYS),
-          ItemRequirements.item(ItemID.BOW_OF_FAERDHINEN_INFINITE_MEILYR),
-          ItemRequirements.item(ItemID.BOW_OF_FAERDHINEN_INFINITE_AMLODD),
-          ItemRequirements.item(ItemID.BOW_OF_FAERDHINEN_INFINITE_DEADMAN),
-          ItemRequirements.item(ItemID.BOW_OF_FAERDHINEN_INACTIVE))),
-  OUTSIDE_THE_LEGENDS_GUILD_GATES(
-      "Legend's Guild",
-      "Outside the Legends' Guild gates",
-      STASHUnit.OUTSIDE_THE_LEGENDS_GUILD_GATES,
-      new int[]{ItemID.IRON_PLATELEGS, ItemID.OAK_LONGBOW, ItemID.STRUNG_EMERALD_AMULET},
-      ItemRequirements.item(ItemID.IRON_PLATELEGS),
-      ItemRequirements.item(ItemID.OAK_LONGBOW),
-      ItemRequirements.item(ItemID.STRUNG_EMERALD_AMULET)),
-  OUTSIDE_THE_LEGENDS_GUILD_DOOR(
-      "Legend's Guild",
-      "Outside the Legends' Guild door",
-      STASHUnit.OUTSIDE_THE_LEGENDS_GUILD_DOOR,
-      new int[]{ItemID.CAPE_OF_LEGENDS, ItemID.DRAGON_BATTLEAXE, ItemID.AMULET_OF_GLORY},
-      ItemRequirements.item(ItemID.CAPE_OF_LEGENDS),
-      ItemRequirements.any(
-          "Any dragon battleaxe",
-          ItemRequirements.item(ItemID.DRAGON_BATTLEAXE),
-          ItemRequirements.item(ItemID.BH_DRAGON_BATTLEAXE_CORRUPTED)),
-      ItemRequirements.any(
-          "Any amulet of glory",
-          ItemRequirements.item(ItemID.AMULET_OF_GLORY),
-          ItemRequirements.item(ItemID.AMULET_OF_GLORY_1),
-          ItemRequirements.item(ItemID.AMULET_OF_GLORY_2),
-          ItemRequirements.item(ItemID.AMULET_OF_GLORY_3),
-          ItemRequirements.item(ItemID.AMULET_OF_GLORY_4),
-          ItemRequirements.item(ItemID.AMULET_OF_GLORY_5),
-          ItemRequirements.item(ItemID.AMULET_OF_GLORY_6),
-          ItemRequirements.item(ItemID.AMULET_OF_GLORY_INF))),
-  MUBARIZS_ROOM_AT_THE_DUEL_ARENA(
-      "Emir's Arena",
-      "Mubariz's room at the Emir's Arena",
-      STASHUnit.EMIRS_ARENA_TICKET_OFFICE,
-      new int[]{ItemID.IRON_CHAINBODY, ItemID.LEATHER_CHAPS, ItemID.COIF},
-      ItemRequirements.item(ItemID.IRON_CHAINBODY),
-      ItemRequirements.item(ItemID.LEATHER_CHAPS),
-      ItemRequirements.item(ItemID.COIF)),
-  TOP_FLOOR_OF_THE_LIGHTHOUSE(
-      "Lighthouse",
-      "Top floor of the Lighthouse",
-      STASHUnit.TOP_FLOOR_OF_THE_LIGHTHOUSE,
-      new int[]{ItemID.BLUE_DRAGONHIDE_BODY, ItemID.BLUE_DRAGON_VAMBRACES},
-      ItemRequirements.item(ItemID.BLUE_DRAGONHIDE_BODY),
-      ItemRequirements.item(ItemID.BLUE_DRAGON_VAMBRACES)),
-  SHILO_VILLAGE_BANK(
-      "Shilo Village",
-      "Shilo Village bank",
-      STASHUnit.SHILO_VILLAGE_BANK,
-      new int[]{ItemID.MYSTIC_HAT, ItemID.CAVE_GOBLIN_BONE_SPEAR, ItemID.RUNE_PLATEBODY},
-      ItemRequirements.item(ItemID.MYSTIC_HAT),
-      ItemRequirements.item(ItemID.CAVE_GOBLIN_BONE_SPEAR),
-      ItemRequirements.item(ItemID.RUNE_PLATEBODY)),
-  NEAR_A_LADDER_IN_THE_WILDERNESS_LAVA_MAZE(
-      "Lava maze",
-      "Near a ladder in the Wilderness Lava Maze",
-      STASHUnit.NEAR_A_LADDER_IN_THE_WILDERNESS_LAVA_MAZE,
-      new int[]{ItemID.BLACK_DRAGONHIDE_CHAPS, ItemID.HUNTING_LIGHT_CAPE,
-          ItemID.HUNDRED_ROLLINGPIN},
-      ItemRequirements.item(ItemID.BLACK_DRAGONHIDE_CHAPS),
-      ItemRequirements.any(
-          "Spotted cape",
-          ItemRequirements.item(ItemID.HUNTING_LIGHT_CAPE),
-          ItemRequirements.item(ItemID.HUNTING_LIGHT_CAPE_WORN)),
-      ItemRequirements.item(ItemID.HUNDRED_ROLLINGPIN)),
-  OUTSIDE_KRIL_TSUTSAROTHS_ROOM(
-      "K'ril's chamber",
-      "Outside K'ril Tsutsaroth's room",
-      STASHUnit.OUTSIDE_KRIL_TSUTSAROTHS_ROOM,
-      new int[]{ItemID.RUNE_FULL_HELM_ZAMORAK, ItemID.SHADOW_MAJ_SHADOW_SWORD},
-      ItemRequirements.item(ItemID.RUNE_FULL_HELM_ZAMORAK),
-      ItemRequirements.item(ItemID.SHADOW_MAJ_SHADOW_SWORD)),
-  TAVERLEY_STONE_CIRCLE(
-      "Taverley stone circle",
-      "Taverley Stone Circle",
-      STASHUnit.TAVERLEY_STONE_CIRCLE,
-      new int[]{ItemID.BLUEWIZHAT, ItemID.BRONZE_2H_SWORD, ItemID.HAM_BOOTS},
-      ItemRequirements.item(ItemID.BLUEWIZHAT),
-      ItemRequirements.item(ItemID.BRONZE_2H_SWORD),
-      ItemRequirements.item(ItemID.HAM_BOOTS)),
-  NORTH_OF_EVIL_DAVES_HOUSE_IN_EDGEVILLE(
-      "Edgeville",
-      "North of Evil Dave's house in Edgeville",
-      STASHUnit.NORTH_OF_EVIL_DAVES_HOUSE_IN_EDGEVILLE,
-      new int[]{ItemID.BROWN_APRON, ItemID.LEATHER_BOOTS, ItemID.LEATHER_GLOVES},
-      ItemRequirements.item(ItemID.BROWN_APRON),
-      ItemRequirements.item(ItemID.LEATHER_BOOTS),
-      ItemRequirements.item(ItemID.LEATHER_GLOVES)),
-  OGRE_CAGE_IN_KING_LATHAS_TRAINING_CAMP(
-      "King Lathas' camp",
-      "Ogre cage in the Ardougne Training Camp",
-      STASHUnit.OGRE_CAGE_IN_KING_LATHAS_TRAINING_CAMP,
-      new int[]{ItemID.DRAGONHIDE_BODY, ItemID.DRAGONHIDE_CHAPS, ItemID.STEEL_SQ_SHIELD},
-      ItemRequirements.item(ItemID.DRAGONHIDE_BODY),
-      ItemRequirements.item(ItemID.DRAGONHIDE_CHAPS),
-      ItemRequirements.item(ItemID.STEEL_SQ_SHIELD)),
-  ENTRANA_CHAPEL(
-      "Entrana church",
-      "Entrana Chapel",
-      STASHUnit.ENTRANA_CHAPEL,
-      new int[]{ItemID.BLACK_DRAGON_VAMBRACES, ItemID.BLACK_DRAGONHIDE_CHAPS,
-          ItemID.BLACK_DRAGONHIDE_BODY},
-      ItemRequirements.item(ItemID.BLACK_DRAGON_VAMBRACES),
-      ItemRequirements.item(ItemID.BLACK_DRAGONHIDE_CHAPS),
-      ItemRequirements.item(ItemID.BLACK_DRAGONHIDE_BODY)),
-  NEAR_THE_ENTRANA_FERRY_IN_PORT_SARIM(
-      "Port Sarim",
-      "Near the Entrana ferry in Port Sarim",
-      STASHUnit.NEAR_THE_ENTRANA_FERRY_IN_PORT_SARIM,
-      new int[]{ItemID.COIF, ItemID.STEEL_PLATESKIRT, ItemID.SAPPHIRE_NECKLACE},
-      ItemRequirements.item(ItemID.COIF),
-      ItemRequirements.item(ItemID.STEEL_PLATESKIRT),
-      ItemRequirements.item(ItemID.SAPPHIRE_NECKLACE)),
-  OUTSIDE_THE_DIGSITE_EXAM_CENTRE(
-      "Exam Centre",
-      "Outside the Digsite Exam Centre",
-      STASHUnit.OUTSIDE_THE_DIGSITE_EXAM_CENTRE,
-      new int[]{ItemID.WHITE_APRON, ItemID.GNOME_BOOTS_GREEN, ItemID.LEATHER_GLOVES},
-      ItemRequirements.item(ItemID.WHITE_APRON),
-      ItemRequirements.item(ItemID.GNOME_BOOTS_GREEN),
-      ItemRequirements.item(ItemID.LEATHER_GLOVES)),
-  ON_THE_BRIDGE_TO_THE_MISTHALIN_WIZARDS_TOWER(
-      "Wizards' Tower",
-      "On the bridge to the Misthalin Wizards' Tower",
-      STASHUnit.ON_THE_BRIDGE_TO_THE_MISTHALIN_WIZARDS_TOWER,
-      new int[]{ItemID.IRON_MED_HELM, ItemID.EMERALD_RING, ItemID.WHITE_APRON},
-      ItemRequirements.item(ItemID.IRON_MED_HELM),
-      ItemRequirements.item(ItemID.EMERALD_RING),
-      ItemRequirements.item(ItemID.WHITE_APRON)),
-  UPSTAIRS_IN_THE_ARDOUGNE_WINDMILL(
-      "East Ardougne",
-      "Upstairs in the Ardougne windmill",
-      STASHUnit.UPSTAIRS_IN_THE_ARDOUGNE_WINDMILL,
-      new int[]{ItemID.GNOME_ROBETOP_BLUE, ItemID.HAM_ROBE, ItemID.TIARA},
-      ItemRequirements.item(ItemID.GNOME_ROBETOP_BLUE),
-      ItemRequirements.item(ItemID.HAM_ROBE),
-      ItemRequirements.item(ItemID.TIARA)),
-  OUTSIDE_THE_SEERS_VILLAGE_COURTHOUSE(
-      "Seers Village",
-      "Outside the Seers' Village courthouse",
-      STASHUnit.OUTSIDE_THE_SEERS_VILLAGE_COURTHOUSE,
-      new int[]{ItemID.ADAMANT_HALBERD, ItemID.MYSTIC_ROBE_BOTTOM, ItemID.DIAMOND_RING},
-      ItemRequirements.item(ItemID.ADAMANT_HALBERD),
-      ItemRequirements.item(ItemID.MYSTIC_ROBE_BOTTOM),
-      ItemRequirements.item(ItemID.DIAMOND_RING)),
-  OUTSIDE_THE_WILDERNESS_AXE_HUT(
-      "Magic axe hut",
-      "Outside the Wilderness axe hut",
-      STASHUnit.OUTSIDE_THE_WILDERNESS_AXE_HUT,
-      new int[]{ItemID.TRAIL_FLARED_PANTS, ItemID.LOCKPICK},
-      ItemRequirements.item(ItemID.TRAIL_FLARED_PANTS),
-      ItemRequirements.item(ItemID.LOCKPICK)),
-  NORTH_OF_MOUNT_KARUULM(
-      "Mount Karuulm",
-      "North of Mount Karuulm",
-      STASHUnit.NORTH_OF_MOUNT_KARUULM,
-      new int[]{ItemID.ADAMNT_WARHAMMER, ItemID.RING_OF_LIFE, ItemID.MITHRIL_ARMOURED_BOOTS},
-      ItemRequirements.item(ItemID.ADAMNT_WARHAMMER),
-      ItemRequirements.item(ItemID.RING_OF_LIFE),
-      ItemRequirements.item(ItemID.MITHRIL_ARMOURED_BOOTS)),
-  HICKTONS_ARCHERY_EMPORIUM(
-      "Catherby",
-      "Hickton's Archery Emporium",
-      STASHUnit.HICKTONS_ARCHERY_EMPORIUM,
-      new int[]{ItemID.GNOME_BOOTS_BLUE, ItemID.HARDLEATHER_BODY, ItemID.SILVER_SICKLE},
-      ItemRequirements.item(ItemID.GNOME_BOOTS_BLUE),
-      ItemRequirements.item(ItemID.HARDLEATHER_BODY),
-      ItemRequirements.item(ItemID.SILVER_SICKLE)),
-  OUTSIDE_HARRYS_FISHING_SHOP_IN_CATHERBY(
-      "Catherby",
-      "Outside Harry's Fishing Shop in Catherby",
-      STASHUnit.OUTSIDE_HARRYS_FISHING_SHOP_IN_CATHERBY,
-      new int[]{ItemID.ADAMANT_SQ_SHIELD, ItemID.DTTD_BONE_DAGGER, ItemID.MITHRIL_PLATEBODY},
-      ItemRequirements.item(ItemID.ADAMANT_SQ_SHIELD),
-      ItemRequirements.item(ItemID.DTTD_BONE_DAGGER),
-      ItemRequirements.item(ItemID.MITHRIL_PLATEBODY)),
-  GNOME_STRONGHOLD_BALANCING_ROPE(
-      "Gnome Stronghold",
-      "Gnome Stronghold balancing rope",
-      STASHUnit.GNOME_STRONGHOLD_BALANCING_ROPE,
-      new int[]{ItemID.STEEL_KITESHIELD, ItemID.RING_OF_FORGING, ItemID.DRAGONHIDE_CHAPS},
-      ItemRequirements.item(ItemID.STEEL_KITESHIELD),
-      ItemRequirements.item(ItemID.RING_OF_FORGING),
-      ItemRequirements.item(ItemID.DRAGONHIDE_CHAPS)),
-  TZHAAR_GEM_STORE(
-      "Tzhaar gem store",
-      "TzHaar gem store",
-      STASHUnit.TZHAAR_GEM_STORE,
-      new int[]{ItemID.TZHAAR_CAPE_FIRE, ItemID.TZHAAR_THROWINGRING},
-      ItemRequirements.any(
-          "Fire cape",
-          ItemRequirements.item(ItemID.TZHAAR_CAPE_FIRE),
-          ItemRequirements.item(ItemID.TZHAAR_CAPE_FIRE_TROUVER),
-          ItemRequirements.item(ItemID.SKILLCAPE_MAX_FIRECAPE),
-          ItemRequirements.item(ItemID.SKILLCAPE_MAX_FIRECAPE_TROUVER),
-          ItemRequirements.item(ItemID.INFERNAL_CAPE),
-          ItemRequirements.item(ItemID.INFERNAL_CAPE_TROUVER),
-          ItemRequirements.item(ItemID.SKILLCAPE_MAX_INFERNALCAPE),
-          ItemRequirements.item(ItemID.SKILLCAPE_MAX_INFERNALCAPE_TROUVER)),
-      ItemRequirements.item(ItemID.TZHAAR_THROWINGRING)),
-  OUTSIDE_DRAYNOR_VILLAGE_JAIL(
-      "Draynor Village jail",
-      "Outside Draynor Village jail",
-      STASHUnit.OUTSIDE_DRAYNOR_VILLAGE_JAIL,
-      new int[]{ItemID.ADAMANT_SWORD, ItemID.STRUNG_SAPPHIRE_AMULET, ItemID.ADAMANT_PLATESKIRT},
-      ItemRequirements.item(ItemID.ADAMANT_SWORD),
-      ItemRequirements.item(ItemID.STRUNG_SAPPHIRE_AMULET),
-      ItemRequirements.item(ItemID.ADAMANT_PLATESKIRT)),
-  CROSSROADS_NORTH_OF_DRAYNOR_VILLAGE(
-      "Draynor Village",
-      "Crossroads north of Draynor Village",
-      STASHUnit.CROSSROADS_NORTH_OF_DRAYNOR_VILLAGE,
-      new int[]{ItemID.IRON_CHAINBODY, ItemID.SAPPHIRE_RING, ItemID.LONGBOW},
-      ItemRequirements.item(ItemID.IRON_CHAINBODY),
-      ItemRequirements.item(ItemID.SAPPHIRE_RING),
-      ItemRequirements.item(ItemID.LONGBOW)),
-  OUTSIDE_THE_FALADOR_PARTY_ROOM(
-      "Falador Party Room",
-      "Outside the Falador Party Room",
-      STASHUnit.OUTSIDE_THE_FALADOR_PARTY_ROOM,
-      new int[]{ItemID.STEEL_FULL_HELM, ItemID.STEEL_PLATEBODY, ItemID.IRON_PLATESKIRT},
-      ItemRequirements.item(ItemID.STEEL_FULL_HELM),
-      ItemRequirements.item(ItemID.STEEL_PLATEBODY),
-      ItemRequirements.item(ItemID.IRON_PLATESKIRT)),
-  NEAR_A_SHED_IN_LUMBRIDGE_SWAMP(
-      "Lumbridge swamp",
-      "Near a shed in Lumbridge Swamp",
-      STASHUnit.NEAR_A_SHED_IN_LUMBRIDGE_SWAMP,
-      new int[]{ItemID.BRONZE_DAGGER, ItemID.IRON_FULL_HELM, ItemID.GOLD_RING},
-      ItemRequirements.item(ItemID.BRONZE_DAGGER),
-      ItemRequirements.item(ItemID.IRON_FULL_HELM),
-      ItemRequirements.item(ItemID.GOLD_RING)),
-  LUMBRIDGE_SWAMP_CAVES(
-      "Lumbridge swamp caves",
-      "Lumbridge Swamp caves",
-      STASHUnit.LUMBRIDGE_SWAMP_CAVES,
-      new int[]{ItemID.STAFF_OF_AIR, ItemID.BRONZE_FULL_HELM, ItemID.AMULET_OF_POWER},
-      ItemRequirements.item(ItemID.STAFF_OF_AIR),
-      ItemRequirements.item(ItemID.BRONZE_FULL_HELM),
-      ItemRequirements.item(ItemID.AMULET_OF_POWER)),
-  OUTSIDE_THE_GREAT_PYRAMID_OF_SOPHANEM(
-      "Pyramid Of Sophanem",
-      "Outside the great pyramid of Sophanem",
-      STASHUnit.OUTSIDE_THE_GREAT_PYRAMID_OF_SOPHANEM,
-      new int[]{ItemID.RING_OF_LIFE, ItemID.AMULET_OF_GLORY, ItemID.ADAMANT_2H_SWORD},
-      ItemRequirements.item(ItemID.RING_OF_LIFE),
-      ItemRequirements.item(ItemID.AMULET_OF_GLORY),
-      ItemRequirements.item(ItemID.ADAMANT_2H_SWORD)),
-  CENTRE_OF_CANIFIS(
-      "Canifis",
-      "Centre of Canifis",
-      STASHUnit.CENTRE_OF_CANIFIS,
-      new int[]{ItemID.GNOME_ROBETOP_GREEN, ItemID.MITHRIL_PLATELEGS, ItemID.IRON_2H_SWORD},
-      ItemRequirements.item(ItemID.GNOME_ROBETOP_GREEN),
-      ItemRequirements.item(ItemID.MITHRIL_PLATELEGS),
-      ItemRequirements.item(ItemID.IRON_2H_SWORD)),
-  KING_BLACK_DRAGONS_LAIR(
-      "King black dragon's lair",
-      "King Black Dragon's lair",
-      STASHUnit.KING_BLACK_DRAGONS_LAIR,
-      new int[]{ItemID.BLACK_DRAGONHIDE_BODY, ItemID.BLACK_DRAGON_VAMBRACES,
-          ItemID.DRAGONMASK_BLACK},
-      ItemRequirements.item(ItemID.BLACK_DRAGONHIDE_BODY),
-      ItemRequirements.item(ItemID.BLACK_DRAGON_VAMBRACES),
-      ItemRequirements.item(ItemID.DRAGONMASK_BLACK)),
-  SOUTH_OF_THE_GRAND_EXCHANGE(
-      "Grand Exchange",
-      "South of the Grand Exchange",
-      STASHUnit.SOUTH_OF_THE_GRAND_EXCHANGE,
-      new int[]{ItemID.PINK_SKIRT, ItemID.GNOME_ROBETOP_PINK, ItemID.TIARA_BODY},
-      ItemRequirements.item(ItemID.PINK_SKIRT),
-      ItemRequirements.item(ItemID.GNOME_ROBETOP_PINK),
-      ItemRequirements.item(ItemID.TIARA_BODY)),
-  OUTSIDE_MUDKNUCKLES_HUT(
-      "Goblin Village",
-      "Outside Mudknuckles' hut",
-      STASHUnit.OUTSIDE_MUDKNUCKLES_HUT,
-      new int[]{ItemID.RUNE_PLATEBODY_BANDOS, ItemID.TRAIL_BANDOS_CLOAK, ItemID.BGS},
-      ItemRequirements.item(ItemID.RUNE_PLATEBODY_BANDOS),
-      ItemRequirements.item(ItemID.TRAIL_BANDOS_CLOAK),
-      ItemRequirements.any(
-          "Bandos godsword",
-          ItemRequirements.item(ItemID.BGS),
-          ItemRequirements.item(ItemID.BGSG))),
-  AL_KHARID_SCORPION_MINE(
-      "Al Kharid mine",
-      "Al Kharid scorpion mine",
-      STASHUnit.AL_KHARID_SCORPION_MINE,
-      new int[]{ItemID.DESERT_SHIRT, ItemID.LEATHER_GLOVES, ItemID.LEATHER_BOOTS},
-      ItemRequirements.item(ItemID.DESERT_SHIRT),
-      ItemRequirements.item(ItemID.LEATHER_GLOVES),
-      ItemRequirements.item(ItemID.LEATHER_BOOTS)),
-  INSIDE_THE_DIGSITE_EXAM_CENTRE(
-      "Exam Centre",
-      "Inside the Digsite Exam Centre",
-      STASHUnit.INSIDE_THE_DIGSITE_EXAM_CENTRE,
-      new int[]{ItemID.MYSTIC_FIRE_STAFF, ItemID.JEWL_DIAMOND_BRACELET, ItemID.RUNE_ARMOURED_BOOTS},
-      ItemRequirements.item(ItemID.MYSTIC_FIRE_STAFF),
-      ItemRequirements.item(ItemID.JEWL_DIAMOND_BRACELET),
-      ItemRequirements.item(ItemID.RUNE_ARMOURED_BOOTS)),
-  OUTSIDE_THE_SLAYER_TOWER_GARGOYLE_ROOM(
-      "Slayer Tower",
-      "Outside the Slayer Tower gargoyle room",
-      STASHUnit.OUTSIDE_THE_SLAYER_TOWER_GARGOYLE_ROOM,
-      new int[]{ItemID.DAGANOTH_CAVE_MAGIC_SHORTBOW, ItemID.JEWL_BRACELET_OF_COMBAT_4,
-          ItemID.FRIS_KINGLY_HELM},
-      ItemRequirements.item(ItemID.DAGANOTH_CAVE_MAGIC_SHORTBOW),
-      ItemRequirements.any(
-          "Combat bracelet",
-          ItemRequirements.range(ItemID.JEWL_BRACELET_OF_COMBAT_4, ItemID.JEWL_BRACELET_OF_COMBAT),
-          ItemRequirements.item(ItemID.JEWL_BRACELET_OF_COMBAT_5),
-          ItemRequirements.item(ItemID.JEWL_BRACELET_OF_COMBAT_6)),
-      ItemRequirements.any(
-          "Helm of neitiznot",
-          ItemRequirements.item(ItemID.FRIS_KINGLY_HELM),
-          ItemRequirements.item(ItemID.BH_FRIS_KINGLY_HELM_CORRUPTED)
-      )
-  ),
-  OUTSIDE_THE_FISHING_GUILD(
-      "Fishing Guild",
-      "Outside the Fishing Guild",
-      STASHUnit.OUTSIDE_THE_FISHING_GUILD,
-      new int[]{ItemID.EMERALD_RING, ItemID.STRUNG_SAPPHIRE_AMULET, ItemID.BRONZE_CHAINBODY},
-      ItemRequirements.item(ItemID.EMERALD_RING),
-      ItemRequirements.item(ItemID.STRUNG_SAPPHIRE_AMULET),
-      ItemRequirements.item(ItemID.BRONZE_CHAINBODY)),
-  SHANTAY_PASS(
-      "Shantay Pass",
-      "Shantay Pass",
-      STASHUnit.SHANTAY_PASS,
-      new int[]{ItemID.SNELM_POINT_BLUE, ItemID.STAFF_OF_AIR, ItemID.BRONZE_SQ_SHIELD},
-      ItemRequirements.any(
-          "Bruise blue snelm (pointed)", ItemRequirements.item(ItemID.SNELM_POINT_BLUE)),
-      ItemRequirements.item(ItemID.STAFF_OF_AIR),
-      ItemRequirements.item(ItemID.BRONZE_SQ_SHIELD)),
-  AUBURYS_SHOP_IN_VARROCK(
-      "Varrock rune store",
-      "Aubury's shop in Varrock",
-      STASHUnit.AUBURYS_SHOP_IN_VARROCK,
-      new int[]{ItemID.TIARA_AIR, ItemID.STAFF_OF_WATER},
-      ItemRequirements.item(ItemID.TIARA_AIR),
-      ItemRequirements.item(ItemID.STAFF_OF_WATER)),
-  CATHERBY_BEEHIVE_FIELD(
-      "Catherby",
-      "Catherby beehive field",
-      STASHUnit.CATHERBY_BEEHIVE_FIELD,
-      new int[]{ItemID.DESERT_SHIRT, ItemID.GNOME_ROBEBOTTOMS_GREEN, ItemID.STEEL_AXE},
-      ItemRequirements.item(ItemID.DESERT_SHIRT),
-      ItemRequirements.item(ItemID.GNOME_ROBEBOTTOMS_GREEN),
-      ItemRequirements.item(ItemID.STEEL_AXE)),
-  OUTSIDE_YANILLE_BANK(
-      "Yanille",
-      "Outside Yanille bank",
-      STASHUnit.OUTSIDE_YANILLE_BANK,
-      new int[]{ItemID.BROWN_APRON, ItemID.ADAMANT_MED_HELM, ItemID.SNAKESKIN_CHAPS},
-      ItemRequirements.item(ItemID.BROWN_APRON),
-      ItemRequirements.item(ItemID.ADAMANT_MED_HELM),
-      ItemRequirements.item(ItemID.SNAKESKIN_CHAPS)),
-  TZHAAR_WEAPONS_STORE(
-      "Tzhaar weapon store",
-      "TzHaar weapons store",
-      STASHUnit.TZHAAR_WEAPONS_STORE,
-      new int[]{ItemID.STEEL_LONGSWORD, ItemID.BLUE_DRAGONHIDE_BODY, ItemID.MYSTIC_GLOVES},
-      ItemRequirements.item(ItemID.STEEL_LONGSWORD),
-      ItemRequirements.item(ItemID.BLUE_DRAGONHIDE_BODY),
-      ItemRequirements.item(ItemID.MYSTIC_GLOVES)),
-  ENTRANCE_OF_THE_CAVERN_UNDER_THE_WHIRLPOOL(
-      "Ancient cavern",
-      "Entrance of the cavern under the whirlpool",
-      STASHUnit.ENTRANCE_OF_THE_CAVERN_UNDER_THE_WHIRLPOOL,
-      new int[]{ItemID.GRANITE_SHIELD, ItemID.SPLITBARK_BODY, ItemID.TRAIL_HERALDIC_HELM_1_RUNE},
-      ItemRequirements.item(ItemID.GRANITE_SHIELD),
-      ItemRequirements.item(ItemID.SPLITBARK_BODY),
-      ItemRequirements.range(ItemID.TRAIL_HERALDIC_HELM_1_RUNE, ItemID.TRAIL_HERALDIC_HELM_5_RUNE)),
-  NEAR_A_RUNITE_ROCK_IN_THE_FREMENNIK_ISLES(
-      "Fremennik Isles",
-      "Near a runite rock in the Fremennik Isles",
-      STASHUnit.NEAR_A_RUNITE_ROCK_IN_THE_FREMENNIK_ISLES,
-      new int[]{ItemID.RUNE_ARMOURED_BOOTS, ItemID.BASIC_TK_RANK2_BODY, ItemID.DRAGONSTONE_RING},
-      ItemRequirements.item(ItemID.RUNE_ARMOURED_BOOTS),
-      ItemRequirements.item(ItemID.BASIC_TK_RANK2_BODY),
-      ItemRequirements.item(ItemID.DRAGONSTONE_RING)),
-  NEAR_THE_PIER_IN_ZULANDRA(
-      "Zul-Andra",
-      "Near the pier in Zul-Andra",
-      STASHUnit.NEAR_THE_PIER_IN_ZULANDRA,
-      new int[]{ItemID.DRAGON_2H_SWORD, ItemID.BANDOS_BOOTS, ItemID.TZHAAR_CAPE_OBSIDIAN},
-      ItemRequirements.any(
-          "Any dragon 2h sword",
-          ItemRequirements.item(ItemID.DRAGON_2H_SWORD),
-          ItemRequirements.item(ItemID.BH_DRAGON_2H_SWORD_CORRUPTED)),
-      ItemRequirements.any(
-          "Bandos boots",
-          ItemRequirements.item(ItemID.BANDOS_BOOTS),
-          ItemRequirements.item(ItemID.GUARDIAN_BOOTS),
-          ItemRequirements.item(ItemID.ECHO_BOOTS)),
-      ItemRequirements.item(ItemID.TZHAAR_CAPE_OBSIDIAN)),
-  FOUNTAIN_OF_HEROES(
-      "Fountain of heroes",
-      "Fountain of Heroes",
-      STASHUnit.FOUNTAIN_OF_HEROES,
-      new int[]{ItemID.SPLITBARK_LEGS, ItemID.DRAGON_BOOTS, ItemID.RUNE_LONGSWORD},
-      ItemRequirements.item(ItemID.SPLITBARK_LEGS),
-      ItemRequirements.any(
-          "Dragon boots",
-          ItemRequirements.item(ItemID.DRAGON_BOOTS),
-          ItemRequirements.item(ItemID.DRAGON_BOOTS_GOLD),
-          ItemRequirements.item(ItemID.BH_DRAGON_BOOTS_CORRUPTED),
-          ItemRequirements.item(ItemID.PRIMORDIAL_BOOTS),
-          ItemRequirements.item(ItemID.AVERNIC_TREADS_MELEE),
-          ItemRequirements.item(ItemID.AVERNIC_TREADS_MELEE_RANGED),
-          ItemRequirements.item(ItemID.AVERNIC_TREADS_MELEE_MAGIC),
-          ItemRequirements.item(ItemID.AVERNIC_TREADS_MAX)),
-      ItemRequirements.item(ItemID.RUNE_LONGSWORD)),
-  MOUNTAIN_CAMP_GOAT_ENCLOSURE(
-      "Mountain Camp",
-      "Mountain Camp goat enclosure",
-      STASHUnit.MOUNTAIN_CAMP_GOAT_ENCLOSURE,
-      new int[]{ItemID.RUNE_FULL_HELM, ItemID.BLUE_DRAGONHIDE_CHAPS, ItemID.FIRE_BATTLESTAFF},
-      ItemRequirements.item(ItemID.RUNE_FULL_HELM),
-      ItemRequirements.item(ItemID.BLUE_DRAGONHIDE_CHAPS),
-      ItemRequirements.item(ItemID.FIRE_BATTLESTAFF)),
-  ROAD_JUNCTION_SOUTH_OF_SINCLAIR_MANSION(
-      "Sinclair Mansion",
-      "Road junction south of Sinclair Mansion",
-      STASHUnit.ROAD_JUNCTION_SOUTH_OF_SINCLAIR_MANSION,
-      new int[]{ItemID.LEATHER_COWL, ItemID.WIZARDS_ROBE, ItemID.IRON_SCIMITAR},
-      ItemRequirements.item(ItemID.LEATHER_COWL),
-      ItemRequirements.item(ItemID.WIZARDS_ROBE),
-      ItemRequirements.item(ItemID.IRON_SCIMITAR)),
-  NEAR_THE_GEM_STALL_IN_ARDOUGNE_MARKET(
-      "Ardougne",
-      "Near the gem stall in Ardougne market",
-      STASHUnit.NEAR_THE_GEM_STALL_IN_ARDOUGNE_MARKET,
-      new int[]{ItemID.JEWL_CASTLEWARS_BRACELET3, ItemID.STRUNG_DRAGONSTONE_AMULET,
-          ItemID.RING_OF_FORGING},
-      ItemRequirements.any(
-          "Castle wars bracelet",
-          ItemRequirements.range(ItemID.JEWL_CASTLEWARS_BRACELET3,
-              ItemID.JEWL_CASTLEWARS_BRACELET)),
-      ItemRequirements.item(ItemID.STRUNG_DRAGONSTONE_AMULET),
-      ItemRequirements.item(ItemID.RING_OF_FORGING)),
-  LIMESTONE_MINE(
-      "Limestone Mine",
-      "Limestone mine",
-      STASHUnit.LIMESTONE_MINE,
-      new int[]{ItemID.BRONZE_PLATELEGS, ItemID.STEEL_PICKAXE, ItemID.STEEL_MED_HELM},
-      ItemRequirements.item(ItemID.BRONZE_PLATELEGS),
-      ItemRequirements.item(ItemID.STEEL_PICKAXE),
-      ItemRequirements.item(ItemID.STEEL_MED_HELM)),
-  MAUSOLEUM_OFF_THE_MORYTANIA_COAST(
-      "Morytania mausoleum",
-      "Mausoleum off the Morytania coast",
-      STASHUnit.MAUSOLEUM_OFF_THE_MORYTANIA_COAST,
-      new int[]{ItemID.MITHRIL_PLATESKIRT, ItemID.MAPLE_LONGBOW},
-      ItemRequirements.item(ItemID.MITHRIL_PLATESKIRT),
-      ItemRequirements.item(ItemID.MAPLE_LONGBOW)),
-  VOLCANO_IN_THE_NORTHEASTERN_WILDERNESS(
-      "Blighted volcano",
-      "Volcano in the north-eastern Wilderness",
-      STASHUnit.VOLCANO_IN_THE_NORTHEASTERN_WILDERNESS,
-      new int[]{ItemID.HEADBAND_RED, ItemID.TRAIL_ANCIENT_STAFF},
-      ItemRequirements.any(
-          "Any headband",
-          ItemRequirements.range(ItemID.HEADBAND_RED, ItemID.HEADBAND_BROWN),
-          ItemRequirements.range(ItemID.HEADBAND_WHITE, ItemID.HEADBAND_GREEN)),
-      ItemRequirements.any(
-          "Any crozier",
-          ItemRequirements.item(ItemID.TRAIL_ANCIENT_STAFF),
-          ItemRequirements.item(ItemID.TRAIL_ARMADYL_STAFF),
-          ItemRequirements.item(ItemID.TRAIL_BANDOS_STAFF),
-          ItemRequirements.range(ItemID.TRAIL_SARADOMIN_STAFF, ItemID.TRAIL_ZAMORAK_STAFF))),
-  GNOME_GLIDER_ON_WHITE_WOLF_MOUNTAIN(
-      "White Wolf Mountain",
-      "Gnome Glider on White Wolf Mountain",
-      STASHUnit.GNOME_GLIDER_ON_WHITE_WOLF_MOUNTAIN,
-      new int[]{ItemID.MITHRIL_PLATELEGS, ItemID.RING_OF_LIFE, ItemID.RUNE_AXE},
-      ItemRequirements.item(ItemID.MITHRIL_PLATELEGS),
-      ItemRequirements.item(ItemID.RING_OF_LIFE),
-      ItemRequirements.item(ItemID.RUNE_AXE)),
-  SOUTHEAST_CORNER_OF_LAVA_DRAGON_ISLE(
-      "Lava dragon isle",
-      "South-east corner of Lava Dragon Isle",
-      STASHUnit.SOUTHEAST_CORNER_OF_LAVA_DRAGON_ISLE,
-      new int[]{
-          ItemID.DRAGON_MED_HELM, ItemID.TZHAAR_SPIKESHIELD, ItemID.OLAF2_BRINE_SABRE,
-          ItemID.RUNE_PLATEBODY,
-          ItemID.AMULET_OF_GLORY
-      },
-      ItemRequirements.any(
-          "Any dragon med helm",
-          ItemRequirements.item(ItemID.DRAGON_MED_HELM),
-          ItemRequirements.item(ItemID.BH_DRAGON_MED_HELM_CORRUPTED)),
-      ItemRequirements.item(ItemID.TZHAAR_SPIKESHIELD),
-      ItemRequirements.item(ItemID.OLAF2_BRINE_SABRE),
-      ItemRequirements.item(ItemID.RUNE_PLATEBODY),
-      ItemRequirements.any(
-          "Uncharged Amulet of glory", ItemRequirements.item(ItemID.AMULET_OF_GLORY))),
-  HALFWAY_DOWN_TROLLWEISS_MOUNTAIN(
-      "Trollweiss mountain",
-      "Half-way down Trollweiss Mountain",
-      STASHUnit.HALFWAY_DOWN_TROLLWEISS_MOUNTAIN,
-      new int[]{
-          ItemID.BLUE_DRAGON_VAMBRACES, ItemID.DRAGON_SPEAR, ItemID.RUNE_PLATESKIRT,
-          ItemID.TROLLROMANCE_TOBOGGON_WAXED
-      },
-      ItemRequirements.item(ItemID.BLUE_DRAGON_VAMBRACES),
-      ItemRequirements.any(
-          "Any dragon spear",
-          ItemRequirements.item(ItemID.DRAGON_SPEAR),
-          ItemRequirements.item(ItemID.DRAGON_SPEAR_P),
-          ItemRequirements.item(ItemID.DRAGON_SPEAR_P_),
-          ItemRequirements.item(ItemID.DRAGON_SPEAR_P__),
-          ItemRequirements.item(ItemID.BH_DRAGON_SPEAR_CORRUPTED),
-          ItemRequirements.item(ItemID.BH_DRAGON_SPEAR_P_CORRUPTED),
-          ItemRequirements.item(ItemID.BH_DRAGON_SPEAR_P__CORRUPTED),
-          ItemRequirements.item(ItemID.BH_DRAGON_SPEAR_P___CORRUPTED)),
-      ItemRequirements.item(ItemID.RUNE_PLATESKIRT),
-      ItemRequirements.item(ItemID.TROLLROMANCE_TOBOGGON_WAXED)),
-  WARRIORS_GUILD_BANK_29047(
-      "Warriors' guild",
-      "Warriors' Guild bank (master)",
-      STASHUnit.WARRIORS_GUILD_BANK_29047,
-      new int[]{ItemID.DRAGON_BATTLEAXE, ItemID.DRAGON_PARRYINGDAGGER, ItemID.SLAYER_HELM},
-      ItemRequirements.any(
-          "Any dragon battleaxe",
-          ItemRequirements.item(ItemID.DRAGON_BATTLEAXE),
-          ItemRequirements.item(ItemID.BH_DRAGON_BATTLEAXE_CORRUPTED)),
-      ItemRequirements.any(
-          "Dragon defender or Avernic defender",
-          ItemRequirements.item(ItemID.DRAGON_PARRYINGDAGGER),
-          ItemRequirements.item(ItemID.DRAGON_PARRYINGDAGGER_T),
-          ItemRequirements.item(ItemID.DRAGON_PARRYINGDAGGER_TROUVER),
-          ItemRequirements.item(ItemID.INFERNAL_DEFENDER),
-          ItemRequirements.item(ItemID.INFERNAL_DEFENDER_TROUVER),
-          ItemRequirements.item(ItemID.INFERNAL_DEFENDER_GHOMMAL_5),
-          ItemRequirements.item(ItemID.INFERNAL_DEFENDER_GHOMMAL_5_TROUVER),
-          ItemRequirements.item(ItemID.INFERNAL_DEFENDER_GHOMMAL_6),
-          ItemRequirements.item(ItemID.INFERNAL_DEFENDER_GHOMMAL_6_TROUVER)),
-      ItemRequirements.any(
-          "Any slayer helmet",
-          ItemRequirements.item(ItemID.SLAYER_HELM),
-          ItemRequirements.item(ItemID.SLAYER_HELM_I),
-          ItemRequirements.item(ItemID.SW_SLAYER_HELM_I),
-          ItemRequirements.item(ItemID.PVPA_SLAYER_HELM_I),
-          ItemRequirements.item(ItemID.SLAYER_HELM_ARAXYTE),
-          ItemRequirements.item(ItemID.SLAYER_HELM_I_ARAXYTE),
-          ItemRequirements.item(ItemID.SW_SLAYER_HELM_I_ARAXYTE),
-          ItemRequirements.item(ItemID.PVPA_SLAYER_HELM_I_ARAXYTE),
-          ItemRequirements.item(ItemID.SLAYER_HELM_BLACK),
-          ItemRequirements.item(ItemID.SLAYER_HELM_I_BLACK),
-          ItemRequirements.item(ItemID.SW_SLAYER_HELM_I_BLACK),
-          ItemRequirements.item(ItemID.PVPA_SLAYER_HELM_I_BLACK),
-          ItemRequirements.item(ItemID.SLAYER_HELM_GREEN),
-          ItemRequirements.item(ItemID.SLAYER_HELM_I_GREEN),
-          ItemRequirements.item(ItemID.SW_SLAYER_HELM_I_GREEN),
-          ItemRequirements.item(ItemID.PVPA_SLAYER_HELM_I_GREEN),
-          ItemRequirements.item(ItemID.SLAYER_HELM_RED),
-          ItemRequirements.item(ItemID.SLAYER_HELM_I_RED),
-          ItemRequirements.item(ItemID.SW_SLAYER_HELM_I_RED),
-          ItemRequirements.item(ItemID.PVPA_SLAYER_HELM_I_RED),
-          ItemRequirements.item(ItemID.SLAYER_HELM_PURPLE),
-          ItemRequirements.item(ItemID.SLAYER_HELM_I_PURPLE),
-          ItemRequirements.item(ItemID.SW_SLAYER_HELM_I_PURPLE),
-          ItemRequirements.item(ItemID.PVPA_SLAYER_HELM_I_PURPLE),
-          ItemRequirements.item(ItemID.SLAYER_HELM_TURQUOISE),
-          ItemRequirements.item(ItemID.SLAYER_HELM_I_TURQUOISE),
-          ItemRequirements.item(ItemID.SW_SLAYER_HELM_I_TURQUOISE),
-          ItemRequirements.item(ItemID.PVPA_SLAYER_HELM_I_TURQUOISE),
-          ItemRequirements.item(ItemID.SLAYER_HELM_HYDRA),
-          ItemRequirements.item(ItemID.SLAYER_HELM_I_HYDRA),
-          ItemRequirements.item(ItemID.SW_SLAYER_HELM_I_HYDRA),
-          ItemRequirements.item(ItemID.PVPA_SLAYER_HELM_I_HYDRA),
-          ItemRequirements.item(ItemID.SLAYER_HELM_TWISTED),
-          ItemRequirements.item(ItemID.SLAYER_HELM_I_TWISTED),
-          ItemRequirements.item(ItemID.SW_SLAYER_HELM_I_TWISTED),
-          ItemRequirements.item(ItemID.PVPA_SLAYER_HELM_I_TWISTED),
-          ItemRequirements.item(ItemID.SLAYER_HELM_JAD),
-          ItemRequirements.item(ItemID.SLAYER_HELM_I_JAD),
-          ItemRequirements.item(ItemID.SW_SLAYER_HELM_I_JAD),
-          ItemRequirements.item(ItemID.PVPA_SLAYER_HELM_I_JAD),
-          ItemRequirements.item(ItemID.SLAYER_HELM_VERZIK),
-          ItemRequirements.item(ItemID.SLAYER_HELM_I_VERZIK),
-          ItemRequirements.item(ItemID.SW_SLAYER_HELM_I_VERZIK),
-          ItemRequirements.item(ItemID.PVPA_SLAYER_HELM_I_VERZIK),
-          ItemRequirements.item(ItemID.SLAYER_HELM_ZUK),
-          ItemRequirements.item(ItemID.SLAYER_HELM_I_ZUK),
-          ItemRequirements.item(ItemID.SW_SLAYER_HELM_I_ZUK),
-          ItemRequirements.item(ItemID.PVPA_SLAYER_HELM_I_ZUK))),
-  NEAR_THE_PARROTS_IN_ARDOUGNE_ZOO(
-      "Ardougne Zoo",
-      "Near the parrots in Ardougne Zoo",
-      STASHUnit.NEAR_THE_PARROTS_IN_ARDOUGNE_ZOO,
-      new int[]{ItemID.STUDDED_BODY, ItemID.BRONZE_PLATELEGS, ItemID.PLAINSTAFF},
-      ItemRequirements.item(ItemID.STUDDED_BODY),
-      ItemRequirements.item(ItemID.BRONZE_PLATELEGS),
-      ItemRequirements.item(ItemID.PLAINSTAFF)),
-  OUTSIDE_KEEP_LE_FAYE(
-      "Keep Le Faye",
-      "Outside Keep Le Faye",
-      STASHUnit.OUTSIDE_KEEP_LE_FAYE,
-      new int[]{ItemID.COIF, ItemID.IRON_PLATEBODY, ItemID.LEATHER_GLOVES},
-      ItemRequirements.item(ItemID.COIF),
-      ItemRequirements.item(ItemID.IRON_PLATEBODY),
-      ItemRequirements.item(ItemID.LEATHER_GLOVES)),
-  FISHING_GUILD_BANK(
-      "Fishing Guild",
-      "Fishing Guild bank",
-      STASHUnit.FISHING_GUILD_BANK,
-      new int[]{ItemID.ELEMENTAL_SHIELD, ItemID.BLUE_DRAGONHIDE_CHAPS, ItemID.RUNE_WARHAMMER},
-      ItemRequirements.item(ItemID.ELEMENTAL_SHIELD),
-      ItemRequirements.item(ItemID.BLUE_DRAGONHIDE_CHAPS),
-      ItemRequirements.item(ItemID.RUNE_WARHAMMER)),
-  WEST_SIDE_OF_THE_KARAMJA_BANANA_PLANTATION(
-      "Karamja",
-      "West side of the Karamja banana plantation",
-      STASHUnit.WEST_SIDE_OF_THE_KARAMJA_BANANA_PLANTATION,
-      new int[]{ItemID.DIAMOND_RING, ItemID.AMULET_OF_POWER},
-      ItemRequirements.item(ItemID.DIAMOND_RING),
-      ItemRequirements.item(ItemID.AMULET_OF_POWER)),
-  WARRIORS_GUILD_BANK(
-      "Warriors' guild",
-      "Warriors' Guild bank",
-      STASHUnit.WARRIORS_GUILD_BANK,
-      new int[]{ItemID.BLACK_SALAMANDER},
-      ItemRequirements.item(ItemID.BLACK_SALAMANDER)),
-  HOSIDIUS_MESS(
-      "Hosidius mess hall",
-      "Hosidius Mess",
-      STASHUnit.HOSIDIUS_MESS,
-      new int[]{ItemID.RUNE_HALBERD, ItemID.RUNE_PLATEBODY, ItemID.AMULET_OF_STRENGTH},
-      ItemRequirements.item(ItemID.RUNE_HALBERD),
-      ItemRequirements.item(ItemID.RUNE_PLATEBODY),
-      ItemRequirements.item(ItemID.AMULET_OF_STRENGTH)),
-  RIMMINGTON_MINE(
-      "Rimmington mine",
-      "Rimmington mine",
-      STASHUnit.RIMMINGTON_MINE,
-      new int[]{ItemID.GOLD_NECKLACE, ItemID.GOLD_RING, ItemID.BRONZE_SPEAR},
-      ItemRequirements.item(ItemID.GOLD_NECKLACE),
-      ItemRequirements.item(ItemID.GOLD_RING),
-      ItemRequirements.item(ItemID.BRONZE_SPEAR)),
-  OUTSIDE_CATHERBY_BANK(
-      "Catherby",
-      "Outside Catherby bank",
-      STASHUnit.OUTSIDE_CATHERBY_BANK,
-      new int[]{ItemID.MAPLE_LONGBOW, ItemID.DRAGONHIDE_CHAPS, ItemID.IRON_MED_HELM},
-      ItemRequirements.item(ItemID.MAPLE_LONGBOW),
-      ItemRequirements.item(ItemID.DRAGONHIDE_CHAPS),
-      ItemRequirements.item(ItemID.IRON_MED_HELM)),
-  CHAOS_TEMPLE_IN_THE_SOUTHEASTERN_WILDERNESS(
-      "East of the Level 19 Wilderness Obelisk",
-      "Chaos Temple in the south-eastern Wilderness",
-      STASHUnit.EAST_OF_THE_LEVEL_19_WILDERNESS_OBELISK,
-      new int[]{ItemID.RUNE_PLATELEGS, ItemID.IRON_PLATEBODY, ItemID.BLUE_DRAGON_VAMBRACES},
-      ItemRequirements.item(ItemID.RUNE_PLATELEGS),
-      ItemRequirements.item(ItemID.IRON_PLATEBODY),
-      ItemRequirements.item(ItemID.BLUE_DRAGON_VAMBRACES)),
-  SHAYZIEN_WAR_TENT(
-      "Shayzien war tent",
-      "Shayzien War Tent",
-      STASHUnit.SHAYZIEN_WAR_TENT,
-      new int[]{ItemID.MYSTIC_ROBE_BOTTOM, ItemID.RUNE_KITESHIELD, ItemID.TRAIL_BOB_SHIRT_RED},
-      ItemRequirements.item(ItemID.MYSTIC_ROBE_BOTTOM),
-      ItemRequirements.item(ItemID.RUNE_KITESHIELD),
-      ItemRequirements.range(ItemID.TRAIL_BOB_SHIRT_RED, ItemID.TRAIL_BOB_SHIRT_PURPLE)),
-  CENTRE_OF_THE_CATACOMBS_OF_KOUREND(
-      "Kourend catacombs",
-      "Centre of the Catacombs of Kourend",
-      STASHUnit.CENTRE_OF_THE_CATACOMBS_OF_KOUREND,
-      new int[]{ItemID.ARCLIGHT, ItemID.DAMNED_AMULET_DEGRADED},
-      ItemRequirements.any("Arclight or Emberlight", ItemRequirements.item(ItemID.ARCLIGHT),
-          ItemRequirements.item(ItemID.EMBERLIGHT)),
-      ItemRequirements.any(
-          "Amulet of the damned",
-          ItemRequirements.item(ItemID.DAMNED_AMULET_DEGRADED),
-          ItemRequirements.item(ItemID.DAMNED_AMULET))),
-  ROAD_JUNCTION_NORTH_OF_RIMMINGTON(
-      "Rimmington",
-      "Road junction north of Rimmington",
-      STASHUnit.ROAD_JUNCTION_NORTH_OF_RIMMINGTON,
-      new int[]{ItemID.GNOME_HAT_GREEN, ItemID.GNOME_ROBETOP_CREAM, ItemID.LEATHER_CHAPS},
-      ItemRequirements.item(ItemID.GNOME_HAT_GREEN),
-      ItemRequirements.item(ItemID.GNOME_ROBETOP_CREAM),
-      ItemRequirements.item(ItemID.LEATHER_CHAPS)),
-  DRAYNOR_MANOR_BY_THE_FOUNTAIN(
-      "Draynor Manor",
-      "Draynor Manor by the fountain",
-      STASHUnit.DRAYNOR_MANOR_BY_THE_FOUNTAIN,
-      new int[]{ItemID.IRON_PLATEBODY, ItemID.STUDDED_CHAPS, ItemID.BRONZE_FULL_HELM},
-      ItemRequirements.item(ItemID.IRON_PLATEBODY),
-      ItemRequirements.item(ItemID.STUDDED_CHAPS),
-      ItemRequirements.item(ItemID.BRONZE_FULL_HELM)),
-  SOUL_ALTAR(
-      "Soul altar",
-      "Soul Altar",
-      STASHUnit.SOUL_ALTAR,
-      new int[]{ItemID.DRAGON_PICKAXE, ItemID.FRIS_KINGLY_HELM, ItemID.RUNE_ARMOURED_BOOTS},
-      ItemRequirements.any(
-          "Dragon or Crystal pickaxe",
-          ItemRequirements.item(ItemID.DRAGON_PICKAXE),
-          ItemRequirements.item(ItemID.DRAGON_PICKAXE_PRETTY),
-          ItemRequirements.item(ItemID.INFERNAL_PICKAXE),
-          ItemRequirements.item(ItemID.INFERNAL_PICKAXE_EMPTY),
-          ItemRequirements.item(ItemID.ZALCANO_PICKAXE),
-          ItemRequirements.item(ItemID.TRAILBLAZER_PICKAXE_NO_INFERNAL),
-          ItemRequirements.item(ItemID.CRYSTAL_PICKAXE),
-          ItemRequirements.item(ItemID.CRYSTAL_PICKAXE_INACTIVE),
-          ItemRequirements.item(ItemID.TRAILBLAZER_PICKAXE),
-          ItemRequirements.item(ItemID.TRAILBLAZER_PICKAXE_EMPTY)),
-      ItemRequirements.item(ItemID.FRIS_KINGLY_HELM),
-      ItemRequirements.item(ItemID.RUNE_ARMOURED_BOOTS)),
-  OUTSIDE_VARROCK_PALACE_COURTYARD(
-      "Varrock Castle",
-      "Outside Varrock Palace courtyard",
-      STASHUnit.OUTSIDE_VARROCK_PALACE_COURTYARD,
-      new int[]{ItemID.BLACK_AXE, ItemID.COIF, ItemID.RUBY_RING},
-      ItemRequirements.item(ItemID.BLACK_AXE),
-      ItemRequirements.item(ItemID.COIF),
-      ItemRequirements.item(ItemID.RUBY_RING)),
-  CHAPEL_IN_WEST_ARDOUGNE(
-      "West Ardougne Church",
-      "Chapel in West Ardougne",
-      STASHUnit.CHAPEL_IN_WEST_ARDOUGNE,
-      new int[]{ItemID.DRAGON_SPEAR, ItemID.RED_DRAGONHIDE_CHAPS},
-      ItemRequirements.any(
-          "Any dragon spear",
-          ItemRequirements.item(ItemID.DRAGON_SPEAR),
-          ItemRequirements.item(ItemID.DRAGON_SPEAR_P),
-          ItemRequirements.item(ItemID.DRAGON_SPEAR_P_),
-          ItemRequirements.item(ItemID.DRAGON_SPEAR_P__),
-          ItemRequirements.item(ItemID.BH_DRAGON_SPEAR_CORRUPTED),
-          ItemRequirements.item(ItemID.BH_DRAGON_SPEAR_P_CORRUPTED),
-          ItemRequirements.item(ItemID.BH_DRAGON_SPEAR_P__CORRUPTED),
-          ItemRequirements.item(ItemID.BH_DRAGON_SPEAR_P___CORRUPTED)),
-      ItemRequirements.item(ItemID.RED_DRAGONHIDE_CHAPS)),
-  EAST_OF_THE_BARBARIAN_VILLAGE_BRIDGE(
-      "Barbarian Village",
-      "East of the Barbarian Village bridge",
-      STASHUnit.EAST_OF_THE_BARBARIAN_VILLAGE_BRIDGE,
-      new int[]{ItemID.WOLFENGLOVES_PURPLE, ItemID.STEEL_KITESHIELD, ItemID.MITHRIL_FULL_HELM},
-      ItemRequirements.item(ItemID.WOLFENGLOVES_PURPLE),
-      ItemRequirements.item(ItemID.STEEL_KITESHIELD),
-      ItemRequirements.item(ItemID.MITHRIL_FULL_HELM)),
-  NORTHWESTERN_CORNER_OF_THE_ENCHANTED_VALLEY(
-      "Enchanted Valley (BKQ)",
-      "North-western corner of the Enchanted Valley",
-      STASHUnit.NORTHWESTERN_CORNER_OF_THE_ENCHANTED_VALLEY,
-      new int[]{ItemID.DRAGON_AXE},
-      ItemRequirements.any(
-          "Dragon or Crystal axe",
-          ItemRequirements.item(ItemID.DRAGON_AXE),
-          ItemRequirements.item(ItemID.TRAILBLAZER_AXE_NO_INFERNAL),
-          ItemRequirements.item(ItemID.DRAGON_AXE_2H),
-          ItemRequirements.item(ItemID.CRYSTAL_AXE),
-          ItemRequirements.item(ItemID.CRYSTAL_AXE_INACTIVE),
-          ItemRequirements.item(ItemID.CRYSTAL_AXE_2H),
-          ItemRequirements.item(ItemID.CRYSTAL_AXE_2H_INACTIVE),
-          ItemRequirements.item(ItemID.INFERNAL_AXE),
-          ItemRequirements.item(ItemID.INFERNAL_AXE_EMPTY),
-          ItemRequirements.item(ItemID.TRAILBLAZER_AXE),
-          ItemRequirements.item(ItemID.TRAILBLAZER_AXE_EMPTY))),
-  WHEAT_FIELD_NEAR_THE_LUMBRIDGE_WINDMILL(
-      "Lumbridge mill",
-      "Wheat field near the Lumbridge windmill",
-      STASHUnit.WHEAT_FIELD_NEAR_THE_LUMBRIDGE_WINDMILL,
-      new int[]{ItemID.GNOME_ROBETOP_BLUE, ItemID.GNOME_ROBEBOTTOMS_TURQUOISE, ItemID.OAK_SHORTBOW},
-      ItemRequirements.item(ItemID.GNOME_ROBETOP_BLUE),
-      ItemRequirements.item(ItemID.GNOME_ROBEBOTTOMS_TURQUOISE),
-      ItemRequirements.item(ItemID.OAK_SHORTBOW)),
-  OBSERVATORY(
-      "Observatory",
-      "Observatory",
-      STASHUnit.OBSERVATORY,
-      new int[]{ItemID.MITHRIL_CHAINBODY, ItemID.DRAGONHIDE_CHAPS, ItemID.STRUNG_RUBY_AMULET},
-      ItemRequirements.item(ItemID.MITHRIL_CHAINBODY),
-      ItemRequirements.item(ItemID.DRAGONHIDE_CHAPS),
-      ItemRequirements.item(ItemID.STRUNG_RUBY_AMULET)),
-  NEAR_THE_SAWMILL_OPERATORS_BOOTH(
-      "Lumber Yard",
-      "Near the Sawmill Operator's booth",
-      STASHUnit.NEAR_THE_SAWMILL_OPERATORS_BOOTH,
-      new int[]{ItemID.HARDLEATHER_BODY, ItemID.LEATHER_CHAPS, ItemID.BRONZE_AXE},
-      ItemRequirements.item(ItemID.HARDLEATHER_BODY),
-      ItemRequirements.item(ItemID.LEATHER_CHAPS),
-      ItemRequirements.item(ItemID.BRONZE_AXE)),
-  NEAR_HERQUINS_SHOP_IN_FALADOR(
-      "Falador",
-      "Near Herquin's shop in Falador",
-      STASHUnit.NEAR_HERQUINS_SHOP_IN_FALADOR,
-      new int[]{ItemID.MITHRIL_PICKAXE, ItemID.BLACK_PLATEBODY, ItemID.IRON_KITESHIELD},
-      ItemRequirements.item(ItemID.MITHRIL_PICKAXE),
-      ItemRequirements.item(ItemID.BLACK_PLATEBODY),
-      ItemRequirements.item(ItemID.IRON_KITESHIELD)),
-  MUDSKIPPER_POINT(
-      "Mudskipper Point (AIQ)",
-      "Mudskipper Point",
-      STASHUnit.MUDSKIPPER_POINT,
-      new int[]{ItemID.BLACK_CAPE, ItemID.LEATHER_CHAPS, ItemID.STEEL_MACE},
-      ItemRequirements.item(ItemID.BLACK_CAPE),
-      ItemRequirements.item(ItemID.LEATHER_CHAPS),
-      ItemRequirements.item(ItemID.STEEL_MACE)),
-  NORTHERN_WALL_OF_CASTLE_DRAKAN(
-      "Castle Drakan",
-      "Northern wall of Castle Drakan",
-      STASHUnit.NORTHERN_WALL_OF_CASTLE_DRAKAN,
-      new int[]{ItemID.DRAGON_SQ_SHIELD, ItemID.SPLITBARK_BODY, ItemID.STRAWBOATER_RED},
-      ItemRequirements.any(
-          "Dragon sq shield",
-          ItemRequirements.item(ItemID.DRAGON_SQ_SHIELD),
-          ItemRequirements.item(ItemID.DRAGON_SQ_SHIELD_GOLD),
-          ItemRequirements.item(ItemID.BH_DRAGON_SQ_SHIELD_CORRUPTED)),
-      ItemRequirements.item(ItemID.SPLITBARK_BODY),
-      ItemRequirements.any(
-          "Any boater",
-          ItemRequirements.item(ItemID.STRAWBOATER_RED),
-          ItemRequirements.item(ItemID.STRAWBOATER_ORANGE),
-          ItemRequirements.item(ItemID.STRAWBOATER_GREEN),
-          ItemRequirements.item(ItemID.STRAWBOATER_BLUE),
-          ItemRequirements.item(ItemID.STRAWBOATER_BLACK),
-          ItemRequirements.item(ItemID.STRAWBOATER_PINK),
-          ItemRequirements.item(ItemID.STRAWBOATER_PURPLE),
-          ItemRequirements.item(ItemID.STRAWBOATER_WHITE))),
-  SEVENTH_CHAMBER_OF_JALSAVRAH(
-      "Pyramid Plunder",
-      "7th Chamber of Jalsavrah",
-      STASHUnit._7TH_CHAMBER_OF_JALSAVRAH,
-      new int[]{
-          ItemID.NTK_JEWELLED_SCEPTRE_3,
-          ItemID.ROGUETRADER_MENAPHITE_HAT,
-          ItemID.ROGUETRADER_MENAPHITE_TOP,
-          ItemID.ROGUETRADER_MENAPHITE_LEGS
-      },
-      ItemRequirements.any(
-          "Pharaoh's sceptre",
-          ItemRequirements.item(ItemID.NTK_JEWELLED_SCEPTRE_3),
-          ItemRequirements.item(ItemID.NTK_JEWELLED_SCEPTRE_3),
-          ItemRequirements.item(ItemID.CERT_NTK_JEWELLED_SCEPTRE_3),
-          ItemRequirements.item(ItemID.NTK_JEWELLED_SCEPTRE_2),
-          ItemRequirements.item(ItemID.CERT_NTK_JEWELLED_SCEPTRE_2),
-          ItemRequirements.item(ItemID.NTK_JEWELLED_SCEPTRE_1),
-          ItemRequirements.item(ItemID.CERT_NTK_JEWELLED_SCEPTRE_1),
-          ItemRequirements.item(ItemID.NTK_JEWELLED_SCEPTRE_0),
-          ItemRequirements.item(ItemID.CERT_NTK_JEWELLED_SCEPTRE_0),
-          ItemRequirements.item(ItemID.NTK_JEWELLED_SCEPTRE_8),
-          ItemRequirements.item(ItemID.NTK_JEWELLED_SCEPTRE_7),
-          ItemRequirements.item(ItemID.NTK_JEWELLED_SCEPTRE_5),
-          ItemRequirements.item(ItemID.NTK_JEWELLED_SCEPTRE_4),
-          ItemRequirements.item(ItemID.PLACEHOLDER_NTK_JEWELLED_SCEPTRE_8),
-          ItemRequirements.item(ItemID.PLACEHOLDER_NTK_JEWELLED_SCEPTRE_1),
-          ItemRequirements.item(ItemID.PLACEHOLDER_NTK_JEWELLED_SCEPTRE_0),
-          ItemRequirements.item(ItemID.PHARAOHS_SCEPTRE_CHARGED),
-          ItemRequirements.item(ItemID.PHARAOHS_SCEPTRE_CHARGED_INITIAL)),
-      ItemRequirements.any(
-          "Full set of menaphite robes",
-          ItemRequirements.all(
-              ItemRequirements.item(ItemID.ROGUETRADER_MENAPHITE_HAT),
-              ItemRequirements.item(ItemID.ROGUETRADER_MENAPHITE_TOP),
-              ItemRequirements.range(ItemID.ROGUETRADER_MENAPHITE_LEGS,
-                  ItemID.ROGUETRADER_MENAPHITE_LEGS2)),
-          ItemRequirements.all(
-              ItemRequirements.item(ItemID.ROGUETRADER_MENAPHITE_HAT_RED),
-              ItemRequirements.item(ItemID.ROGUETRADER_MENAPHITE_TOP_RED),
-              ItemRequirements.range(ItemID.ROGUETRADER_MENAPHITE_LEGS_RED,
-                  ItemID.ROGUETRADER_MENAPHITE_LEGS_RED2)))),
-  VARROCK_PALACE_LIBRARY(
-      "Varrock Castle",
-      "Varrock Palace Library",
-      STASHUnit.VARROCK_PALACE_LIBRARY,
-      new int[]{ItemID.GNOME_ROBETOP_GREEN, ItemID.HAM_ROBE, ItemID.IRON_WARHAMMER},
-      ItemRequirements.item(ItemID.GNOME_ROBETOP_GREEN),
-      ItemRequirements.item(ItemID.HAM_ROBE),
-      ItemRequirements.item(ItemID.IRON_WARHAMMER)),
-  DRAYNOR_VILLAGE_MARKET(
-      "Draynor",
-      "Draynor Village market",
-      STASHUnit.DRAYNOR_VILLAGE_MARKET,
-      new int[]{ItemID.STUDDED_CHAPS, ItemID.IRON_KITESHIELD, ItemID.STEEL_LONGSWORD},
-      ItemRequirements.item(ItemID.STUDDED_CHAPS),
-      ItemRequirements.item(ItemID.IRON_KITESHIELD),
-      ItemRequirements.item(ItemID.STEEL_LONGSWORD)),
-  CASTLE_WARS_BANK(
-      "Castle Wars",
-      "Castle Wars bank",
-      STASHUnit.CASTLE_WARS_BANK,
-      new int[]{ItemID.STRUNG_RUBY_AMULET, ItemID.MITHRIL_SCIMITAR, ItemID.WILDERNESS_CAPE_1},
-      ItemRequirements.item(ItemID.STRUNG_RUBY_AMULET),
-      ItemRequirements.item(ItemID.MITHRIL_SCIMITAR),
-      ItemRequirements.range(ItemID.WILDERNESS_CAPE_1, ItemID.WILDERNESS_CAPE_50)),
-  NOTERAZZOS_SHOP_IN_THE_WILDERNESS(
-      "Rogues general store",
-      "Noterazzo's shop in the Wilderness",
-      STASHUnit.NOTERAZZOS_SHOP_IN_THE_WILDERNESS,
-      new int[]{ItemID.ADAMANT_SQ_SHIELD, ItemID.BLUE_DRAGON_VAMBRACES, ItemID.RUNE_PICKAXE},
-      ItemRequirements.item(ItemID.ADAMANT_SQ_SHIELD),
-      ItemRequirements.item(ItemID.BLUE_DRAGON_VAMBRACES),
-      ItemRequirements.item(ItemID.RUNE_PICKAXE)),
-  ON_TOP_OF_TROLLHEIM_MOUNTAIN(
-      "Trollheim Mountain",
-      "On top of Trollheim Mountain",
-      STASHUnit.ON_TOP_OF_TROLLHEIM_MOUNTAIN,
-      new int[]{ItemID.LAVA_BATTLESTAFF, ItemID.BLACK_DRAGON_VAMBRACES,
-          ItemID.ELEMENTAL_MIND_SHIELD},
-      ItemRequirements.any(
-          "Lava battlestaff",
-          ItemRequirements.item(ItemID.LAVA_BATTLESTAFF),
-          ItemRequirements.item(ItemID.LAVA_BATTLESTAFF_PRETTY)),
-      ItemRequirements.item(ItemID.BLACK_DRAGON_VAMBRACES),
-      ItemRequirements.item(ItemID.ELEMENTAL_MIND_SHIELD)),
-  ENTRANCE_OF_THE_ARCEUUS_LIBRARY(
-      "Arceuus library",
-      "Entrance of the Arceuus library",
-      STASHUnit.ENTRANCE_OF_THE_ARCEUUS_LIBRARY,
-      new int[]{ItemID.BLUE_DRAGON_VAMBRACES, ItemID.ADAMANT_ARMOURED_BOOTS, ItemID.ADAMANT_DAGGER},
-      ItemRequirements.item(ItemID.BLUE_DRAGON_VAMBRACES),
-      ItemRequirements.item(ItemID.ADAMANT_ARMOURED_BOOTS),
-      ItemRequirements.item(ItemID.ADAMANT_DAGGER)),
-  TOP_FLOOR_OF_THE_YANILLE_WATCHTOWER(
-      "Yanille Watchtower",
-      "Top floor of the Yanille Watchtower",
-      STASHUnit.TOP_FLOOR_OF_THE_YANILLE_WATCHTOWER,
-      new int[]{
-          ItemID.DRAGON_PLATESKIRT,
-          ItemID.DEATH_CLIMBINGBOOTS,
-          ItemID.DRAGON_CHAINBODY,
-          ItemID.BULLROARER
-      },
-      ItemRequirements.any(
-          "Dragon plateskirt",
-          ItemRequirements.item(ItemID.DRAGON_PLATESKIRT),
-          ItemRequirements.item(ItemID.DRAGON_PLATESKIRT_GOLD),
-          ItemRequirements.item(ItemID.BH_DRAGON_PLATESKIRT_CORRUPTED)),
-      ItemRequirements.any(
-          "Climbing boots",
-          ItemRequirements.item(ItemID.DEATH_CLIMBINGBOOTS),
-          ItemRequirements.item(ItemID.CLIMBING_BOOTS_G)),
-      ItemRequirements.any(
-          "Dragon chainbody",
-          ItemRequirements.item(ItemID.DRAGON_CHAINBODY),
-          ItemRequirements.item(ItemID.DRAGON_CHAINBODY_GOLD),
-          ItemRequirements.item(ItemID.BH_DRAGON_CHAINBODY_CORRUPTED)),
-      ItemRequirements.item(ItemID.BULLROARER)),
-  GYPSY_TENT_ENTRANCE(
-      "Varrock",
-      "Aris's tent",
-      STASHUnit.GYPSY_TENT_ENTRANCE,
-      new int[]{ItemID.GOLD_RING, ItemID.GOLD_NECKLACE},
-      ItemRequirements.item(ItemID.GOLD_RING),
-      ItemRequirements.item(ItemID.GOLD_NECKLACE)),
-  FINE_CLOTHES_ENTRANCE(
-      "Varrock",
-      "Iffie Nitter in Varrock",
-      STASHUnit.FINE_CLOTHES_ENTRANCE,
-      new int[]{ItemID.CHEFS_HAT, ItemID.RED_CAPE},
-      ItemRequirements.item(ItemID.CHEFS_HAT),
-      ItemRequirements.item(ItemID.RED_CAPE)),
-  BOB_AXES_ENTRANCE(
-      "Lumbridge",
-      "Bob's Brilliant Axes in Lumbridge",
-      STASHUnit.BOB_AXES_ENTRANCE,
-      new int[]{ItemID.BRONZE_AXE, ItemID.LEATHER_BOOTS},
-      ItemRequirements.item(ItemID.BRONZE_AXE),
-      ItemRequirements.item(ItemID.LEATHER_BOOTS)),
-  CHARCOAL_BURNERS(
-      "Charcoal Burners",
-      "Near the Charcoal Burners",
-      STASHUnit.CHARCOAL_BURNERS,
-      new int[]{ItemID.TITHE_REWARD_HAT_MALE, ItemID.SHAYZIEN_BODY_5, ItemID.PYROMANCER_BOTTOM},
-      ItemRequirements.any(
-          "Farmer's strawhat",
-          ItemRequirements.item(ItemID.TITHE_REWARD_HAT_MALE),
-          ItemRequirements.item(ItemID.TITHE_REWARD_HAT_FEMALE)),
-      ItemRequirements.item(ItemID.SHAYZIEN_BODY_5),
-      ItemRequirements.item(ItemID.PYROMANCER_BOTTOM)),
-  FORTIS_GRAND_MUSEUM(
-      "Fortis Grand Museum",
-      "Near the entrance of the Civitas illa Fortis Grand Museum",
-      STASHUnit.FORTIS_GRAND_MUSEUM,
-      new int[]{ItemID.EMERALD_NECKLACE, ItemID.BLUE_SKIRT, ItemID.GNOME_ROBETOP_TURQUOISE},
-      ItemRequirements.item(ItemID.EMERALD_NECKLACE),
-      ItemRequirements.item(ItemID.BLUE_SKIRT),
-      ItemRequirements.item(ItemID.GNOME_ROBETOP_TURQUOISE)),
-  CAM_TORUM_ENTRANCE(
-      "Cam Torum",
-      "South of the gates to Cam Torum",
-      STASHUnit.CAM_TORUM_ENTRANCE,
-      new int[]{ItemID.FROST_MOON_HELM, ItemID.FROST_MOON_CHESTPLATE, ItemID.FROST_MOON_TASSETS,
-          ItemID.FROSTMOON_SPEAR},
-      ItemRequirements.any(
-          "Blue moon helm",
-          ItemRequirements.item(ItemID.FROST_MOON_HELM),
-          ItemRequirements.item(ItemID.FROST_MOON_HELM_DEGRADED)),
-      ItemRequirements.any("Blue moon chestplate",
-          ItemRequirements.item(ItemID.FROST_MOON_CHESTPLATE),
-          ItemRequirements.item(ItemID.FROST_MOON_CHESTPLATE_DEGRADED)),
-      ItemRequirements.any("Blue moon tassets",
-          ItemRequirements.item(ItemID.FROST_MOON_TASSETS),
-          ItemRequirements.item(ItemID.FROST_MOON_TASSETS_DEGRADED)),
-      ItemRequirements.item(ItemID.FROSTMOON_SPEAR)
-  ),
-  TEMPLE_SOUTHEAST_OF_THE_BAZAAR(
-      "Civitas illa Fortis",
-      "Outside the temple in Civitas illa Fortis",
-      STASHUnit.TEMPLE_SOUTHEAST_OF_THE_BAZAAR,
-      new int[]{ItemID.SUNFIRE_HELM, ItemID.SUNFIRE_BODY,
-          ItemID.SUNFIRE_LEGS},
-      ItemRequirements.any(
-          "Any piece of Sunfire Fanatic armour",
-          ItemRequirements.item(ItemID.SUNFIRE_HELM),
-          ItemRequirements.item(ItemID.SUNFIRE_BODY),
-          ItemRequirements.item(ItemID.SUNFIRE_LEGS))),
-  TWILIGHT_TEMPLE_MINE(
-      "Twilight Temple mine",
-      "North of the Twilight Temple",
-      STASHUnit.TWILIGHT_TEMPLE_MINE,
-      new int[]{ItemID.MAPLE_LONGBOW, ItemID.STRUNG_RUBY_AMULET, ItemID.STEEL_PLATELEGS},
-      ItemRequirements.item(ItemID.MAPLE_LONGBOW),
-      ItemRequirements.item(ItemID.STRUNG_RUBY_AMULET),
-      ItemRequirements.item(ItemID.STEEL_PLATELEGS)),
-  ORTUS_MEETS_PROUDSPIRE(
-      "East of Proudspire",
-      "Where the River Ortus meets the Proudspire",
-      STASHUnit.ORTUS_MEETS_PROUDSPIRE,
-      new int[]{ItemID.BLUEWIZHAT, ItemID.WIZARDS_ROBE},
-      ItemRequirements.item(ItemID.BLUEWIZHAT),
-      ItemRequirements.item(ItemID.WIZARDS_ROBE)),
-  OUTSIDE_TWILIGHT_TEMPLE(
-      "Twilight Temple",
-      "Twilight Temple",
-      STASHUnit.OUTSIDE_TWILIGHT_TEMPLE,
-      new int[]{ItemID.RUNE_LONGSWORD, ItemID.RUNE_PLATEBODY, ItemID.RUNE_PLATESKIRT},
-      ItemRequirements.item(ItemID.RUNE_LONGSWORD),
-      ItemRequirements.item(ItemID.RUNE_PLATEBODY),
-      ItemRequirements.item(ItemID.RUNE_PLATESKIRT)),
-  WESTERN_SALVAGER_OVERLOOK(
-      "Western Salvager Overlook",
-      "West side of Salvager Overlook",
-      STASHUnit.WESTERN_SALVAGER_OVERLOOK,
-      new int[]{ItemID.HUEY_COIF, ItemID.HUEY_VAMBRACES},
-      ItemRequirements.item(ItemID.HUEY_COIF),
-      ItemRequirements.item(ItemID.HUEY_VAMBRACES)),
-  PANDEMONIUM_BAR(
-      "Pandemonium Bar",
-      "The bar on the Pandemonium",
-      STASHUnit.PANDEMONIUM_BAR,
-      new int[]{ItemID.EYE_PATCH, ItemID.BRONZE_SCIMITAR},
-      ItemRequirements.item(ItemID.EYE_PATCH),
-      ItemRequirements.item(ItemID.BRONZE_SCIMITAR)),
-  WINTUMBER_ISLAND(
-      "Wintumber Island",
-      "On Wintumber Island",
-      STASHUnit.WINTUMBER_ISLAND,
-      new int[]{ItemID.HUNDRED_PIRATE_CRAB_SHELL_HELM, ItemID.HUNDRED_PIRATE_CRAB_SHELL_GAUNTLET},
-      ItemRequirements.item(ItemID.HUNDRED_PIRATE_CRAB_SHELL_HELM),
-      ItemRequirements.item(ItemID.HUNDRED_PIRATE_CRAB_SHELL_GAUNTLET)),
-  BRITTLE_ISLE(
-      "Brittle Isle",
-      "On Brittle Isle",
-      STASHUnit.BRITTLE_ISLE,
-      new int[]{ItemID.MEDALLION_OF_THE_DEEP, ItemID.ROSEWOOD_BLOWPIPE},
-      ItemRequirements.item(ItemID.MEDALLION_OF_THE_DEEP),
-      ItemRequirements.item(ItemID.ROSEWOOD_BLOWPIPE));
+  NORTHEAST_CORNER_OF_THE_KHARAZI_JUNGLE,
+  BARBARIAN_OUTPOST_OBSTACLE_COURSE,
+  SOUTHEAST_CORNER_OF_THE_MONASTERY,
+  ENTRANCE_OF_THE_CAVE_OF_DAMIS,
+  AGILITY_PYRAMID,
+  WELL_OF_VOYAGE,
+  SOUTHEAST_CORNER_OF_THE_FISHING_PLATFORM,
+  DEATH_ALTAR,
+  OUTSIDE_THE_BAR_BY_THE_FIGHT_ARENA,
+  BARROWS_CHEST,
+  IN_THE_MIDDLE_OF_JIGGIG,
+  BY_THE_BEAR_CAGE_IN_VARROCK_PALACE_GARDENS,
+  BEHIND_MISS_SCHISM_IN_DRAYNOR_VILLAGE,
+  CRYSTALLINE_MAPLE_TREES,
+  DIGSITE,
+  SOUTH_OF_THE_SHRINE_IN_TAI_BWO_WANNAI_VILLAGE,
+  WEST_OF_THE_SHAYZIEN_COMBAT_RING,
+  TENT_IN_LORD_IORWERTHS_ENCAMPMENT,
+  OUTSIDE_THE_LEGENDS_GUILD_GATES,
+  OUTSIDE_THE_LEGENDS_GUILD_DOOR,
+  MUBARIZS_ROOM_AT_THE_DUEL_ARENA,
+  TOP_FLOOR_OF_THE_LIGHTHOUSE,
+  SHILO_VILLAGE_BANK,
+  NEAR_A_LADDER_IN_THE_WILDERNESS_LAVA_MAZE,
+  OUTSIDE_KRIL_TSUTSAROTHS_ROOM,
+  TAVERLEY_STONE_CIRCLE,
+  NORTH_OF_EVIL_DAVES_HOUSE_IN_EDGEVILLE,
+  OGRE_CAGE_IN_KING_LATHAS_TRAINING_CAMP,
+  ENTRANA_CHAPEL,
+  NEAR_THE_ENTRANA_FERRY_IN_PORT_SARIM,
+  OUTSIDE_THE_DIGSITE_EXAM_CENTRE,
+  ON_THE_BRIDGE_TO_THE_MISTHALIN_WIZARDS_TOWER,
+  UPSTAIRS_IN_THE_ARDOUGNE_WINDMILL,
+  OUTSIDE_THE_SEERS_VILLAGE_COURTHOUSE,
+  OUTSIDE_THE_WILDERNESS_AXE_HUT,
+  NORTH_OF_MOUNT_KARUULM,
+  HICKTONS_ARCHERY_EMPORIUM,
+  OUTSIDE_HARRYS_FISHING_SHOP_IN_CATHERBY,
+  GNOME_STRONGHOLD_BALANCING_ROPE,
+  TZHAAR_GEM_STORE,
+  OUTSIDE_DRAYNOR_VILLAGE_JAIL,
+  CROSSROADS_NORTH_OF_DRAYNOR_VILLAGE,
+  OUTSIDE_THE_FALADOR_PARTY_ROOM,
+  NEAR_A_SHED_IN_LUMBRIDGE_SWAMP,
+  LUMBRIDGE_SWAMP_CAVES,
+  OUTSIDE_THE_GREAT_PYRAMID_OF_SOPHANEM,
+  CENTRE_OF_CANIFIS,
+  KING_BLACK_DRAGONS_LAIR,
+  SOUTH_OF_THE_GRAND_EXCHANGE,
+  OUTSIDE_MUDKNUCKLES_HUT,
+  AL_KHARID_SCORPION_MINE,
+  INSIDE_THE_DIGSITE_EXAM_CENTRE,
+  OUTSIDE_THE_SLAYER_TOWER_GARGOYLE_ROOM,
+  OUTSIDE_THE_FISHING_GUILD,
+  SHANTAY_PASS,
+  AUBURYS_SHOP_IN_VARROCK,
+  CATHERBY_BEEHIVE_FIELD,
+  OUTSIDE_YANILLE_BANK,
+  TZHAAR_WEAPONS_STORE,
+  ENTRANCE_OF_THE_CAVERN_UNDER_THE_WHIRLPOOL,
+  NEAR_A_RUNITE_ROCK_IN_THE_FREMENNIK_ISLES,
+  NEAR_THE_PIER_IN_ZULANDRA,
+  FOUNTAIN_OF_HEROES,
+  MOUNTAIN_CAMP_GOAT_ENCLOSURE,
+  ROAD_JUNCTION_SOUTH_OF_SINCLAIR_MANSION,
+  NEAR_THE_GEM_STALL_IN_ARDOUGNE_MARKET,
+  LIMESTONE_MINE,
+  MAUSOLEUM_OFF_THE_MORYTANIA_COAST,
+  VOLCANO_IN_THE_NORTHEASTERN_WILDERNESS,
+  GNOME_GLIDER_ON_WHITE_WOLF_MOUNTAIN,
+  SOUTHEAST_CORNER_OF_LAVA_DRAGON_ISLE,
+  HALFWAY_DOWN_TROLLWEISS_MOUNTAIN,
+  WARRIORS_GUILD_BANK_29047,
+  NEAR_THE_PARROTS_IN_ARDOUGNE_ZOO,
+  OUTSIDE_KEEP_LE_FAYE,
+  FISHING_GUILD_BANK,
+  WEST_SIDE_OF_THE_KARAMJA_BANANA_PLANTATION,
+  WARRIORS_GUILD_BANK,
+  HOSIDIUS_MESS,
+  RIMMINGTON_MINE,
+  OUTSIDE_CATHERBY_BANK,
+  CHAOS_TEMPLE_IN_THE_SOUTHEASTERN_WILDERNESS,
+  SHAYZIEN_WAR_TENT,
+  CENTRE_OF_THE_CATACOMBS_OF_KOUREND,
+  ROAD_JUNCTION_NORTH_OF_RIMMINGTON,
+  DRAYNOR_MANOR_BY_THE_FOUNTAIN,
+  SOUL_ALTAR,
+  OUTSIDE_VARROCK_PALACE_COURTYARD,
+  CHAPEL_IN_WEST_ARDOUGNE,
+  EAST_OF_THE_BARBARIAN_VILLAGE_BRIDGE,
+  NORTHWESTERN_CORNER_OF_THE_ENCHANTED_VALLEY,
+  WHEAT_FIELD_NEAR_THE_LUMBRIDGE_WINDMILL,
+  OBSERVATORY,
+  NEAR_THE_SAWMILL_OPERATORS_BOOTH,
+  NEAR_HERQUINS_SHOP_IN_FALADOR,
+  MUDSKIPPER_POINT,
+  NORTHERN_WALL_OF_CASTLE_DRAKAN,
+  SEVENTH_CHAMBER_OF_JALSAVRAH,
+  VARROCK_PALACE_LIBRARY,
+  DRAYNOR_VILLAGE_MARKET,
+  CASTLE_WARS_BANK,
+  NOTERAZZOS_SHOP_IN_THE_WILDERNESS,
+  ON_TOP_OF_TROLLHEIM_MOUNTAIN,
+  ENTRANCE_OF_THE_ARCEUUS_LIBRARY,
+  TOP_FLOOR_OF_THE_YANILLE_WATCHTOWER,
+  GYPSY_TENT_ENTRANCE,
+  FINE_CLOTHES_ENTRANCE,
+  BOB_AXES_ENTRANCE,
+  CHARCOAL_BURNERS,
+  FORTIS_GRAND_MUSEUM,
+  CAM_TORUM_ENTRANCE,
+  TEMPLE_SOUTHEAST_OF_THE_BAZAAR,
+  TWILIGHT_TEMPLE_MINE,
+  ORTUS_MEETS_PROUDSPIRE,
+  OUTSIDE_TWILIGHT_TEMPLE,
+  WESTERN_SALVAGER_OVERLOOK,
+  PANDEMONIUM_BAR,
+  WINTUMBER_ISLAND,
+  BRITTLE_ISLE;
 
-  private final String locationName;
-  private final String chartText;
-  private final STASHUnit stashUnitData;
-  private final int[] defaultItemIds;
-  private final ItemRequirement[] itemRequirements;
+  private static final JsonEnumData<StashUnit, Data> DATA =
+      new JsonEnumData<>(values(), Data.class, "StashUnitData");
 
-  StashUnit(
-      String locationName,
-      String chartText,
-      STASHUnit stashUnitData,
-      @Nonnull int[] defaultItemIds,
-      @Nonnull ItemRequirement... itemRequirements) {
-    this.locationName = locationName;
-    this.stashUnitData = stashUnitData;
-    this.chartText = chartText;
-    this.defaultItemIds = defaultItemIds;
-    this.itemRequirements = itemRequirements;
+  /** One entry of the json. The RuneLite objects are resolved lazily and cached. */
+  public static class Data {
+    @Getter private final String locationName;
+    @Getter private final String chartText;
+    // name of the RuneLite STASHUnit constant
+    private final String stashUnit;
+    @Getter private final int[] defaultItemIds;
+    private final List<ItemRequirementData> itemRequirements;
+
+    private transient volatile STASHUnit resolvedStashUnit;
+    private transient volatile ItemRequirement[] resolvedItemRequirements;
+
+    public Data(
+        String locationName,
+        String chartText,
+        STASHUnit stashUnit,
+        int[] defaultItemIds,
+        List<ItemRequirementData> itemRequirements) {
+      this.locationName = locationName;
+      this.chartText = chartText;
+      this.stashUnit = stashUnit.name();
+      this.defaultItemIds = defaultItemIds;
+      this.itemRequirements = itemRequirements;
+    }
+
+    public STASHUnit getStashUnit() {
+      STASHUnit resolved = resolvedStashUnit;
+      if (resolved == null) {
+        // Looked up by name over values() rather than valueOf, which would use reflection.
+        for (STASHUnit candidate : STASHUnit.values()) {
+          if (candidate.name().equals(stashUnit)) {
+            resolved = candidate;
+            break;
+          }
+        }
+
+        if (resolved == null) {
+          throw new IllegalStateException("Unknown STASHUnit " + stashUnit);
+        }
+
+        resolvedStashUnit = resolved;
+      }
+
+      return resolved;
+    }
+
+    public ItemRequirement[] getItemRequirements() {
+      ItemRequirement[] resolved = resolvedItemRequirements;
+      if (resolved == null) {
+        resolved = new ItemRequirement[itemRequirements.size()];
+        for (int i = 0; i < resolved.length; i++) {
+          resolved[i] = itemRequirements.get(i).toItemRequirement();
+        }
+
+        // benign race: worst case two equivalent arrays get built
+        resolvedItemRequirements = resolved;
+      }
+
+      return resolved;
+    }
+  }
+
+  public static void load(Gson gson) {
+    DATA.load(gson);
+  }
+
+  public Data getData() {
+    return DATA.get(this);
+  }
+
+  public String getLocationName() {
+    return getData().getLocationName();
+  }
+
+  public String getChartText() {
+    return getData().getChartText();
+  }
+
+  public STASHUnit getStashUnitData() {
+    return getData().getStashUnit();
+  }
+
+  public int[] getDefaultItemIds() {
+    return getData().getDefaultItemIds();
+  }
+
+  public ItemRequirement[] getItemRequirements() {
+    return getData().getItemRequirements();
   }
 }

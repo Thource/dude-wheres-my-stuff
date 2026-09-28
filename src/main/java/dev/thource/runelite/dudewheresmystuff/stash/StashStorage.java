@@ -42,9 +42,9 @@ public class StashStorage extends ItemStorage<StashStorageType> {
     }
 
     if (stashUnit
-        .getStashUnitData()
-        .getWorldPoints()[0]
-        .distanceTo(plugin.getClient().getLocalPlayer().getWorldLocation())
+            .getStashUnitData()
+            .getWorldPoints()[0]
+            .distanceTo(plugin.getClient().getLocalPlayer().getWorldLocation())
         > 3) {
       return false;
     }
@@ -96,8 +96,7 @@ public class StashStorage extends ItemStorage<StashStorageType> {
       }
     }
 
-    for (ItemStack itemStack :
-        ItemContainerWatcher.getWornWatcher().getItemsRemovedLastTick()) {
+    for (ItemStack itemStack : ItemContainerWatcher.getWornWatcher().getItemsRemovedLastTick()) {
       for (ItemRequirement itemRequirement : stashUnit.getItemRequirements()) {
         if (itemRequirement.fulfilledBy(itemStack.getId())) {
           items.add(itemStack);

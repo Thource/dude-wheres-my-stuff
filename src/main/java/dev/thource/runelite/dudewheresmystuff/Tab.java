@@ -48,8 +48,17 @@ public enum Tab {
   DEBUG("Debug", ItemID.BLUECOG);
 
   public static final List<Tab> TABS =
-      List.of(OVERVIEW, DEATH, COINS, CARRYABLE_STORAGE, STASH_UNITS, POH_STORAGE, WORLD,
-          SAILING, MINIGAMES, SEARCH);
+      List.of(
+          OVERVIEW,
+          DEATH,
+          COINS,
+          CARRYABLE_STORAGE,
+          STASH_UNITS,
+          POH_STORAGE,
+          WORLD,
+          SAILING,
+          MINIGAMES,
+          SEARCH);
 
   private final String name;
   private final int itemId;

@@ -36,16 +36,25 @@ class ItemBox extends JPanel {
       imageLabel.setItemStack(itemStack);
 
       if (itemStack.getSpriteId() != -1) {
-        plugin.getSpriteManager().getSpriteAsync(itemStack.getSpriteId(), 0, (image) -> {
-          if (image != null) {
-            var spriteImage = new BufferedImage(36, 32, BufferedImage.TYPE_INT_ARGB);
-            var spriteGraphics = spriteImage.createGraphics();
-            spriteGraphics.drawImage(image, (spriteImage.getWidth() - image.getWidth()) / 2, (spriteImage.getHeight() - image.getHeight()) / 2, null);
-            spriteGraphics.dispose();
+        plugin
+            .getSpriteManager()
+            .getSpriteAsync(
+                itemStack.getSpriteId(),
+                0,
+                (image) -> {
+                  if (image != null) {
+                    var spriteImage = new BufferedImage(36, 32, BufferedImage.TYPE_INT_ARGB);
+                    var spriteGraphics = spriteImage.createGraphics();
+                    spriteGraphics.drawImage(
+                        image,
+                        (spriteImage.getWidth() - image.getWidth()) / 2,
+                        (spriteImage.getHeight() - image.getHeight()) / 2,
+                        null);
+                    spriteGraphics.dispose();
 
-            imageLabel.setIcon(new ImageIcon(spriteImage));
-          }
-        });
+                    imageLabel.setIcon(new ImageIcon(spriteImage));
+                  }
+                });
       } else {
         AsyncBufferedImage itemImage =
             plugin

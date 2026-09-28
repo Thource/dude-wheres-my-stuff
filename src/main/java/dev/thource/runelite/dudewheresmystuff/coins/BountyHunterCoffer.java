@@ -14,10 +14,9 @@ import org.apache.commons.lang3.math.NumberUtils;
 public class BountyHunterCoffer extends CoinsStorage {
 
   private static final Pattern depositWithdrawPattern =
-
       Pattern.compile(
-          "You (?:withdrew|added) \\d+ coins (?:from|to) your coffer. There are now (\\d+) coins in it. You need to "
-              + "have at least \\d+ coins in your coffer to participate.");
+          "You (?:withdrew|added) \\d+ coins (?:from|to) your coffer. There are now (\\d+) coins in"
+              + " it. You need to have at least \\d+ coins in your coffer to participate.");
 
   BountyHunterCoffer(DudeWheresMyStuffPlugin plugin) {
     super(CoinsStorageType.BOUNTY_HUNTER, plugin);
@@ -64,7 +63,9 @@ public class BountyHunterCoffer extends CoinsStorage {
   @Override
   public boolean onGameTick() {
     var client = plugin.getClient();
-    var regionId = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()).getRegionID();
+    var regionId =
+        WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation())
+            .getRegionID();
 
     // Only check widgets in Ferox Enclave and at Daimon's Crater
     if (regionId != 12600 && regionId != 12344 && regionId != 13631) {

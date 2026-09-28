@@ -6,9 +6,7 @@ import lombok.Getter;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.VarbitID;
 
-/**
- * PlankSack is responsible for tracking which planks the player has stored in their plank sack.
- */
+/** PlankSack is responsible for tracking which planks the player has stored in their plank sack. */
 @Getter
 public class PlankSack extends CarryableStorage {
   private final ItemStack plankStack;
@@ -40,10 +38,11 @@ public class PlankSack extends CarryableStorage {
     items.add(ironwoodPlankStack);
     items.add(rosewoodPlankStack);
 
-    varbits = new int[] {
-        VarbitID.PLANK_SACK_PLAIN, VarbitID.PLANK_SACK_OAK, VarbitID.PLANK_SACK_TEAK,
-        VarbitID.PLANK_SACK_MAHOGANY, VarbitID.PLANK_SACK_CAMPHOR, VarbitID.PLANK_SACK_IRONWOOD,
-        VarbitID.PLANK_SACK_ROSEWOOD
-    };
+    varbits =
+        new int[] {
+          VarbitID.PLANK_SACK_PLAIN, VarbitID.PLANK_SACK_OAK, VarbitID.PLANK_SACK_TEAK,
+          VarbitID.PLANK_SACK_MAHOGANY, VarbitID.PLANK_SACK_CAMPHOR, VarbitID.PLANK_SACK_IRONWOOD,
+          VarbitID.PLANK_SACK_ROSEWOOD
+        };
   }
 }

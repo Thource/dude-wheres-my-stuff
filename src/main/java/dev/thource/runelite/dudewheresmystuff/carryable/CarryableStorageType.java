@@ -1,135 +1,94 @@
 package dev.thource.runelite.dudewheresmystuff.carryable;
 
-import dev.thource.runelite.dudewheresmystuff.StorageType;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
+import com.google.gson.Gson;
+import dev.thource.runelite.dudewheresmystuff.JsonEnumData;
+import dev.thource.runelite.dudewheresmystuff.JsonStorageType;
+import dev.thource.runelite.dudewheresmystuff.StorageTypeData;
 import java.util.List;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import net.runelite.api.gameval.InventoryID;
-import net.runelite.api.gameval.ItemID;
-import net.runelite.api.gameval.VarbitID;
 
-/** CarryableStorageType is used to identify CarryableStorages. */
-@RequiredArgsConstructor
+/**
+ * CarryableStorageType is used to identify CarryableStorages.
+ *
+ * <p>The data for each type is loaded from {@code data/CarryableStorageTypeData.json}, which is
+ * generated from {@code CarryableStorageTypeData} in the test source set by {@code
+ * EnumJsonGenerator}. Do not edit the JSON by hand.
+ *
+ * <p>Call {@link #load(Gson)} with the plugin's injected Gson before using any type.
+ */
 @Getter
-public enum CarryableStorageType implements StorageType {
-  INVENTORY("Inventory", InventoryID.INV, true, "inventory", false, new ArrayList<>(), -1),
-  EQUIPMENT("Equipment", InventoryID.WORN, true, "equipment", false, new ArrayList<>(), -1),
-  LOOTING_BAG(
-      "Looting Bag",
-      InventoryID.LOOTING_BAG,
-      false,
-      "lootingbag",
-      true,
-      Arrays.asList(ItemID.LOOTING_BAG, ItemID.LOOTING_BAG_OPEN),
-      -1),
-  SEED_BOX(
-      "Seed Box",
-      InventoryID.SEED_BOX,
-      false,
-      "seedbox",
-      true,
-      Arrays.asList(ItemID.SEED_BOX, ItemID.SEED_BOX_OPEN),
-      VarbitID.EMPTYONDEATH_SEEDBOX),
-  RUNE_POUCH(
-      "Rune Pouch",
-      -1,
-      true,
-      "runepouch",
-      true,
-      Arrays.asList(
-          ItemID.BH_RUNE_POUCH,
-          ItemID.BH_RUNE_POUCH_TROUVER,
-          ItemID.DIVINE_RUNE_POUCH,
-          ItemID.DIVINE_RUNE_POUCH_TROUVER),
-      VarbitID.EMPTYONDEATH_RUNEPOUCH),
-  BOTTOMLESS_BUCKET(
-      "Bottomless Compost Bucket", -1, false, "bottomlessbucket", true, new ArrayList<>(), -1),
-  PLANK_SACK("Plank Sack", -1, true, "plankSack", true, new ArrayList<>(), -1),
-  BOLT_POUCH(
-      "Bolt Pouch",
-      -1,
-      true,
-      "boltpouch",
-      true,
-      Collections.singletonList(ItemID.XBOWS_BOLT_POUCH),
-      VarbitID.EMPTYONDEATH_BOLTPOUCH),
-  GNOMISH_FIRELIGHTER(
-      "Gnomish Firelighter",
-      -1,
-      false,
-      "gnomishfirelighter",
-      true,
-      Collections.singletonList(ItemID.GNOMISH_FIRELIGHTER_CHARGED),
-      -1),
-  MASTER_SCROLL_BOOK(
-      "Master Scroll Book", -1, true, "masterscrollbook", true, new ArrayList<>(), -1),
-  HUNTSMANS_KIT(
-      "Huntsman's Kit",
-      InventoryID.HUNTSMANS_KIT,
-      false,
-      "huntsmanskit",
-      true,
-      Collections.singletonList(ItemID.HUNTSMANS_KIT),
-      -1),
-  FORESTRY_KIT(
-      "Forestry Kit",
-      InventoryID.FORESTRY_KIT,
-      false,
-      "forestrykit",
-      true,
-      Arrays.asList(
-          ItemID.FORESTRY_KIT, ItemID.FORESTRY_BASKET_CLOSED, ItemID.FORESTRY_BASKET_OPEN),
-      -1),
-  TACKLE_BOX(
-      "Tackle Box",
-      InventoryID.TACKLE_BOX,
-      false,
-      "tackleBox",
-      true,
-      Collections.singletonList(ItemID.TACKLE_BOX),
-      VarbitID.EMPTYONDEATH_TACKLEBOX),
-  HERB_SACK(
-      "Herb Sack",
-      -1,
-      false,
-      "herbSack",
-      true,
-      List.of(ItemID.SLAYER_HERB_SACK, ItemID.SLAYER_HERB_SACK_OPEN),
-      VarbitID.EMPTYONDEATH_HERBSACK),
-  CHUGGING_BARREL(
-      "Chugging Barrel",
-      InventoryID.PREPOT_DEVICE_INV,
-      false,
-      "chuggingBarrel",
-      true,
-      Collections.singletonList(ItemID.MM_PREPOT_DEVICE),
-      -1),
-  DIZANAS_QUIVER(
-      "Dizana's Quiver",
-      -1,
-      true,
-      "dizanasQuiver",
-      true,
-      List.of(
-          ItemID.DIZANAS_QUIVER_UNCHARGED,
-          ItemID.DIZANAS_QUIVER_CHARGED,
-          ItemID.DIZANAS_QUIVER_UNCHARGED_TROUVER,
-          ItemID.DIZANAS_QUIVER_CHARGED_TROUVER),
-      -1),
-  BOW_STRING_SPOOL(
-      "Bow String Spool", -1, true, "bowStringSpool", true, List.of(ItemID.BOWSTRING_SPOOL), -1);
+public enum CarryableStorageType implements JsonStorageType<CarryableStorageType.Data> {
+  INVENTORY,
+  EQUIPMENT,
+  LOOTING_BAG,
+  SEED_BOX,
+  RUNE_POUCH,
+  BOTTOMLESS_BUCKET,
+  PLANK_SACK,
+  BOLT_POUCH,
+  GNOMISH_FIRELIGHTER,
+  MASTER_SCROLL_BOOK,
+  HUNTSMANS_KIT,
+  FORESTRY_KIT,
+  TACKLE_BOX,
+  HERB_SACK,
+  CHUGGING_BARREL,
+  DIZANAS_QUIVER,
+  BOW_STRING_SPOOL;
 
-  private final String name;
-  private final int itemContainerId;
-  // Whether the storage can be updated with no action required by the player
-  private final boolean automatic;
-  private final String configKey;
-  private final boolean membersOnly;
+  private static final JsonEnumData<CarryableStorageType, Data> DATA =
+      new JsonEnumData<>(values(), Data.class, "CarryableStorageTypeData");
+
   private final List<Integer> accountTypeBlacklist = null;
-  // ids of container items (the id of the rune pouch item, for example)
-  private final List<Integer> containerIds;
-  private final int emptyOnDeathVarbit;
+
+  /** The base storage type data plus the properties specific to carryable storages. */
+  @Getter
+  public static class Data extends StorageTypeData {
+    // Whether the storage can be updated with no action required by the player
+    private final boolean automatic;
+    private final boolean membersOnly;
+    // ids of container items (the id of the rune pouch item, for example)
+    private final List<Integer> containerIds;
+    private final int emptyOnDeathVarbit;
+
+    public Data(
+        String name,
+        int itemContainerId,
+        boolean automatic,
+        String configKey,
+        boolean membersOnly,
+        List<Integer> containerIds,
+        int emptyOnDeathVarbit) {
+      super(name, itemContainerId, configKey);
+      this.automatic = automatic;
+      this.membersOnly = membersOnly;
+      this.containerIds = containerIds;
+      this.emptyOnDeathVarbit = emptyOnDeathVarbit;
+    }
+  }
+
+  public static void load(Gson gson) {
+    DATA.load(gson);
+  }
+
+  @Override
+  public Data getData() {
+    return DATA.get(this);
+  }
+
+  public boolean isAutomatic() {
+    return getData().isAutomatic();
+  }
+
+  public boolean isMembersOnly() {
+    return getData().isMembersOnly();
+  }
+
+  public List<Integer> getContainerIds() {
+    return getData().getContainerIds();
+  }
+
+  public int getEmptyOnDeathVarbit() {
+    return getData().getEmptyOnDeathVarbit();
+  }
 }

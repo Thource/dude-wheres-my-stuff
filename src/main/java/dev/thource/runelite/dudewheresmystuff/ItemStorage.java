@@ -24,7 +24,11 @@ public abstract class ItemStorage<T extends StorageType> extends Storage<T> {
   protected ItemStorage(T type, DudeWheresMyStuffPlugin plugin) {
     super(type, plugin);
 
-    itemContainerWatcher = ItemContainerWatcher.getWatcher(type.getItemContainerId());
+    itemContainerWatcher = loadItemContainerWatcher();
+  }
+
+  protected ItemContainerWatcher loadItemContainerWatcher() {
+    return ItemContainerWatcher.getWatcher(type.getItemContainerId());
   }
 
   @Override
@@ -62,12 +66,16 @@ public abstract class ItemStorage<T extends StorageType> extends Storage<T> {
   public boolean onGameTick() {
     if (itemContainerWatcher != null && itemContainerWatcher.wasJustUpdated()) {
       items.clear();
-      itemContainerWatcher.getItems().forEach(item -> {
-        ItemComposition itemComposition = plugin.getItemManager().getItemComposition(item.getId());
-        if (itemComposition.getPlaceholderTemplateId() == -1) {
-          items.add(new ItemStack(item.getId(), item.getQuantity(), plugin));
-        }
-      });
+      itemContainerWatcher
+          .getItems()
+          .forEach(
+              item -> {
+                ItemComposition itemComposition =
+                    plugin.getItemManager().getItemComposition(item.getId());
+                if (itemComposition.getPlaceholderTemplateId() == -1) {
+                  items.add(new ItemStack(item.getId(), item.getQuantity(), plugin));
+                }
+              });
       updateLastUpdated();
 
       return true;
@@ -83,8 +91,7 @@ public abstract class ItemStorage<T extends StorageType> extends Storage<T> {
       containerId -= 0x8000;
     }
 
-    if (itemContainerWatcher != null
-        || type.getItemContainerId() != containerId) {
+    if (itemContainerWatcher != null || type.getItemContainerId() != containerId) {
       return false;
     }
 
@@ -166,7 +173,7 @@ public abstract class ItemStorage<T extends StorageType> extends Storage<T> {
   /**
    * Removes a quantity of items with the id specified.
    *
-   * @param id       the item id of the item to remove
+   * @param id the item id of the item to remove
    * @param quantity the amount of the item to remove
    * @return the amount of items removed from the storage
    */

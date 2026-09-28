@@ -5,9 +5,7 @@ import java.util.Random;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-/**
- * DeathpileColorScheme is used to specify which color scheme should be used for deathpiles.
- */
+/** DeathpileColorScheme is used to specify which color scheme should be used for deathpiles. */
 @RequiredArgsConstructor
 @Getter
 public enum DeathpileColorScheme {

@@ -87,7 +87,7 @@ public class BottomlessBucket extends CarryableStorage {
   /**
    * Updates the compost count, for use by Leprechaun.
    *
-   * @param type    0 = missing, 1 = empty, 2 = compost, 3 = supercompost, 4 = ultracompost
+   * @param type 0 = missing, 1 = empty, 2 = compost, 3 = supercompost, 4 = ultracompost
    * @param charges the amount of charges
    */
   public void updateCompost(int type, int charges) {

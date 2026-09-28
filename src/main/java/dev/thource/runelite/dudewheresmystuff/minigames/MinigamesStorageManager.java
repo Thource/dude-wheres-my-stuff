@@ -35,5 +35,4 @@ public class MinigamesStorageManager
   public String getConfigKey() {
     return "minigames";
   }
-
 }

@@ -156,5 +156,4 @@ public class StashStorageManager extends StorageManager<StashStorageType, StashS
   public String getConfigKey() {
     return "stash";
   }
-
 }

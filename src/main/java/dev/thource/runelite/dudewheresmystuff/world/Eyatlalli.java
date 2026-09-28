@@ -15,8 +15,8 @@ import net.runelite.http.api.item.ItemPrice;
 /** Eyatlalli is responsible for tracking the player's cold storage weapon. */
 public class Eyatlalli extends WorldStorage {
 
-  private static final Pattern LOGIN_MESSAGE_PATTERN = Pattern.compile(
-      "Eyatlalli is holding onto your ([^.]+)\\.");
+  private static final Pattern LOGIN_MESSAGE_PATTERN =
+      Pattern.compile("Eyatlalli is holding onto your ([^.]+)\\.");
 
   protected Eyatlalli(DudeWheresMyStuffPlugin plugin) {
     super(WorldStorageType.EYATLALLI, plugin);
@@ -35,8 +35,7 @@ public class Eyatlalli extends WorldStorage {
       updateLastUpdated();
       resetItems();
 
-      Item[] equippedItems = plugin.getClient().getItemContainer(InventoryID.WORN)
-          .getItems();
+      Item[] equippedItems = plugin.getClient().getItemContainer(InventoryID.WORN).getItems();
       if (equippedItems.length > 3) {
         Item item = equippedItems[3];
         items.add(new ItemStack(item.getId(), item.getQuantity(), plugin));
@@ -65,14 +64,17 @@ public class Eyatlalli extends WorldStorage {
       updateLastUpdated();
 
       String itemName = loginMessageMatcher.group(1);
-      Optional<ItemPrice> foundItem = plugin.getItemManager().search(itemName).stream()
-          .filter(p -> p.getName().equals(itemName))
-          .findFirst();
-      if (!foundItem.isPresent() || items.isEmpty() || items.get(0).getId() != foundItem.get()
-          .getId()) {
+      Optional<ItemPrice> foundItem =
+          plugin.getItemManager().search(itemName).stream()
+              .filter(p -> p.getName().equals(itemName))
+              .findFirst();
+      if (!foundItem.isPresent()
+          || items.isEmpty()
+          || items.get(0).getId() != foundItem.get().getId()) {
         resetItems();
         items.add(
-            new ItemStack(foundItem.map(ItemPrice::getId).orElse(ItemID.MACRO_QUIZ_MYSTERY_BOX), 1, plugin));
+            new ItemStack(
+                foundItem.map(ItemPrice::getId).orElse(ItemID.MACRO_QUIZ_MYSTERY_BOX), 1, plugin));
       }
 
       return true;

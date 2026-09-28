@@ -2,7 +2,6 @@ package dev.thource.runelite.dudewheresmystuff.death;
 
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffConfig;
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
-import dev.thource.runelite.dudewheresmystuff.Region;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -24,8 +23,8 @@ class ExpiringDeathStorageInfoBox extends InfoBox {
   @Setter @Getter private boolean imageDirty = false;
   private final Client client;
 
-  public ExpiringDeathStorageInfoBox(@Nonnull DudeWheresMyStuffPlugin plugin,
-      ExpiringDeathStorage storage, int iconId) {
+  public ExpiringDeathStorageInfoBox(
+      @Nonnull DudeWheresMyStuffPlugin plugin, ExpiringDeathStorage storage, int iconId) {
     super(null, plugin);
 
     config = plugin.getConfig();
@@ -43,8 +42,9 @@ class ExpiringDeathStorageInfoBox extends InfoBox {
   }
 
   private static BufferedImage tintImage(BufferedImage originalImage, Color color) {
-    BufferedImage tintedImage = new BufferedImage(originalImage.getWidth(),
-        originalImage.getHeight(), BufferedImage.TYPE_INT_ARGB);
+    BufferedImage tintedImage =
+        new BufferedImage(
+            originalImage.getWidth(), originalImage.getHeight(), BufferedImage.TYPE_INT_ARGB);
 
     Graphics2D g2d = tintedImage.createGraphics();
     g2d.setColor(color);
@@ -56,12 +56,10 @@ class ExpiringDeathStorageInfoBox extends InfoBox {
   }
 
   void refreshTooltip() {
-    String deathpileValue = QuantityFormatter.quantityToStackSize(
-        storage.getTotalValue());
+    String deathpileValue = QuantityFormatter.quantityToStackSize(storage.getTotalValue());
 
     setTooltip(
-        regionName + " " + this.storage.getName().toLowerCase() + " (" + deathpileValue
-            + " gp)");
+        regionName + " " + this.storage.getName().toLowerCase() + " (" + deathpileValue + " gp)");
 
     if (storage.isUseAccountPlayTime()
         && storage.getDeathStorageManager().getStartPlayedMinutes() <= 0) {
@@ -75,8 +73,7 @@ class ExpiringDeathStorageInfoBox extends InfoBox {
 
     if (config.flashExpiringDeathpileInfoboxes()) {
       int minutesLeft =
-          (int) Math.floor(
-              (storage.getExpiryMs() - System.currentTimeMillis()) / 60000f);
+          (int) Math.floor((storage.getExpiryMs() - System.currentTimeMillis()) / 60000f);
 
       if (minutesLeft <= config.deathpileExpiryWarningTime()) {
         if ((client.getTickCount() + 1) % 2 == 0) {
@@ -104,8 +101,7 @@ class ExpiringDeathStorageInfoBox extends InfoBox {
     }
 
     int minutesLeft =
-        (int) Math.floor(
-            (storage.getExpiryMs() - System.currentTimeMillis()) / 60000f);
+        (int) Math.floor((storage.getExpiryMs() - System.currentTimeMillis()) / 60000f);
 
     return (minutesLeft > 0 ? minutesLeft : "<1") + "m";
   }

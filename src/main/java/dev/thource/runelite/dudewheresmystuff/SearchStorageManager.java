@@ -20,5 +20,4 @@ class SearchStorageManager extends StorageManager<StorageType, Storage<StorageTy
   public String getConfigKey() {
     return null;
   }
-
 }

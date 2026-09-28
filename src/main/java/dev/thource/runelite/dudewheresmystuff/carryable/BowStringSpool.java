@@ -19,8 +19,6 @@ public class BowStringSpool extends CarryableStorage {
 
     items.add(new ItemStack(ItemID.BOW_STRING, plugin));
 
-    varbits = new int[] {
-        VarbitID.BOWSTRING_SPOOL_CHARGES
-    };
+    varbits = new int[] {VarbitID.BOWSTRING_SPOOL_CHARGES};
   }
 }

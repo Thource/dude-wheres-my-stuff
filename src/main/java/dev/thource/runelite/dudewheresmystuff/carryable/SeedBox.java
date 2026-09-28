@@ -19,16 +19,15 @@ import org.apache.commons.lang3.math.NumberUtils;
 public class SeedBox extends CarryableStorage {
 
   private static final Pattern[] additionPatterns = {
-      Pattern.compile("Stored (?<count>\\d+) x (?<seed>.+) in your seed box\\."),
-      Pattern.compile("You put (?<count>\\d+) x (?<seed>.+) straight into your open seed box\\."),
-      Pattern.compile(
-          "The following stolen loot gets added to your seed box: (?<seed>.+) x (?<count>\\d+)\\."),
-      Pattern.compile("You put the stolen (?<seed>.+) into your seed box\\."),
+    Pattern.compile("Stored (?<count>\\d+) x (?<seed>.+) in your seed box\\."),
+    Pattern.compile("You put (?<count>\\d+) x (?<seed>.+) straight into your open seed box\\."),
+    Pattern.compile(
+        "The following stolen loot gets added to your seed box: (?<seed>.+) x (?<count>\\d+)\\."),
+    Pattern.compile("You put the stolen (?<seed>.+) into your seed box\\."),
   };
   private static final Pattern[] removalPatterns = {
-      Pattern.compile("Emptied (?<count>\\d+) x (?<seed>.+) to your inventory\\."),
-      Pattern.compile(
-          "(?:A|An|(?<count>\\d+)) (?<seed>.+) (?:was|were) taken from your seed box\\."),
+    Pattern.compile("Emptied (?<count>\\d+) x (?<seed>.+) to your inventory\\."),
+    Pattern.compile("(?:A|An|(?<count>\\d+)) (?<seed>.+) (?:was|were) taken from your seed box\\."),
   };
 
   SeedBox(DudeWheresMyStuffPlugin plugin) {

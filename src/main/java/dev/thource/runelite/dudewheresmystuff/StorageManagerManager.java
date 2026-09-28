@@ -120,26 +120,36 @@ public class StorageManagerManager {
     for (StorageManager<?, ?> storageManager : storageManagers) {
       storageManager.load(profileKey);
 
-      // Bounce into swing and back into the client thread to give StoragePanels a chance to be created
+      // Bounce into swing and back into the client thread to give StoragePanels a chance to be
+      // created
       SwingUtilities.invokeLater(
           () ->
-              plugin.getClientThread().invoke(() -> {
-                storageManager.getStorages().forEach(storage -> {
-                  if (storage.getStoragePanel() != null) {
-                    storage.getStoragePanel().refreshItems();
-                  }
-                });
+              plugin
+                  .getClientThread()
+                  .invoke(
+                      () -> {
+                        storageManager
+                            .getStorages()
+                            .forEach(
+                                storage -> {
+                                  if (storage.getStoragePanel() != null) {
+                                    storage.getStoragePanel().refreshItems();
+                                  }
+                                });
 
-                SwingUtilities.invokeLater(
-                    () -> {
-                      storageManager.getStorages().forEach(storage -> {
-                        if (storage.getStoragePanel() != null) {
-                          storage.getStoragePanel().update();
-                        }
-                      });
-                      storageManager.getStorageTabPanel().reorderStoragePanels();
-                    });
-              }));
+                        SwingUtilities.invokeLater(
+                            () -> {
+                              storageManager
+                                  .getStorages()
+                                  .forEach(
+                                      storage -> {
+                                        if (storage.getStoragePanel() != null) {
+                                          storage.getStoragePanel().update();
+                                        }
+                                      });
+                              storageManager.getStorageTabPanel().reorderStoragePanels();
+                            });
+                      }));
     }
   }
 
@@ -239,19 +249,26 @@ public class StorageManagerManager {
                             && storage.getType() != CoinsStorageType.BANK)
                 .filter(s -> s.includeInStoredItemCount(getCoinsStorageManager().getConfigKey())),
             getCarryableStorageManager().getStorages().stream()
-                .filter(s -> s.includeInStoredItemCount(getCarryableStorageManager().getConfigKey())),
+                .filter(
+                    s -> s.includeInStoredItemCount(getCarryableStorageManager().getConfigKey())),
             getStashStorageManager().getStorages().stream()
                 .filter(s -> s.includeInStoredItemCount(getStashStorageManager().getConfigKey())),
             getPlayerOwnedHouseStorageManager().getStorages().stream()
-                .filter(s -> s.includeInStoredItemCount(getPlayerOwnedHouseStorageManager().getConfigKey())),
+                .filter(
+                    s ->
+                        s.includeInStoredItemCount(
+                            getPlayerOwnedHouseStorageManager().getConfigKey())),
             getWorldStorageManager().getStorages().stream()
                 .filter(s -> s.includeInStoredItemCount(getWorldStorageManager().getConfigKey())))
-        .flatMap(s -> s).filter(Storage::isWithdrawable);
+        .flatMap(s -> s)
+        .filter(Storage::isWithdrawable);
   }
 
-
   public List<ItemStack> getItems() {
-    return getStorages().filter(Storage::isEnabled).map(Storage::getItems).flatMap(List::stream)
+    return getStorages()
+        .filter(Storage::isEnabled)
+        .map(Storage::getItems)
+        .flatMap(List::stream)
         .collect(Collectors.toList());
   }
 
@@ -292,7 +309,8 @@ public class StorageManagerManager {
   }
 
   /** The non-empty, canonicalized {@code {id, quantity}} entries of a single storage. */
-  private List<Map<String, Object>> pluginMessageItems(Storage<?> storage, ItemManager itemManager) {
+  private List<Map<String, Object>> pluginMessageItems(
+      Storage<?> storage, ItemManager itemManager) {
     List<Map<String, Object>> items = new ArrayList<>();
     for (ItemStack itemStack : storage.getItems()) {
       if (itemStack.getId() <= 0 || itemStack.getQuantity() <= 0) {
