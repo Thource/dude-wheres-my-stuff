@@ -11,11 +11,14 @@ import dev.thource.runelite.dudewheresmystuff.death.ExpiringDeathStorageTilesOve
 import dev.thource.runelite.dudewheresmystuff.export.utils.GoogleSheetConnectionUtils;
 import dev.thource.runelite.dudewheresmystuff.minigames.MinigamesStorageManager;
 import dev.thource.runelite.dudewheresmystuff.playerownedhouse.PlayerOwnedHouseStorageManager;
+import dev.thource.runelite.dudewheresmystuff.playerownedhouse.PlayerOwnedHouseStorageType;
 import dev.thource.runelite.dudewheresmystuff.sailing.SailingStorageManager;
 import dev.thource.runelite.dudewheresmystuff.stash.StashStorageManager;
+import dev.thource.runelite.dudewheresmystuff.stash.StashUnit;
 import dev.thource.runelite.dudewheresmystuff.world.WorldStorageManager;
 import java.awt.Component;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.regex.Matcher;
@@ -182,6 +185,8 @@ public class DudeWheresMyStuffPlugin extends Plugin {
   protected void startUp() {
     GoogleSheetConnectionUtils.setGSON(gson);
     GoogleSheetConnectionUtils.setHTTP_CLIENT(okHttpClient);
+
+    StashUnit.load(gson);
 
     itemIdentificationConfig.reloadConfig();
 

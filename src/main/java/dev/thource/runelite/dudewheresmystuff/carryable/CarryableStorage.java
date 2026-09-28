@@ -1,6 +1,7 @@
 package dev.thource.runelite.dudewheresmystuff.carryable;
 
 import dev.thource.runelite.dudewheresmystuff.DudeWheresMyStuffPlugin;
+import dev.thource.runelite.dudewheresmystuff.ItemContainerWatcher;
 import dev.thource.runelite.dudewheresmystuff.ItemStack;
 import dev.thource.runelite.dudewheresmystuff.ItemStorage;
 import lombok.Getter;
@@ -16,6 +17,13 @@ public class CarryableStorage extends ItemStorage<CarryableStorageType> {
 
   protected CarryableStorage(CarryableStorageType type, DudeWheresMyStuffPlugin plugin) {
     super(type, plugin);
+  }
+
+  @Override
+  protected ItemContainerWatcher loadItemContainerWatcher() {
+    CarryableStorageType.load(plugin.getGson());
+
+    return super.loadItemContainerWatcher();
   }
 
   @Override

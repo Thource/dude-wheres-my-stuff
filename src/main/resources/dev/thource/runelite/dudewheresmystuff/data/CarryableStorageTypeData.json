@@ -1,0 +1,190 @@
+{
+  "INVENTORY": {
+    "automatic": true,
+    "membersOnly": false,
+    "containerIds": [],
+    "emptyOnDeathVarbit": -1,
+    "name": "Inventory",
+    "itemContainerId": 93,
+    "configKey": "inventory"
+  },
+  "EQUIPMENT": {
+    "automatic": true,
+    "membersOnly": false,
+    "containerIds": [],
+    "emptyOnDeathVarbit": -1,
+    "name": "Equipment",
+    "itemContainerId": 94,
+    "configKey": "equipment"
+  },
+  "LOOTING_BAG": {
+    "automatic": false,
+    "membersOnly": true,
+    "containerIds": [
+      11941,
+      22586
+    ],
+    "emptyOnDeathVarbit": -1,
+    "name": "Looting Bag",
+    "itemContainerId": 516,
+    "configKey": "lootingbag"
+  },
+  "SEED_BOX": {
+    "automatic": false,
+    "membersOnly": true,
+    "containerIds": [
+      13639,
+      24482
+    ],
+    "emptyOnDeathVarbit": 15314,
+    "name": "Seed Box",
+    "itemContainerId": 573,
+    "configKey": "seedbox"
+  },
+  "RUNE_POUCH": {
+    "automatic": true,
+    "membersOnly": true,
+    "containerIds": [
+      12791,
+      24416,
+      27281,
+      27509
+    ],
+    "emptyOnDeathVarbit": 15311,
+    "name": "Rune Pouch",
+    "itemContainerId": -1,
+    "configKey": "runepouch"
+  },
+  "BOTTOMLESS_BUCKET": {
+    "automatic": false,
+    "membersOnly": true,
+    "containerIds": [],
+    "emptyOnDeathVarbit": -1,
+    "name": "Bottomless Compost Bucket",
+    "itemContainerId": -1,
+    "configKey": "bottomlessbucket"
+  },
+  "PLANK_SACK": {
+    "automatic": true,
+    "membersOnly": true,
+    "containerIds": [],
+    "emptyOnDeathVarbit": -1,
+    "name": "Plank Sack",
+    "itemContainerId": -1,
+    "configKey": "plankSack"
+  },
+  "BOLT_POUCH": {
+    "automatic": true,
+    "membersOnly": true,
+    "containerIds": [
+      9433
+    ],
+    "emptyOnDeathVarbit": 15313,
+    "name": "Bolt Pouch",
+    "itemContainerId": -1,
+    "configKey": "boltpouch"
+  },
+  "GNOMISH_FIRELIGHTER": {
+    "automatic": false,
+    "membersOnly": true,
+    "containerIds": [
+      20278
+    ],
+    "emptyOnDeathVarbit": -1,
+    "name": "Gnomish Firelighter",
+    "itemContainerId": -1,
+    "configKey": "gnomishfirelighter"
+  },
+  "MASTER_SCROLL_BOOK": {
+    "automatic": true,
+    "membersOnly": true,
+    "containerIds": [],
+    "emptyOnDeathVarbit": -1,
+    "name": "Master Scroll Book",
+    "itemContainerId": -1,
+    "configKey": "masterscrollbook"
+  },
+  "HUNTSMANS_KIT": {
+    "automatic": false,
+    "membersOnly": true,
+    "containerIds": [
+      29309
+    ],
+    "emptyOnDeathVarbit": -1,
+    "name": "Huntsman's Kit",
+    "itemContainerId": 855,
+    "configKey": "huntsmanskit"
+  },
+  "FORESTRY_KIT": {
+    "automatic": false,
+    "membersOnly": true,
+    "containerIds": [
+      28136,
+      28143,
+      28145
+    ],
+    "emptyOnDeathVarbit": -1,
+    "name": "Forestry Kit",
+    "itemContainerId": 814,
+    "configKey": "forestrykit"
+  },
+  "TACKLE_BOX": {
+    "automatic": false,
+    "membersOnly": true,
+    "containerIds": [
+      25580
+    ],
+    "emptyOnDeathVarbit": 15312,
+    "name": "Tackle Box",
+    "itemContainerId": 651,
+    "configKey": "tackleBox"
+  },
+  "HERB_SACK": {
+    "automatic": false,
+    "membersOnly": true,
+    "containerIds": [
+      13226,
+      24478
+    ],
+    "emptyOnDeathVarbit": 15316,
+    "name": "Herb Sack",
+    "itemContainerId": -1,
+    "configKey": "herbSack"
+  },
+  "CHUGGING_BARREL": {
+    "automatic": false,
+    "membersOnly": true,
+    "containerIds": [
+      30000
+    ],
+    "emptyOnDeathVarbit": -1,
+    "name": "Chugging Barrel",
+    "itemContainerId": 911,
+    "configKey": "chuggingBarrel"
+  },
+  "DIZANAS_QUIVER": {
+    "automatic": true,
+    "membersOnly": true,
+    "containerIds": [
+      28947,
+      28951,
+      28949,
+      28953
+    ],
+    "emptyOnDeathVarbit": -1,
+    "name": "Dizana's Quiver",
+    "itemContainerId": -1,
+    "configKey": "dizanasQuiver"
+  },
+  "BOW_STRING_SPOOL": {
+    "automatic": true,
+    "membersOnly": true,
+    "containerIds": [
+      31052
+    ],
+    "emptyOnDeathVarbit": -1,
+    "name": "Bow String Spool",
+    "itemContainerId": -1,
+    "configKey": "bowStringSpool"
+  }
+}

@@ -24,7 +24,11 @@ public abstract class ItemStorage<T extends StorageType> extends Storage<T> {
   protected ItemStorage(T type, DudeWheresMyStuffPlugin plugin) {
     super(type, plugin);
 
-    itemContainerWatcher = ItemContainerWatcher.getWatcher(type.getItemContainerId());
+    itemContainerWatcher = loadItemContainerWatcher();
+  }
+
+  protected ItemContainerWatcher loadItemContainerWatcher() {
+    return ItemContainerWatcher.getWatcher(type.getItemContainerId());
   }
 
   @Override

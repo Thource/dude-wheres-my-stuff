@@ -1,0 +1,3060 @@
+{
+  "BOSS_ABYSSAL_SIRE": {
+    "name": "Abyssal Sire",
+    "ids": [
+      11851,
+      11850,
+      12363,
+      12362
+    ]
+  },
+  "BOSS_ARAXXOR": {
+    "name": "Araxxor",
+    "ids": [
+      14489
+    ]
+  },
+  "BOSS_CERBERUS": {
+    "name": "Cerberus",
+    "ids": [
+      4883,
+      5140,
+      5395
+    ]
+  },
+  "BOSS_COMMANDER_ZILYANA": {
+    "name": "Commander Zilyana",
+    "ids": [
+      11602
+    ]
+  },
+  "BOSS_CORP": {
+    "name": "Corporeal Beast",
+    "ids": [
+      11842,
+      11844
+    ]
+  },
+  "BOSS_DKS": {
+    "name": "Dagannoth Kings",
+    "ids": [
+      11588,
+      11589
+    ]
+  },
+  "BOSS_DUKE_SUCELLUS": {
+    "name": "Duke Sucellus",
+    "ids": [
+      12132
+    ]
+  },
+  "BOSS_DOOM": {
+    "name": "Doom of Mokhaiotl",
+    "ids": [
+      5269
+    ]
+  },
+  "BOSS_GENERAL_GRAARDOR": {
+    "name": "General Graardor",
+    "ids": [
+      11347
+    ]
+  },
+  "BOSS_GIANT_MOLE": {
+    "name": "Giant Mole",
+    "ids": [
+      6993,
+      6992
+    ]
+  },
+  "BOSS_GROTESQUE_GUARDIANS": {
+    "name": "Grotesque Guardians",
+    "ids": [
+      6727
+    ]
+  },
+  "BOSS_HESPORI": {
+    "name": "Hespori",
+    "ids": [
+      5021
+    ]
+  },
+  "BOSS_HYDRA": {
+    "name": "Alchemical Hydra",
+    "ids": [
+      5536
+    ]
+  },
+  "BOSS_KQ": {
+    "name": "Kalphite Queen",
+    "ids": [
+      13972
+    ]
+  },
+  "BOSS_KRAKEN": {
+    "name": "Kraken",
+    "ids": [
+      9116
+    ]
+  },
+  "BOSS_KREEARRA": {
+    "name": "Kree'arra",
+    "ids": [
+      11346
+    ]
+  },
+  "BOSS_KRIL_TSUTSAROTH": {
+    "name": "K'ril Tsutsaroth",
+    "ids": [
+      11603
+    ]
+  },
+  "BOSS_NEX": {
+    "name": "Nex",
+    "ids": [
+      11601
+    ]
+  },
+  "BOSS_NIGHTMARE": {
+    "name": "Nightmare of Ashihama",
+    "ids": [
+      15515
+    ]
+  },
+  "BOSS_PHANTOM_MUSPAH": {
+    "name": "Phantom Muspah",
+    "ids": [
+      11330
+    ]
+  },
+  "BOSS_SARACHNIS": {
+    "name": "Sarachnis",
+    "ids": [
+      7322
+    ]
+  },
+  "BOSS_SKOTIZO": {
+    "name": "Skotizo",
+    "ids": [
+      9048
+    ]
+  },
+  "BOSS_SMOKE_DEVIL": {
+    "name": "Thermonuclear smoke devil",
+    "ids": [
+      9363,
+      9619
+    ]
+  },
+  "BOSS_TEMPOROSS": {
+    "name": "Tempoross",
+    "ids": [
+      12078
+    ]
+  },
+  "BOSS_THE_LEVIATHAN": {
+    "name": "The Leviathan",
+    "ids": [
+      8291
+    ]
+  },
+  "BOSS_THE_ROYAL_TITANS": {
+    "name": "The Royal Titans",
+    "ids": [
+      11669
+    ]
+  },
+  "BOSS_THE_WHISPERER": {
+    "name": "The Whisperer",
+    "ids": [
+      10595
+    ]
+  },
+  "BOSS_VARDORVIS": {
+    "name": "Vardorvis",
+    "ids": [
+      4405
+    ]
+  },
+  "BOSS_VORKATH": {
+    "name": "Vorkath",
+    "ids": [
+      9023
+    ]
+  },
+  "BOSS_WINTERTODT": {
+    "name": "Wintertodt",
+    "ids": [
+      6462
+    ]
+  },
+  "BOSS_YAMA": {
+    "name": "Yama",
+    "ids": [
+      6045
+    ]
+  },
+  "BOSS_ZALCANO": {
+    "name": "Zalcano",
+    "ids": [
+      12126
+    ]
+  },
+  "BOSS_ZULRAH": {
+    "name": "Zulrah",
+    "ids": [
+      9007,
+      9008
+    ]
+  },
+  "CITY_AL_KHARID": {
+    "name": "Al Kharid",
+    "ids": [
+      13105,
+      13106
+    ]
+  },
+  "CITY_ARCEUUS_HOUSE": {
+    "name": "Arceuus",
+    "ids": [
+      6458,
+      6459,
+      6460,
+      6714,
+      6715
+    ]
+  },
+  "CITY_ARDOUGNE": {
+    "name": "Ardougne",
+    "ids": [
+      9779,
+      9780,
+      10035,
+      10036,
+      10291,
+      10292,
+      10547,
+      10548
+    ]
+  },
+  "CITY_BANDIT_CAMP": {
+    "name": "Bandit Camp",
+    "ids": [
+      12590
+    ]
+  },
+  "CITY_BARBARIAN_OUTPOST": {
+    "name": "Barbarian Outpost",
+    "ids": [
+      10039
+    ]
+  },
+  "CITY_BARBARIAN_VILLAGE": {
+    "name": "Barbarian Village",
+    "ids": [
+      12341
+    ]
+  },
+  "CITY_BEDABIN_CAMP": {
+    "name": "Bedabin Camp",
+    "ids": [
+      12591
+    ]
+  },
+  "CITY_BRIMHAVEN": {
+    "name": "Brimhaven",
+    "ids": [
+      11057,
+      11058
+    ]
+  },
+  "CITY_BURGH_DE_ROTT": {
+    "name": "Burgh de Rott",
+    "ids": [
+      13874,
+      13873,
+      14130,
+      14129
+    ]
+  },
+  "CITY_BURTHORPE": {
+    "name": "Burthorpe",
+    "ids": [
+      11319,
+      11575
+    ]
+  },
+  "CITY_CAM_TORUM": {
+    "name": "Cam Torum",
+    "ids": [
+      5525,
+      5780,
+      5781,
+      6037
+    ]
+  },
+  "CITY_CANIFIS": {
+    "name": "Canifis",
+    "ids": [
+      13878
+    ]
+  },
+  "CITY_CATHERBY": {
+    "name": "Catherby",
+    "ids": [
+      11317,
+      11318,
+      11061
+    ]
+  },
+  "CITY_CIVITAS_ILLA_FORTIS": {
+    "name": "Civitas Illa Fortis",
+    "ids": [
+      6448,
+      6449,
+      6704,
+      6705,
+      6960,
+      6961
+    ]
+  },
+  "CITY_CORSAIR_COVE": {
+    "name": "Corsair Cove",
+    "ids": [
+      10028,
+      10284
+    ]
+  },
+  "CITY_DARKMEYER": {
+    "name": "Darkmeyer",
+    "ids": [
+      14388,
+      14644
+    ]
+  },
+  "CITY_DORGESH_KAAN": {
+    "name": "Dorgesh-Kaan",
+    "ids": [
+      10835,
+      10834
+    ]
+  },
+  "CITY_DRAYNOR": {
+    "name": "Draynor",
+    "ids": [
+      12338,
+      12339
+    ]
+  },
+  "CITY_EDGEVILLE": {
+    "name": "Edgeville",
+    "ids": [
+      12342
+    ]
+  },
+  "CITY_ENTRANA": {
+    "name": "Entrana",
+    "ids": [
+      11060,
+      11316
+    ]
+  },
+  "CITY_ETCETERIA": {
+    "name": "Etceteria",
+    "ids": [
+      10300
+    ]
+  },
+  "CITY_FALADOR": {
+    "name": "Falador",
+    "ids": [
+      11828,
+      11572,
+      11827,
+      12084
+    ]
+  },
+  "CITY_GUTANOTH": {
+    "name": "Gu'Tanoth",
+    "ids": [
+      10031
+    ]
+  },
+  "CITY_GWENITH": {
+    "name": "Gwenith",
+    "ids": [
+      8757
+    ]
+  },
+  "CITY_HOSIDIUS_HOUSE": {
+    "name": "Hosidius",
+    "ids": [
+      6710,
+      6711,
+      6712,
+      6455,
+      6456,
+      6966,
+      6967,
+      6968,
+      7221,
+      7223,
+      7224,
+      7478,
+      7479
+    ]
+  },
+  "CITY_JATIZSO": {
+    "name": "Jatizso",
+    "ids": [
+      9531
+    ]
+  },
+  "CITY_KELDAGRIM": {
+    "name": "Keldagrim",
+    "ids": [
+      11423,
+      11422,
+      11679,
+      11678
+    ]
+  },
+  "CITY_LANDS_END": {
+    "name": "Land's End",
+    "ids": [
+      5941
+    ]
+  },
+  "CITY_LASSAR_UNDERCITY": {
+    "name": "Lassar Undercity",
+    "ids": [
+      9314,
+      9315,
+      9316,
+      9571,
+      9572,
+      9828,
+      10338,
+      10339,
+      10340,
+      10596,
+      10852
+    ]
+  },
+  "CITY_LLETYA": {
+    "name": "Lletya",
+    "ids": [
+      9265,
+      11103
+    ]
+  },
+  "CITY_LOVAKENGJ_HOUSE": {
+    "name": "Lovakengj",
+    "ids": [
+      5692,
+      5691,
+      5947,
+      6203,
+      6202,
+      5690,
+      5946
+    ]
+  },
+  "CITY_LUMBRIDGE": {
+    "name": "Lumbridge",
+    "ids": [
+      12850
+    ]
+  },
+  "CITY_LUNAR_ISLE": {
+    "name": "Lunar Isle",
+    "ids": [
+      8253,
+      8252,
+      8509,
+      8508
+    ]
+  },
+  "CITY_MARIM": {
+    "name": "Marim",
+    "ids": [
+      11051
+    ]
+  },
+  "CITY_MEIYERDITCH": {
+    "name": "Meiyerditch",
+    "ids": [
+      14132,
+      14387,
+      14386,
+      14385
+    ]
+  },
+  "CITY_MENAPHOS": {
+    "name": "Menaphos",
+    "ids": [
+      12843
+    ]
+  },
+  "CITY_MISCELLANIA": {
+    "name": "Miscellania",
+    "ids": [
+      10044
+    ]
+  },
+  "CITY_MOR_UL_REK": {
+    "name": "Mor Ul Rek",
+    "ids": [
+      9808,
+      9807,
+      10064,
+      10063
+    ]
+  },
+  "CITY_MORTTON": {
+    "name": "Mort'ton",
+    "ids": [
+      13875
+    ]
+  },
+  "CITY_MOS_LE_HARMLESS": {
+    "name": "Mos Le'Harmless",
+    "ids": [
+      14637,
+      14638,
+      14639,
+      14894,
+      14895,
+      15151,
+      15406,
+      15407
+    ]
+  },
+  "CITY_MOUNT_KARUULM": {
+    "name": "Mount Karuulm",
+    "ids": [
+      5179,
+      4923,
+      5180
+    ]
+  },
+  "CITY_MOUNTAIN_CAMP": {
+    "name": "Mountain Camp",
+    "ids": [
+      11065
+    ]
+  },
+  "CITY_MYNYDD": {
+    "name": "Mynydd",
+    "ids": [
+      8501
+    ]
+  },
+  "CITY_NARDAH": {
+    "name": "Nardah",
+    "ids": [
+      13613
+    ]
+  },
+  "CITY_NEITIZNOT": {
+    "name": "Neitiznot",
+    "ids": [
+      9275
+    ]
+  },
+  "CITY_PISCARILIUS_HOUSE": {
+    "name": "Port Piscarilius",
+    "ids": [
+      6969,
+      6971,
+      7227,
+      6970,
+      7225,
+      7226
+    ]
+  },
+  "CITY_PISCATORIS": {
+    "name": "Piscatoris",
+    "ids": [
+      9273
+    ]
+  },
+  "CITY_POLLNIVNEACH": {
+    "name": "Pollnivneach",
+    "ids": [
+      13358
+    ]
+  },
+  "CITY_PORT_KHAZARD": {
+    "name": "Port Khazard",
+    "ids": [
+      10545
+    ]
+  },
+  "CITY_PORT_PHASMATYS": {
+    "name": "Port Phasmatys",
+    "ids": [
+      14646
+    ]
+  },
+  "CITY_PORT_SARIM": {
+    "name": "Port Sarim",
+    "ids": [
+      12081,
+      12082
+    ]
+  },
+  "CITY_PRIFDDINAS": {
+    "name": "Prifddinas",
+    "ids": [
+      8499,
+      8500,
+      8755,
+      8756,
+      9011,
+      9012,
+      9013,
+      12894,
+      12895,
+      13150,
+      13151
+    ]
+  },
+  "CITY_RELLEKKA": {
+    "name": "Rellekka",
+    "ids": [
+      10297,
+      10553
+    ]
+  },
+  "CITY_RIMMINGTON": {
+    "name": "Rimmington",
+    "ids": [
+      11826,
+      11570
+    ]
+  },
+  "CITY_SEERS_VILLAGE": {
+    "name": "Seers' Village",
+    "ids": [
+      10806
+    ]
+  },
+  "CITY_SHAYZIEN_HOUSE": {
+    "name": "Shayzien",
+    "ids": [
+      5944,
+      5943,
+      6200,
+      6199,
+      5686,
+      5687,
+      5688,
+      5689,
+      5945
+    ]
+  },
+  "CITY_SHILO_VILLAGE": {
+    "name": "Shilo Village",
+    "ids": [
+      11310
+    ]
+  },
+  "CITY_SLEPE": {
+    "name": "Slepe",
+    "ids": [
+      14643,
+      14899,
+      14900,
+      14901
+    ]
+  },
+  "CITY_SOPHANEM": {
+    "name": "Sophanem",
+    "ids": [
+      13099
+    ]
+  },
+  "CITY_TAI_BWO_WANNAI": {
+    "name": "Tai Bwo Wannai",
+    "ids": [
+      11056,
+      11055
+    ]
+  },
+  "CITY_TAVERLEY": {
+    "name": "Taverley",
+    "ids": [
+      11574,
+      11573
+    ]
+  },
+  "CITY_TREE_GNOME_STRONGHOLD": {
+    "name": "Tree Gnome Stronghold",
+    "ids": [
+      9525,
+      9526,
+      9782,
+      9781
+    ]
+  },
+  "CITY_TREE_GNOME_VILLAGE": {
+    "name": "Tree Gnome Village",
+    "ids": [
+      10033
+    ]
+  },
+  "CITY_TROLL_STRONGHOLD": {
+    "name": "Troll Stronghold",
+    "ids": [
+      11321,
+      11421
+    ]
+  },
+  "CITY_UZER": {
+    "name": "Uzer",
+    "ids": [
+      13872
+    ]
+  },
+  "CITY_UZER_OASIS": {
+    "name": "Uzer Oasis",
+    "ids": [
+      13871
+    ]
+  },
+  "CITY_VARROCK": {
+    "name": "Varrock",
+    "ids": [
+      12596,
+      12597,
+      12852,
+      12853,
+      12854,
+      13108,
+      13109,
+      13110
+    ]
+  },
+  "CITY_VER_SINHAZA": {
+    "name": "Ver Sinhaza",
+    "ids": [
+      14642
+    ]
+  },
+  "CITY_VOID_OUTPOST": {
+    "name": "Void Knights' Outpost",
+    "ids": [
+      10537
+    ]
+  },
+  "CITY_WEISS": {
+    "name": "Weiss",
+    "ids": [
+      11325,
+      11581
+    ]
+  },
+  "CITY_WITCHHAVEN": {
+    "name": "Witchaven",
+    "ids": [
+      10803
+    ]
+  },
+  "CITY_YANILLE": {
+    "name": "Yanille",
+    "ids": [
+      10288,
+      10032
+    ]
+  },
+  "CITY_ZANARIS": {
+    "name": "Zanaris",
+    "ids": [
+      9285,
+      9541,
+      9540,
+      9797
+    ]
+  },
+  "CITY_ZULANDRA": {
+    "name": "Zul-Andra",
+    "ids": [
+      8495,
+      8751
+    ]
+  },
+  "DUNGEON_ABANDONED_MINE": {
+    "name": "Abandoned Mine",
+    "ids": [
+      13618,
+      13718,
+      11079,
+      11078,
+      11077,
+      10823,
+      10822,
+      10821
+    ]
+  },
+  "DUNGEON_AH_ZA_RHOON": {
+    "name": "Ah Za Rhoon",
+    "ids": [
+      11666
+    ]
+  },
+  "DUNGEON_ANCIENT_CAVERN": {
+    "name": "Ancient Cavern",
+    "ids": [
+      6483,
+      6995
+    ]
+  },
+  "DUNGEON_APE_ATOLL": {
+    "name": "Ape Atoll Dungeon",
+    "ids": [
+      11150,
+      10894
+    ]
+  },
+  "DUNGEON_APE_ATOLL_BANANA_PLANTATION": {
+    "name": "Ape Atoll Banana Plantation",
+    "ids": [
+      10895
+    ]
+  },
+  "DUNGEON_ARDY_BASEMENT": {
+    "name": "West Ardougne Basement",
+    "ids": [
+      10135
+    ]
+  },
+  "DUNGEON_ARDY_SEWERS": {
+    "name": "Ardougne Sewers",
+    "ids": [
+      10134,
+      10136,
+      10391,
+      10647
+    ]
+  },
+  "DUNGEON_ASGARNIAN_ICE_CAVES": {
+    "name": "Asgarnian Ice Caves",
+    "ids": [
+      11925,
+      12181
+    ]
+  },
+  "DUNGEON_BERVIRIUS_TOMB": {
+    "name": "Tomb of Bervirius",
+    "ids": [
+      11154
+    ]
+  },
+  "DUNGEON_BRIMHAVEN": {
+    "name": "Brimhaven Dungeon",
+    "ids": [
+      10901,
+      10900,
+      10899,
+      10645,
+      10644,
+      10643
+    ]
+  },
+  "DUNGEON_BRINE_RAT_CAVERN": {
+    "name": "Brine Rat Cavern",
+    "ids": [
+      10910
+    ]
+  },
+  "DUNGEON_CATACOMBS_OF_KOUREND": {
+    "name": "Catacombs of Kourend",
+    "ids": [
+      6557,
+      6556,
+      6813,
+      6812
+    ]
+  },
+  "DUNGEON_CERBERUS_LAIR": {
+    "name": "Cerberus' Lair",
+    "ids": [
+      5139
+    ]
+  },
+  "DUNGEON_CHAMPIONS_CHALLENGE": {
+    "name": "Champions' Challenge",
+    "ids": [
+      12696
+    ]
+  },
+  "DUNGEON_CHAOS_DRUID_TOWER": {
+    "name": "Chaos Druid Tower",
+    "ids": [
+      10392
+    ]
+  },
+  "DUNGEON_CHASM_OF_FIRE": {
+    "name": "Chasm of Fire",
+    "ids": [
+      5789
+    ]
+  },
+  "DUNGEON_CHASM_OF_TEARS": {
+    "name": "Chasm of Tears",
+    "ids": [
+      12948
+    ]
+  },
+  "DUNGEON_CHINCHOMPA": {
+    "name": "Chinchompa Hunting Ground",
+    "ids": [
+      10129
+    ]
+  },
+  "DUNGEON_CIVITAS_ILLA_FORTIS": {
+    "name": "Civitas illa Fortis Underground",
+    "ids": [
+      6549,
+      6804,
+      6805
+    ]
+  },
+  "DUNGEON_CLOCK_TOWER": {
+    "name": "Clock Tower Basement",
+    "ids": [
+      10390
+    ]
+  },
+  "DUNGEON_CORSAIR_COVE": {
+    "name": "Corsair Cove Dungeon",
+    "ids": [
+      8076,
+      8332
+    ]
+  },
+  "DUNGEON_CRABCLAW_CAVES": {
+    "name": "Crabclaw Caves",
+    "ids": [
+      6553,
+      6809
+    ]
+  },
+  "DUNGEON_CRANDOR": {
+    "name": "Crandor Dungeon",
+    "ids": [
+      11414
+    ]
+  },
+  "DUNGEON_CRASH_SITE_CAVERN": {
+    "name": "Crash Site Cavern",
+    "ids": [
+      8280,
+      8536
+    ]
+  },
+  "DUNGEON_CRUMBLING_TOWER": {
+    "name": "Crumbling Tower",
+    "ids": [
+      7827
+    ]
+  },
+  "DUNGEON_DAEYALT_ESSENCE_MINE": {
+    "name": "Daeyalt Essence Mine",
+    "ids": [
+      14744
+    ]
+  },
+  "DUNGEON_DIGSITE": {
+    "name": "Digsite Dungeon",
+    "ids": [
+      13464,
+      13465
+    ]
+  },
+  "DUNGEON_DORGESHKAAN": {
+    "name": "Dorgesh-Kaan South Dungeon",
+    "ids": [
+      10833
+    ]
+  },
+  "DUNGEON_DORGESHUUN_MINES": {
+    "name": "Dorgeshuun Mines",
+    "ids": [
+      12950,
+      13206
+    ]
+  },
+  "DUNGEON_DRAYNOR_SEWERS": {
+    "name": "Draynor Sewers",
+    "ids": [
+      12439,
+      12438
+    ]
+  },
+  "DUNGEON_DWARVEN_MINES": {
+    "name": "Dwarven Mines",
+    "ids": [
+      12185,
+      12184,
+      12183
+    ]
+  },
+  "DUNGEON_EAGLES_PEAK": {
+    "name": "Eagles' Peak Dungeon",
+    "ids": [
+      8013
+    ]
+  },
+  "DUNGEON_ECTOFUNTUS": {
+    "name": "Ectofuntus",
+    "ids": [
+      14746
+    ]
+  },
+  "DUNGEON_EDGEVILLE": {
+    "name": "Edgeville Dungeon",
+    "ids": [
+      12441,
+      12442,
+      12443,
+      12698
+    ]
+  },
+  "DUNGEON_ELEMENTAL_WORKSHOP": {
+    "name": "Elemental Workshop",
+    "ids": [
+      10906,
+      7760
+    ]
+  },
+  "DUNGEON_ELVEN_RABBIT_CAVE": {
+    "name": "Elven rabbit cave",
+    "ids": [
+      13252
+    ]
+  },
+  "DUNGEON_ENAKHRAS_TEMPLE": {
+    "name": "Enakhra's Temple",
+    "ids": [
+      12423
+    ]
+  },
+  "DUNGEON_EVIL_CHICKENS_LAIR": {
+    "name": "Evil Chicken's Lair",
+    "ids": [
+      9796
+    ]
+  },
+  "DUNGEON_EXPERIMENT_CAVE": {
+    "name": "Experiment Cave",
+    "ids": [
+      14235,
+      13979
+    ]
+  },
+  "DUNGEON_FEROX_ENCLAVE": {
+    "name": "Ferox Enclave Dungeon",
+    "ids": [
+      12700
+    ]
+  },
+  "DUNGEON_FORTHOS": {
+    "name": "Forthos Dungeon",
+    "ids": [
+      7323
+    ]
+  },
+  "DUNGEON_FREMENNIK_SLAYER": {
+    "name": "Fremennik Slayer Dungeon",
+    "ids": [
+      10907,
+      10908,
+      11164
+    ]
+  },
+  "DUNGEON_GLARIALS_TOMB": {
+    "name": "Glarial's Tomb",
+    "ids": [
+      10137
+    ]
+  },
+  "DUNGEON_GOBLIN_CAVE": {
+    "name": "Goblin Cave",
+    "ids": [
+      10393
+    ]
+  },
+  "DUNGEON_GRAND_TREE_TUNNELS": {
+    "name": "Grand Tree Tunnels",
+    "ids": [
+      9882
+    ]
+  },
+  "DUNGEON_HAM_HIDEOUT": {
+    "name": "H.A.M. Hideout",
+    "ids": [
+      12694
+    ]
+  },
+  "DUNGEON_HAM_STORE_ROOM": {
+    "name": "H.A.M. Store room",
+    "ids": [
+      10321
+    ]
+  },
+  "DUNGEON_HEROES_GUILD": {
+    "name": "Heroes' Guild Mine",
+    "ids": [
+      11674
+    ]
+  },
+  "DUNGEON_IORWERTH": {
+    "name": "Iorwerth Dungeon",
+    "ids": [
+      12737,
+      12738,
+      12993,
+      12994
+    ]
+  },
+  "DUNGEON_ISLE_OF_SOULS": {
+    "name": "Isle of Souls Dungeon",
+    "ids": [
+      8593
+    ]
+  },
+  "DUNGEON_JATIZSO_MINES": {
+    "name": "Jatizso Mines",
+    "ids": [
+      9631
+    ]
+  },
+  "DUNGEON_JIGGIG_BURIAL_TOMB": {
+    "name": "Jiggig Burial Tomb",
+    "ids": [
+      9875,
+      9874
+    ]
+  },
+  "DUNGEON_JOGRE": {
+    "name": "Jogre Dungeon",
+    "ids": [
+      11412
+    ]
+  },
+  "DUNGEON_KARAMJA": {
+    "name": "Karamja Dungeon",
+    "ids": [
+      11413
+    ]
+  },
+  "DUNGEON_KARUULM": {
+    "name": "Karuulm Slayer Dungeon",
+    "ids": [
+      5280,
+      5279,
+      5023,
+      5535,
+      5022,
+      4766,
+      4510,
+      4511,
+      4767,
+      4768,
+      4512
+    ]
+  },
+  "DUNGEON_KGP_HEADQUARTERS": {
+    "name": "KGP Headquarters",
+    "ids": [
+      10658
+    ]
+  },
+  "DUNGEON_KRUK": {
+    "name": "Kruk's Dungeon",
+    "ids": [
+      9358,
+      9359,
+      9360,
+      9615,
+      9616,
+      9871,
+      10125,
+      10126,
+      10127,
+      10128,
+      10381,
+      10382,
+      10383,
+      10384,
+      10637,
+      10638,
+      10639,
+      10640
+    ]
+  },
+  "DUNGEON_LEGENDS_GUILD": {
+    "name": "Legends' Guild Dungeon",
+    "ids": [
+      10904
+    ]
+  },
+  "DUNGEON_LIGHTHOUSE": {
+    "name": "Lighthouse",
+    "ids": [
+      10140
+    ]
+  },
+  "DUNGEON_LIZARDMAN_CAVES": {
+    "name": "Lizardman Caves",
+    "ids": [
+      5275
+    ]
+  },
+  "DUNGEON_LIZARDMAN_TEMPLE": {
+    "name": "Lizardman Temple",
+    "ids": [
+      5277
+    ]
+  },
+  "DUNGEON_LUMBRIDGE_SWAMP_CAVES": {
+    "name": "Lumbridge Swamp Caves",
+    "ids": [
+      12693,
+      12949
+    ]
+  },
+  "DUNGEON_LUNAR_ISLE_MINE": {
+    "name": "Lunar Isle Mine",
+    "ids": [
+      9377
+    ]
+  },
+  "DUNGEON_MANIACAL_HUNTER": {
+    "name": "Maniacal Monkey Hunter Area",
+    "ids": [
+      11662
+    ]
+  },
+  "DUNGEON_MEIYERDITCH_MINE": {
+    "name": "Meiyerditch Mine",
+    "ids": [
+      9544
+    ]
+  },
+  "DUNGEON_MISCELLANIA": {
+    "name": "Miscellania Dungeon",
+    "ids": [
+      10144,
+      10400
+    ]
+  },
+  "DUNGEON_MOGRE_CAMP": {
+    "name": "Mogre Camp",
+    "ids": [
+      11924
+    ]
+  },
+  "DUNGEON_MOS_LE_HARMLESS_CAVES": {
+    "name": "Mos Le'Harmless Caves",
+    "ids": [
+      14994,
+      14995,
+      15251
+    ]
+  },
+  "DUNGEON_MOTHERLODE_MINE": {
+    "name": "Motherlode Mine",
+    "ids": [
+      14679,
+      14680,
+      14681,
+      14935,
+      14936,
+      14937,
+      15191,
+      15192,
+      15193
+    ]
+  },
+  "DUNGEON_MOURNER_TUNNELS": {
+    "name": "Mourner Tunnels",
+    "ids": [
+      7752,
+      8008
+    ]
+  },
+  "DUNGEON_MOUSE_HOLE": {
+    "name": "Mouse Hole",
+    "ids": [
+      9046
+    ]
+  },
+  "DUNGEON_MEIYERDITCH_LABORATORIES": {
+    "name": "Meiyerditch Laboratories",
+    "ids": [
+      14232,
+      14233,
+      14487,
+      14488
+    ]
+  },
+  "DUNGEON_MYREQUE": {
+    "name": "Myreque Hideout",
+    "ids": [
+      13721,
+      13974,
+      13977,
+      13978
+    ]
+  },
+  "DUNGEON_MYTHS_GUILD": {
+    "name": "Myths' Guild Dungeon",
+    "ids": [
+      7564,
+      7820,
+      7821
+    ]
+  },
+  "DUNGEON_OBSERVATORY": {
+    "name": "Observatory Dungeon",
+    "ids": [
+      9362
+    ]
+  },
+  "DUNGEON_OGRE_ENCLAVE": {
+    "name": "Ogre Enclave",
+    "ids": [
+      10387
+    ]
+  },
+  "DUNGEON_OURANIA": {
+    "name": "Ourania Cave",
+    "ids": [
+      12119
+    ]
+  },
+  "DUNGEON_QUIDAMORTEM_CAVE": {
+    "name": "Quidamortem Cave",
+    "ids": [
+      4763
+    ]
+  },
+  "DUNGEON_RASHILIYIAS_TOMB": {
+    "name": "Rashiliyta's Tomb",
+    "ids": [
+      11668
+    ]
+  },
+  "DUNGEON_RUINS_OF_CAMDOZAAL": {
+    "name": "Ruins of Camdozaal",
+    "ids": [
+      11609,
+      11610,
+      11611,
+      11865,
+      11866,
+      11867,
+      12121,
+      12122,
+      12123
+    ]
+  },
+  "DUNGEON_SALT_MINE": {
+    "name": "Salt Mine",
+    "ids": [
+      11425
+    ]
+  },
+  "DUNGEON_SARADOMINSHRINE": {
+    "name": "Saradomin Shrine (Paterdomus)",
+    "ids": [
+      13722
+    ]
+  },
+  "DUNGEON_SHADE_CATACOMBS": {
+    "name": "Shade Catacombs",
+    "ids": [
+      13975
+    ]
+  },
+  "DUNGEON_SHADOW": {
+    "name": "Shadow Dungeon",
+    "ids": [
+      10575,
+      10831
+    ]
+  },
+  "DUNGEON_SHAYZIEN_CRYPTS": {
+    "name": "Shayzien Crypts",
+    "ids": [
+      6043
+    ]
+  },
+  "DUNGEON_SISTERHOOD_SANCTUARY": {
+    "name": "Sisterhood Sanctuary",
+    "ids": [
+      14999,
+      15000,
+      15001,
+      15255,
+      15256,
+      15257,
+      15511,
+      15512,
+      15513
+    ]
+  },
+  "DUNGEON_SMOKE": {
+    "name": "Smoke Dungeon",
+    "ids": [
+      12946,
+      13202
+    ]
+  },
+  "DUNGEON_SOPHANEM": {
+    "name": "Sophanem Dungeon",
+    "ids": [
+      13200
+    ]
+  },
+  "DUNGEON_SOURHOG_CAVE": {
+    "name": "Sourhog Cave",
+    "ids": [
+      12695
+    ]
+  },
+  "DUNGEON_STRONGHOLD_SECURITY": {
+    "name": "Stronghold of Security",
+    "ids": [
+      7505,
+      8017,
+      8530,
+      9297
+    ]
+  },
+  "DUNGEON_STRONGHOLD_SLAYER": {
+    "name": "Stronghold Slayer Cave",
+    "ids": [
+      9624,
+      9625,
+      9880,
+      9881
+    ]
+  },
+  "DUNGEON_TARNS_LAIR": {
+    "name": "Tarn's Lair",
+    "ids": [
+      12616,
+      12615
+    ]
+  },
+  "DUNGEON_TAVERLEY": {
+    "name": "Taverley Dungeon",
+    "ids": [
+      11416,
+      11417,
+      11671,
+      11672,
+      11673,
+      11928,
+      11929
+    ]
+  },
+  "DUNGEON_TEMPLE_OF_IKOV": {
+    "name": "Temple of Ikov",
+    "ids": [
+      10649,
+      10905,
+      10650
+    ]
+  },
+  "DUNGEON_TEMPLE_OF_LIGHT": {
+    "name": "Temple of Light",
+    "ids": [
+      7496
+    ]
+  },
+  "DUNGEON_TEMPLE_OF_MARIMBO": {
+    "name": "Temple of Marimbo",
+    "ids": [
+      11151
+    ]
+  },
+  "DUNGEON_THE_BURROW": {
+    "name": "The Burrow",
+    "ids": [
+      6291
+    ]
+  },
+  "DUNGEON_THE_WARRENS": {
+    "name": "The Warrens",
+    "ids": [
+      7070,
+      7326
+    ]
+  },
+  "DUNGEON_TOLNA": {
+    "name": "Dungeon of Tolna",
+    "ids": [
+      13209
+    ]
+  },
+  "DUNGEON_TOWER_OF_LIFE": {
+    "name": "Tower of Life Basement",
+    "ids": [
+      12100
+    ]
+  },
+  "DUNGEON_TRAHAEARN_MINE": {
+    "name": "Trahaearn Mine",
+    "ids": [
+      13250
+    ]
+  },
+  "DUNGEON_TUNNEL_OF_CHAOS": {
+    "name": "Tunnel of Chaos",
+    "ids": [
+      12625
+    ]
+  },
+  "DUNGEON_UNDERGROUND_PASS": {
+    "name": "Underground Pass",
+    "ids": [
+      9369,
+      9370
+    ]
+  },
+  "DUNGEON_VARROCKSEWERS": {
+    "name": "Varrock Sewers",
+    "ids": [
+      12954,
+      13210
+    ]
+  },
+  "DUNGEON_VIYELDI_CAVES": {
+    "name": "Viyeldi Caves",
+    "ids": [
+      9545,
+      11153
+    ]
+  },
+  "DUNGEON_WARRIORS_GUILD": {
+    "name": "Warriors' Guild Basement",
+    "ids": [
+      11675
+    ]
+  },
+  "DUNGEON_WATER_RAVINE": {
+    "name": "Water Ravine",
+    "ids": [
+      13461
+    ]
+  },
+  "DUNGEON_WATERBIRTH": {
+    "name": "Waterbirth Dungeon",
+    "ids": [
+      9886,
+      10142,
+      7492,
+      7748
+    ]
+  },
+  "DUNGEON_WATERFALL": {
+    "name": "Waterfall Dungeon",
+    "ids": [
+      10394
+    ]
+  },
+  "DUNGEON_WEREWOLF_AGILITY": {
+    "name": "Werewolf Agility Course",
+    "ids": [
+      14234
+    ]
+  },
+  "DUNGEON_WHITE_WOLF_MOUNTAIN_CAVES": {
+    "name": "White Wolf Mountain Caves",
+    "ids": [
+      11418,
+      11419
+    ]
+  },
+  "DUNGEON_WITCHAVEN_SHRINE": {
+    "name": "Witchhaven Shrine Dungeon",
+    "ids": [
+      10903
+    ]
+  },
+  "DUNGEON_WIZARDS_TOWER": {
+    "name": "Wizards' Tower Basement",
+    "ids": [
+      12437
+    ]
+  },
+  "DUNGEON_WOODCUTTING_GUILD": {
+    "name": "Woodcutting Guild Dungeon",
+    "ids": [
+      6298
+    ]
+  },
+  "DUNGEON_WYVERN_CAVE": {
+    "name": "Wyvern Cave",
+    "ids": [
+      14495,
+      14496
+    ]
+  },
+  "DUNGEON_YANILLE_AGILITY": {
+    "name": "Yanille Agility Dungeon",
+    "ids": [
+      10388
+    ]
+  },
+  "MG_ARDOUGNE_RAT_PITS": {
+    "name": "Ardougne Rat Pits",
+    "ids": [
+      10646
+    ]
+  },
+  "MG_BARBARIAN_ASSAULT": {
+    "name": "Barbarian Assault",
+    "ids": [
+      7508,
+      7509,
+      10322
+    ]
+  },
+  "MG_BARROWS": {
+    "name": "Barrows",
+    "ids": [
+      14131,
+      14231
+    ]
+  },
+  "MG_BLAST_FURNACE": {
+    "name": "Blast Furnace",
+    "ids": [
+      7757
+    ]
+  },
+  "MG_BRIMHAVEN_AGILITY_ARENA": {
+    "name": "Brimhaven Agility Arena",
+    "ids": [
+      11157
+    ]
+  },
+  "MG_BURTHORPE_GAMES_ROOM": {
+    "name": "Burthorpe Games Room",
+    "ids": [
+      8781
+    ]
+  },
+  "MG_CASTLE_WARS": {
+    "name": "Castle Wars",
+    "ids": [
+      9520,
+      9620
+    ]
+  },
+  "MG_CLAN_WARS": {
+    "name": "Clan Wars",
+    "ids": [
+      12621,
+      12622,
+      12623,
+      13130,
+      13131,
+      13133,
+      13134,
+      13135,
+      13386,
+      13387,
+      13390,
+      13641,
+      13642,
+      13643,
+      13644,
+      13645,
+      13646,
+      13647,
+      13899,
+      13900,
+      14155,
+      14156
+    ]
+  },
+  "MG_PVP_ARENA": {
+    "name": "PvP Arena",
+    "ids": [
+      13362,
+      13363
+    ]
+  },
+  "MG_FISHING_TRAWLER": {
+    "name": "Fishing Trawler",
+    "ids": [
+      7499
+    ]
+  },
+  "MG_FORTIS_COLOSSEUM": {
+    "name": "Fortis Colosseum",
+    "ids": [
+      7216
+    ]
+  },
+  "MG_FORTIS_COLOSSEUM_LOBBY": {
+    "name": "Fortis Colosseum Lobby",
+    "ids": [
+      7316
+    ]
+  },
+  "MG_GAUNTLET": {
+    "name": "The Gauntlet",
+    "ids": [
+      12127,
+      7512
+    ]
+  },
+  "MG_CORRUPTED_GAUNTLET": {
+    "name": "Corrupted Gauntlet",
+    "ids": [
+      7768
+    ]
+  },
+  "MG_GIANTS_FOUNDRY": {
+    "name": "Giants' Foundry",
+    "ids": [
+      13491
+    ]
+  },
+  "MG_GUARDIANS_OF_THE_RIFT": {
+    "name": "Guardians of the Rift",
+    "ids": [
+      14484
+    ]
+  },
+  "MG_HALLOWED_SEPULCHRE": {
+    "name": "Hallowed Sepulchre",
+    "ids": [
+      8797,
+      9051,
+      9052,
+      9053,
+      9054,
+      9309,
+      9563,
+      9565,
+      9821,
+      10074,
+      10075,
+      10077
+    ]
+  },
+  "MG_INFERNO": {
+    "name": "The Inferno",
+    "ids": [
+      9043
+    ]
+  },
+  "MG_KELDAGRIM_RAT_PITS": {
+    "name": "Keldagrim Rat Pits",
+    "ids": [
+      7753
+    ]
+  },
+  "MG_LAST_MAN_STANDING_DESERTED_ISLAND": {
+    "name": "LMS - Deserted Island",
+    "ids": [
+      13658,
+      13659,
+      13660,
+      13914,
+      13915,
+      13916
+    ]
+  },
+  "MG_LAST_MAN_STANDING_WILD_VARROCK": {
+    "name": "LMS - Wild Varrock",
+    "ids": [
+      13918,
+      13919,
+      13920,
+      14174,
+      14175,
+      14176,
+      14430,
+      14431,
+      14432
+    ]
+  },
+  "MG_MAGE_TRAINING_ARENA": {
+    "name": "Mage Training Arena",
+    "ids": [
+      13462,
+      13463
+    ]
+  },
+  "MG_NIGHTMARE_ZONE": {
+    "name": "Nightmare Zone",
+    "ids": [
+      9033
+    ]
+  },
+  "MG_PEST_CONTROL": {
+    "name": "Pest Control",
+    "ids": [
+      10536
+    ]
+  },
+  "MG_PORT_SARIM_RAT_PITS": {
+    "name": "Port Sarim Rat Pits",
+    "ids": [
+      11926
+    ]
+  },
+  "MG_PYRAMID_PLUNDER": {
+    "name": "Pyramid Plunder",
+    "ids": [
+      7749
+    ]
+  },
+  "MG_ROGUES_DEN": {
+    "name": "Rogues' Den",
+    "ids": [
+      11854,
+      11855,
+      12109,
+      12110,
+      12111
+    ]
+  },
+  "MG_SORCERESS_GARDEN": {
+    "name": "Sorceress's Garden",
+    "ids": [
+      11605
+    ]
+  },
+  "MG_SOUL_WARS": {
+    "name": "Soul Wars",
+    "ids": [
+      8493,
+      8748,
+      8749,
+      9005
+    ]
+  },
+  "MG_TEMPLE_TREKKING": {
+    "name": "Temple Trekking",
+    "ids": [
+      8014,
+      8270,
+      8256,
+      8782,
+      9038,
+      9294,
+      9550,
+      9806
+    ]
+  },
+  "MG_TITHE_FARM": {
+    "name": "Tithe Farm",
+    "ids": [
+      7222
+    ]
+  },
+  "MG_TROUBLE_BREWING": {
+    "name": "Trouble Brewing",
+    "ids": [
+      15150
+    ]
+  },
+  "MG_TZHAAR_FIGHT_CAVES": {
+    "name": "Tzhaar Fight Caves",
+    "ids": [
+      9551
+    ]
+  },
+  "MG_TZHAAR_FIGHT_PITS": {
+    "name": "Tzhaar Fight Pits",
+    "ids": [
+      9552
+    ]
+  },
+  "MG_VARROCK_RAT_PITS": {
+    "name": "Varrock Rat Pits",
+    "ids": [
+      11599
+    ]
+  },
+  "MG_VOLCANIC_MINE": {
+    "name": "Volcanic Mine",
+    "ids": [
+      15263,
+      15262
+    ]
+  },
+  "RAIDS_CHAMBERS_OF_XERIC": {
+    "name": "Chambers of Xeric",
+    "ids": [
+      12889,
+      13136,
+      13137,
+      13138,
+      13139,
+      13140,
+      13141,
+      13145,
+      13393,
+      13394,
+      13395,
+      13396,
+      13397,
+      13401
+    ]
+  },
+  "RAIDS_THEATRE_OF_BLOOD": {
+    "name": "Theatre of Blood",
+    "ids": [
+      12611,
+      12612,
+      12613,
+      12867,
+      12869,
+      13122,
+      13123,
+      13125,
+      13379
+    ]
+  },
+  "RAIDS_TOMBS_OF_AMASCUT": {
+    "name": "Tombs of Amascut",
+    "ids": [
+      14160,
+      14162,
+      14164,
+      14674,
+      14676,
+      15184,
+      15186,
+      15188,
+      15696,
+      15698,
+      15700
+    ]
+  },
+  "RAIDS_JALTEVAS_PYRAMID": {
+    "name": "Jaltevas Pyramid",
+    "ids": [
+      13454
+    ]
+  },
+  "RAIDS_OSMUMTENS_BURIAL_CHAMBER": {
+    "name": "Osmumten's Burial Chamber",
+    "ids": [
+      14672
+    ]
+  },
+  "REGION_ABYSSAL_AREA": {
+    "name": "Abyssal Area",
+    "ids": [
+      12108
+    ]
+  },
+  "REGION_ABYSSAL_NEXUS": {
+    "name": "Abyssal Nexus",
+    "ids": [
+      12106
+    ]
+  },
+  "REGION_AGILITY_PYRAMID": {
+    "name": "Agility Pyramid",
+    "ids": [
+      12105,
+      13356
+    ]
+  },
+  "REGION_AIR_ALTAR": {
+    "name": "Air Altar",
+    "ids": [
+      11339
+    ]
+  },
+  "REGION_AL_KHARID_MINE": {
+    "name": "Al Kharid Mine",
+    "ids": [
+      13107
+    ]
+  },
+  "REGION_ANCIENT_VAULT": {
+    "name": "Ancient Vault",
+    "ids": [
+      12644,
+      13156
+    ]
+  },
+  "REGION_APE_ATOLL": {
+    "name": "Ape Atoll",
+    "ids": [
+      10794,
+      10795,
+      10974,
+      11050
+    ]
+  },
+  "REGION_ARANDAR": {
+    "name": "Arandar",
+    "ids": [
+      9266,
+      9267,
+      9523
+    ]
+  },
+  "REGION_ASGARNIA": {
+    "name": "Asgarnia",
+    "ids": [
+      11825,
+      11829,
+      11830,
+      12085,
+      12086
+    ]
+  },
+  "REGION_AVIUM_SAVANNAH": {
+    "name": "Avium Savannah",
+    "ids": [
+      5935,
+      5936,
+      5937,
+      6189,
+      6445,
+      6446,
+      6447,
+      6701,
+      6702,
+      6703,
+      6957,
+      6958,
+      6959,
+      7215
+    ]
+  },
+  "REGION_BATTLEFIELD": {
+    "name": "Battlefield",
+    "ids": [
+      10034
+    ]
+  },
+  "REGION_BATTLEFRONT": {
+    "name": "Battlefront",
+    "ids": [
+      5433,
+      5434
+    ]
+  },
+  "REGION_BLAST_MINE": {
+    "name": "Blast Mine",
+    "ids": [
+      5948
+    ]
+  },
+  "REGION_BODY_ALTAR": {
+    "name": "Body Altar",
+    "ids": [
+      10059
+    ]
+  },
+  "REGION_CHAOS_ALTAR": {
+    "name": "Chaos Altar",
+    "ids": [
+      9035
+    ]
+  },
+  "REGION_COSMIC_ALTAR": {
+    "name": "Cosmic Altar",
+    "ids": [
+      8523
+    ]
+  },
+  "REGION_COSMIC_ENTITYS_PLANE": {
+    "name": "Cosmic Entity's Plane",
+    "ids": [
+      8267
+    ]
+  },
+  "REGION_CRABCLAW_ISLE": {
+    "name": "Crabclaw Isle",
+    "ids": [
+      6965
+    ]
+  },
+  "REGION_CRAFTING_GUILD": {
+    "name": "Crafting Guild",
+    "ids": [
+      11571
+    ]
+  },
+  "REGION_CRANDOR": {
+    "name": "Crandor",
+    "ids": [
+      11314,
+      11315
+    ]
+  },
+  "REGION_CRASH_ISLAND": {
+    "name": "Crash Island",
+    "ids": [
+      11562
+    ]
+  },
+  "REGION_DARK_ALTAR": {
+    "name": "Dark Altar",
+    "ids": [
+      6716
+    ]
+  },
+  "REGION_DEATH_ALTAR": {
+    "name": "Death Altar",
+    "ids": [
+      8779
+    ]
+  },
+  "REGION_DEATH_PLATEAU": {
+    "name": "Death Plateau",
+    "ids": [
+      11320
+    ]
+  },
+  "REGION_DENSE_ESSENCE": {
+    "name": "Dense Essence Mine",
+    "ids": [
+      6972
+    ]
+  },
+  "REGION_DESERT_PLATEAU": {
+    "name": "Desert Plateau",
+    "ids": [
+      13361,
+      13617
+    ]
+  },
+  "REGION_DIGSITE": {
+    "name": "Digsite",
+    "ids": [
+      13365
+    ]
+  },
+  "REGION_DRAGONTOOTH": {
+    "name": "Dragontooth Island",
+    "ids": [
+      15159
+    ]
+  },
+  "REGION_DRAYNOR_MANOR": {
+    "name": "Draynor Manor",
+    "ids": [
+      12340
+    ]
+  },
+  "REGION_DRILL_SERGEANT": {
+    "name": "Drill Sergeant's Training Camp",
+    "ids": [
+      12619
+    ]
+  },
+  "REGION_EAGLES_PEAK": {
+    "name": "Eagles' Peak",
+    "ids": [
+      9270
+    ]
+  },
+  "REGION_EARTH_ALTAR": {
+    "name": "Earth Altar",
+    "ids": [
+      10571
+    ]
+  },
+  "REGION_ENCHANTED_VALLEY": {
+    "name": "Enchanted Valley",
+    "ids": [
+      12102
+    ]
+  },
+  "REGION_EVIL_TWIN": {
+    "name": "Evil Twin Crane Room",
+    "ids": [
+      7504
+    ]
+  },
+  "REGION_EXAM_CENTRE": {
+    "name": "Exam Centre",
+    "ids": [
+      13364
+    ]
+  },
+  "REGION_FALADOR_FARM": {
+    "name": "Falador Farm",
+    "ids": [
+      12083
+    ]
+  },
+  "REGION_FARMING_GUILD": {
+    "name": "Farming Guild",
+    "ids": [
+      4922
+    ]
+  },
+  "REGION_FELDIP_HILLS": {
+    "name": "Feldip Hills",
+    "ids": [
+      9773,
+      9774,
+      10029,
+      10030,
+      10285,
+      10286,
+      10287,
+      10542,
+      10543
+    ]
+  },
+  "REGION_FENKENSTRAIN": {
+    "name": "Fenkenstrain's Castle",
+    "ids": [
+      14135
+    ]
+  },
+  "REGION_FIGHT_ARENA": {
+    "name": "Fight Arena",
+    "ids": [
+      10289
+    ]
+  },
+  "REGION_FIRE_ALTAR": {
+    "name": "Fire Altar",
+    "ids": [
+      10315
+    ]
+  },
+  "REGION_FISHER_REALM": {
+    "name": "Fisher Realm",
+    "ids": [
+      10569
+    ]
+  },
+  "REGION_FISHING_GUILD": {
+    "name": "Fishing Guild",
+    "ids": [
+      10293
+    ]
+  },
+  "REGION_FISHING_PLATFORM": {
+    "name": "Fishing Platform",
+    "ids": [
+      11059
+    ]
+  },
+  "REGION_FORSAKEN_TOWER": {
+    "name": "The Forsaken Tower",
+    "ids": [
+      5435
+    ]
+  },
+  "REGION_FOSSIL_ISLAND": {
+    "name": "Fossil Island",
+    "ids": [
+      14650,
+      14651,
+      14652,
+      14906,
+      14907,
+      14908,
+      15162,
+      15163,
+      15164
+    ]
+  },
+  "REGION_FREAKY_FORESTER": {
+    "name": "Freaky Forester's Clearing",
+    "ids": [
+      10314
+    ]
+  },
+  "REGION_FREMENNIK": {
+    "name": "Fremennik Province",
+    "ids": [
+      10296,
+      10552,
+      10808,
+      10809,
+      10810,
+      10811,
+      11064
+    ]
+  },
+  "REGION_FREMENNIK_ISLES": {
+    "name": "Fremennik Isles",
+    "ids": [
+      9276,
+      9532
+    ]
+  },
+  "REGION_FROGLAND": {
+    "name": "Frogland",
+    "ids": [
+      9802
+    ]
+  },
+  "REGION_GALVEK_SHIPWRECKS": {
+    "name": "Galvek Shipwrecks",
+    "ids": [
+      6486,
+      6487,
+      6488,
+      6489,
+      6742,
+      6743,
+      6744,
+      6745
+    ]
+  },
+  "REGION_GHORROCK_DUNGEON": {
+    "name": "Ghorrock Dungeon",
+    "ids": [
+      11681
+    ]
+  },
+  "REGION_GORAKS_PLANE": {
+    "name": "Gorak's Plane",
+    "ids": [
+      12115
+    ]
+  },
+  "REGION_GRAND_EXCHANGE": {
+    "name": "Grand Exchange",
+    "ids": [
+      12598
+    ]
+  },
+  "REGION_GWD": {
+    "name": "God Wars Dungeon",
+    "ids": [
+      11578
+    ]
+  },
+  "REGION_HARMONY": {
+    "name": "Harmony Island",
+    "ids": [
+      15148
+    ]
+  },
+  "REGION_HAZELMERE": {
+    "name": "Hazelmere's Island",
+    "ids": [
+      10544
+    ]
+  },
+  "REGION_HUNTER_GUILD": {
+    "name": "Hunter Guild",
+    "ids": [
+      6191
+    ]
+  },
+  "REGION_ICE_PATH": {
+    "name": "Ice Path",
+    "ids": [
+      11322,
+      11323
+    ]
+  },
+  "REGION_ICEBERG": {
+    "name": "Iceberg",
+    "ids": [
+      10558,
+      10559
+    ]
+  },
+  "REGION_ICYENE_GRAVEYARD": {
+    "name": "Icyene Graveyard",
+    "ids": [
+      14641,
+      14897,
+      14898
+    ]
+  },
+  "REGION_ISAFDAR": {
+    "name": "Isafdar",
+    "ids": [
+      8497,
+      8753,
+      8754,
+      9009,
+      9010
+    ]
+  },
+  "REGION_ISLAND_OF_STONE": {
+    "name": "Island of Stone",
+    "ids": [
+      9790
+    ]
+  },
+  "REGION_ISLE_OF_SOULS": {
+    "name": "Isle of Souls",
+    "ids": [
+      8236,
+      8237,
+      8238,
+      8491,
+      8492,
+      8494,
+      8747,
+      8750,
+      9003,
+      9004,
+      9006,
+      9260,
+      9261,
+      9262
+    ]
+  },
+  "REGION_JIGGIG": {
+    "name": "Jiggig",
+    "ids": [
+      9775
+    ]
+  },
+  "REGION_KANDARIN": {
+    "name": "Kandarin",
+    "ids": [
+      9268,
+      9269,
+      9014,
+      9263,
+      9264,
+      9519,
+      9524,
+      9527,
+      9776,
+      9783,
+      10037,
+      10290,
+      10294,
+      10546,
+      10551,
+      10805,
+      11062
+    ]
+  },
+  "REGION_KARAMJA": {
+    "name": "Karamja",
+    "ids": [
+      10801,
+      10802,
+      11054,
+      11311,
+      11312,
+      11313,
+      11566,
+      11567,
+      11568,
+      11569,
+      11822
+    ]
+  },
+  "REGION_KEBOS_LOWLANDS": {
+    "name": "Kebos Lowlands",
+    "ids": [
+      4665,
+      4666,
+      4667,
+      4921,
+      5178
+    ]
+  },
+  "REGION_KEBOS_SWAMP": {
+    "name": "Kebos Swamp",
+    "ids": [
+      4664,
+      4920,
+      5174,
+      5175,
+      5176,
+      5430,
+      5431
+    ]
+  },
+  "REGION_KHARAZI_JUNGLE": {
+    "name": "Kharazi Jungle",
+    "ids": [
+      11053,
+      11309,
+      11565,
+      11821
+    ]
+  },
+  "REGION_KHARIDIAN_DESERT": {
+    "name": "Kharidian Desert",
+    "ids": [
+      12587,
+      12844,
+      12845,
+      12846,
+      12847,
+      12848,
+      13100,
+      13101,
+      13102,
+      13103,
+      13104,
+      13357,
+      13359,
+      13360,
+      13614,
+      13615,
+      13616,
+      13869,
+      13870
+    ]
+  },
+  "REGION_KILLERWATT_PLANE": {
+    "name": "Killerwatt Plane",
+    "ids": [
+      10577
+    ]
+  },
+  "REGION_KOUREND": {
+    "name": "Great Kourend",
+    "ids": [
+      6201,
+      6457,
+      6713
+    ]
+  },
+  "REGION_KOUREND_WOODLAND": {
+    "name": "Kourend Woodland",
+    "ids": [
+      5942,
+      6197,
+      6453
+    ]
+  },
+  "REGION_LAW_ALTAR": {
+    "name": "Law Altar",
+    "ids": [
+      9803
+    ]
+  },
+  "REGION_LEGENDS_GUILD": {
+    "name": "Legends' Guild",
+    "ids": [
+      10804
+    ]
+  },
+  "REGION_LIGHTHOUSE": {
+    "name": "Lighthouse",
+    "ids": [
+      10040
+    ]
+  },
+  "REGION_LITHKREN": {
+    "name": "Lithkren",
+    "ids": [
+      14142,
+      14398
+    ]
+  },
+  "REGION_LUMBRIDGE_SWAMP": {
+    "name": "Lumbridge Swamp",
+    "ids": [
+      12593,
+      12849
+    ]
+  },
+  "REGION_MAX_ISLAND": {
+    "name": "Max Island",
+    "ids": [
+      11063
+    ]
+  },
+  "REGION_MCGRUBORS_WOOD": {
+    "name": "McGrubor's Wood",
+    "ids": [
+      10550
+    ]
+  },
+  "REGION_MIME_STAGE": {
+    "name": "Mime's Stage",
+    "ids": [
+      8010
+    ]
+  },
+  "REGION_MIND_ALTAR": {
+    "name": "Mind Altar",
+    "ids": [
+      11083
+    ]
+  },
+  "REGION_MISTHALIN": {
+    "name": "Misthalin",
+    "ids": [
+      12594,
+      12595,
+      12851
+    ]
+  },
+  "REGION_MOLCH": {
+    "name": "Molch",
+    "ids": [
+      5177
+    ]
+  },
+  "REGION_MOLCH_ISLAND": {
+    "name": "Molch Island",
+    "ids": [
+      5432
+    ]
+  },
+  "REGION_MORYTANIA": {
+    "name": "Morytania",
+    "ids": [
+      13619,
+      13620,
+      13621,
+      13622,
+      13876,
+      13877,
+      13879,
+      14133,
+      14134,
+      14389,
+      14390,
+      14391,
+      14645,
+      14647
+    ]
+  },
+  "REGION_MOUNT_QUIDAMORTEM": {
+    "name": "Mount Quidamortem",
+    "ids": [
+      4662,
+      4663,
+      4918,
+      4919
+    ]
+  },
+  "REGION_MR_MORDAUTS_CLASSROOM": {
+    "name": "Mr. Mordaut's Classroom",
+    "ids": [
+      7502
+    ]
+  },
+  "REGION_MUDSKIPPER": {
+    "name": "Mudskipper Point",
+    "ids": [
+      11824
+    ]
+  },
+  "REGION_MYSTERIOUS_OLD_MAN_MAZE": {
+    "name": "Mysterious Old Man's Maze",
+    "ids": [
+      11590,
+      11591,
+      11846,
+      11847
+    ]
+  },
+  "REGION_MYTHS_GUILD": {
+    "name": "Myths' Guild",
+    "ids": [
+      9772
+    ]
+  },
+  "REGION_NATURE_ALTAR": {
+    "name": "Nature Altar",
+    "ids": [
+      9547
+    ]
+  },
+  "REGION_NECROPOLIS": {
+    "name": "Necropolis",
+    "ids": [
+      13098,
+      13353,
+      13354,
+      13609,
+      13610
+    ]
+  },
+  "REGION_NORTHERN_TUNDRAS": {
+    "name": "Northern Tundras",
+    "ids": [
+      6204,
+      6205,
+      6717
+    ]
+  },
+  "REGION_OBSERVATORY": {
+    "name": "Observatory",
+    "ids": [
+      9777
+    ]
+  },
+  "REGION_ODD_ONE_OUT": {
+    "name": "Odd One Out",
+    "ids": [
+      7754
+    ]
+  },
+  "REGION_ORTUS_FARM": {
+    "name": "Ortus Farm",
+    "ids": [
+      6192,
+      6193
+    ]
+  },
+  "REGION_OTTOS_GROTTO": {
+    "name": "Otto's Grotto",
+    "ids": [
+      10038
+    ]
+  },
+  "REGION_OURANIA_HUNTER": {
+    "name": "Ourania Hunter Area",
+    "ids": [
+      9778
+    ]
+  },
+  "REGION_PIRATES_COVE": {
+    "name": "Pirates' Cove",
+    "ids": [
+      8763
+    ]
+  },
+  "REGION_PISCATORIS_HUNTER_AREA": {
+    "name": "Piscatoris Hunter Area",
+    "ids": [
+      9015,
+      9016,
+      9271,
+      9272,
+      9528
+    ]
+  },
+  "REGION_POH": {
+    "name": "Player Owned House",
+    "ids": [
+      7534,
+      7535,
+      7790,
+      7791,
+      8046,
+      8047,
+      8302,
+      8303
+    ]
+  },
+  "REGION_POISON_WASTE": {
+    "name": "Poison Waste",
+    "ids": [
+      8752
+    ]
+  },
+  "REGION_PORT_TYRAS": {
+    "name": "Port Tyras",
+    "ids": [
+      8496
+    ]
+  },
+  "REGION_PURO_PURO": {
+    "name": "Puro-Puro",
+    "ids": [
+      10307
+    ]
+  },
+  "REGION_QUARRY": {
+    "name": "Quarry",
+    "ids": [
+      12589
+    ]
+  },
+  "REGION_RALOS_RISE": {
+    "name": "Ralos' Rise",
+    "ids": [
+      5424,
+      5425,
+      5679,
+      5680,
+      5681,
+      5682
+    ]
+  },
+  "REGION_RANGING_GUILD": {
+    "name": "Ranging Guild",
+    "ids": [
+      10549
+    ]
+  },
+  "REGION_RATCATCHERS_MANSION": {
+    "name": "Ratcatchers Mansion",
+    "ids": [
+      11343
+    ]
+  },
+  "REGION_RUINS_OF_UNKAH": {
+    "name": "Ruins of Unkah",
+    "ids": [
+      12588
+    ]
+  },
+  "REGION_RUINS_OF_ULLEK": {
+    "name": "Ruins of Ullek",
+    "ids": [
+      13355,
+      13611,
+      13612
+    ]
+  },
+  "REGION_RUNE_ESSENCE_MINE": {
+    "name": "Rune Essence Mine",
+    "ids": [
+      11595
+    ]
+  },
+  "REGION_SCAPERUNE": {
+    "name": "ScapeRune",
+    "ids": [
+      10058,
+      7758,
+      8261
+    ]
+  },
+  "REGION_SEA_SPIRIT_DOCK": {
+    "name": "Sea Spirit Dock",
+    "ids": [
+      12332
+    ]
+  },
+  "REGION_SHIP_YARD": {
+    "name": "Ship Yard",
+    "ids": [
+      11823
+    ]
+  },
+  "REGION_SILVAREA": {
+    "name": "Silvarea",
+    "ids": [
+      13366
+    ]
+  },
+  "REGION_SINCLAR_MANSION": {
+    "name": "Sinclair Mansion",
+    "ids": [
+      10807
+    ]
+  },
+  "REGION_SLAYER_TOWER": {
+    "name": "Slayer Tower",
+    "ids": [
+      13623,
+      13723
+    ]
+  },
+  "REGION_SOUL_ALTAR": {
+    "name": "Soul Altar",
+    "ids": [
+      7228
+    ]
+  },
+  "REGION_STRANGLEWOOD_TEMPLE": {
+    "name": "Stranglewood Temple",
+    "ids": [
+      4761
+    ]
+  },
+  "REGION_SUNSET_COAST": {
+    "name": "Sunset Coast",
+    "ids": [
+      5934,
+      6190
+    ]
+  },
+  "REGION_THE_SCAR": {
+    "name": "The Scar",
+    "ids": [
+      8036,
+      8292
+    ]
+  },
+  "REGION_THE_STRANGLEWOOD": {
+    "name": "The Stranglewood",
+    "ids": [
+      4403,
+      4404,
+      4659,
+      4660,
+      4661,
+      4916,
+      4917
+    ]
+  },
+  "REGION_TROLL_ARENA": {
+    "name": "Troll Arena",
+    "ids": [
+      11576
+    ]
+  },
+  "REGION_TROLLHEIM": {
+    "name": "Trollheim",
+    "ids": [
+      11577
+    ]
+  },
+  "REGION_TROLLWEISS_MTN": {
+    "name": "Trollweiss Mountain",
+    "ids": [
+      11066,
+      11067,
+      11068
+    ]
+  },
+  "REGION_TUTORIAL_ISLAND": {
+    "name": "Tutorial Island",
+    "ids": [
+      12079,
+      12080,
+      12335,
+      12336,
+      12436,
+      12592
+    ]
+  },
+  "REGION_UNDERWATER": {
+    "name": "Underwater",
+    "ids": [
+      15008,
+      15264
+    ]
+  },
+  "REGION_WATER_ALTAR": {
+    "name": "Water Altar",
+    "ids": [
+      10827
+    ]
+  },
+  "REGION_WATERBIRTH_ISLAND": {
+    "name": "Waterbirth Island",
+    "ids": [
+      10042
+    ]
+  },
+  "REGION_WINTERTODT_CAMP": {
+    "name": "Wintertodt Camp",
+    "ids": [
+      6461
+    ]
+  },
+  "REGION_WIZARDS_TOWER": {
+    "name": "Wizards' Tower",
+    "ids": [
+      12337
+    ]
+  },
+  "REGION_WOODCUTTING_GUILD": {
+    "name": "Woodcutting Guild",
+    "ids": [
+      6198,
+      6454
+    ]
+  },
+  "REGION_WRATH_ALTAR": {
+    "name": "Wrath Altar",
+    "ids": [
+      9291
+    ]
+  },
+  "WILDERNESS_1_8": {
+    "name": "Wilderness 1-8",
+    "ids": [
+      11831,
+      12087,
+      12343,
+      12599,
+      12855,
+      13111,
+      13367
+    ]
+  },
+  "WILDERNESS_9_16": {
+    "name": "Wilderness 9-16",
+    "ids": [
+      11832,
+      12088,
+      12344,
+      12600,
+      12856,
+      13112,
+      13368
+    ]
+  },
+  "WILDERNESS_17_24": {
+    "name": "Wilderness 17-24",
+    "ids": [
+      11833,
+      12089,
+      12345,
+      12601,
+      12857,
+      13113,
+      13369
+    ]
+  },
+  "WILDERNESS_25_32": {
+    "name": "Wilderness 25-32",
+    "ids": [
+      11834,
+      12090,
+      12346,
+      12602,
+      12858,
+      13114,
+      13370
+    ]
+  },
+  "WILDERNESS_33_40": {
+    "name": "Wilderness 33-40",
+    "ids": [
+      11835,
+      12091,
+      12347,
+      12603,
+      12859,
+      13115,
+      13371
+    ]
+  },
+  "WILDERNESS_41_48": {
+    "name": "Wilderness 41-48",
+    "ids": [
+      11836,
+      12092,
+      12348,
+      12604,
+      12860,
+      13116,
+      13372
+    ]
+  },
+  "WILDERNESS_49_56": {
+    "name": "Wilderness 49-56",
+    "ids": [
+      11837,
+      12093,
+      12349,
+      12605,
+      12861,
+      13117,
+      13373
+    ]
+  }
+}
