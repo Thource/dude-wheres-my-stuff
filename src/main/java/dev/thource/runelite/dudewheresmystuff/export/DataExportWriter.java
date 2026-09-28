@@ -17,5 +17,5 @@ public interface DataExportWriter {
 
   String getFileLocation();
 
-  void close();
+  void close() throws IOException;
 }

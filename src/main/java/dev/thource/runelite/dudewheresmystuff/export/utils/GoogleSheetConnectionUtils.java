@@ -1,12 +1,9 @@
 package dev.thource.runelite.dudewheresmystuff.export.utils;
 
-import static net.runelite.client.RuneLite.RUNELITE_DIR;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.sun.net.httpserver.HttpServer;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,10 +12,12 @@ import java.net.InetSocketAddress;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
+import java.nio.file.StandardOpenOption;
 import java.time.Instant;
 import java.util.concurrent.CompletableFuture;
+import javax.annotation.Nullable;
 import lombok.Setter;
+import net.runelite.client.util.Filepath;
 import net.runelite.client.util.LinkBrowser;
 import okhttp3.FormBody;
 import okhttp3.MediaType;
@@ -33,10 +32,6 @@ import okhttp3.Response;
  */
 public class GoogleSheetConnectionUtils {
 
-  /** The Google account used for all Sheets exports; shared so callers can invalidate its token. */
-  public static final String EXPORT_ACCOUNT_EMAIL = "rldudewms@gmail.com";
-
-  private static final File TOKENS_DIRECTORY = new File(RUNELITE_DIR, "dudewheresmystuff/tokens");
   private static final String CREDENTIALS_FILE_PATH = "/credentials.json";
 
   private static final String SCOPE = "https://www.googleapis.com/auth/drive.file";
@@ -45,12 +40,17 @@ public class GoogleSheetConnectionUtils {
   private static final int LOCAL_SERVER_PORT = 8888;
   private static final String REDIRECT_URI = "http://localhost:" + LOCAL_SERVER_PORT + "/Callback";
 
+  @Nullable private static Filepath TOKEN_FILE_PATH;
   @Setter private static OkHttpClient HTTP_CLIENT;
   @Setter private static Gson GSON;
   private static final MediaType JSON_MEDIA_TYPE =
       MediaType.parse("application/json; charset=utf-8");
 
   private GoogleSheetConnectionUtils() {}
+
+  public static void setTokenFilePath(Filepath pluginDirectory) throws IOException {
+    TOKEN_FILE_PATH = pluginDirectory.join("_googleToken");
+  }
 
   /** The pieces of a Google OAuth client_secrets.json we actually need. */
   private static class ClientSecrets {
@@ -87,28 +87,27 @@ public class GoogleSheetConnectionUtils {
     }
   }
 
-  private static File tokenFile(String userEmail) {
-    return new File(TOKENS_DIRECTORY, "StoredCredential-" + userEmail);
-  }
-
-  private static StoredToken loadStoredToken(String userEmail) {
-    File file = tokenFile(userEmail);
-    if (!file.exists()) {
+  private static StoredToken loadStoredToken() {
+    if (TOKEN_FILE_PATH == null || !TOKEN_FILE_PATH.exists()) {
       return null;
     }
-    try (InputStreamReader reader =
-        new InputStreamReader(Files.newInputStream(file.toPath()), StandardCharsets.UTF_8)) {
+
+    try (var reader = TOKEN_FILE_PATH.openBufferedReader(StandardOpenOption.READ)) {
       return GSON.fromJson(reader, StoredToken.class);
     } catch (IOException e) {
       return null;
     }
   }
 
-  private static void saveStoredToken(String userEmail, StoredToken token) throws IOException {
-    if (!TOKENS_DIRECTORY.exists() && !TOKENS_DIRECTORY.mkdirs()) {
-      throw new IOException("Could not create tokens directory: " + TOKENS_DIRECTORY);
+  private static void saveStoredToken(StoredToken token) throws IOException {
+    if (TOKEN_FILE_PATH == null) {
+      throw new IOException("Token file path not set");
     }
-    Files.write(tokenFile(userEmail).toPath(), GSON.toJson(token).getBytes(StandardCharsets.UTF_8));
+
+    try (var writer =
+        TOKEN_FILE_PATH.openBufferedWriter(StandardOpenOption.CREATE, StandardOpenOption.WRITE)) {
+      writer.write(GSON.toJson(token));
+    }
   }
 
   private static StoredToken exchangeCodeForToken(ClientSecrets secrets, String code)
@@ -219,9 +218,9 @@ public class GoogleSheetConnectionUtils {
     return null;
   }
 
-  private static String getAccessToken(String userEmail) throws IOException {
+  private static String getAccessToken() throws IOException {
     ClientSecrets secrets = loadClientSecrets();
-    StoredToken token = loadStoredToken(userEmail);
+    StoredToken token = loadStoredToken();
 
     if (token != null && token.expiresAtEpochSeconds > Instant.now().getEpochSecond() + 60) {
       return token.accessToken;
@@ -230,7 +229,7 @@ public class GoogleSheetConnectionUtils {
     if (token != null && token.refreshToken != null) {
       try {
         StoredToken refreshed = refreshAccessToken(secrets, token.refreshToken);
-        saveStoredToken(userEmail, refreshed);
+        saveStoredToken(refreshed);
         return refreshed.accessToken;
       } catch (IOException e) {
         // Refresh failed (e.g. token revoked) - fall through to a fresh authorization flow.
@@ -239,7 +238,7 @@ public class GoogleSheetConnectionUtils {
 
     String code = runAuthorizationFlow(secrets);
     StoredToken fresh = exchangeCodeForToken(secrets, code);
-    saveStoredToken(userEmail, fresh);
+    saveStoredToken(fresh);
     return fresh.accessToken;
   }
 
@@ -247,17 +246,21 @@ public class GoogleSheetConnectionUtils {
    * Returns an OkHttp-backed client for the Google Sheets REST API v4, replacing the old
    * google-api-client {@code Sheets} object.
    */
-  public static SheetsClient getSheetsConnection(String userEmail) {
+  public static SheetsClient getSheetsConnection() {
     try {
-      String accessToken = getAccessToken(userEmail);
+      String accessToken = getAccessToken();
       return new SheetsClient(HTTP_CLIENT, accessToken);
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
   }
 
-  public static void invalidateCredentials(String userEmail) {
-    tokenFile(userEmail).delete();
+  public static void invalidateCredentials() throws IOException {
+    if (TOKEN_FILE_PATH == null) {
+      throw new IOException("Token file path not set");
+    }
+
+    TOKEN_FILE_PATH.deleteIfExists();
   }
 
   /** Minimal OkHttp-based wrapper around the Google Sheets REST API v4. */

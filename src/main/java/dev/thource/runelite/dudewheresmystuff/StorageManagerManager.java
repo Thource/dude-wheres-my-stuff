@@ -337,26 +337,31 @@ public class StorageManagerManager {
             () -> {
               DataExportWriter writer;
 
-              if ((destination == DataDestination.CSV)) {
-                writer = new CsvWriter(displayName);
-              } else if ((destination == DataDestination.GOOGLE_SHEETS)) {
-                writer = new GoogleSheetsWriter(plugin, displayName);
-              } else {
-                throw new RuntimeException(
-                    "Could not find a writer that likes the destination selected");
-              }
-
-              DataExporter exporter = new StorageManagerExporter(writer, s);
               try {
+                if ((destination == DataDestination.CSV)) {
+                  writer = new CsvWriter(displayName, plugin.getPluginDir());
+                } else if ((destination == DataDestination.GOOGLE_SHEETS)) {
+                  writer = new GoogleSheetsWriter(plugin, displayName);
+                } else {
+                  throw new RuntimeException(
+                      "Could not find a writer that likes the destination selected");
+                }
+
+                DataExporter exporter = new StorageManagerExporter(writer, s);
+
                 export(exporter, writer);
               } catch (IOException | IllegalArgumentException e) {
-                log.error("Unable to export: " + e.getMessage());
+                log.error("Unable to export: " + e.getMessage(), e);
                 plugin.getNotifier().notify("Item export failed.", MessageType.ERROR);
               } catch (GoogleSheetsAuthException authEx) {
                 log.warn(
                     "Google rejected our credentials, clearing them and retrying once", authEx);
-                GoogleSheetConnectionUtils.invalidateCredentials(
-                    GoogleSheetConnectionUtils.EXPORT_ACCOUNT_EMAIL);
+                try {
+                  GoogleSheetConnectionUtils.invalidateCredentials();
+                } catch (IOException e) {
+                  log.error("Unable to invalidate credentials: " + e.getMessage(), e);
+                  plugin.getNotifier().notify("Item export failed.", MessageType.ERROR);
+                }
                 // The old writer/exporter hold a GoogleSheetClient built with the now-rejected
                 // access token, so the retry needs a brand new one rather than reusing them.
                 try {
@@ -364,7 +369,7 @@ public class StorageManagerManager {
                   DataExporter retryExporter = new StorageManagerExporter(retryWriter, s);
                   export(retryExporter, retryWriter);
                 } catch (IOException | IllegalArgumentException e) {
-                  log.error("Unable to export after re-authenticating: " + e.getMessage());
+                  log.error("Unable to export after re-authenticating: " + e.getMessage(), e);
                   plugin.getNotifier().notify("Item export failed.", MessageType.ERROR);
                 }
               } catch (Exception ex) {

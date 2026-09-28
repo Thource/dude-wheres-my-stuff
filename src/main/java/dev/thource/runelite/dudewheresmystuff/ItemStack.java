@@ -132,6 +132,8 @@ public class ItemStack {
       return false;
     }
 
+    ItemIdentification.load(plugin.getGson());
+
     ItemManager itemManager = plugin.getItemManager();
     ItemComposition composition = itemManager.getItemComposition(id);
     name = composition.getName();
