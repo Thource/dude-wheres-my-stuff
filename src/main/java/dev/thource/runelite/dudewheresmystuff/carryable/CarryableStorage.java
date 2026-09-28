@@ -6,7 +6,6 @@ import dev.thource.runelite.dudewheresmystuff.ItemStack;
 import dev.thource.runelite.dudewheresmystuff.ItemStorage;
 import lombok.Getter;
 import net.runelite.api.EquipmentInventorySlot;
-import net.runelite.api.events.ItemContainerChanged;
 
 /**
  * CarryableStorage is responsible for tracking storages that the player can carry (looting bag,

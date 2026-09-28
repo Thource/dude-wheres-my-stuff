@@ -905,11 +905,12 @@ public class DeathStorageManager extends StorageManager<DeathStorageType, DeathS
 
     itemsPickedUp.stream()
         .filter(i -> i.getId() == despawnedItem.getId())
-        .forEach(i -> {
-          if (i.getTicksLeft() > 2) {
-            i.setTicksLeft(2);
-          }
-        });
+        .forEach(
+            i -> {
+              if (i.getTicksLeft() > 2) {
+                i.setTicksLeft(2);
+              }
+            });
 
     var updatedDeathpiles = removeFromDeathpiles(despawnedItem, worldPoint);
     if (updatedDeathpiles.isEmpty()) {

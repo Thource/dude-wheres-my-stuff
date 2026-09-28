@@ -80,30 +80,37 @@ public abstract class Storage<T extends StorageType> {
       popupMenu.add(reset);
     }
 
-    if (!storageManager.isPreviewManager() && type != CoinsStorageType.INVENTORY
-        && type != CoinsStorageType.LOOTING_BAG && type != CoinsStorageType.BANK) {
-      final var itemCountConfigKey = "storedItemCountInclude." + getConfigKey(storageManager.getConfigKey());
-      var storageIncluded = new AtomicBoolean(
-          Objects.equals(Objects.requireNonNullElse(plugin.getConfigManager().getConfiguration(
-              DudeWheresMyStuffConfig.CONFIG_GROUP,
-              itemCountConfigKey
-          ), "true"), "true")
-      );
-      final JMenuItem toggleItemCountInclusion = new JMenuItem(
-          (storageIncluded.get() ? "Exclude from" : "Include in") + " item count tooltip"
-      );
+    if (!storageManager.isPreviewManager()
+        && type != CoinsStorageType.INVENTORY
+        && type != CoinsStorageType.LOOTING_BAG
+        && type != CoinsStorageType.BANK) {
+      final var itemCountConfigKey =
+          "storedItemCountInclude." + getConfigKey(storageManager.getConfigKey());
+      var storageIncluded =
+          new AtomicBoolean(
+              Objects.equals(
+                  Objects.requireNonNullElse(
+                      plugin
+                          .getConfigManager()
+                          .getConfiguration(
+                              DudeWheresMyStuffConfig.CONFIG_GROUP, itemCountConfigKey),
+                      "true"),
+                  "true"));
+      final JMenuItem toggleItemCountInclusion =
+          new JMenuItem(
+              (storageIncluded.get() ? "Exclude from" : "Include in") + " item count tooltip");
       toggleItemCountInclusion.addActionListener(
           e -> {
             storageIncluded.set(!storageIncluded.get());
-            plugin.getConfigManager().setConfiguration(
-                DudeWheresMyStuffConfig.CONFIG_GROUP,
-                itemCountConfigKey,
-                storageIncluded.get()
-            );
+            plugin
+                .getConfigManager()
+                .setConfiguration(
+                    DudeWheresMyStuffConfig.CONFIG_GROUP,
+                    itemCountConfigKey,
+                    storageIncluded.get());
 
             toggleItemCountInclusion.setText(
-                (storageIncluded.get() ? "Exclude from" : "Include in") + " item count tooltip"
-            );
+                (storageIncluded.get() ? "Exclude from" : "Include in") + " item count tooltip");
           });
       popupMenu.add(toggleItemCountInclusion);
     }
@@ -119,14 +126,17 @@ public abstract class Storage<T extends StorageType> {
    * @param storageManager the storage manager that relates to this storage
    */
   public void deleteData(StorageManager<?, ?> storageManager) {
-    String profileKey = storageManager.isPreviewManager() ? plugin.getPreviewProfileKey()
-        : storageManager.getConfigManager().getRSProfileKey();
+    String profileKey =
+        storageManager.isPreviewManager()
+            ? plugin.getPreviewProfileKey()
+            : storageManager.getConfigManager().getRSProfileKey();
 
-    storageManager.getConfigManager().unsetConfiguration(
-        DudeWheresMyStuffConfig.CONFIG_GROUP,
-        profileKey,
-        getConfigKey(storageManager.getConfigKey())
-    );
+    storageManager
+        .getConfigManager()
+        .unsetConfiguration(
+            DudeWheresMyStuffConfig.CONFIG_GROUP,
+            profileKey,
+            getConfigKey(storageManager.getConfigKey()));
     reset();
   }
 
@@ -154,8 +164,7 @@ public abstract class Storage<T extends StorageType> {
   }
 
   @SuppressWarnings("java:S1172") // the parameter is used in child classes
-  public void onWidgetClosed(WidgetClosed widgetClosed) {
-  }
+  public void onWidgetClosed(WidgetClosed widgetClosed) {}
 
   @SuppressWarnings("java:S1172") // the parameter is used in child classes
   public boolean onChatMessage(ChatMessage chatMessage) {
@@ -175,8 +184,8 @@ public abstract class Storage<T extends StorageType> {
   /**
    * Can the items in this storage be withdrawn?
    *
-   * <p>Should be overridden by subclasses. Should be false for things like minigame points,
-   * expired deathbanks, or deposit-only storages such as balloon log storage.
+   * <p>Should be overridden by subclasses. Should be false for things like minigame points, expired
+   * deathbanks, or deposit-only storages such as balloon log storage.
    *
    * <p>NOTE: this abstraction does not work for storages where some items are real and others are
    * not. For example, the ores in blast furnace storage cannot be withdrawn but bars can. Also,
@@ -221,8 +230,11 @@ public abstract class Storage<T extends StorageType> {
     }
 
     this.lastSaveString = saveString;
-    configManager.setConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP, profileKey,
-        getConfigKey(managerConfigKey), saveString);
+    configManager.setConfiguration(
+        DudeWheresMyStuffConfig.CONFIG_GROUP,
+        profileKey,
+        getConfigKey(managerConfigKey),
+        saveString);
   }
 
   public String getSaveString() {
@@ -279,7 +291,7 @@ public abstract class Storage<T extends StorageType> {
   public void disable(boolean isMember, int accountType) {
     if ((type.isMembersOnly() && !isMember)
         || (type.getAccountTypeBlacklist() != null
-        && type.getAccountTypeBlacklist().contains(accountType))) {
+            && type.getAccountTypeBlacklist().contains(accountType))) {
       disable();
     }
   }
@@ -319,8 +331,10 @@ public abstract class Storage<T extends StorageType> {
   }
 
   public long getItemCount(int canonicalId) {
-    return getItems().stream().filter(stack -> stack.getCanonicalId() == canonicalId)
-        .mapToLong(ItemStack::getQuantity).sum();
+    return getItems().stream()
+        .filter(stack -> stack.getCanonicalId() == canonicalId)
+        .mapToLong(ItemStack::getQuantity)
+        .sum();
   }
 
   protected void updateLastUpdated() {
@@ -330,16 +344,19 @@ public abstract class Storage<T extends StorageType> {
   public boolean includeInStoredItemCount(String managerConfigKey) {
     var configManager = plugin.getConfigManager();
 
-    var managerIncludedValue = configManager.getConfiguration(DudeWheresMyStuffConfig.CONFIG_GROUP,
-        "storedItemCountInclude." + managerConfigKey);
+    var managerIncludedValue =
+        configManager.getConfiguration(
+            DudeWheresMyStuffConfig.CONFIG_GROUP, "storedItemCountInclude." + managerConfigKey);
     if (Objects.equals(managerIncludedValue, "false")) {
       return false;
     }
 
-    var storageIncludedValue = Objects.requireNonNullElse(configManager.getConfiguration(
-        DudeWheresMyStuffConfig.CONFIG_GROUP,
-        "storedItemCountInclude." + getConfigKey(managerConfigKey)
-    ), "true");
+    var storageIncludedValue =
+        Objects.requireNonNullElse(
+            configManager.getConfiguration(
+                DudeWheresMyStuffConfig.CONFIG_GROUP,
+                "storedItemCountInclude." + getConfigKey(managerConfigKey)),
+            "true");
     return Objects.equals(storageIncludedValue, "true");
   }
 }

@@ -11,8 +11,8 @@ import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.VarbitID;
 
 /**
- * Source of truth for the data behind {@code CarryableStorageType}. See {@link
- * EnumJsonGenerator}; the generated json is {@code data/CarryableStorageTypeData.json}.
+ * Source of truth for the data behind {@code CarryableStorageType}. See {@link EnumJsonGenerator};
+ * the generated json is {@code data/CarryableStorageTypeData.json}.
  */
 public enum CarryableStorageTypeData implements EnumJsonGenerator.Exportable {
   INVENTORY("Inventory", InventoryID.INV, true, "inventory", false, new ArrayList<>(), -1),
@@ -156,12 +156,6 @@ public enum CarryableStorageTypeData implements EnumJsonGenerator.Exportable {
   @Override
   public Object toJson() {
     return new CarryableStorageType.Data(
-        name,
-        itemContainerId,
-        automatic,
-        configKey,
-        membersOnly,
-        containerIds,
-        emptyOnDeathVarbit);
+        name, itemContainerId, automatic, configKey, membersOnly, containerIds, emptyOnDeathVarbit);
   }
 }

@@ -229,7 +229,11 @@ public enum ItemIdentificationData implements EnumJsonGenerator.Exportable {
 
   // Saplings
   OAK_SAPLING(
-      Type.SAPLING, "Oak", "OAK", ItemID.PLANTPOT_OAK_SAPLING, ItemID.PLANTPOT_ACORN,
+      Type.SAPLING,
+      "Oak",
+      "OAK",
+      ItemID.PLANTPOT_OAK_SAPLING,
+      ItemID.PLANTPOT_ACORN,
       ItemID.PLANTPOT_ACORN_WATERED),
   WILLOW_SAPLING(
       Type.SAPLING,
@@ -246,7 +250,11 @@ public enum ItemIdentificationData implements EnumJsonGenerator.Exportable {
       ItemID.PLANTPOT_MAPLE_SEED,
       ItemID.PLANTPOT_MAPLE_SEED_WATERED),
   YEW_SAPLING(
-      Type.SAPLING, "Yew", "YEW", ItemID.PLANTPOT_YEW_SAPLING, ItemID.PLANTPOT_YEW_SEED,
+      Type.SAPLING,
+      "Yew",
+      "YEW",
+      ItemID.PLANTPOT_YEW_SAPLING,
+      ItemID.PLANTPOT_YEW_SEED,
       ItemID.PLANTPOT_YEW_SEED_WATERED),
   MAGIC_SAPLING(
       Type.SAPLING,
@@ -1166,8 +1174,8 @@ public enum ItemIdentificationData implements EnumJsonGenerator.Exportable {
       ItemID.NECKLACE_OF_DIGSITE_3,
       ItemID.NECKLACE_OF_DIGSITE_4,
       ItemID.NECKLACE_OF_DIGSITE_5),
-  INOCULATION_BRACELET(Type.JEWELLERY_ENCHANTED, "Inocul", "INO",
-      ItemID.JEWL_BRACELET_OF_INNOCULATION),
+  INOCULATION_BRACELET(
+      Type.JEWELLERY_ENCHANTED, "Inocul", "INO", ItemID.JEWL_BRACELET_OF_INNOCULATION),
   AMULET_OF_STRENGTH(Type.JEWELLERY_ENCHANTED, "Strengt", "STR", ItemID.AMULET_OF_STRENGTH),
 
   RING_OF_LIFE(Type.JEWELLERY_ENCHANTED, "Life", "LI", ItemID.RING_OF_LIFE),

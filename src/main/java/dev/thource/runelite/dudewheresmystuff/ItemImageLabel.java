@@ -35,10 +35,10 @@ class ItemImageLabel extends JLabel {
         || !Boolean.parseBoolean(
             plugin.getConfigManager().getConfiguration("runelite", "itemidentificationplugin"))
         || !itemStack
-        .getItemIdentification()
-        .getType()
-        .enabled
-        .test(plugin.getItemIdentificationConfig())) {
+            .getItemIdentification()
+            .getType()
+            .enabled
+            .test(plugin.getItemIdentificationConfig())) {
       return;
     }
 

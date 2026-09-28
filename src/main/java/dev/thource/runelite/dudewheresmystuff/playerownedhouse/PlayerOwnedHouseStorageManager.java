@@ -48,8 +48,8 @@ public class PlayerOwnedHouseStorageManager
       return true;
     }
 
-    WorldPoint worldPoint = WorldPoint.fromLocalInstance(client,
-        client.getLocalPlayer().getLocalLocation());
+    WorldPoint worldPoint =
+        WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation());
     return Region.get(worldPoint.getRegionID()) != Region.REGION_POH;
   }
 

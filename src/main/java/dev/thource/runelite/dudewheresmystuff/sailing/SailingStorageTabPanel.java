@@ -15,15 +15,17 @@ public class SailingStorageTabPanel
 
   @Override
   protected Comparator<SailingStorage> getStorageSorter() {
-    return Comparator.comparingLong((SailingStorage s) -> {
-      if (s instanceof LostBoatStorage) {
-        var storage = (LostBoatStorage) s;
+    return Comparator.comparingLong(
+            (SailingStorage s) -> {
+              if (s instanceof LostBoatStorage) {
+                var storage = (LostBoatStorage) s;
 
-        // Move lost boats to the bottom of the list and sort them newest first
-        return Long.MAX_VALUE - storage.getLastUpdated();
-      }
+                // Move lost boats to the bottom of the list and sort them newest first
+                return Long.MAX_VALUE - storage.getLastUpdated();
+              }
 
-      return 0;
-    }).thenComparing(super.getStorageSorter());
+              return 0;
+            })
+        .thenComparing(super.getStorageSorter());
   }
 }

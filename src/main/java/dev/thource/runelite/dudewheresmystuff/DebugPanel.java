@@ -39,12 +39,14 @@ class DebugPanel extends TabContentPanel {
     mainPanel.add(
         createCheckbox(
             "\"Create deathpile\" menu action",
-            "Adds a menu option to create a deathpile on the clicked tile.<br>Shift must be held for it to appear.",
+            "Adds a menu option to create a deathpile on the clicked tile.<br>Shift must be held"
+                + " for it to appear.",
             "debug.menu.createDeathpile"));
     mainPanel.add(
         createCheckbox(
             "\"Log co-ords\" menu action",
-            "Adds a menu option to log co-ords of the clicked tile.<br>Shift must be held for it to appear.",
+            "Adds a menu option to log co-ords of the clicked tile.<br>Shift must be held for it to"
+                + " appear.",
             "debug.menu.logCoords"));
     mainPanel.add(
         createCheckbox(

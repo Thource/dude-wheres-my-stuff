@@ -18,10 +18,10 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * Exports every {@link Exportable} enum found in the sibling {@code data} package to a json file
- * of the same name (e.g. {@code FooData} becomes {@code FooData.json}) in the main resources
- * {@code data} directory. Each json file is an object keyed by {@link Exportable#jsonKey()}
- * (usually the constant name), in declaration order.
+ * Exports every {@link Exportable} enum found in the sibling {@code data} package to a json file of
+ * the same name (e.g. {@code FooData} becomes {@code FooData.json}) in the main resources {@code
+ * data} directory. Each json file is an object keyed by {@link Exportable#jsonKey()} (usually the
+ * constant name), in declaration order.
  *
  * <p>To add a new data set, drop a new enum implementing {@link Exportable} into the {@code data}
  * package and re-run this class; nothing needs registering.
@@ -41,7 +41,8 @@ public final class EnumJsonGenerator {
     Object toJson();
   }
 
-  private static final String DATA_PACKAGE = EnumJsonGenerator.class.getPackage().getName() + ".data";
+  private static final String DATA_PACKAGE =
+      EnumJsonGenerator.class.getPackage().getName() + ".data";
   private static final Path DEFAULT_OUTPUT_DIR =
       Paths.get("src", "main", "resources").resolve(DATA_PACKAGE.replace('.', '/'));
 
@@ -50,7 +51,9 @@ public final class EnumJsonGenerator {
 
   private EnumJsonGenerator() {}
 
-  /** Finds every {@link Exportable} enum in the {@code data} package (the dir next to this class). */
+  /**
+   * Finds every {@link Exportable} enum in the {@code data} package (the dir next to this class).
+   */
   public static List<Class<?>> findDataEnums() throws IOException {
     URL dataDir = EnumJsonGenerator.class.getResource("data");
     if (dataDir == null || !"file".equals(dataDir.getProtocol())) {

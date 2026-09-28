@@ -45,7 +45,9 @@ public abstract class StorageManager<T extends StorageType, S extends Storage<T>
   }
 
   public long getTotalValue() {
-    return storages.stream().filter(Storage::isWithdrawable).mapToLong(Storage::getTotalValue)
+    return storages.stream()
+        .filter(Storage::isWithdrawable)
+        .mapToLong(Storage::getTotalValue)
         .sum();
   }
 
@@ -78,7 +80,8 @@ public abstract class StorageManager<T extends StorageType, S extends Storage<T>
     if (enabled) {
       updateStorages(
           storages.stream()
-              .filter(storage -> storage.isEnabled() && storage.onGameObjectSpawned(gameObjectSpawned))
+              .filter(
+                  storage -> storage.isEnabled() && storage.onGameObjectSpawned(gameObjectSpawned))
               .collect(Collectors.toList()));
     }
   }
@@ -96,7 +99,8 @@ public abstract class StorageManager<T extends StorageType, S extends Storage<T>
   /** Pass onWidgetClosed through to enabled storages. */
   public void onWidgetClosed(WidgetClosed widgetClosed) {
     if (enabled) {
-      storages.stream().filter(Storage::isEnabled)
+      storages.stream()
+          .filter(Storage::isEnabled)
           .forEach(storage -> storage.onWidgetClosed(widgetClosed));
     }
   }
@@ -123,11 +127,9 @@ public abstract class StorageManager<T extends StorageType, S extends Storage<T>
     }
   }
 
-  public void onGameStateChanged(GameStateChanged gameStateChanged) {
-  }
+  public void onGameStateChanged(GameStateChanged gameStateChanged) {}
 
-  public void onActorDeath(ActorDeath actorDeath) {
-  }
+  public void onActorDeath(ActorDeath actorDeath) {}
 
   public void reset() {
     storages.forEach(Storage::reset);
@@ -166,8 +168,7 @@ public abstract class StorageManager<T extends StorageType, S extends Storage<T>
     enabled = true;
   }
 
-  public void onItemDespawned(ItemDespawned itemDespawned) {
-  }
+  public void onItemDespawned(ItemDespawned itemDespawned) {}
 
   /** Pass onChatMessage through to enabled storages. */
   public void onChatMessage(ChatMessage chatMessage) {

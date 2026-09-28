@@ -17,8 +17,8 @@ import java.util.List;
  * static instance of this, exposes a {@code load(Gson)} method that the plugin calls with its
  * injected Gson, and looks its own data up with {@link #get(Enum)}.
  *
- * <p>The json file is {@code data/<fileName>.json} (relative to this package). It's an object
- * keyed by constant name whose values deserialise to {@code D}. {@code fileName} is the name of the
+ * <p>The json file is {@code data/<fileName>.json} (relative to this package). It's an object keyed
+ * by constant name whose values deserialise to {@code D}. {@code fileName} is the name of the
  * test-side data enum that {@code EnumJsonGenerator} exported, e.g. {@code
  * PlayerOwnedHouseStorageTypeData}.
  *

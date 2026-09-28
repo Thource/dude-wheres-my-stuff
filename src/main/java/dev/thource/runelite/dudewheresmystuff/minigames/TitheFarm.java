@@ -15,7 +15,7 @@ public class TitheFarm extends MinigamesStorage {
   TitheFarm(DudeWheresMyStuffPlugin plugin) {
     super(MinigamesStorageType.TITHE_FARM, plugin);
 
-    varbits = new int[]{VarbitID.HOSIDIUS_TITHE_REWARDPOINTS};
+    varbits = new int[] {VarbitID.HOSIDIUS_TITHE_REWARDPOINTS};
 
     items.add(points);
   }

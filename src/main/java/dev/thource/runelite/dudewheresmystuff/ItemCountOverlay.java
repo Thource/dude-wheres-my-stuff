@@ -24,8 +24,11 @@ public class ItemCountOverlay extends WidgetItemOverlay {
   @Setter private boolean keybindPressed;
 
   @Inject
-  ItemCountOverlay(Client client, DudeWheresMyStuffPlugin dudeWheresMyStuffPlugin,
-      DudeWheresMyStuffConfig dudeWheresMyStuffConfig, TooltipManager tooltipManager) {
+  ItemCountOverlay(
+      Client client,
+      DudeWheresMyStuffPlugin dudeWheresMyStuffPlugin,
+      DudeWheresMyStuffConfig dudeWheresMyStuffConfig,
+      TooltipManager tooltipManager) {
     this.client = client;
     this.plugin = dudeWheresMyStuffPlugin;
     this.dudeWheresMyStuffConfig = dudeWheresMyStuffConfig;
@@ -41,10 +44,10 @@ public class ItemCountOverlay extends WidgetItemOverlay {
     }
 
     if (dudeWheresMyStuffConfig.storedItemCountTooltipKeybind().getKeyCode()
-        != Keybind.NOT_SET.getKeyCode()
+            != Keybind.NOT_SET.getKeyCode()
         || dudeWheresMyStuffConfig.storedItemCountTooltipKeybind().getModifiers()
-        != Keybind.NOT_SET.getModifiers()
-        && !keybindPressed) {
+                != Keybind.NOT_SET.getModifiers()
+            && !keybindPressed) {
       return;
     }
 
@@ -59,14 +62,15 @@ public class ItemCountOverlay extends WidgetItemOverlay {
       return;
     }
 
-    Map<Storage<?>, Long> detailedItemCountMap = plugin.getDetailedWithdrawableItemCount(
-        widgetItem.getId());
+    Map<Storage<?>, Long> detailedItemCountMap =
+        plugin.getDetailedWithdrawableItemCount(widgetItem.getId());
     long total = detailedItemCountMap.values().stream().mapToLong(count -> count).sum();
 
-    String detailedText = detailedItemCountMap.entrySet()
-        .stream().sorted(Comparator.comparingLong(Entry<Storage<?>, Long>::getValue).reversed())
-        .map(entry -> entry.getKey().getName() + ": " + String.format("%,d", entry.getValue()))
-        .collect(Collectors.joining("</br>"));
+    String detailedText =
+        detailedItemCountMap.entrySet().stream()
+            .sorted(Comparator.comparingLong(Entry<Storage<?>, Long>::getValue).reversed())
+            .map(entry -> entry.getKey().getName() + ": " + String.format("%,d", entry.getValue()))
+            .collect(Collectors.joining("</br>"));
 
     if (detailedItemCountMap.values().size() > 1) {
       detailedText += "</br></br>Total: " + String.format("%,d", total);

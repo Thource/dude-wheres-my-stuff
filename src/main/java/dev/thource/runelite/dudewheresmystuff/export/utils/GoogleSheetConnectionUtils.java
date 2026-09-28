@@ -28,8 +28,8 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 /**
- * Handles Google OAuth2 authorization and provides a Sheets API client, implemented directly on
- * top of OkHttp instead of the google-api-client / google-api-services-sheets libraries.
+ * Handles Google OAuth2 authorization and provides a Sheets API client, implemented directly on top
+ * of OkHttp instead of the google-api-client / google-api-services-sheets libraries.
  */
 public class GoogleSheetConnectionUtils {
 
@@ -58,7 +58,9 @@ public class GoogleSheetConnectionUtils {
     String clientSecret;
   }
 
-  /** A stored OAuth token set, persisted as JSON next to where google-api-client used to store it. */
+  /**
+   * A stored OAuth token set, persisted as JSON next to where google-api-client used to store it.
+   */
   private static class StoredToken {
     String accessToken;
     String refreshToken;
@@ -76,8 +78,8 @@ public class GoogleSheetConnectionUtils {
               .parse(new InputStreamReader(in, StandardCharsets.UTF_8))
               .getAsJsonObject();
       // A standard Google credentials.json looks like {"installed": {"client_id": ..., ...}}
-      JsonObject section = root.has("installed") ? root.getAsJsonObject("installed")
-          : root.getAsJsonObject("web");
+      JsonObject section =
+          root.has("installed") ? root.getAsJsonObject("installed") : root.getAsJsonObject("web");
       ClientSecrets secrets = new ClientSecrets();
       secrets.clientId = section.get("client_id").getAsString();
       secrets.clientSecret = section.get("client_secret").getAsString();
@@ -106,8 +108,7 @@ public class GoogleSheetConnectionUtils {
     if (!TOKENS_DIRECTORY.exists() && !TOKENS_DIRECTORY.mkdirs()) {
       throw new IOException("Could not create tokens directory: " + TOKENS_DIRECTORY);
     }
-    Files.write(
-        tokenFile(userEmail).toPath(), GSON.toJson(token).getBytes(StandardCharsets.UTF_8));
+    Files.write(tokenFile(userEmail).toPath(), GSON.toJson(token).getBytes(StandardCharsets.UTF_8));
   }
 
   private static StoredToken exchangeCodeForToken(ClientSecrets secrets, String code)
@@ -178,7 +179,8 @@ public class GoogleSheetConnectionUtils {
           if (code != null) {
             codeFuture.complete(code);
           } else {
-            codeFuture.completeExceptionally(new IOException("Authorization failed, no code returned"));
+            codeFuture.completeExceptionally(
+                new IOException("Authorization failed, no code returned"));
           }
         });
     server.start();
@@ -186,10 +188,13 @@ public class GoogleSheetConnectionUtils {
     try {
       String authUrl =
           AUTH_URI
-              + "?client_id=" + URLEncoder.encode(secrets.clientId, StandardCharsets.UTF_8)
-              + "&redirect_uri=" + URLEncoder.encode(REDIRECT_URI, StandardCharsets.UTF_8)
+              + "?client_id="
+              + URLEncoder.encode(secrets.clientId, StandardCharsets.UTF_8)
+              + "&redirect_uri="
+              + URLEncoder.encode(REDIRECT_URI, StandardCharsets.UTF_8)
               + "&response_type=code"
-              + "&scope=" + URLEncoder.encode(SCOPE, StandardCharsets.UTF_8)
+              + "&scope="
+              + URLEncoder.encode(SCOPE, StandardCharsets.UTF_8)
               + "&access_type=offline"
               + "&prompt=consent";
       LinkBrowser.browse(authUrl);
@@ -295,7 +300,11 @@ public class GoogleSheetConnectionUtils {
     public JsonObject updateValues(String spreadsheetId, String range, JsonObject valueRangeBody)
         throws IOException {
       String url =
-          BASE_URL + "/" + spreadsheetId + "/values/" + urlEncode(range)
+          BASE_URL
+              + "/"
+              + spreadsheetId
+              + "/values/"
+              + urlEncode(range)
               + "?valueInputOption=USER_ENTERED";
       Request request =
           authorizedRequest(url)
@@ -307,7 +316,11 @@ public class GoogleSheetConnectionUtils {
     public JsonObject appendValues(String spreadsheetId, String range, JsonObject valueRangeBody)
         throws IOException {
       String url =
-          BASE_URL + "/" + spreadsheetId + "/values/" + urlEncode(range)
+          BASE_URL
+              + "/"
+              + spreadsheetId
+              + "/values/"
+              + urlEncode(range)
               + ":append?valueInputOption=USER_ENTERED";
       Request request =
           authorizedRequest(url)
@@ -338,8 +351,7 @@ public class GoogleSheetConnectionUtils {
               "Google rejected the access token (401): " + bodyString);
         }
         if (!response.isSuccessful()) {
-          throw new IOException(
-              "Sheets API request failed: " + response.code() + " " + bodyString);
+          throw new IOException("Sheets API request failed: " + response.code() + " " + bodyString);
         }
         return bodyString.isEmpty()
             ? new JsonObject()

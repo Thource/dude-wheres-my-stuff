@@ -187,14 +187,19 @@ public abstract class ExpiringDeathStorage extends DeathStorage {
 
     var setWorldPoint = new JMenuItem("Move " + this.getName() + " to current tile");
     setWorldPoint.addActionListener(
-        e -> plugin.getClientThread().invokeLater(() -> {
-          WorldPoint currentWorldPoint = plugin.getClient().getLocalPlayer().getWorldLocation();
-          if (currentWorldPoint == null) {
-            return;
-          }
+        e ->
+            plugin
+                .getClientThread()
+                .invokeLater(
+                    () -> {
+                      WorldPoint currentWorldPoint =
+                          plugin.getClient().getLocalPlayer().getWorldLocation();
+                      if (currentWorldPoint == null) {
+                        return;
+                      }
 
-          setWorldPoint(currentWorldPoint);
-        }));
+                      setWorldPoint(currentWorldPoint);
+                    }));
     popupMenu.add(setWorldPoint);
 
     final JMenuItem delete = new JMenuItem("Delete " + this.getName());

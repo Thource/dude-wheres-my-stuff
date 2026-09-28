@@ -99,8 +99,9 @@ public class FasterMaterialTabGroup extends JPanel {
       constraints.gridx = endTabs.contains(tab) ? 5 : visibleTabs % 6;
       constraints.gridy = visibleTabs / 6;
       constraints.weightx = endTabs.contains(tab) ? 1 : 0.1;
-      constraints.insets = new Insets(constraints.gridy == 0 ? 0 : padding,
-          constraints.gridx == 0 ? 0 : padding, 0, 0);
+      constraints.insets =
+          new Insets(
+              constraints.gridy == 0 ? 0 : padding, constraints.gridx == 0 ? 0 : padding, 0, 0);
       gridBagLayout.setConstraints(tab, constraints);
 
       visibleTabs++;

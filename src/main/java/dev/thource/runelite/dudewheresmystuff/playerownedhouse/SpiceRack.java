@@ -27,8 +27,9 @@ public class SpiceRack extends PlayerOwnedHouseStorage {
   }
 
   private static final Pattern CHECK_PATTERN =
-      Pattern.compile("(\\d+) x Red Spice.<br>(\\d+) x Brown Spice.<br>(\\d+) x Yellow Spice."
-          + "<br>(\\d+) x Orange Spice.");
+      Pattern.compile(
+          "(\\d+) x Red Spice.<br>(\\d+) x Brown Spice.<br>(\\d+) x Yellow Spice."
+              + "<br>(\\d+) x Orange Spice.");
 
   private final ItemStack redSpice;
   private final ItemStack brownSpice;
@@ -86,17 +87,17 @@ public class SpiceRack extends PlayerOwnedHouseStorage {
 
     var client = plugin.getClient();
     var withdrawWidget = client.getWidget(InterfaceID.Chatbox.MES_TEXT);
-    if (withdrawWidget != null && !withdrawWidget.isHidden() && Objects.equals(
-        withdrawWidget.getText(),
-        "How much spice would you like to take?:")) {
+    if (withdrawWidget != null
+        && !withdrawWidget.isHidden()
+        && Objects.equals(withdrawWidget.getText(), "How much spice would you like to take?:")) {
       state = State.WITHDRAWING;
     } else if (state == State.WITHDRAWING) {
       state = State.CHECK_WITHDRAW;
     }
 
     if (state == State.CHECK_WITHDRAW || state == State.CHECK_WITHDRAW_TWICE) {
-      for (ItemStack itemStack : ItemContainerWatcher.getInventoryWatcher()
-          .getItemsAddedLastTick()) {
+      for (ItemStack itemStack :
+          ItemContainerWatcher.getInventoryWatcher().getItemsAddedLastTick()) {
         var spiceData = spiceMap.get(itemStack.getId());
         if (spiceData != null) {
           var spiceStack = spiceData.getItemStack();
@@ -115,11 +116,11 @@ public class SpiceRack extends PlayerOwnedHouseStorage {
     }
 
     var messageBoxTextWidget = client.getWidget(InterfaceID.Messagebox.TEXT);
-    if (messageBoxTextWidget != null && Objects.equals(messageBoxTextWidget.getText(),
-        "Your spices have been stored.")) {
+    if (messageBoxTextWidget != null
+        && Objects.equals(messageBoxTextWidget.getText(), "Your spices have been stored.")) {
       if (state != State.CHECKED_DEPOSIT) {
-        for (ItemStack itemStack : ItemContainerWatcher.getInventoryWatcher()
-            .getItemsRemovedLastTick()) {
+        for (ItemStack itemStack :
+            ItemContainerWatcher.getInventoryWatcher().getItemsRemovedLastTick()) {
           var spiceData = spiceMap.get(itemStack.getId());
           if (spiceData != null) {
             var spiceStack = spiceData.getItemStack();
@@ -145,7 +146,8 @@ public class SpiceRack extends PlayerOwnedHouseStorage {
         var orangeQuantity = Integer.parseInt(checkMatcher.group(4));
 
         updateLastUpdated();
-        if (redQuantity != redSpice.getQuantity() || brownQuantity != brownSpice.getQuantity()
+        if (redQuantity != redSpice.getQuantity()
+            || brownQuantity != brownSpice.getQuantity()
             || yellowQuantity != yellowSpice.getQuantity()
             || orangeQuantity != orangeSpice.getQuantity()) {
           redSpice.setQuantity(redQuantity);

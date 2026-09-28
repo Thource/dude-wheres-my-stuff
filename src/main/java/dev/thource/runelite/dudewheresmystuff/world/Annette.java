@@ -12,7 +12,7 @@ public class Annette extends WorldStorage {
     super(WorldStorageType.ANNETTE, plugin);
 
     hasStaticItems = true;
-    varbits = new int[]{VarbitID.FOSSIL_DRIFTNET_STORE};
+    varbits = new int[] {VarbitID.FOSSIL_DRIFTNET_STORE};
 
     items.add(new ItemStack(ItemID.FOSSIL_DRIFT_NET, plugin));
   }

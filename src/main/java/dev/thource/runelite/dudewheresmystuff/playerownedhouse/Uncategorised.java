@@ -8,8 +8,9 @@ import lombok.Getter;
 import net.runelite.api.Item;
 import net.runelite.api.events.ItemContainerChanged;
 
-/** Uncategorised is responsible for tracking items that aren't accounted for in other POH
- * storages. */
+/**
+ * Uncategorised is responsible for tracking items that aren't accounted for in other POH storages.
+ */
 @Getter
 public class Uncategorised extends PlayerOwnedHouseStorage {
 

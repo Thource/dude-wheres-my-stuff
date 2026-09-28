@@ -15,7 +15,13 @@ public enum DeathStorageType implements StorageType {
   DEATHPILE("Deathpile", -1, true, "deathpile", false, null),
   GRAVE("Grave", -1, true, "grave", false, null),
   DEATHBANK("Deathbank", -1, false, "deathbank", true, null),
-  DEATHS_OFFICE("Death's Office", InventoryID.DEATH_PERMANENT, false, "deathsoffice", false, Collections.singletonList(2));
+  DEATHS_OFFICE(
+      "Death's Office",
+      InventoryID.DEATH_PERMANENT,
+      false,
+      "deathsoffice",
+      false,
+      Collections.singletonList(2));
 
   private final String name;
   private final int itemContainerId;

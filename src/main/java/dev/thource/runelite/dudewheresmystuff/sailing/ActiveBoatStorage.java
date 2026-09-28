@@ -130,7 +130,8 @@ public class ActiveBoatStorage extends BoatStorage {
     // Check if the boat was capsized
     var hpVar = Var.bit(varbitChanged, varbits.hpVarbit);
     if ((hpVar.wasChanged() || portVar.wasChanged())
-        && hpVar.getValue(plugin.getClient()) == 0 && portVar.getValue(plugin.getClient()) == 254
+        && hpVar.getValue(plugin.getClient()) == 0
+        && portVar.getValue(plugin.getClient()) == 254
         && !items.isEmpty()) {
       plugin.getSailingStorageManager().createLostBoat(this);
       items.clear();

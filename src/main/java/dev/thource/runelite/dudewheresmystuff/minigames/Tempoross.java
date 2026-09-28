@@ -10,12 +10,13 @@ import net.runelite.api.gameval.VarbitID;
 @Getter
 public class Tempoross extends MinigamesStorage {
 
-  private final ItemStack points = new ItemStack(ItemID.TOME_OF_WATER, "Reward permits", 0, 0, 0, true);
+  private final ItemStack points =
+      new ItemStack(ItemID.TOME_OF_WATER, "Reward permits", 0, 0, 0, true);
 
   Tempoross(DudeWheresMyStuffPlugin plugin) {
     super(MinigamesStorageType.TEMPOROSS, plugin);
 
-    varbits = new int[]{VarbitID.TEMPOROSS_REWARDPERMITS};
+    varbits = new int[] {VarbitID.TEMPOROSS_REWARDPERMITS};
 
     items.add(points);
   }

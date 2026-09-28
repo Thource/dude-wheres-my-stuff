@@ -94,8 +94,8 @@ public class SailingStorageManager extends StorageManager<SailingStorageType, Sa
   /**
    * Creates a lost boat storage from an active boat.
    *
-   * @param activeBoatStorage The active boat storage that was capsized and needs to be
-   *     converted to a lost boat
+   * @param activeBoatStorage The active boat storage that was capsized and needs to be converted to
+   *     a lost boat
    */
   public void createLostBoat(ActiveBoatStorage activeBoatStorage) {
     var client = plugin.getClient();

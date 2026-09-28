@@ -19,7 +19,8 @@ import lombok.Getter;
  * <p>Call {@link #load(Gson)} with the plugin's injected Gson before using any type.
  */
 @Getter
-public enum PlayerOwnedHouseStorageType implements JsonStorageType<PlayerOwnedHouseStorageType.Data> {
+public enum PlayerOwnedHouseStorageType
+    implements JsonStorageType<PlayerOwnedHouseStorageType.Data> {
   TREASURE_CHEST_BEGINNER,
   TREASURE_CHEST_EASY,
   TREASURE_CHEST_MEDIUM,
@@ -61,8 +62,7 @@ public enum PlayerOwnedHouseStorageType implements JsonStorageType<PlayerOwnedHo
       this.storableItemIds = storableItemIds;
     }
 
-    @Nullable
-    public List<Integer> getStorableItemIds() {
+    @Nullable public List<Integer> getStorableItemIds() {
       if (storableItemIds == null) {
         return null;
       }
@@ -87,8 +87,7 @@ public enum PlayerOwnedHouseStorageType implements JsonStorageType<PlayerOwnedHo
     return DATA.get(this);
   }
 
-  @Nullable
-  public List<Integer> getStorableItemIds() {
+  @Nullable public List<Integer> getStorableItemIds() {
     return getData().getStorableItemIds();
   }
 }

@@ -37,58 +37,41 @@ class ItemIdentificationConfig {
   private Color _textColor = Color.WHITE;
 
   public void reloadConfig() {
-    _showHerbSeeds = configManager.getConfiguration(
-        CONFIG_GROUP, "showHerbSeeds", Boolean.class);
-    _showBerrySeeds = configManager.getConfiguration(
-        CONFIG_GROUP, "showBerrySeeds", Boolean.class);
-    _showAllotmentSeeds = configManager.getConfiguration(
-        CONFIG_GROUP, "showAllotmentSeeds", Boolean.class);
-    _showSpecialSeeds = configManager.getConfiguration(
-        CONFIG_GROUP, "showSpecialSeeds", Boolean.class);
-    _showTreeSeeds = configManager.getConfiguration(
-        CONFIG_GROUP, "showTreeSeeds", Boolean.class);
-    _showFruitTreeSeeds = configManager.getConfiguration(
-        CONFIG_GROUP, "showFruitTreeSeeds", Boolean.class);
-    _showFlowerSeeds = configManager.getConfiguration(
-        CONFIG_GROUP, "showFlowerSeeds", Boolean.class);
-    _showHopsSeeds = configManager.getConfiguration(
-        CONFIG_GROUP, "showHopSeeds", Boolean.class);
-    _showSacks = configManager.getConfiguration(
-        CONFIG_GROUP, "showSacks", Boolean.class);
-    _showHerbs = configManager.getConfiguration(
-        CONFIG_GROUP, "showHerbs", Boolean.class);
-    _showLogs = configManager.getConfiguration(
-        CONFIG_GROUP, "showLogs", Boolean.class);
-    _showPyreLogs = configManager.getConfiguration(
-        CONFIG_GROUP, "showPyreLogs", Boolean.class);
-    _showPlanks = configManager.getConfiguration(
-        CONFIG_GROUP, "showPlanks", Boolean.class);
-    _showSaplings = configManager.getConfiguration(
-        CONFIG_GROUP, "showSaplings", Boolean.class);
-    _showComposts = configManager.getConfiguration(
-        CONFIG_GROUP, "showComposts", Boolean.class);
-    _showOres = configManager.getConfiguration(
-        CONFIG_GROUP, "showOres", Boolean.class);
-    _showBars = configManager.getConfiguration(
-        CONFIG_GROUP, "showBars", Boolean.class);
-    _showGems = configManager.getConfiguration(
-        CONFIG_GROUP, "showGems", Boolean.class);
-    _showPotions = configManager.getConfiguration(
-        CONFIG_GROUP, "showPotions", Boolean.class);
-    _showImplingJars = configManager.getConfiguration(
-        CONFIG_GROUP, "showImplingJars", Boolean.class);
-    _showTablets = configManager.getConfiguration(
-        CONFIG_GROUP, "showTablets", Boolean.class);
-    _showTeleportScrolls = configManager.getConfiguration(
-        CONFIG_GROUP, "showTeleportScrolls", Boolean.class);
-    _showJewellery = configManager.getConfiguration(
-        CONFIG_GROUP, "showJewellery", Boolean.class);
-    _showEnchantedJewellery = configManager.getConfiguration(
-        CONFIG_GROUP, "showEnchantedJewellery", Boolean.class);
-    _identificationType = configManager.getConfiguration(
-        CONFIG_GROUP, "identificationType", ItemIdentificationMode.class);
-    _textColor = configManager.getConfiguration(
-        CONFIG_GROUP, "textColor", Color.class);
+    _showHerbSeeds = configManager.getConfiguration(CONFIG_GROUP, "showHerbSeeds", Boolean.class);
+    _showBerrySeeds = configManager.getConfiguration(CONFIG_GROUP, "showBerrySeeds", Boolean.class);
+    _showAllotmentSeeds =
+        configManager.getConfiguration(CONFIG_GROUP, "showAllotmentSeeds", Boolean.class);
+    _showSpecialSeeds =
+        configManager.getConfiguration(CONFIG_GROUP, "showSpecialSeeds", Boolean.class);
+    _showTreeSeeds = configManager.getConfiguration(CONFIG_GROUP, "showTreeSeeds", Boolean.class);
+    _showFruitTreeSeeds =
+        configManager.getConfiguration(CONFIG_GROUP, "showFruitTreeSeeds", Boolean.class);
+    _showFlowerSeeds =
+        configManager.getConfiguration(CONFIG_GROUP, "showFlowerSeeds", Boolean.class);
+    _showHopsSeeds = configManager.getConfiguration(CONFIG_GROUP, "showHopSeeds", Boolean.class);
+    _showSacks = configManager.getConfiguration(CONFIG_GROUP, "showSacks", Boolean.class);
+    _showHerbs = configManager.getConfiguration(CONFIG_GROUP, "showHerbs", Boolean.class);
+    _showLogs = configManager.getConfiguration(CONFIG_GROUP, "showLogs", Boolean.class);
+    _showPyreLogs = configManager.getConfiguration(CONFIG_GROUP, "showPyreLogs", Boolean.class);
+    _showPlanks = configManager.getConfiguration(CONFIG_GROUP, "showPlanks", Boolean.class);
+    _showSaplings = configManager.getConfiguration(CONFIG_GROUP, "showSaplings", Boolean.class);
+    _showComposts = configManager.getConfiguration(CONFIG_GROUP, "showComposts", Boolean.class);
+    _showOres = configManager.getConfiguration(CONFIG_GROUP, "showOres", Boolean.class);
+    _showBars = configManager.getConfiguration(CONFIG_GROUP, "showBars", Boolean.class);
+    _showGems = configManager.getConfiguration(CONFIG_GROUP, "showGems", Boolean.class);
+    _showPotions = configManager.getConfiguration(CONFIG_GROUP, "showPotions", Boolean.class);
+    _showImplingJars =
+        configManager.getConfiguration(CONFIG_GROUP, "showImplingJars", Boolean.class);
+    _showTablets = configManager.getConfiguration(CONFIG_GROUP, "showTablets", Boolean.class);
+    _showTeleportScrolls =
+        configManager.getConfiguration(CONFIG_GROUP, "showTeleportScrolls", Boolean.class);
+    _showJewellery = configManager.getConfiguration(CONFIG_GROUP, "showJewellery", Boolean.class);
+    _showEnchantedJewellery =
+        configManager.getConfiguration(CONFIG_GROUP, "showEnchantedJewellery", Boolean.class);
+    _identificationType =
+        configManager.getConfiguration(
+            CONFIG_GROUP, "identificationType", ItemIdentificationMode.class);
+    _textColor = configManager.getConfiguration(CONFIG_GROUP, "textColor", Color.class);
   }
 
   public boolean showHerbSeeds() {
